@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>three.js 中的光与影 | 陈琦的Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="content{:toc}  在了解了 three.js 中渲染器、场景、相机、几何体等基本知识后，我们来研究一下 three.js 中的光与影。 本文是根据百度前端学院的任务安排进行探索和研究的。算是 WebGL No. 2 - 光与影 的学习笔记吧。  任务描述 学习《Three.js 入门指南》第 8 章光与影； 理解不同类型灯光的区别和适用场景； 学会为场景添加合适的灯光； 思考灯光的位">
+<meta name="keywords" content="C++&#x2F;Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="three.js 中的光与影">
+<meta property="og:url" content="http://yoursite.com/2018/12/22/threeJS-light-shadow/index.html">
+<meta property="og:site_name" content="陈琦的Blog">
+<meta property="og:description" content="content{:toc}  在了解了 three.js 中渲染器、场景、相机、几何体等基本知识后，我们来研究一下 three.js 中的光与影。 本文是根据百度前端学院的任务安排进行探索和研究的。算是 WebGL No. 2 - 光与影 的学习笔记吧。  任务描述 学习《Three.js 入门指南》第 8 章光与影； 理解不同类型灯光的区别和适用场景； 学会为场景添加合适的灯光； 思考灯光的位">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-12-22T15:26:34.768Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="three.js 中的光与影">
+<meta name="twitter:description" content="content{:toc}  在了解了 three.js 中渲染器、场景、相机、几何体等基本知识后，我们来研究一下 three.js 中的光与影。 本文是根据百度前端学院的任务安排进行探索和研究的。算是 WebGL No. 2 - 光与影 的学习笔记吧。  任务描述 学习《Three.js 入门指南》第 8 章光与影； 理解不同类型灯光的区别和适用场景； 学会为场景添加合适的灯光； 思考灯光的位">
+  
+    <link rel="alternate" href="/atom.xml" title="陈琦的Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">陈琦的Blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">上海交通大学电子系图像所</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-threeJS-light-shadow" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/12/22/threeJS-light-shadow/" class="article-date">
+  <time datetime="2018-12-22T12:41:00.000Z" itemprop="datePublished">2018-12-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Code/">Code</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      three.js 中的光与影
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ul>
+<li>content<br>{:toc}</li>
+</ul>
+<p>在了解了 three.js 中渲染器、场景、相机、几何体等基本知识后，我们来研究一下 three.js 中的光与影。</p>
+<p>本文是根据百度前端学院的任务安排进行探索和研究的。算是 <a href="http://ife.baidu.com/course/detail/id/28" target="_blank" rel="noopener">WebGL No. 2 - 光与影</a> 的学习笔记吧。</p>
+<ul>
+<li>任务描述<ul>
+<li>学习《Three.js 入门指南》第 8 章光与影；<ul>
+<li>理解不同类型灯光的区别和适用场景；</li>
+<li>学会为场景添加合适的灯光；</li>
+<li>思考灯光的位置对哪些类型的灯光是无所谓的，以及为什么；</li>
+<li>思考为什么有些灯光无法形成阴影；</li>
+</ul>
+</li>
+<li>在第 1 题场景的基础上，增加光照效果；<ul>
+<li>如果你没做第 1 题，也可以随便在场景中创建一些物体；</li>
+<li>为物体设置合适的材质（预习第 4 章），使得物体的亮度根据光照有所区别</li>
+</ul>
+</li>
+<li>创建一个地板平面，并将小车投影到地板上<ul>
+<li>尝试并思考，一个物体（比如甜甜圈）如何将阴影投射到自身（Self-Shadow，自阴影）；</li>
+<li>实现软阴影的效果（即阴影的边缘有明暗的渐变）。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="光"><a href="#光" class="headerlink" title="光"></a>光</h2><p>构造函数：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Light(color, intensity)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>颜色 color - (optional) hexadecimal color of the light. Default is 0xffffff (white).</li>
+<li>强度 intensity - (optional) numeric value of the light’s strength/intensity. Default is 1.</li>
+</ul>
+<p>光的基类，被其他光类所继承。</p>
+<h3 id="环境光"><a href="#环境光" class="headerlink" title="环境光"></a>环境光</h3><p>AmbientLight [‘æmbɪənt] 平均照亮场景中的所有物体。</p>
+<p>无方向，不产生影子。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> light = <span class="keyword">new</span> THREE.AmbientLight(<span class="number">0x404040</span>); <span class="comment">// soft white light</span></span><br><span class="line">scene.add(light);</span><br><span class="line"><span class="string">``</span><span class="string">`  </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">### 点光源</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">PointLight 从一个孤立的点向各个方向发射。没有遮盖的灯泡就是一个典型的例子。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">可以产生影子。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">`</span><span class="string">``</span>js</span><br><span class="line"><span class="keyword">var</span> light = <span class="keyword">new</span> THREE.PointLight(<span class="number">0xff0000</span>, <span class="number">1</span>, <span class="number">100</span>);</span><br><span class="line">light.position.set(<span class="number">50</span>, <span class="number">50</span>, <span class="number">50</span>);</span><br><span class="line">scene.add(light);</span><br></pre></td></tr></table></figure>
+<h3 id="平行光"><a href="#平行光" class="headerlink" title="平行光"></a>平行光</h3><p>DirectionalLight 有特定方向的光。光线平行，无限远。用于模拟日光。太阳足够远，可以认为是无限远的，并且发射的光线是平行的。</p>
+<p>可以产生影子。<a href="https://threejs.org/docs/index.html#Reference/Lights.Shadows/DirectionalLightShadow" target="_blank" rel="noopener">平行光的影子 DirectionalLightShadow</a>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// White directional light at half intensity shining from the top.</span></span><br><span class="line"><span class="keyword">var</span> directionalLight = <span class="keyword">new</span> THREE.DirectionalLight(<span class="number">0xffffff</span>, <span class="number">0.5</span>);</span><br><span class="line">scene.add(directionalLight);</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>属性</p>
+<ul>
+<li><p><code>.position</code></p>
+<p>This is set equal to Object3D.DefaultUp (0, 1, 0), so that the light shines from the top down.</p>
+<p>光线从平面 (0, 1, 0) 的法向射出。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="聚光灯"><a href="#聚光灯" class="headerlink" title="聚光灯"></a>聚光灯</h3><p>SpotLight 光从孤立点射出，沿着一个椎体向远处延伸。</p>
+<p>可以产生影子。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// white spotlight shining from the side, casting a shadow</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> spotLight = <span class="keyword">new</span> THREE.SpotLight(<span class="number">0xffffff</span>);</span><br><span class="line">spotLight.position.set(<span class="number">100</span>, <span class="number">1000</span>, <span class="number">100</span>);</span><br><span class="line"></span><br><span class="line">spotLight.castShadow = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">spotLight.shadow.mapSize.width = <span class="number">1024</span>;</span><br><span class="line">spotLight.shadow.mapSize.height = <span class="number">1024</span>;</span><br><span class="line"></span><br><span class="line">spotLight.shadow.camera.near = <span class="number">500</span>;</span><br><span class="line">spotLight.shadow.camera.far = <span class="number">4000</span>;</span><br><span class="line">spotLight.shadow.camera.fov = <span class="number">30</span>;</span><br><span class="line"></span><br><span class="line">scene.add(spotLight);</span><br></pre></td></tr></table></figure>
+<h3 id="半球光"><a href="#半球光" class="headerlink" title="半球光"></a>半球光</h3><p>HemisphereLight 光源位于场景上方，光线颜色从天空过度到地面。</p>
+<p>不能产生影子。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> light = <span class="keyword">new</span> THREE.HemisphereLight(<span class="number">0xffffbb</span>, <span class="number">0x080820</span>, <span class="number">1</span>);</span><br><span class="line">scene.add(light);</span><br></pre></td></tr></table></figure>
+<h3 id="矩形光"><a href="#矩形光" class="headerlink" title="矩形光"></a>矩形光</h3><p>RectAreaLight 从一个矩形面均匀发射的光。常被用于明亮的窗户，</p>
+<h2 id="影子"><a href="#影子" class="headerlink" title="影子"></a>影子</h2>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/12/22/threeJS-light-shadow/" data-id="cjpzn8fol0003o4vkaznq7es4" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2018/12/22/ES2015-note/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">ES2015学习笔记1-let和const、变量解构赋值、字符串、正则、数值</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Code/">Code</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/12/22/threeJS-light-shadow/">three.js 中的光与影</a>
+          </li>
+        
+          <li>
+            <a href="/2018/12/22/ES2015-note/">ES2015学习笔记1-let和const、变量解构赋值、字符串、正则、数值</a>
+          </li>
+        
+          <li>
+            <a href="/2018/12/22/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2018/12/12/WebSocket/">WebSocket探究与应用</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 Qi Chen<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
