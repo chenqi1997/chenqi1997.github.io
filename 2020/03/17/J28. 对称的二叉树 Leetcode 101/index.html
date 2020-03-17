@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="递归,树,">
+  <meta name="keywords" content="递归,迭代,树,">
 
 
 
@@ -80,14 +80,14 @@
 
 
 <meta name="description" content="J28. 对称的二叉树 / Leetcode 101 题目：  请实现一个函数，用来判断一棵二叉树是不是对称的。如果一棵二叉树和它的镜像一样，那么它是对称的。 例如，二叉树 [1,2,2,3,4,4,3] 是对称的。     1    / \   2   2  / \ / \ 3  4 4  3 但是下面这个 [1,2,2,null,3,null,3] 则不是镜像对称的:   1  / \ 2">
-<meta name="keywords" content="递归,树">
+<meta name="keywords" content="递归,迭代,树">
 <meta property="og:type" content="article">
 <meta property="og:title" content="剑指offer_28 对称的二叉树 &#x2F; Leetcode 101">
 <meta property="og:url" content="http://yoursite.com/2020/03/17/J28. 对称的二叉树 Leetcode 101/index.html">
 <meta property="og:site_name" content="Cq的Blog">
 <meta property="og:description" content="J28. 对称的二叉树 / Leetcode 101 题目：  请实现一个函数，用来判断一棵二叉树是不是对称的。如果一棵二叉树和它的镜像一样，那么它是对称的。 例如，二叉树 [1,2,2,3,4,4,3] 是对称的。     1    / \   2   2  / \ / \ 3  4 4  3 但是下面这个 [1,2,2,null,3,null,3] 则不是镜像对称的:   1  / \ 2">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-03-17T12:03:36.531Z">
+<meta property="og:updated_time" content="2020-03-17T12:37:40.891Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="剑指offer_28 对称的二叉树 &#x2F; Leetcode 101">
 <meta name="twitter:description" content="J28. 对称的二叉树 / Leetcode 101 题目：  请实现一个函数，用来判断一棵二叉树是不是对称的。如果一棵二叉树和它的镜像一样，那么它是对称的。 例如，二叉树 [1,2,2,3,4,4,3] 是对称的。     1    / \   2   2  / \ / \ 3  4 4  3 但是下面这个 [1,2,2,null,3,null,3] 则不是镜像对称的:   1  / \ 2">
@@ -401,6 +401,12 @@
 </blockquote>
 <p>如果递归来看，对于目前的手上的两个节点 <code>p</code> 和 <code>q</code>，对称即为 <code>p</code> 的左子节点的值和 <code>q</code> 的右子节点的值相等，且 <code>p</code> 的右子节点的值与 <code>q</code> 的左子节点的值相等。这里面为了方便递归，我们先给出 <code>root</code> 的左右节点，将它们分别作为新定义的重载函数 <code>isSymmetric</code> 的输入。 </p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isSymmetric</span><span class="params">(TreeNode *root)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!root) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">return</span> isSymmetric(root-&gt;left, root-&gt;right);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isSymmetric</span><span class="params">(TreeNode *left, TreeNode *right)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!left &amp;&amp; !right) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">if</span> (left &amp;&amp; !right || !left &amp;&amp; right || left-&gt;val != right-&gt;val) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">return</span> isSymmetric(left-&gt;left, right-&gt;right) &amp;&amp; isSymmetric(left-&gt;right, right-&gt;left);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>解法三：迭代思想/BFS</p>
+</blockquote>
+<p>利用队列来进行迭代，每次提取两个节点并且比较它们的值，然后同时将两个节点的左右子节点按相反的顺序插入到队列中，直到队列中不存在元素或者树不对称时结束。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isSymmetric</span><span class="params">(TreeNode* root)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (root ==<span class="literal">NULL</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        <span class="comment">//用队列保存节点</span></span><br><span class="line">        <span class="built_in">queue</span>&lt;TreeNode*&gt; q;</span><br><span class="line">        <span class="comment">//将根节点的左右孩子放到队列中</span></span><br><span class="line">        q.push(root-&gt;left);</span><br><span class="line">        q.push(root-&gt;right);</span><br><span class="line">        <span class="keyword">while</span>(!q.empty())</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//从队列中取出两个节点，再比较这两个节点</span></span><br><span class="line">            TreeNode* A = q.front();</span><br><span class="line">            q.pop();</span><br><span class="line">            TreeNode* B = q.front();</span><br><span class="line">            q.pop();</span><br><span class="line">            <span class="comment">//如果两个节点都为空就继续循环，两者有一个为空就返回false</span></span><br><span class="line">            <span class="keyword">if</span> (A==<span class="literal">NULL</span> &amp;&amp; B==<span class="literal">NULL</span>)</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            <span class="keyword">if</span> (A==<span class="literal">NULL</span> || B==<span class="literal">NULL</span>)</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            <span class="keyword">if</span> (A-&gt;val != B-&gt;val)</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            <span class="comment">//将左子树的左孩子， 右子树的右孩子放入队列</span></span><br><span class="line">            q.push(A-&gt;left);</span><br><span class="line">            q.push(B-&gt;right);</span><br><span class="line">            <span class="comment">//将左子树的右孩子，右子树的左孩子放入队列</span></span><br><span class="line">            q.push(A-&gt;right);</span><br><span class="line">            q.push(B-&gt;left);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
       
     </div>
     
@@ -418,6 +424,8 @@
         <div class="post-tags">
           
             <a href="/tags/递归/" rel="tag"># 递归</a>
+          
+            <a href="/tags/迭代/" rel="tag"># 迭代</a>
           
             <a href="/tags/树/" rel="tag"># 树</a>
           
@@ -441,6 +449,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/03/17/J29. 顺时针打印矩阵 Leetcode 54/" rel="prev" title="剑指offer_29 顺时针打印矩阵 / Leetcode 54">
+                剑指offer_29 顺时针打印矩阵 / Leetcode 54 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -519,7 +531,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">51</span>
+                  <span class="site-state-item-count">52</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
