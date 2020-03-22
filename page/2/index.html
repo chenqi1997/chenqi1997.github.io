@@ -263,6 +263,178 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/20/J37. 字符串的排列 Leetcode 297/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈琦">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cq的Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/20/J37. 字符串的排列 Leetcode 297/" itemprop="url">剑指offer_37 序列化二叉树 / Leetcode 297</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-20T12:08:00+08:00">
+                2020-03-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/剑指offer/" itemprop="url" rel="index">
+                    <span itemprop="name">剑指offer</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/剑指offer/Hard/" itemprop="url" rel="index">
+                    <span itemprop="name">Hard</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="J37-序列化二叉树-Leetcode-297"><a href="#J37-序列化二叉树-Leetcode-297" class="headerlink" title="J37*. 序列化二叉树 / Leetcode 297"></a>J37*. 序列化二叉树 / Leetcode 297</h1><blockquote>
+<p>题目</p>
+</blockquote>
+<p>请实现两个函数，分别用来序列化和反序列化二叉树。</p>
+<blockquote>
+<p><strong>示例:</strong> </p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">你可以将以下二叉树：</span><br><span class="line"></span><br><span class="line">    1</span><br><span class="line">   / \</span><br><span class="line">  2   3</span><br><span class="line">     / \</span><br><span class="line">    4   5</span><br><span class="line"></span><br><span class="line">序列化为 &quot;[1,2,3,null,null,4,5]&quot;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>解法一：使用BFS+层序遍历的非递归解法</p>
+</blockquote>
+<p>二叉树中，<code>层序遍历</code>是无法唯一确定一棵二叉树的，需要我们将二叉树中的空节点全部用<code>&#39;#&#39;</code>补全，这样才能够唯一表示从而进行编码和解码。</p>
+<p>在 <code>serialize()</code>函数中，我们将输入的二叉树节点通过 <code>queue</code> 实现的<code>BFS</code> 方法层序遍历，与普通的层序遍历不同的是，这里如果当前 <code>front()</code> 的节点存在的话，将这个节点的 <code>val</code> 转换成字符串再加上一个<code>&#39;,&#39;</code>插入到字符串 <code>res</code> 的后方，正常进行队列操作将其左右节点放入队列；如果当前 <code>front()</code> 的节点不存在的话，需要把 <code>res += &#39;#&#39;</code> 来表示这个是空节点。</p>
+<p>在 <code>deserialize()</code>函数中，思路上是对于 <code>serialize()</code> 函数的逆向思路，先构造一个 <code>TreeNode* root</code>节点，然后依次通过队列的迭代来建立 root 后面的节点之间的联系。这里面可以使用一个helper函数来实现字符串转数字的过程，同时由于参数 <code>p</code> 是引用参数，可以在主函数中不用对p进行迭代，只需要在helper函数中让 <code>p</code> 对于不同的情况如 <code>&#39;#&#39;</code> , <code>&#39;,&#39;</code> , <code>&#39;-&#39;</code> 等等进行判断，将逗号分割开的字符串相应地转化为对应的整数值，同时返回一个该 <code>val</code> 的 <code>new TreeNode(val)</code>，同时p已经指向了下一个节点对应的字符串值的位置。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * struct TreeNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     TreeNode *left;</span></span><br><span class="line"><span class="comment"> *     TreeNode *right;</span></span><br><span class="line"><span class="comment"> *     TreeNode(int x) : val(x), left(NULL), right(NULL) &#123;&#125;</span></span><br><span class="line"><span class="comment"> * &#125;;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Codec</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">// Encodes a tree to a single string.</span></span><br><span class="line">    <span class="function"><span class="built_in">string</span> <span class="title">serialize</span><span class="params">(TreeNode* root)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">string</span> res = <span class="string">""</span>;</span><br><span class="line">        <span class="built_in">queue</span>&lt;TreeNode*&gt; q;</span><br><span class="line">        <span class="keyword">if</span>(!root) <span class="keyword">return</span> <span class="string">"#"</span>;</span><br><span class="line">        q.push(root);</span><br><span class="line">        <span class="keyword">while</span>(!q.empty()) &#123;</span><br><span class="line">            TreeNode* tmp = q.front();</span><br><span class="line">            q.pop();</span><br><span class="line">            <span class="keyword">if</span>(tmp) &#123;</span><br><span class="line">                res += to_string(tmp-&gt;val) + <span class="string">","</span>;</span><br><span class="line">                q.push(tmp-&gt;left);</span><br><span class="line">                q.push(tmp-&gt;right);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> &#123;</span><br><span class="line">                res += <span class="string">"#,"</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;        </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Decodes your encoded data to tree.</span></span><br><span class="line">    <span class="function">TreeNode* <span class="title">deserialize</span><span class="params">(<span class="built_in">string</span> data)</span> </span>&#123;</span><br><span class="line">          <span class="keyword">if</span>(data[<span class="number">0</span>] == <span class="string">'#'</span>) <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">          <span class="keyword">int</span> p = <span class="number">0</span>;</span><br><span class="line">          TreeNode* root = helper(data, p);</span><br><span class="line">          <span class="built_in">queue</span>&lt;TreeNode*&gt; q;</span><br><span class="line">          q.push(root);</span><br><span class="line">          <span class="keyword">while</span>(!q.empty()) &#123;</span><br><span class="line">              TreeNode* t = q.front();</span><br><span class="line">              q.pop();</span><br><span class="line">              TreeNode* l = helper(data, p);<span class="comment">//此时p已经指到了根节点左节点对应的字符串位置</span></span><br><span class="line">              TreeNode* r = helper(data, p);<span class="comment">//此时p已经指到了根节点右节点对应的字符串位置</span></span><br><span class="line">              <span class="comment">//层序遍历</span></span><br><span class="line">              <span class="keyword">if</span>(l) q.push(l);</span><br><span class="line">              <span class="keyword">if</span>(r) q.push(r);</span><br><span class="line">              t-&gt;left = l;</span><br><span class="line">              t-&gt;right = r;</span><br><span class="line">          &#125;</span><br><span class="line">          <span class="keyword">return</span> root;  </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function">TreeNode* <span class="title">helper</span><span class="params">(<span class="keyword">const</span> <span class="built_in">string</span>&amp; data, <span class="keyword">int</span>&amp; p)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (data[p] == <span class="string">'#'</span>) &#123;</span><br><span class="line">            p += <span class="number">2</span>;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">bool</span> isNegative = <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">if</span> (data[p] == <span class="string">'-'</span>) &#123;</span><br><span class="line">            isNegative = <span class="literal">true</span>;</span><br><span class="line">            p++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> val = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (data[p] != <span class="string">','</span>) &#123;</span><br><span class="line">            val = val * <span class="number">10</span> + (data[p] - <span class="string">'0'</span>);</span><br><span class="line">            p++;</span><br><span class="line">        &#125;</span><br><span class="line">        p++;</span><br><span class="line">        <span class="keyword">if</span> (isNegative) &#123;</span><br><span class="line">            val = -val;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> TreeNode(val);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// Your Codec object will be instantiated and called as such:</span></span><br><span class="line"><span class="comment">// Codec codec;</span></span><br><span class="line"><span class="comment">// codec.deserialize(codec.serialize(root));</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>解法二：先序遍历的递归解法</p>
+</blockquote>
+<p>先序遍历的递归解法，非常的简单易懂，我们需要接入输入和输出字符串流 <code>istringstream</code> 和 <code>ostringstream</code> ，对于序列化，我们从根节点开始，如果节点存在，则将值存入输出字符串流，然后分别对其左右子节点递归调用序列化函数即可。对于去序列化，我们先读入第一个字符，以此生成一个根节点，然后再对根节点的左右子节点递归调用去序列化函数即可，在实现 <code>string to integer</code> 的过程中也不需要自己实现了，使用了 <code>stoi</code> 函数：参见代码如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Codec</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">// Encodes a tree to a single string.</span></span><br><span class="line">    <span class="function"><span class="built_in">string</span> <span class="title">serialize</span><span class="params">(TreeNode* root)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">ostringstream</span> out;</span><br><span class="line">        serialize(root, out);</span><br><span class="line">        <span class="keyword">return</span> out.str();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// Decodes your encoded data to tree.</span></span><br><span class="line">    <span class="function">TreeNode* <span class="title">deserialize</span><span class="params">(<span class="built_in">string</span> data)</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="built_in">istringstream</span> <span class="title">in</span><span class="params">(data)</span></span>;</span><br><span class="line">        <span class="keyword">return</span> deserialize(in);</span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">serialize</span><span class="params">(TreeNode *root, <span class="built_in">ostringstream</span> &amp;out)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (root) &#123;</span><br><span class="line">            out &lt;&lt; root-&gt;val &lt;&lt; <span class="string">' '</span>;</span><br><span class="line">            serialize(root-&gt;left, out);</span><br><span class="line">            serialize(root-&gt;right, out);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            out &lt;&lt; <span class="string">"# "</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function">TreeNode* <span class="title">deserialize</span><span class="params">(<span class="built_in">istringstream</span> &amp;in)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">string</span> val;</span><br><span class="line">        in &gt;&gt; val;</span><br><span class="line">        <span class="keyword">if</span> (val == <span class="string">"#"</span>) <span class="keyword">return</span> <span class="literal">nullptr</span>;</span><br><span class="line">        TreeNode *root = <span class="keyword">new</span> TreeNode(stoi(val));</span><br><span class="line">        root-&gt;left = deserialize(in);</span><br><span class="line">        root-&gt;right = deserialize(in);</span><br><span class="line">        <span class="keyword">return</span> root;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/19/J36. 二叉搜索树与双向链表/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1853,180 +2025,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/17/J29. 顺时针打印矩阵 Leetcode 54/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈琦">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/head.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Cq的Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/03/17/J29. 顺时针打印矩阵 Leetcode 54/" itemprop="url">剑指offer_29 顺时针打印矩阵 / Leetcode 54</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-17T20:39:00+08:00">
-                2020-03-17
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/剑指offer/" itemprop="url" rel="index">
-                    <span itemprop="name">剑指offer</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/剑指offer/Easy/" itemprop="url" rel="index">
-                    <span itemprop="name">Easy</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="J29-顺时针打印矩阵-Leetcode-54"><a href="#J29-顺时针打印矩阵-Leetcode-54" class="headerlink" title="J29*. 顺时针打印矩阵 / Leetcode 54"></a>J29*. 顺时针打印矩阵 / Leetcode 54</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>输入一个矩阵，按照从外向里以顺时针的顺序依次打印出每一个数字。</p>
-<blockquote>
-<p>示例 1：</p>
-</blockquote>
-<p>输入：matrix = [[1,2,3],[4,5,6],[7,8,9]]<br>输出：[1,2,3,6,9,8,7,4,5]</p>
-<blockquote>
-<p>示例 2：</p>
-</blockquote>
-<p>输入：matrix = [[1,2,3,4],[5,6,7,8],[9,10,11,12]]<br>输出：[1,2,3,4,8,12,11,10,9,5,6,7]</p>
-<blockquote>
-<p>限制：</p>
-</blockquote>
-<p>0 &lt;= matrix.length &lt;= 100<br>0 &lt;= matrix[i].length &lt;= 100</p>
-<blockquote>
-<p>解法一：</p>
-</blockquote>
-<p>🤮🤮🤮🤮🤮🤮</p>
-<p>没有巧法，来回循环打印，真恶心，希望面试别考这种又烦又没水平的题。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; spiralOrder(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; matrix) &#123;</span><br><span class="line">      <span class="comment">/*判断是否为空*/</span></span><br><span class="line">      <span class="keyword">if</span>(matrix.size() == <span class="number">0</span> || matrix[<span class="number">0</span>].size() == <span class="number">0</span>) <span class="keyword">return</span> &#123;&#125;;</span><br><span class="line">      <span class="comment">/*设置上下左右四个界限*/</span></span><br><span class="line">      <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; res; <span class="comment">/*存储遍历结果*/</span></span><br><span class="line">      <span class="keyword">int</span> top = <span class="number">0</span>;</span><br><span class="line">      <span class="keyword">int</span> bottom = matrix.size() - <span class="number">1</span>;</span><br><span class="line">      <span class="keyword">int</span> left = <span class="number">0</span>;</span><br><span class="line">      <span class="keyword">int</span> right = matrix[<span class="number">0</span>].size() - <span class="number">1</span>;</span><br><span class="line">      <span class="comment">/*此算法模拟顺时针输出的过程，请联想打印过程*/</span></span><br><span class="line">      <span class="keyword">while</span>(<span class="literal">true</span>)</span><br><span class="line">      &#123;</span><br><span class="line">          <span class="comment">/*1.top行从左到右遍历*/</span></span><br><span class="line">          <span class="keyword">for</span>(<span class="keyword">int</span> i=left;i&lt;=right;i++)&#123;</span><br><span class="line">              res.push_back(matrix[top][i]);</span><br><span class="line">          &#125;</span><br><span class="line">          <span class="comment">/*top移动至下一行，并进行边界检测*/</span></span><br><span class="line">          top++;</span><br><span class="line">          <span class="keyword">if</span>(top &gt; bottom ) <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">          <span class="comment">/*2.right列从上到下遍历*/</span></span><br><span class="line">          <span class="keyword">for</span>(<span class="keyword">int</span> i=top;i&lt;=bottom;i++)&#123;</span><br><span class="line">              res.push_back(matrix[i][right]);</span><br><span class="line">          &#125;</span><br><span class="line">          <span class="comment">/*right左移，并进行边界检测*/</span></span><br><span class="line">          right--;</span><br><span class="line">          <span class="keyword">if</span>(right &lt; left) <span class="keyword">break</span>;</span><br><span class="line">          </span><br><span class="line">          <span class="comment">/*3.bottom行从右往左遍历*/</span></span><br><span class="line">          <span class="keyword">for</span>(<span class="keyword">int</span> i = right;i&gt;=left;i--)&#123;</span><br><span class="line">              res.push_back(matrix[bottom][i]);</span><br><span class="line">          &#125;</span><br><span class="line">          <span class="comment">/*bottom行上移，并进行边界检测*/</span></span><br><span class="line">          bottom -- ;</span><br><span class="line">          <span class="keyword">if</span>(bottom &lt; top) <span class="keyword">break</span>;</span><br><span class="line">          <span class="comment">/*4.left列从下往上遍历*/</span></span><br><span class="line">          <span class="keyword">for</span>(<span class="keyword">int</span> i=bottom;i&gt;=top;i--)&#123;</span><br><span class="line">              res.push_back(matrix[i][left]);</span><br><span class="line">          &#125;</span><br><span class="line">          <span class="comment">/*left右移，并进行边界检测*/</span></span><br><span class="line">          left++;</span><br><span class="line">          <span class="keyword">if</span>(left &gt; right) <span class="keyword">break</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">/*返回遍历结果*/</span></span><br><span class="line">      <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2079,7 +2077,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">64</span>
+                  <span class="site-state-item-count">65</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
