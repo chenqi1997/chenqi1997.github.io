@@ -263,6 +263,201 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/17/J28. 对称的二叉树 Leetcode 101/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈琦">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cq的Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/17/J28. 对称的二叉树 Leetcode 101/" itemprop="url">剑指offer_28 对称的二叉树 / Leetcode 101</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-17T19:36:00+08:00">
+                2020-03-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/剑指offer/" itemprop="url" rel="index">
+                    <span itemprop="name">剑指offer</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/剑指offer/Easy/" itemprop="url" rel="index">
+                    <span itemprop="name">Easy</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="J28-对称的二叉树-Leetcode-101"><a href="#J28-对称的二叉树-Leetcode-101" class="headerlink" title="J28. 对称的二叉树 / Leetcode 101"></a>J28. 对称的二叉树 / Leetcode 101</h1><blockquote>
+<p>题目：</p>
+</blockquote>
+<p>请实现一个函数，用来判断一棵二叉树是不是对称的。如果一棵二叉树和它的镜像一样，那么它是对称的。</p>
+<p>例如，二叉树 [1,2,2,3,4,4,3] 是对称的。</p>
+<pre><code>    1
+   / \
+  2   2
+ / \ / \
+3  4 4  3
+</code></pre><p>但是下面这个 [1,2,2,null,3,null,3] 则不是镜像对称的:</p>
+<pre><code>  1
+ / \
+2   2
+ \   \
+ 3    3 
+</code></pre><blockquote>
+<p>示例 1：</p>
+</blockquote>
+<p>输入：root = [1,2,2,3,4,4,3]<br>输出：true</p>
+<blockquote>
+<p>示例 2：</p>
+</blockquote>
+<p>输入：root = [1,2,2,null,3,null,3]<br>输出：false</p>
+<blockquote>
+<p>限制：</p>
+</blockquote>
+<p>0 &lt;= 节点个数 &lt;= 1000</p>
+<blockquote>
+<p>解法一：利用J27里面的 mirrorTree（太笨了！！）</p>
+</blockquote>
+<p>很烦，刚做完27题所以想着这道题不如就先写一个 <code>mirrorTree</code>得到对称之后的树，再写一个 <code>equalTree</code>  来判断一下是否相等就行，但是明明感觉逻辑没什么问题但是代码就是会错，排查了半天也没排查明白，先占个坑TAT</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isSymmetric</span><span class="params">(TreeNode* root)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!root) <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">        TreeNode* mirror = mirrorTree(root);</span><br><span class="line">        <span class="keyword">return</span> equalTree(root, mirror);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function">TreeNode* <span class="title">mirrorTree</span><span class="params">(TreeNode* root)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!root) <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">        TreeNode* tmp = root-&gt;left;</span><br><span class="line">        root-&gt;left = mirrorTree(root-&gt;right);</span><br><span class="line">        root-&gt;right = mirrorTree(tmp);</span><br><span class="line">        <span class="keyword">return</span> root;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">equalTree</span><span class="params">(TreeNode* p, TreeNode* q)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>((p != <span class="literal">NULL</span> &amp;&amp; q == <span class="literal">NULL</span>) || (p == <span class="literal">NULL</span> &amp;&amp; q != <span class="literal">NULL</span>)) <span class="keyword">return</span> <span class="literal">false</span>;  </span><br><span class="line">        <span class="keyword">if</span>(p == <span class="literal">NULL</span> &amp;&amp; q == <span class="literal">NULL</span>) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">if</span>(p-&gt;val != q-&gt;val) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">bool</span> flag = equalTree(p-&gt;left, q-&gt;left) ? equalTree(p-&gt;right, q-&gt;right) : <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">return</span> flag;        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>解法二：递归思想</p>
+</blockquote>
+<p>如果递归来看，对于目前的手上的两个节点 <code>p</code> 和 <code>q</code>，对称即为 <code>p</code> 的左子节点的值和 <code>q</code> 的右子节点的值相等，且 <code>p</code> 的右子节点的值与 <code>q</code> 的左子节点的值相等。这里面为了方便递归，我们先给出 <code>root</code> 的左右节点，将它们分别作为新定义的重载函数 <code>isSymmetric</code> 的输入。 </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isSymmetric</span><span class="params">(TreeNode *root)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!root) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">return</span> isSymmetric(root-&gt;left, root-&gt;right);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isSymmetric</span><span class="params">(TreeNode *left, TreeNode *right)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!left &amp;&amp; !right) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">if</span> (left &amp;&amp; !right || !left &amp;&amp; right || left-&gt;val != right-&gt;val) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">return</span> isSymmetric(left-&gt;left, right-&gt;right) &amp;&amp; isSymmetric(left-&gt;right, right-&gt;left);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>解法三：迭代思想/BFS</p>
+</blockquote>
+<p>利用队列来进行迭代，每次提取两个节点并且比较它们的值，然后同时将两个节点的左右子节点按相反的顺序插入到队列中，直到队列中不存在元素或者树不对称时结束。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isSymmetric</span><span class="params">(TreeNode* root)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (root ==<span class="literal">NULL</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        <span class="comment">//用队列保存节点</span></span><br><span class="line">        <span class="built_in">queue</span>&lt;TreeNode*&gt; q;</span><br><span class="line">        <span class="comment">//将根节点的左右孩子放到队列中</span></span><br><span class="line">        q.push(root-&gt;left);</span><br><span class="line">        q.push(root-&gt;right);</span><br><span class="line">        <span class="keyword">while</span>(!q.empty())</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//从队列中取出两个节点，再比较这两个节点</span></span><br><span class="line">            TreeNode* A = q.front();</span><br><span class="line">            q.pop();</span><br><span class="line">            TreeNode* B = q.front();</span><br><span class="line">            q.pop();</span><br><span class="line">            <span class="comment">//如果两个节点都为空就继续循环，两者有一个为空就返回false</span></span><br><span class="line">            <span class="keyword">if</span> (A==<span class="literal">NULL</span> &amp;&amp; B==<span class="literal">NULL</span>)</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            <span class="keyword">if</span> (A==<span class="literal">NULL</span> || B==<span class="literal">NULL</span>)</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            <span class="keyword">if</span> (A-&gt;val != B-&gt;val)</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            <span class="comment">//将左子树的左孩子， 右子树的右孩子放入队列</span></span><br><span class="line">            q.push(A-&gt;left);</span><br><span class="line">            q.push(B-&gt;right);</span><br><span class="line">            <span class="comment">//将左子树的右孩子，右子树的左孩子放入队列</span></span><br><span class="line">            q.push(A-&gt;right);</span><br><span class="line">            q.push(B-&gt;left);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/17/J27. 二叉树的镜像 Leetcode 226/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1899,200 +2094,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/14/J14-I. 剪绳子 Leetcode 343/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈琦">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/head.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Cq的Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/03/14/J14-I. 剪绳子 Leetcode 343/" itemprop="url">剑指offer_14-I&II. 剪绳子 / Leetcode 343</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-14T18:28:00+08:00">
-                2020-03-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/剑指offer/" itemprop="url" rel="index">
-                    <span itemprop="name">剑指offer</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/剑指offer/Medium/" itemprop="url" rel="index">
-                    <span itemprop="name">Medium</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="J14-I-amp-II-剪绳子-Leetcode-343"><a href="#J14-I-amp-II-剪绳子-Leetcode-343" class="headerlink" title="J14-I&amp;II. 剪绳子/ Leetcode 343"></a>J14-I&amp;II. 剪绳子/ Leetcode 343</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>给你一根长度为 n 的绳子，请把绳子剪成整数长度的 m 段（m、n都是整数，n &gt; 1并且m &gt; 1），每段绳子的长度记为 k[0],k[1]…k[m] 。请问 k[0]*k[1]*…*k[m] 可能的最大乘积是多少？例如，当绳子的长度是8时，我们把它剪成长度分别为2、3、3的三段，此时得到的最大乘积是18。</p>
-<blockquote>
-<p>示例 1：</p>
-</blockquote>
-<p>输入: 2<br>输出: 1<br>解释: 2 = 1 + 1, 1 × 1 = 1</p>
-<blockquote>
-<p>示例 2:</p>
-</blockquote>
-<p>输入: 10<br>输出: 36<br>解释: 10 = 3 + 3 + 4, 3 × 3 × 4 = 36</p>
-<blockquote>
-<p>提示：</p>
-</blockquote>
-<p>2 &lt;= n &lt;= 58</p>
-<blockquote>
-<p>解法一：动态规划</p>
-</blockquote>
-<p>首先最容易想到的是复杂度为O(n2)的动态规划解法，维护一个一维的 <code>dp</code> 数组，dp[i]表示数字 i 拆分成至少两个正整数的和的最大乘积， <code>dp</code> 数组大小为 n + 1，初始值全部设为 1。由于 n = 1, 2的时候 dp[n] 均为1，因此我们可以设置 i 从3到 n 遍历。在循环 j 中，对于小于 i 的 j，我们按照两种情况进行讨论：如果是拆分成两个数字，即为 <code>j * (i - j)</code>，如果是拆分成多个数字，由于我们是遍历 j ，因此要考虑将 i - j 拆分，这样才可以避免重复，因此构造的动态规划状态转移方程为：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dp[i] = max(dp[i], max(j * (i - j), j * dp[i - j]));</span><br></pre></td></tr></table></figure>
-<p>随着 i 循环的结束，我们最终得到的 <code>dp[n]</code> 即为最终的乘积最大的结果。</p>
-<p>时间复杂度O(n2)，空间复杂度O(n)，但是在 <code>Leetcode</code> 上可以得到双100%的成绩。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">cuttingRope</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; dp(n + <span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">3</span>; i &lt;= n; ++i) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt; i; ++j) &#123;</span><br><span class="line">                dp[i] = max(max(j * dp[i - j], j * (i - j)), dp[i]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> dp[n];                </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>⭐解法二：数学解法+贪心规则</p>
-</blockquote>
-<p>通过数学计算可以得到贪心规则如下：</p>
-<p>最高优先级： 3 。把绳子尽可能切为多个长度为 3 的片段，留下的最后一段绳子的长度可能为 0,1,2 三种情况。<br>次高优先级： 2 。若最后一段绳子长度为 2，则保留，不再拆为 1+1 。<br>最低优先级： 1； 若最后一段绳子长度为 1；则应把最后的 3 + 1 替换为 2 + 2，因为2×2 &gt; 3×1。</p>
-<blockquote>
-<p>算法流程：<br>当 n \leq 3n≤3 时，按照贪心规则应直接保留原数字，但由于题目要求必须剪成 m&gt;1m&gt;1 段，因此必须剪出一段长度为 11 的绳子，即返回 n - 1n−1 。<br>当 n &gt; 3 时，求 n 除以 3 的 整数部分 a 和 余数部分 b （即 n = 3a + b ），并分为以下三种情况：</p>
-</blockquote>
-<ol>
-<li>当 b = 0 时，直接返回 $3^a$.</li>
-<li>当 b = 1 时，要将一个 1+3 转换为 2+2，因此返回 $3 ^(a-1) × 4$.</li>
-<li>当 b = 2 时，返回 $3^a ×2$。</li>
-</ol>
-<p>时间空间复杂度都为O(1)。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">integerBreak</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (n == <span class="number">2</span> || n == <span class="number">3</span>) <span class="keyword">return</span> n - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span> (n == <span class="number">4</span>) <span class="keyword">return</span> <span class="number">4</span>;</span><br><span class="line">        n -= <span class="number">5</span>;</span><br><span class="line">        <span class="keyword">return</span> (<span class="keyword">int</span>)<span class="built_in">pow</span>(<span class="number">3</span>, (n / <span class="number">3</span> + <span class="number">1</span>)) * (n % <span class="number">3</span> + <span class="number">2</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<h1 id="II"><a href="#II" class="headerlink" title="II"></a>II</h1><p>II里面把 n 的范围提升到了 <code>2 &lt;= n &lt;= 1000</code> ，答案也需要取模 1e9+7（1000000007），如计算初始结果为：1000000008，请返回 1。</p>
-<p>因此原来的动态规划方法做不了了，只能自己定义一个返回值为 long long int的幂指函数：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">cuttingRope</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(n == <span class="number">2</span>) <span class="keyword">return</span> <span class="number">1</span>;    <span class="comment">// 如果绳子长度为2,只能分成1*1</span></span><br><span class="line">        <span class="keyword">if</span>(n == <span class="number">3</span>) <span class="keyword">return</span> <span class="number">2</span>;    <span class="comment">// 如果绳子长度为3,只能分成1*2</span></span><br><span class="line">        <span class="comment">// if(n == 4) return 4;</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> numsOf3 = n / <span class="number">3</span>;</span><br><span class="line">        <span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(n % <span class="number">3</span> == <span class="number">1</span>)&#123;</span><br><span class="line">            <span class="comment">// 说明最后会剩下一个4,这时要把4拆分成2*2</span></span><br><span class="line">            <span class="keyword">return</span> (iPow(<span class="number">3</span>, (numsOf3 - <span class="number">1</span>)) * <span class="number">4</span>) % <span class="number">1000000007</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(n % <span class="number">3</span> == <span class="number">2</span>)&#123;</span><br><span class="line">            <span class="comment">// 说明最后会剩下一个2</span></span><br><span class="line">            <span class="keyword">return</span> (iPow(<span class="number">3</span>, numsOf3) * <span class="number">2</span>) % <span class="number">1000000007</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> (iPow(<span class="number">3</span>, numsOf3)) % <span class="number">1000000007</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">long</span> <span class="keyword">long</span> <span class="keyword">int</span> <span class="title">iPow</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">int</span> e)</span></span>&#123;</span><br><span class="line">        <span class="comment">// 因为pow会溢出，这里设计一个iPow</span></span><br><span class="line">        <span class="comment">// res来存放结果，为了保证res不溢出这里设置为long long</span></span><br><span class="line">        <span class="keyword">long</span> <span class="keyword">long</span> <span class="keyword">int</span> res = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; e; ++i)&#123;</span><br><span class="line">            res *= n;</span><br><span class="line">            <span class="keyword">if</span>(res * n &gt; <span class="number">1000000007</span>)&#123;</span><br><span class="line">                <span class="comment">// 对结果取模</span></span><br><span class="line">                res %= <span class="number">1000000007</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2145,7 +2146,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">63</span>
+                  <span class="site-state-item-count">64</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
