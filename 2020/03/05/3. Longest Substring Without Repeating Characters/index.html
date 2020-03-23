@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="哈希表,字符串,">
+  <meta name="keywords" content="字符串,哈希表,">
 
 
 
@@ -80,14 +80,14 @@
 
 
 <meta name="description" content="3.Longest Substring Without Repeating Characters/无重复字符的最长子串 题目：  给定一个字符串，请你找出其中不含有重复字符的最长子串的长度。  示例 1: 输入: “abcabcbb”输出: 3解释: 因为无重复字符的最长子串是 “abc”，所以其长度为 3。示例 2: 输入: “bbbbb”输出: 1解释: 因为无重复字符的最长子串是 “b”，所">
-<meta name="keywords" content="哈希表,字符串">
+<meta name="keywords" content="字符串,哈希表">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Leetcode_3 Longest Substring Without Repeating Characters">
 <meta property="og:url" content="http://yoursite.com/2020/03/05/3. Longest Substring Without Repeating Characters/index.html">
 <meta property="og:site_name" content="Cq的Blog">
 <meta property="og:description" content="3.Longest Substring Without Repeating Characters/无重复字符的最长子串 题目：  给定一个字符串，请你找出其中不含有重复字符的最长子串的长度。  示例 1: 输入: “abcabcbb”输出: 3解释: 因为无重复字符的最长子串是 “abc”，所以其长度为 3。示例 2: 输入: “bbbbb”输出: 1解释: 因为无重复字符的最长子串是 “b”，所">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-03-06T15:36:37.483Z">
+<meta property="og:updated_time" content="2020-03-23T03:05:33.094Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Leetcode_3 Longest Substring Without Repeating Characters">
 <meta name="twitter:description" content="3.Longest Substring Without Repeating Characters/无重复字符的最长子串 题目：  给定一个字符串，请你找出其中不含有重复字符的最长子串的长度。  示例 1: 输入: “abcabcbb”输出: 3解释: 因为无重复字符的最长子串是 “abc”，所以其长度为 3。示例 2: 输入: “bbbbb”输出: 1解释: 因为无重复字符的最长子串是 “b”，所">
@@ -374,7 +374,7 @@
 <blockquote>
 <p><strong>解法</strong>：</p>
 </blockquote>
-<p>首先看到这道题想到最简单的方法就是，从字符串最左侧开始，构造一个滑窗，遍历到第i个字符时，滑窗的宽度L由当前的位置i减去左侧边界值left得到。每遍历一个字符需要记录下来它的值和对应的最近一次出现的位置，这里可以使用<strong>Hashmap</strong>哈希表来实现这个存储与查找的功能。这样在i每次加一的时候都要进行一下判断，判断s[i]的元素是否在哈希表内有记录，如果有记录的话要找出记录值对应的记录点的index，如果这个index比左边界left大则说明需要将left移动到这个index上。</p>
+<p>首先看到这道题想到最简单的方法就是，从字符串最左侧开始，构造一个滑窗，遍历到第i个字符时，滑窗的宽度L由当前的位置i减去左侧边界值left得到。每遍历一个字符需要记录下来它的值和对应的最近一次出现的位置，这里可以使用<strong>Hashmap</strong>哈希表来实现这个存储与查找的功能。这样在 i 每次加一的时候都要进行一下判断，判断s[i]的元素是否在哈希表内有记录，如果有记录的话要找出记录值对应的记录点的index，如果这个index比左边界left大则说明需要将left移动到这个index上。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">lengthOfLongestSubstring</span><span class="params">(<span class="built_in">string</span> s)</span> </span>&#123;</span><br><span class="line">    <span class="built_in">unordered_map</span>&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt; m;</span><br><span class="line">    <span class="keyword">int</span> res = <span class="number">0</span>, left = <span class="number">-1</span>, length = s.size();</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; length; ++i) &#123;</span><br><span class="line">        <span class="keyword">if</span> (m.count(s[i]) &amp;&amp; m[s[i]] &gt; left) &#123;</span><br><span class="line">            left = m[s[i]];</span><br><span class="line">        &#125;</span><br><span class="line">        m[s[i]] = i;</span><br><span class="line">        res = max(res, i - left);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p><strong>方法二</strong>：</p>
@@ -398,9 +398,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/哈希表/" rel="tag"># 哈希表</a>
-          
             <a href="/tags/字符串/" rel="tag"># 字符串</a>
+          
+            <a href="/tags/哈希表/" rel="tag"># 哈希表</a>
           
         </div>
       
@@ -504,7 +504,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">65</span>
+                  <span class="site-state-item-count">66</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
