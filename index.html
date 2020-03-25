@@ -263,6 +263,187 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/25/J57. 和为s的两个数字/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈琦">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cq的Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/25/J57. 和为s的两个数字/" itemprop="url">剑指offer_57 和为s的两个数字</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-25T12:21:00+08:00">
+                2020-03-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/剑指offer/" itemprop="url" rel="index">
+                    <span itemprop="name">剑指offer</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/剑指offer/Easy/" itemprop="url" rel="index">
+                    <span itemprop="name">Easy</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="J57-和为s的两个数字"><a href="#J57-和为s的两个数字" class="headerlink" title="J57. 和为s的两个数字"></a>J57. 和为s的两个数字</h1><blockquote>
+<p>题目：</p>
+</blockquote>
+<p>输入一个递增排序的数组和一个数字s，在数组中查找两个数，使得它们的和正好是s。如果有多对数字的和等于s，则输出任意一对即可。</p>
+<blockquote>
+<p><strong>示例 1：</strong></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：nums = [2,7,11,15], target = 9</span><br><span class="line">输出：[2,7] 或者 [7,2]</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>示例 2：</strong></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：nums = [10,26,30,31,47,60], target = 40</span><br><span class="line">输出：[10,30] 或者 [30,10]</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>限制：</strong></p>
+</blockquote>
+<ul>
+<li><code>1 &lt;= nums.length &lt;= 10^5</code></li>
+<li><code>1 &lt;= nums[i] &lt;= 10^6</code></li>
+</ul>
+<blockquote>
+<p>解法一：哈希表 / Two Sum</p>
+</blockquote>
+<p>没有要求O(logn)时间复杂度，因此我们可以直接用哈希表简单实现。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; twoSum(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums, <span class="keyword">int</span> target) &#123;</span><br><span class="line">        <span class="built_in">unordered_map</span>&lt;<span class="keyword">int</span>,<span class="keyword">int</span>&gt; m;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nums.size(); ++i) &#123;</span><br><span class="line">            <span class="keyword">if</span>(m.count(target - nums[i])) <span class="keyword">return</span> &#123;nums[i], nums[m[target - nums[i]]]&#125;;</span><br><span class="line">            m[nums[i]] = i;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> &#123;&#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>解法二：双指针</p>
+</blockquote>
+<p>看到排好序的数组可以用<code>二分查找</code>和 <code>双指针</code> ，这道题琢磨了一下好像8太好用二分查找？参考 <code>三数之和</code> 以及 <code>四数之和</code> 的解法做了一个双指针，还是 <code>O(N)</code> 的复杂度。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; twoSum(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums, <span class="keyword">int</span> target) &#123;</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">0</span>, j = nums.size() - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span>(i &lt; j) &#123;</span><br><span class="line">            <span class="keyword">if</span>(nums[i] + nums[j] == target) &#123;</span><br><span class="line">                <span class="keyword">return</span> &#123;nums[i], nums[j]&#125;;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125; </span><br><span class="line">            <span class="keyword">if</span>(nums[i] + nums[j] &lt; target) ++i;</span><br><span class="line">            <span class="keyword">if</span>(nums[i] + nums[j] &gt; target) --j;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> &#123;&#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/25/892. 三维形体的表面积/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -811,6 +992,179 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/24/J55-II. 平衡二叉树 Leetcode 110/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈琦">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cq的Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/24/J55-II. 平衡二叉树 Leetcode 110/" itemprop="url">剑指offer_55-II. 平衡二叉树 / Leetcode 110</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-24T14:21:00+08:00">
+                2020-03-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/剑指offer/" itemprop="url" rel="index">
+                    <span itemprop="name">剑指offer</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/剑指offer/Easy/" itemprop="url" rel="index">
+                    <span itemprop="name">Easy</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="J55-II-平衡二叉树-Leetcode-110"><a href="#J55-II-平衡二叉树-Leetcode-110" class="headerlink" title="J55-II. 平衡二叉树 / Leetcode 110"></a>J55-II. 平衡二叉树 / Leetcode 110</h1><blockquote>
+<p>题目：</p>
+</blockquote>
+<p>输入一棵二叉树的根节点，判断该树是不是平衡二叉树。如果某二叉树中任意节点的左右子树的深度相差不超过1，那么它就是一棵平衡二叉树。</p>
+<blockquote>
+<p><strong>示例 1:</strong></p>
+</blockquote>
+<p>给定二叉树 <code>[3,9,20,null,null,15,7]</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">  3</span><br><span class="line"> / \</span><br><span class="line">9  20</span><br><span class="line">  /  \</span><br><span class="line"> 15   7</span><br></pre></td></tr></table></figure>
+<p>返回 <code>true</code> 。</p>
+<blockquote>
+<p><strong>示例 2:</strong></p>
+</blockquote>
+<p>给定二叉树 <code>[1,2,2,3,3,null,null,4,4]</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">      1</span><br><span class="line">     / \</span><br><span class="line">    2   2</span><br><span class="line">   / \</span><br><span class="line">  3   3</span><br><span class="line"> / \</span><br><span class="line">4   4</span><br></pre></td></tr></table></figure>
+<p>返回 <code>false</code> 。</p>
+<blockquote>
+<p>解法一：DFS</p>
+</blockquote>
+<p>这里面我直接想到的方法是在主函数里面直接递归调用左右子树的 <code>isBalanced()</code> ，直接 <code>return</code> 相应的结果。同时要加一个判断，就是每一步递归的左右子树调用的 <code>maxDepth()</code> 是否满足深度差小于等于 <code>1</code> 。这里面在做的时候还比较担心对于空树的判断，测试用例会不会把空树 <code>return false</code> ，跑了一下发现并没有，还是比较友好的-。-</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isBalanced</span><span class="params">(TreeNode* root)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> !root ? <span class="literal">true</span> : isBalanced(root-&gt;left) &amp;&amp; isBalanced(root-&gt;right) </span><br><span class="line">        &amp;&amp; <span class="number">-1</span> &lt;= (maxDepth(root-&gt;left) - maxDepth(root-&gt;right)) &amp;&amp; (maxDepth(root-&gt;left) - maxDepth(root-&gt;right)) &lt;= <span class="number">1</span> ;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">maxDepth</span><span class="params">(TreeNode* root)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> !root ? <span class="number">0</span> : max(maxDepth(root-&gt;left), maxDepth(root-&gt;right)) + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/24/J55-I. 二叉树的深度 Leetcode 104/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -949,179 +1303,6 @@
 </blockquote>
 <p>这个解法是利用队列实现的BFS，对于遍历到的每一层都 <code>height += 1</code>，最终返回的就是深度。不过相对DFS而言有点麻烦。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">maxDepth</span><span class="params">(TreeNode* root)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!root)<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">queue</span>&lt;TreeNode *&gt; nodeQ;</span><br><span class="line">        nodeQ.push(root);</span><br><span class="line">        <span class="keyword">int</span> height = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span>(!nodeQ.empty())</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//存在层，高度+1</span></span><br><span class="line">            height += <span class="number">1</span>;</span><br><span class="line">            <span class="comment">//对当前层操作</span></span><br><span class="line">            <span class="keyword">int</span> lenQ = nodeQ.size();</span><br><span class="line">            <span class="keyword">while</span>(lenQ--)</span><br><span class="line">            &#123;</span><br><span class="line">                TreeNode *front = nodeQ.front();</span><br><span class="line">                nodeQ.pop();</span><br><span class="line">                <span class="keyword">if</span>(front-&gt;left)nodeQ.push(front-&gt;left);</span><br><span class="line">                <span class="keyword">if</span>(front-&gt;right)nodeQ.push(front-&gt;right);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> height;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/24/J55-II. 平衡二叉树 Leetcode 110/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈琦">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/head.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Cq的Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/03/24/J55-II. 平衡二叉树 Leetcode 110/" itemprop="url">剑指offer_55-II. 平衡二叉树 / Leetcode 110</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-24T14:21:00+08:00">
-                2020-03-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/剑指offer/" itemprop="url" rel="index">
-                    <span itemprop="name">剑指offer</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/剑指offer/Easy/" itemprop="url" rel="index">
-                    <span itemprop="name">Easy</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="J55-II-平衡二叉树-Leetcode-110"><a href="#J55-II-平衡二叉树-Leetcode-110" class="headerlink" title="J55-II. 平衡二叉树 / Leetcode 110"></a>J55-II. 平衡二叉树 / Leetcode 110</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>输入一棵二叉树的根节点，判断该树是不是平衡二叉树。如果某二叉树中任意节点的左右子树的深度相差不超过1，那么它就是一棵平衡二叉树。</p>
-<blockquote>
-<p><strong>示例 1:</strong></p>
-</blockquote>
-<p>给定二叉树 <code>[3,9,20,null,null,15,7]</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">  3</span><br><span class="line"> / \</span><br><span class="line">9  20</span><br><span class="line">  /  \</span><br><span class="line"> 15   7</span><br></pre></td></tr></table></figure>
-<p>返回 <code>true</code> 。</p>
-<blockquote>
-<p><strong>示例 2:</strong></p>
-</blockquote>
-<p>给定二叉树 <code>[1,2,2,3,3,null,null,4,4]</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">      1</span><br><span class="line">     / \</span><br><span class="line">    2   2</span><br><span class="line">   / \</span><br><span class="line">  3   3</span><br><span class="line"> / \</span><br><span class="line">4   4</span><br></pre></td></tr></table></figure>
-<p>返回 <code>false</code> 。</p>
-<blockquote>
-<p>解法一：DFS</p>
-</blockquote>
-<p>这里面我直接想到的方法是在主函数里面直接递归调用左右子树的 <code>isBalanced()</code> ，直接 <code>return</code> 相应的结果。同时要加一个判断，就是每一步递归的左右子树调用的 <code>maxDepth()</code> 是否满足深度差小于等于 <code>1</code> 。这里面在做的时候还比较担心对于空树的判断，测试用例会不会把空树 <code>return false</code> ，跑了一下发现并没有，还是比较友好的-。-</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isBalanced</span><span class="params">(TreeNode* root)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> !root ? <span class="literal">true</span> : isBalanced(root-&gt;left) &amp;&amp; isBalanced(root-&gt;right) </span><br><span class="line">        &amp;&amp; <span class="number">-1</span> &lt;= (maxDepth(root-&gt;left) - maxDepth(root-&gt;right)) &amp;&amp; (maxDepth(root-&gt;left) - maxDepth(root-&gt;right)) &lt;= <span class="number">1</span> ;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">maxDepth</span><span class="params">(TreeNode* root)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> !root ? <span class="number">0</span> : max(maxDepth(root-&gt;left), maxDepth(root-&gt;right)) + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
           
         
@@ -1858,200 +2039,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/23/J52. 相交链表 Leetcode 160/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈琦">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/head.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Cq的Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/03/23/J52. 相交链表 Leetcode 160/" itemprop="url">剑指offer_52 相交链表 / Leetcode 160</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-23T17:19:00+08:00">
-                2020-03-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/剑指offer/" itemprop="url" rel="index">
-                    <span itemprop="name">剑指offer</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/剑指offer/Easy/" itemprop="url" rel="index">
-                    <span itemprop="name">Easy</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="J52-相交链表-Leetcode-160"><a href="#J52-相交链表-Leetcode-160" class="headerlink" title="J52. 相交链表 / Leetcode 160"></a>J52. 相交链表 / Leetcode 160</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>编写一个程序，找到两个单链表相交的起始节点。</p>
-<p>如下面的两个链表：</p>
-<p><img src="../images/J52_1.png" alt="J52_1"></p>
-<p>在节点 c1 开始相交。</p>
-<blockquote>
-<p>示例 1：</p>
-</blockquote>
-<p><img src="../images/J52_2.png" alt="J52_2"></p>
-<p>输入：intersectVal = 8, listA = [4,1,8,4,5], listB = [5,0,1,8,4,5], skipA = 2, skipB = 3<br>输出：Reference of the node with value = 8<br>输入解释：相交节点的值为 8 （注意，如果两个列表相交则不能为 0）。从各自的表头开始算起，链表 A 为 [4,1,8,4,5]，链表 B 为 [5,0,1,8,4,5]。在 A 中，相交节点前有 2 个节点；在 B 中，相交节点前有 3 个节点。</p>
-<blockquote>
-<p>示例 2：</p>
-</blockquote>
-<p><img src="../images/J52_3.png" alt="J52_3"></p>
-<p>输入：intersectVal = 2, listA = [0,9,1,2,4], listB = [3,2,4], skipA = 3, skipB = 1<br>输出：Reference of the node with value = 2<br>输入解释：相交节点的值为 2 （注意，如果两个列表相交则不能为 0）。从各自的表头开始算起，链表 A 为 [0,9,1,2,4]，链表 B 为 [3,2,4]。在 A 中，相交节点前有 3 个节点；在 B 中，相交节点前有 1 个节点。</p>
-<p>示例 3：</p>
-<p><img src="../images/J52_4.png" alt="J52_4"></p>
-<p>输入：intersectVal = 0, listA = [2,6,4], listB = [1,5], skipA = 3, skipB = 2<br>输出：null<br>输入解释：从各自的表头开始算起，链表 A 为 [2,6,4]，链表 B 为 [1,5]。由于这两个链表不相交，所以 intersectVal 必须为 0，而 skipA 和 skipB 可以是任意值。<br>解释：这两个链表不相交，因此返回 null。</p>
-<blockquote>
-<p>注意：</p>
-</blockquote>
-<p>如果两个链表没有交点，返回 null.<br>在返回结果后，两个链表仍须保持原有的结构。<br>可假定整个链表结构中没有循环。<br>程序尽量满足 O(n) 时间复杂度，且仅用 O(1) 内存。</p>
-<blockquote>
-<p>解法一：超时</p>
-</blockquote>
-<p>题目要求用O(N)的时间复杂度，上来想的比较离谱的做法是自己构造一个reverse链表反转函数（J24 / Leetcode 206），然后先对headA，headB分别调用reverse()函数，然后再做一个while()循环从后向前找到最后一个一样的点，然后再把headA和headB反转回来，按理说应该是O(N)的复杂度，但是还是超时了。。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">ListNode *<span class="title">getIntersectionNode</span><span class="params">(ListNode *headA, ListNode *headB)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!headA || !headB) <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">        ListNode *A = reverse(headA);</span><br><span class="line">        ListNode *B = reverse(headB);</span><br><span class="line">        ListNode *res = <span class="literal">NULL</span>;</span><br><span class="line">        <span class="keyword">while</span>(A-&gt;val == B-&gt;val) &#123;</span><br><span class="line">            res = A;</span><br><span class="line">            A = A-&gt;next;</span><br><span class="line">            B = B-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        ListNode *headA = reverse(A);</span><br><span class="line">        ListNode *headB = reverse(B);</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function">ListNode *<span class="title">reverse</span><span class="params">(ListNode *head)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!head) <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">        ListNode *p = head;</span><br><span class="line">        ListNode *q = head;</span><br><span class="line">        <span class="keyword">while</span>(head-&gt;next) &#123;</span><br><span class="line">            p = head-&gt;next;</span><br><span class="line">            q = p-&gt;next;</span><br><span class="line">            q-&gt;next = head;</span><br><span class="line">            head = p;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">return</span> head;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法二：⭐⭐砍长链表让它们对齐</p>
-</blockquote>
-<p>参考了大佬的解法：对于两个链表，如果存在公共节点的话，那么后面的元素一定是对齐的。也就是说我们反过来想，如果两个链表一个长，一个短，那么长的比短的多的那部分链表一定是不符合题目要求的，可以直接砍掉。</p>
-<p><code>想象一下拉拉链，后面的拉链已经拉好了，前面的如果有长的部分是可以直接砍掉的，否则会导致拉链对不齐。</code></p>
-<p>所以只需要先用 <code>getLength()</code> 在 <code>O(n)</code> 的时间内得到两个链表的长度，然后把长的链表从头砍掉，然后再依次 <code>O(n)</code> 复杂度顺序对照比较就行。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">ListNode *<span class="title">getIntersectionNode</span><span class="params">(ListNode *headA, ListNode *headB)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!headA || !headB) <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">        <span class="keyword">int</span> lenA = getLength(headA), lenB = getLength(headB);</span><br><span class="line">        <span class="keyword">if</span> (lenA &lt; lenB) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; lenB - lenA; ++i) headB = headB-&gt;next;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; lenA - lenB; ++i) headA = headA-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span> (headA &amp;&amp; headB &amp;&amp; headA != headB) &#123;</span><br><span class="line">            headA = headA-&gt;next;</span><br><span class="line">            headB = headB-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> (headA &amp;&amp; headB) ? headA : <span class="literal">NULL</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">getLength</span><span class="params">(ListNode* head)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> cnt = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (head) &#123;</span><br><span class="line">            ++cnt;</span><br><span class="line">            head = head-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> cnt;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法三：⭐⭐⭐双指针法</p>
-</blockquote>
-<p>可以用双指针来代替上面解法二的砍长链表的方法，也不需要再用 <code>O(N)</code> 来获得链表长度了。这里面需要利用两个指针，分别往下跑，如果 <code>A</code> 链表的指针跑到了结尾就继续指向 <code>B</code> 链表的头节点，如果 <code>B</code> 链表的指针跑到了结尾就继续指向 <code>A</code> 链表的头节点。这样可以保证两个链表相遇的时候离结尾的长度一样，一定是公共节点。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">ListNode *<span class="title">getIntersectionNode</span><span class="params">(ListNode *headA, ListNode *headB)</span> </span>&#123;</span><br><span class="line">        ListNode *node1 = headA;</span><br><span class="line">        ListNode *node2 = headB;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span> (node1 != node2) &#123;</span><br><span class="line">            node1 = node1 != <span class="literal">NULL</span> ? node1-&gt;next : headB;</span><br><span class="line">            node2 = node2 != <span class="literal">NULL</span> ? node2-&gt;next : headA;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> node1;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>时间复杂度为 <code>O(M+N)</code> ，空间复杂度为 <code>O(1)</code> 。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2104,7 +2091,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">87</span>
+                  <span class="site-state-item-count">88</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
