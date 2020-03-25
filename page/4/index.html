@@ -263,6 +263,182 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/20/J38. 字符串的排列/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈琦">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cq的Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/20/J38. 字符串的排列/" itemprop="url">剑指offer_38 字符串的排列</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-20T13:08:00+08:00">
+                2020-03-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/剑指offer/" itemprop="url" rel="index">
+                    <span itemprop="name">剑指offer</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/剑指offer/Medium/" itemprop="url" rel="index">
+                    <span itemprop="name">Medium</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="J38-字符串的排列"><a href="#J38-字符串的排列" class="headerlink" title="J38*. 字符串的排列"></a>J38*. 字符串的排列</h1><blockquote>
+<p>题目：</p>
+</blockquote>
+<p>输入一个字符串，打印出该字符串中字符的所有排列。</p>
+<p>你可以以任意顺序返回这个字符串数组，但里面不能有重复元素。</p>
+<blockquote>
+<p><strong>示例:</strong></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：s = &quot;abc&quot;</span><br><span class="line">输出：[&quot;abc&quot;,&quot;acb&quot;,&quot;bac&quot;,&quot;bca&quot;,&quot;cab&quot;,&quot;cba&quot;]</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>解法一：回溯法</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">回溯法</span><br><span class="line">*</span><br><span class="line">* 字符串的排列和数字的排列都属于回溯的经典问题</span><br><span class="line">*</span><br><span class="line">* 回溯算法框架：解决一个问题，实际上就是一个决策树的遍历过程：</span><br><span class="line">* 1. 路径：做出的选择</span><br><span class="line">* 2. 选择列表：当前可以做的选择</span><br><span class="line">* 3. 结束条件：到达决策树底层，无法再做选择的条件</span><br><span class="line">*</span><br><span class="line">* 伪代码：</span><br><span class="line">* result = []</span><br><span class="line">* def backtrack(路径，选择列表):</span><br><span class="line">*     if 满足结束条件：</span><br><span class="line">*         result.add(路径)</span><br><span class="line">*         return</span><br><span class="line">*     for 选择 in 选择列表:</span><br><span class="line">*         做选择</span><br><span class="line">*         backtrack(路径，选择列表)</span><br><span class="line">*         撤销选择</span><br><span class="line">*</span><br><span class="line">* 核心是for循环中的递归，在递归调用之前“做选择”，</span><br><span class="line">* 在递归调用之后“撤销选择”。</span><br><span class="line">*</span><br><span class="line">* 字符串的排列可以抽象为一棵决策树：</span><br><span class="line">*                       [ ]</span><br><span class="line">*          [a]          [b]         [c]</span><br><span class="line">*      [ab]   [ac]  [bc]   [ba]  [ca]  [cb]</span><br><span class="line">*     [abc]  [acb] [bca]  [bac]  [cab] [cba]</span><br><span class="line">*</span><br><span class="line">* 考虑字符重复情况：</span><br><span class="line">*                       [ ]</span><br><span class="line">*          [a]          [a]         [c]</span><br><span class="line">*      [aa]   [ac]  [ac]   [aa]  [ca]  [ca]</span><br><span class="line">*     [aac]  [aca] [aca]  [aac]  [caa] [caa]</span><br><span class="line">*</span><br><span class="line">* 字符串在做排列时，等于从a字符开始，对决策树进行遍历，</span><br><span class="line">* &quot;a&quot;就是路径，&quot;b&quot;&quot;c&quot;是&quot;a&quot;的选择列表，&quot;ab&quot;和&quot;ac&quot;就是做出的选择，</span><br><span class="line">* “结束条件”是遍历到树的底层，此处为选择列表为空。</span><br><span class="line">*</span><br><span class="line">* 本题定义backtrack函数像一个指针，在树上遍历，</span><br><span class="line">* 同时维护每个点的属性，每当走到树的底层，其“路径”就是一个全排列。</span><br><span class="line">* 当字符出现重复，且重复位置不一定时，需要先对字符串进行排序，</span><br><span class="line">* 再对字符串进行“去重”处理，之后按照回溯框架即可。</span><br><span class="line">* */</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="built_in">std</span>::<span class="built_in">string</span>&gt; permutation(<span class="built_in">std</span>::<span class="built_in">string</span> s) &#123;</span><br><span class="line">    <span class="keyword">if</span>(s.empty())&#123;</span><br><span class="line">        <span class="keyword">return</span> &#123;&#125;;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 对字符串进行排序</span></span><br><span class="line">    <span class="built_in">std</span>::sort(s.begin(), s.end());</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="built_in">std</span>::<span class="built_in">string</span>&gt; res;</span><br><span class="line">    <span class="comment">// 标记字符是否遍历过</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">bool</span>&gt; visit(s.size(), <span class="literal">false</span>);</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">string</span> track;</span><br><span class="line">    backtrack(res, s, track, visit);</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * 回溯函数</span></span><br><span class="line"><span class="comment">     * 使用sort函数对字符串排序，使重复的字符相邻，</span></span><br><span class="line"><span class="comment">     * 使用visit数组记录遍历决策树时每个节点的状态，</span></span><br><span class="line"><span class="comment">     * 节点未遍历且相邻字符不是重复字符时，</span></span><br><span class="line"><span class="comment">     * 则将该字符加入排列字符串中，依次递归遍历。</span></span><br><span class="line"><span class="comment">     * */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">backtrack</span><span class="params">(<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="built_in">std</span>::<span class="built_in">string</span>&gt; &amp;res, <span class="built_in">std</span>::<span class="built_in">string</span> s, <span class="built_in">std</span>::<span class="built_in">string</span> &amp;track, <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">bool</span>&gt; &amp;visit)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 回溯结束条件</span></span><br><span class="line">    <span class="keyword">if</span>(track.size() == s.size())&#123;</span><br><span class="line">        res.push_back(track);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 选择和选择列表</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; s.size(); i++)&#123;</span><br><span class="line">        <span class="comment">// 排除不合法的选择</span></span><br><span class="line">        <span class="keyword">if</span>(visit[i])&#123;</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(i &gt; <span class="number">0</span> &amp;&amp; !visit[i<span class="number">-1</span>] &amp;&amp; s[i<span class="number">-1</span>] == s[i])&#123;</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        visit[i] = <span class="literal">true</span>;</span><br><span class="line">        <span class="comment">// 做选择</span></span><br><span class="line">        track.push_back(s[i]);</span><br><span class="line">        <span class="comment">// 进入下一次决策树</span></span><br><span class="line">        backtrack(res, s, track, visit);</span><br><span class="line">        <span class="comment">// 撤销选择</span></span><br><span class="line">        track.pop_back();</span><br><span class="line">        visit[i] = <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>⭐解法二：DFS+交换法</p>
+</blockquote>
+<p>这个方法有点难理解🤦‍需要多想一想，解题思路大概就是：</p>
+<ol>
+<li>求所有可能出现在第一个位置的字符，即把第一个字符和后面的所有字符交换。</li>
+<li>固定第一个字符，求后面所有字符的排列。<br>这时候仍然把后面的所有字符分成两部分：后面字符的第一个字符，以及这个字符之后的所有字符。然后把第一个字符逐一和它后面的字符交换。</li>
+</ol>
+<p>这里面的求所有可能是通过依次交换后面的元素来实现的，固定第一个字符求后面的所有字符的排列是通过 <code>DFS</code> 递归实现的。同时，为了避免出现重复字符的可能，需要在每次交换之前，判断一下已经交换过的字符中间有没有跟当前的 <code>s[i]</code> 重复的字符。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; permutation(<span class="built_in">string</span> s) &#123;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; res;</span><br><span class="line">        dfs(s, <span class="number">0</span>, res);</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">dfs</span><span class="params">(<span class="built_in">string</span> s, <span class="keyword">int</span> pos, <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&amp; res)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(pos &gt;= s.size()) &#123;</span><br><span class="line">            res.push_back(s);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = pos; i &lt; s.size(); ++i) &#123;</span><br><span class="line">            <span class="keyword">if</span>(judge(s, pos, i)) <span class="keyword">continue</span>;</span><br><span class="line">            swap(s[pos], s[i]);</span><br><span class="line">            dfs(s, pos + <span class="number">1</span>, res);</span><br><span class="line">            swap(s[pos], s[i]);    </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">judge</span><span class="params">(<span class="built_in">string</span> s, <span class="keyword">int</span> start, <span class="keyword">int</span> end)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = start; i &lt; end; ++i) &#123;</span><br><span class="line">            <span class="keyword">if</span> (s[i] == s[end]) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/20/J37. 字符串的排列 Leetcode 297/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1852,185 +2028,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/18/J31. 栈的压入弹出序列 Leetcode 946/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈琦">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/head.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Cq的Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/03/18/J31. 栈的压入弹出序列 Leetcode 946/" itemprop="url">剑指offer_31 栈的压入、弹出序列 / Leetcode 946</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-18T16:19:00+08:00">
-                2020-03-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/剑指offer/" itemprop="url" rel="index">
-                    <span itemprop="name">剑指offer</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/剑指offer/Medium/" itemprop="url" rel="index">
-                    <span itemprop="name">Medium</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="J31-栈的压入、弹出序列-Leetcode-946"><a href="#J31-栈的压入、弹出序列-Leetcode-946" class="headerlink" title="J31. 栈的压入、弹出序列 / Leetcode 946"></a>J31. 栈的压入、弹出序列 / Leetcode 946</h1><blockquote>
-<p><strong>题目</strong>：</p>
-</blockquote>
-<p>输入两个整数序列，第一个序列表示栈的压入顺序，请判断第二个序列是否为该栈的弹出顺序。假设压入栈的所有数字均不相等。例如，序列 {1,2,3,4,5} 是某栈的压栈序列，序列 {4,5,3,2,1} 是该压栈序列对应的一个弹出序列，但 {4,3,5,1,2} 就不可能是该压栈序列的弹出序列。</p>
-<blockquote>
-<p><strong>示例 1：</strong></p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">输入：pushed = [1,2,3,4,5], popped = [4,5,3,2,1]</span><br><span class="line">输出：true</span><br><span class="line">解释：我们可以按以下顺序执行：</span><br><span class="line">push(1), push(2), push(3), push(4), pop() -&gt; 4,</span><br><span class="line">push(5), pop() -&gt; 5, pop() -&gt; 3, pop() -&gt; 2, pop() -&gt; 1</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p><strong>示例 2：</strong></p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：pushed = [1,2,3,4,5], popped = [4,3,5,1,2]</span><br><span class="line">输出：false</span><br><span class="line">解释：1 不能在 2 之前弹出。</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p><strong>提示：</strong></p>
-</blockquote>
-<ol>
-<li><code>0 &lt;= pushed.length == popped.length &lt;= 1000</code></li>
-<li><code>0 &lt;= pushed[i], popped[i] &lt; 1000</code></li>
-<li><code>pushed</code> 是 <code>popped</code> 的排列。</li>
-</ol>
-<blockquote>
-<p>解法：</p>
-</blockquote>
-<p>刚开始光靠想觉得比较麻烦，但是可以借鉴 <code>J30</code> 题里面的思想，直接新建一个栈来模拟这个 push / pop 的过程，通过 i 遍历 pushed 数组，如果没有特殊情况就依次将 pushed 数组中的 pushed[i] 存入栈中。如果遇到当前栈顶元素有 <code>s.top() == popped[j]</code>，则弹出栈顶元素，同时 ++j；</p>
-<p>时间复杂度O(N)，空间复杂度O(N)。</p>
-<p>❗ 注意：下面代码中的 <code>while</code> 判断条件一定要先判断 <code>!s.empty()</code> ，不能因为三个 <code>&amp;&amp;</code> 是同等的就调换顺序，否则会因为没先判断 <code>!s.empty()</code>而使  <code>s.top() == popped[j]</code> 报错。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">validateStackSequences</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; pushed, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; popped)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">stack</span>&lt;<span class="keyword">int</span>&gt; s;</span><br><span class="line">        <span class="keyword">int</span> n = popped.size();</span><br><span class="line">        <span class="keyword">int</span> j = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; ++i) &#123;</span><br><span class="line">            s.push(pushed[i]);</span><br><span class="line">            <span class="keyword">while</span>(!s.empty() &amp;&amp; j &lt; n &amp;&amp; s.top() == popped[j]) &#123;</span><br><span class="line">                s.pop();</span><br><span class="line">                ++j;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">return</span> s.empty();      </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2083,7 +2080,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">92</span>
+                  <span class="site-state-item-count">93</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2105,7 +2102,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-count">27</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
