@@ -263,6 +263,178 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/26/J68-I. 二叉搜索树的最近公共祖先(LCA)/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈琦">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cq的Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/26/J68-I. 二叉搜索树的最近公共祖先(LCA)/" itemprop="url">剑指offer_68-I 二叉搜索树的最近公共祖先(LCA)</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-26T20:04:00+08:00">
+                2020-03-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/剑指offer/" itemprop="url" rel="index">
+                    <span itemprop="name">剑指offer</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/剑指offer/Easy/" itemprop="url" rel="index">
+                    <span itemprop="name">Easy</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="J68-I-二叉搜索树的最近公共祖先-LCA"><a href="#J68-I-二叉搜索树的最近公共祖先-LCA" class="headerlink" title="J68-I. 二叉搜索树的最近公共祖先(LCA)"></a>J68-I. 二叉搜索树的最近公共祖先(LCA)</h1><blockquote>
+<p>题目：</p>
+</blockquote>
+<p>给定一个二叉搜索树, 找到该树中两个指定节点的最近公共祖先。</p>
+<p>百度百科中最近公共祖先的定义为：“对于有根树 T 的两个结点 p、q，最近公共祖先表示为一个结点 x，满足 x 是 p、q 的祖先且 x 的深度尽可能大（<strong>一个节点也可以是它自己的祖先</strong>）。”</p>
+<p>例如，给定如下二叉搜索树:  root = [6,2,8,0,4,7,9,null,null,3,5]</p>
+<p><img src="../images/J68-I_1.png" alt="J68-I_1"></p>
+<p><strong>示例 1:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入: root = [6,2,8,0,4,7,9,null,null,3,5], p = 2, q = 8</span><br><span class="line">输出: 6 </span><br><span class="line">解释: 节点 2 和节点 8 的最近公共祖先是 6。</span><br></pre></td></tr></table></figure>
+<p><strong>示例 2:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入: root = [6,2,8,0,4,7,9,null,null,3,5], p = 2, q = 4</span><br><span class="line">输出: 2</span><br><span class="line">解释: 节点 2 和节点 4 的最近公共祖先是 2, 因为根据定义最近公共祖先节点可以为节点本身。</span><br></pre></td></tr></table></figure>
+<p><strong>说明:</strong></p>
+<ul>
+<li>所有节点的值都是唯一的。</li>
+<li>p、q 为不同节点且均存在于给定的二叉搜索树中。</li>
+</ul>
+<blockquote>
+<p>解法：递归</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">TreeNode* <span class="title">lowestCommonAncestor</span><span class="params">(TreeNode* root, TreeNode* p, TreeNode* q)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(root == p || root == q) <span class="keyword">return</span> root;</span><br><span class="line">        <span class="keyword">if</span>(p-&gt;val &lt; root-&gt;val &amp;&amp; q-&gt;val &lt; root-&gt;val) <span class="keyword">return</span> lowestCommonAncestor(root-&gt;left, p, q);</span><br><span class="line">        <span class="keyword">if</span>(p-&gt;val &gt; root-&gt;val &amp;&amp; q-&gt;val &gt; root-&gt;val) <span class="keyword">return</span> lowestCommonAncestor(root-&gt;right, p, q);</span><br><span class="line">        <span class="keyword">return</span> root;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/26/J67. 字符串转换整数(atoi) Leetcode 8/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -403,7 +575,7 @@
 <p>执行出错信息：<strong>Line 17: Char 24: runtime error: signed integer overflow: 2147483640 + 54 cannot be represented in type ‘int’ (solution.cpp)</strong></p>
 <p>最后执行的输入：<strong>“2147483646”</strong></p>
 </blockquote>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">myAtoi</span><span class="params">(<span class="built_in">string</span> str)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (str.empty()) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> flag = <span class="number">1</span>, res = <span class="number">0</span>, i = <span class="number">0</span>, n = str.size();</span><br><span class="line">    <span class="keyword">while</span> (i &lt; n &amp;&amp; str[i] == <span class="string">' '</span>) &#123;</span><br><span class="line">        ++i;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (i &lt; n &amp;&amp; str[i] == <span class="string">'+'</span> || str[i] == <span class="string">'-'</span>) &#123;</span><br><span class="line">        flag = (str[i] == <span class="string">'+'</span>) ? <span class="number">1</span> : <span class="number">-1</span>;</span><br><span class="line">        ++i;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span> (i &lt; n &amp;&amp; str[i] &gt;= <span class="string">'0'</span> &amp;&amp; str[i] &lt;= <span class="string">'9'</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (res &gt; INT_MAX / <span class="number">10</span> || (str[i] &gt; <span class="string">'7'</span> &amp;&amp; res == INT_MAX / <span class="number">10</span>)) &#123;</span><br><span class="line">            <span class="keyword">return</span> (flag == <span class="number">1</span>) ? INT_MAX : INT_MIN;</span><br><span class="line">        &#125;</span><br><span class="line">        res = res * <span class="number">10</span> + (str[i] - <span class="string">'0'</span>);</span><br><span class="line">        ++i;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> flag * res; </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">strToInt</span><span class="params">(<span class="built_in">string</span> str)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(str.empty()) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> flag = <span class="number">1</span>, res = <span class="number">0</span>, i = <span class="number">0</span>, n = str.size();</span><br><span class="line">        <span class="keyword">while</span>(str[i] == <span class="string">' '</span> &amp;&amp; i &lt; n) ++i;</span><br><span class="line">        <span class="keyword">if</span> (i &lt; n &amp;&amp; str[i] == <span class="string">'+'</span> || str[i] == <span class="string">'-'</span>) &#123;</span><br><span class="line">            flag = str[i] == <span class="string">'+'</span> ? <span class="number">1</span> : <span class="number">-1</span>;</span><br><span class="line">            ++i;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span>(i &lt; n &amp;&amp; str[i] &gt;= <span class="string">'0'</span> &amp;&amp; str[i] &lt;= <span class="string">'9'</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span>(res &gt; INT_MAX / <span class="number">10</span> || (res == INT_MAX / <span class="number">10</span> &amp;&amp; str[i] &gt; <span class="string">'7'</span>)) &#123;</span><br><span class="line">                <span class="keyword">return</span> flag == <span class="number">1</span> ? INT_MAX : INT_MIN;</span><br><span class="line">            &#125;</span><br><span class="line">            res = res * <span class="number">10</span> + (str[i] - <span class="string">'0'</span>);</span><br><span class="line">            ++i;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">return</span> flag * res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
           
         
@@ -1887,198 +2059,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/25/J59-II. 队列的最大值/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈琦">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/head.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Cq的Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/03/25/J59-II. 队列的最大值/" itemprop="url">剑指offer_59-II 队列的最大值</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-25T18:11:00+08:00">
-                2020-03-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/剑指offer/" itemprop="url" rel="index">
-                    <span itemprop="name">剑指offer</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/剑指offer/Hard/" itemprop="url" rel="index">
-                    <span itemprop="name">Hard</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="J59-II-队列的最大值"><a href="#J59-II-队列的最大值" class="headerlink" title="J59-II. 队列的最大值"></a>J59-II. 队列的最大值</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>请定义一个队列并实现函数 <code>max_value</code> 得到队列里的最大值，要求函数<code>max_value</code>、<code>push_back</code> 和 <code>pop_front</code> 的<strong>均摊</strong>时间复杂度都是O(1)。</p>
-<p>若队列为空，<code>pop_front</code> 和 <code>max_value</code> 需要返回 -1</p>
-<p><strong>示例 1：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输入: </span><br><span class="line">[&quot;MaxQueue&quot;,&quot;push_back&quot;,&quot;push_back&quot;,&quot;max_value&quot;,&quot;pop_front&quot;,&quot;max_value&quot;]</span><br><span class="line">[[],[1],[2],[],[],[]]</span><br><span class="line">输出: [null,null,null,2,1,2]</span><br></pre></td></tr></table></figure>
-<p><strong>示例 2：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输入: </span><br><span class="line">[&quot;MaxQueue&quot;,&quot;pop_front&quot;,&quot;max_value&quot;]</span><br><span class="line">[[],[],[]]</span><br><span class="line">输出: [null,-1,-1]</span><br></pre></td></tr></table></figure>
-<p><strong>限制：</strong></p>
-<ul>
-<li><code>1 &lt;= push_back,pop_front,max_value的总操作数 &lt;= 10000</code></li>
-<li><code>1 &lt;= value &lt;= 10^5</code></li>
-</ul>
-<blockquote>
-<p>解法：双端队列实现</p>
-</blockquote>
-<p>考虑到这道题跟前面的比较相似，还是可以通过构造一个双端队列来实现。因为如果在 <code>max_value</code> 中只是正常的不断保存记录更新最大值，那么这个最大值弹出之后就会丢失次大值。因此我们可以用跟 <code>剑指offer 59-I</code> 类似的方式来构造一个递减队列，这样在每次调用 <code>max_value</code> 的时候就直接返回 <code>deq</code> 的队首即可。同时还需要再借助一个 <code>queue</code> 来记录每一次 <code>push_back</code> 的数值。在 <code>push_back</code> 维护递减双端序列的时候，还是按照<code>剑指offer 59-I</code> 的方法，每次从队尾开始与新插入的值进行比较并不断 <code>pop_back()</code> ，直到找到的队尾元素比插入的 <code>value</code> 大。这样可以保证双端队列一直是递减的。</p>
-<p>本算法基于问题的一个重要性质：<code>当一个元素进入队列的时候，它前面所有比它小的元素就不会再对答案产生影响。</code></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MaxQueue</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    MaxQueue() &#123;&#125;</span><br><span class="line">    <span class="built_in">deque</span>&lt;<span class="keyword">int</span>&gt; deq;</span><br><span class="line">    <span class="built_in">queue</span>&lt;<span class="keyword">int</span>&gt; q;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">max_value</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> deq.empty() ? <span class="number">-1</span> : deq.front();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">push_back</span><span class="params">(<span class="keyword">int</span> value)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">while</span>(!deq.empty() &amp;&amp; deq.back() &lt; value) &#123;</span><br><span class="line">            deq.pop_back();</span><br><span class="line">        &#125;</span><br><span class="line">        deq.push_back(value);</span><br><span class="line">        q.push(value);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">pop_front</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(q.empty()) <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">if</span>(q.front() == deq.front()) deq.pop_front();</span><br><span class="line">        <span class="keyword">int</span> res = q.front();</span><br><span class="line">        q.pop();</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>⭐deque</p>
-</blockquote>
-<p>deque（双端队列）是由一段一段的定量连续空间构成，可以向两端发展，因此不论在尾部或头部安插元素都十分迅速。 在中间部分安插元素则比较费时，因为必须移动其它元素。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">deque</span>&lt;<span class="keyword">int</span>&gt; a; <span class="comment">// 定义一个int类型的双端队列a</span></span><br><span class="line"><span class="built_in">deque</span>&lt;<span class="keyword">int</span>&gt; a(<span class="number">10</span>); <span class="comment">// 定义一个int类型的双端队列a，并设置初始大小为10</span></span><br><span class="line"><span class="built_in">deque</span>&lt;<span class="keyword">int</span>&gt; a(<span class="number">10</span>, <span class="number">1</span>); <span class="comment">// 定义一个int类型的双端队列a，并设置初始大小为10且初始值都为1</span></span><br><span class="line"><span class="built_in">deque</span>&lt;<span class="keyword">int</span>&gt; b(a); <span class="comment">// 定义并用双端队列a初始化双端队列b</span></span><br><span class="line"><span class="built_in">deque</span>&lt;<span class="keyword">int</span>&gt; b(a.begin(), a.begin()+<span class="number">3</span>); <span class="comment">// 将双端队列a中从第0个到第2个(共3个)作为双端队列b的初始值</span></span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>基本操作函数</p>
-</blockquote>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">deque</span>&lt;<span class="keyword">int</span>&gt; deq;</span><br><span class="line">容器大小：deq.size();</span><br><span class="line">容器最大容量：deq.max_size();</span><br><span class="line">更改容器大小：deq.resize();</span><br><span class="line">容器判空：deq.empty();</span><br><span class="line">减少容器大小到满足元素所占存储空间的大小：deq.shrink_to_fit();</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>添加函数</p>
-</blockquote>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">头部添加元素：deq.push_front(<span class="keyword">const</span> T&amp; x);</span><br><span class="line">末尾添加元素：deq.push_back(<span class="keyword">const</span> T&amp; x);</span><br><span class="line">任意位置插入一个元素：deq.insert(iterator it, <span class="keyword">const</span> T&amp; x);</span><br><span class="line">任意位置插入 n 个相同元素：deq.insert(iterator it, <span class="keyword">int</span> n, <span class="keyword">const</span> T&amp; x);</span><br><span class="line">插入另一个向量的 [forst,last] 间的数据：deq.insert(iterator it, iterator first, iterator last);</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>删除函数</p>
-</blockquote>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">头部删除元素：deq.pop_front();</span><br><span class="line">末尾删除元素：deq.pop_back();</span><br><span class="line">任意位置删除一个元素：deq.erase(iterator it);</span><br><span class="line">删除 [first,last] 之间的元素：deq.erase(iterator first, iterator last);</span><br><span class="line">清空所有元素：deq.clear();</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>遍历</p>
-</blockquote>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">deque</span>&lt;<span class="keyword">int</span>&gt;::iterator it;</span><br><span class="line"><span class="keyword">for</span> (it = deq.begin(); it != deq.end(); it++)</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; *it &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"><span class="comment">// 或者</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; deq.size(); i++) &#123;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; deq.at(i) &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2131,7 +2111,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">103</span>
+                  <span class="site-state-item-count">104</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
