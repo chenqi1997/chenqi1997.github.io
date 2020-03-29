@@ -263,6 +263,174 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/19/J36. 二叉搜索树与双向链表/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈琦">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cq的Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/19/J36. 二叉搜索树与双向链表/" itemprop="url">剑指offer_36 二叉搜索树与双向链表</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-19T20:08:00+08:00">
+                2020-03-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/剑指offer/" itemprop="url" rel="index">
+                    <span itemprop="name">剑指offer</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/剑指offer/Medium/" itemprop="url" rel="index">
+                    <span itemprop="name">Medium</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="J36-二叉搜索树与双向链表"><a href="#J36-二叉搜索树与双向链表" class="headerlink" title="J36*. 二叉搜索树与双向链表"></a>J36*. 二叉搜索树与双向链表</h1><blockquote>
+<p>题目：</p>
+</blockquote>
+<p>输入一棵二叉搜索树，将该二叉搜索树转换成一个排序的循环双向链表。要求不能创建任何新的节点，只能调整树中节点指针的指向。</p>
+<p>为了让您更好地理解问题，以下面的二叉搜索树为例：</p>
+<p><img src="../images/J36_1.png" alt="J36_1"></p>
+<p>我们希望将这个二叉搜索树转化为双向循环链表。链表中的每个节点都有一个前驱和后继指针。对于双向循环链表，第一个节点的前驱是最后一个节点，最后一个节点的后继是第一个节点。</p>
+<p>下图展示了上面的二叉搜索树转化成的链表。“head” 表示指向链表中有最小元素的节点。</p>
+<p><img src="../images/J36_2.png" alt="J36_2"></p>
+<blockquote>
+<p>解法：递归+中序遍历</p>
+</blockquote>
+<p>⭐⭐⭐二叉搜索树的特点就是中序遍历是单调递增的，可以利用这个性质进行递归改节点连接。中序遍历的递归要仔细想，挺难琢磨的。。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">tail-&gt;right = root;</span><br><span class="line">            root-&gt;left = pre;</span><br><span class="line">            tail = root;</span><br></pre></td></tr></table></figure>
+<p>这一段保证了中序遍历里面的双向指针的连接，同时<code>tail = root;</code> 可以保证在每一次中序遍历结束要跳到下一层的时候，<code>tail</code> 指针是指向当前层最大值的节点。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">Node* <span class="title">treeToDoublyList</span><span class="params">(Node* root)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!root) <span class="keyword">return</span> <span class="literal">nullptr</span>;</span><br><span class="line">        Node* head = <span class="literal">nullptr</span>, *tail = <span class="literal">nullptr</span>;</span><br><span class="line">        helper(root, head, tail);</span><br><span class="line">        head-&gt;left = tail;</span><br><span class="line">        tail-&gt;right = head;</span><br><span class="line">        <span class="keyword">return</span> head;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">helper</span><span class="params">(Node* root, Node*&amp; head, Node*&amp; tail)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!root)  <span class="keyword">return</span>;</span><br><span class="line">        helper(root-&gt;left, head, tail);</span><br><span class="line">        <span class="keyword">if</span>(!head) &#123;</span><br><span class="line">            head = root;   <span class="comment">// 找到head</span></span><br><span class="line">            tail = root;    <span class="comment">// 对pre进行初始化</span></span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            tail-&gt;right = root;</span><br><span class="line">            root-&gt;left = tail;</span><br><span class="line">            tail = root;</span><br><span class="line">        &#125;</span><br><span class="line">        helper(root-&gt;right, head, tail);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/19/J35. 复杂链表的复制/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1865,180 +2033,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/17/J29. 顺时针打印矩阵 Leetcode 54/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈琦">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/head.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Cq的Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/03/17/J29. 顺时针打印矩阵 Leetcode 54/" itemprop="url">剑指offer_29 顺时针打印矩阵 / Leetcode 54</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-17T20:39:00+08:00">
-                2020-03-17
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/剑指offer/" itemprop="url" rel="index">
-                    <span itemprop="name">剑指offer</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/剑指offer/Easy/" itemprop="url" rel="index">
-                    <span itemprop="name">Easy</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="J29-顺时针打印矩阵-Leetcode-54"><a href="#J29-顺时针打印矩阵-Leetcode-54" class="headerlink" title="J29*. 顺时针打印矩阵 / Leetcode 54"></a>J29*. 顺时针打印矩阵 / Leetcode 54</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>输入一个矩阵，按照从外向里以顺时针的顺序依次打印出每一个数字。</p>
-<blockquote>
-<p>示例 1：</p>
-</blockquote>
-<p>输入：matrix = [[1,2,3],[4,5,6],[7,8,9]]<br>输出：[1,2,3,6,9,8,7,4,5]</p>
-<blockquote>
-<p>示例 2：</p>
-</blockquote>
-<p>输入：matrix = [[1,2,3,4],[5,6,7,8],[9,10,11,12]]<br>输出：[1,2,3,4,8,12,11,10,9,5,6,7]</p>
-<blockquote>
-<p>限制：</p>
-</blockquote>
-<p>0 &lt;= matrix.length &lt;= 100<br>0 &lt;= matrix[i].length &lt;= 100</p>
-<blockquote>
-<p>解法一：</p>
-</blockquote>
-<p>🤮🤮🤮🤮🤮🤮</p>
-<p>没有巧法，来回循环打印，真恶心，希望面试别考这种又烦又没水平的题。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; spiralOrder(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; matrix) &#123;</span><br><span class="line">      <span class="comment">/*判断是否为空*/</span></span><br><span class="line">      <span class="keyword">if</span>(matrix.size() == <span class="number">0</span> || matrix[<span class="number">0</span>].size() == <span class="number">0</span>) <span class="keyword">return</span> &#123;&#125;;</span><br><span class="line">      <span class="comment">/*设置上下左右四个界限*/</span></span><br><span class="line">      <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; res; <span class="comment">/*存储遍历结果*/</span></span><br><span class="line">      <span class="keyword">int</span> top = <span class="number">0</span>;</span><br><span class="line">      <span class="keyword">int</span> bottom = matrix.size() - <span class="number">1</span>;</span><br><span class="line">      <span class="keyword">int</span> left = <span class="number">0</span>;</span><br><span class="line">      <span class="keyword">int</span> right = matrix[<span class="number">0</span>].size() - <span class="number">1</span>;</span><br><span class="line">      <span class="comment">/*此算法模拟顺时针输出的过程，请联想打印过程*/</span></span><br><span class="line">      <span class="keyword">while</span>(<span class="literal">true</span>)</span><br><span class="line">      &#123;</span><br><span class="line">          <span class="comment">/*1.top行从左到右遍历*/</span></span><br><span class="line">          <span class="keyword">for</span>(<span class="keyword">int</span> i=left;i&lt;=right;i++)&#123;</span><br><span class="line">              res.push_back(matrix[top][i]);</span><br><span class="line">          &#125;</span><br><span class="line">          <span class="comment">/*top移动至下一行，并进行边界检测*/</span></span><br><span class="line">          top++;</span><br><span class="line">          <span class="keyword">if</span>(top &gt; bottom ) <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">          <span class="comment">/*2.right列从上到下遍历*/</span></span><br><span class="line">          <span class="keyword">for</span>(<span class="keyword">int</span> i=top;i&lt;=bottom;i++)&#123;</span><br><span class="line">              res.push_back(matrix[i][right]);</span><br><span class="line">          &#125;</span><br><span class="line">          <span class="comment">/*right左移，并进行边界检测*/</span></span><br><span class="line">          right--;</span><br><span class="line">          <span class="keyword">if</span>(right &lt; left) <span class="keyword">break</span>;</span><br><span class="line">          </span><br><span class="line">          <span class="comment">/*3.bottom行从右往左遍历*/</span></span><br><span class="line">          <span class="keyword">for</span>(<span class="keyword">int</span> i = right;i&gt;=left;i--)&#123;</span><br><span class="line">              res.push_back(matrix[bottom][i]);</span><br><span class="line">          &#125;</span><br><span class="line">          <span class="comment">/*bottom行上移，并进行边界检测*/</span></span><br><span class="line">          bottom -- ;</span><br><span class="line">          <span class="keyword">if</span>(bottom &lt; top) <span class="keyword">break</span>;</span><br><span class="line">          <span class="comment">/*4.left列从下往上遍历*/</span></span><br><span class="line">          <span class="keyword">for</span>(<span class="keyword">int</span> i=bottom;i&gt;=top;i--)&#123;</span><br><span class="line">              res.push_back(matrix[i][left]);</span><br><span class="line">          &#125;</span><br><span class="line">          <span class="comment">/*left右移，并进行边界检测*/</span></span><br><span class="line">          left++;</span><br><span class="line">          <span class="keyword">if</span>(left &gt; right) <span class="keyword">break</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">/*返回遍历结果*/</span></span><br><span class="line">      <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2091,7 +2085,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">111</span>
+                  <span class="site-state-item-count">112</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
