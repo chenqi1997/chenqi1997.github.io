@@ -87,12 +87,12 @@
 <meta property="og:site_name" content="Cq的Blog">
 <meta property="og:description" content="820. Short Encoding of Words/单词的压缩编码 题目：  给定一个单词列表，我们将这个列表编码成一个索引字符串 S 与一个索引列表 A。 例如，如果这个列表是 [&amp;quot;time&amp;quot;, &amp;quot;me&amp;quot;, &amp;quot;bell&amp;quot;]，我们就可以将其表示为 S = &amp;quot;time#bell#&amp;quot; 和 indexes = [0,">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/2020/03/28/images/820_1.jpg">
-<meta property="og:updated_time" content="2020-03-29T07:57:31.232Z">
+<meta property="og:image" content="http://yoursite.com/2020/03/28/images/820_1.png">
+<meta property="og:updated_time" content="2020-03-31T03:56:31.162Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Leetcode_820 单词的压缩编码">
 <meta name="twitter:description" content="820. Short Encoding of Words/单词的压缩编码 题目：  给定一个单词列表，我们将这个列表编码成一个索引字符串 S 与一个索引列表 A。 例如，如果这个列表是 [&amp;quot;time&amp;quot;, &amp;quot;me&amp;quot;, &amp;quot;bell&amp;quot;]，我们就可以将其表示为 S = &amp;quot;time#bell#&amp;quot; 和 indexes = [0,">
-<meta name="twitter:image" content="http://yoursite.com/2020/03/28/images/820_1.jpg">
+<meta name="twitter:image" content="http://yoursite.com/2020/03/28/images/820_1.png">
 
 
 
@@ -396,7 +396,7 @@
 <li>每个节点的所有子节点包含的字符都不相同。</li>
 </ol>
 <p>为了找到是否不同的单词具有相同的后缀，我们可以将其反序之后插入字典树中。例如，我们有 <code>&quot;time&quot;</code> 和 <code>&quot;me&quot;</code>，可以将 <code>&quot;emit&quot;</code> 和 <code>&quot;em&quot;</code> 插入字典树中。然后，字典树的叶子节点（没有孩子的节点）就代表没有后缀的单词，统计叶子节点代表的单词长度加一的和即为我们要的答案。</p>
-<p><img src="../images/820_1.jpg" alt="820_1"></p>
+<p><img src="../images/820_1.png" alt="820_1"></p>
 <p>这里面需要新定义一个 <code>TrieNode</code> 类，与 <code>Leetcode 208</code> 题是一样的。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TrieNode</span>&#123;</span></span><br><span class="line">    TrieNode* children[<span class="number">26</span>];</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">int</span> count;</span><br><span class="line">    TrieNode() &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">26</span>; ++i) children[i] = <span class="literal">NULL</span>;</span><br><span class="line">        count = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function">TrieNode* <span class="title">get</span><span class="params">(<span class="keyword">char</span> c)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (children[c - <span class="string">'a'</span>] == <span class="literal">NULL</span>) &#123;</span><br><span class="line">            children[c - <span class="string">'a'</span>] = <span class="keyword">new</span> TrieNode();</span><br><span class="line">            <span class="comment">//这里面count是对于每一个节点指针的计数，如果是叶子节点是new的，没有子节点也就不会调用这里面的get函数，没有机会count++，因此node-&gt;count==0的点就是每一个叶子节点。</span></span><br><span class="line">            count++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> children[c - <span class="string">'a'</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">minimumLengthEncoding</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&amp; words)</span> </span>&#123;</span><br><span class="line">        TrieNode* trie = <span class="keyword">new</span> TrieNode();</span><br><span class="line">        <span class="built_in">unordered_map</span>&lt;TrieNode*, <span class="keyword">int</span>&gt; nodes;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; (<span class="keyword">int</span>)words.size(); ++i) &#123;</span><br><span class="line">            <span class="built_in">string</span> word = words[i];</span><br><span class="line">            TrieNode* cur = trie;</span><br><span class="line">            <span class="comment">//从后向前遍历</span></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = word.length() - <span class="number">1</span>; j &gt;= <span class="number">0</span>; --j)</span><br><span class="line">                cur = cur-&gt;get(word[j]);</span><br><span class="line">            nodes[cur] = i;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">auto</span>&amp; [node, idx] : nodes) &#123;</span><br><span class="line">            <span class="comment">//当叶子节点没有子节点的时候，count==0，这时候需要输出对应的word字符串的长度再加一</span></span><br><span class="line">            <span class="keyword">if</span> (node-&gt;count == <span class="number">0</span>) &#123;</span><br><span class="line">                ans += words[idx].length() + <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
@@ -522,7 +522,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">117</span>
+                  <span class="site-state-item-count">118</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -544,7 +544,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">38</span>
+                  <span class="site-state-item-count">39</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
