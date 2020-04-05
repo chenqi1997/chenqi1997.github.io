@@ -263,6 +263,193 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/17/J27. 二叉树的镜像 Leetcode 226/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈琦">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cq的Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/17/J27. 二叉树的镜像 Leetcode 226/" itemprop="url">剑指offer_27 二叉树的镜像 / Leetcode 226</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-17T14:44:00+08:00">
+                2020-03-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/剑指offer/" itemprop="url" rel="index">
+                    <span itemprop="name">剑指offer</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/剑指offer/Easy/" itemprop="url" rel="index">
+                    <span itemprop="name">Easy</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="J27-二叉树的镜像-Leetcode-226"><a href="#J27-二叉树的镜像-Leetcode-226" class="headerlink" title="J27. 二叉树的镜像 / Leetcode 226"></a>J27. 二叉树的镜像 / Leetcode 226</h1><blockquote>
+<p>题目：</p>
+</blockquote>
+<p>请完成一个函数，输入一个二叉树，该函数输出它的镜像。</p>
+<p>例如输入：</p>
+<pre><code>     4
+   /   \
+  2     7
+ / \   / \
+1   3 6   9
+</code></pre><p>镜像输出：</p>
+<pre><code>     4
+   /   \
+  7     2
+ / \   / \
+9   6 3   1
+</code></pre><blockquote>
+<p>示例 1：</p>
+</blockquote>
+<p>输入：root = [4,2,7,1,3,6,9]<br>输出：[4,7,2,9,6,3,1]</p>
+<blockquote>
+<p>限制：</p>
+</blockquote>
+<p>0 &lt;= 节点个数 &lt;= 1000</p>
+<blockquote>
+<p>解法一：递归法</p>
+</blockquote>
+<p>遇到树最先想到的想法是做递归，通过不断进行递归向下完成树的从上到下的旋转。在每一层的旋转过程中都借助一个 tmp 指针来交换传递左右指针，最后返回根节点。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">TreeNode* <span class="title">mirrorTree</span><span class="params">(TreeNode* root)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!root) <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">        TreeNode* tmp = root-&gt;left;</span><br><span class="line">        root-&gt;left = mirrorTree(root-&gt;right);</span><br><span class="line">        root-&gt;right = mirrorTree(tmp);</span><br><span class="line">        <span class="keyword">return</span> root;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>⭐解法二：非递归法：队列实现</p>
+</blockquote>
+<p>递归的实现方法可以通过队列的先入先出性质来实现，在遍历节点的过程中，先放入根节点 root，再取出头节点并交换左右节点，如果左右节点存在，再存入队列中并且依次取出，从而不断向下遍历。</p>
+<p>注意 <code>queue</code> 队列类没有 <code>top</code> 函数，有的是 <code>front</code> , <code>back</code> , <code>pop</code> , <code>empty</code> , <code>size</code> 。不要跟栈弄混了。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">TreeNode* <span class="title">mirrorTree</span><span class="params">(TreeNode* root)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!root) <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">        <span class="built_in">queue</span>&lt;TreeNode*&gt; q;</span><br><span class="line">        q.push(root);</span><br><span class="line">        <span class="keyword">while</span> (!q.empty()) &#123;</span><br><span class="line">            TreeNode* node = q.front();</span><br><span class="line">            q.pop();</span><br><span class="line">            TreeNode* tmp = node-&gt;left;</span><br><span class="line">            node-&gt;left = node-&gt;right;</span><br><span class="line">            node-&gt;right = tmp;</span><br><span class="line">            <span class="keyword">if</span>(node-&gt;left) q.push(node-&gt;left);</span><br><span class="line">            <span class="keyword">if</span>(node-&gt;right) q.push(node-&gt;right);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> root;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/17/J26. 树的子结构/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1895,195 +2082,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/15/695. 岛的最大面积/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈琦">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/head.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Cq的Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/03/15/695. 岛的最大面积/" itemprop="url">Leetcode_695 岛的最大面积</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-15T14:46:00+08:00">
-                2020-03-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/每日一题/" itemprop="url" rel="index">
-                    <span itemprop="name">每日一题</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/每日一题/Medium/" itemprop="url" rel="index">
-                    <span itemprop="name">Medium</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="695-Max-Area-of-Island-岛的最大面积"><a href="#695-Max-Area-of-Island-岛的最大面积" class="headerlink" title="695. Max Area of Island/岛的最大面积"></a>695. Max Area of Island/岛的最大面积</h1><blockquote>
-<p>题目</p>
-</blockquote>
-<p>给定一个包含了一些 0 和 1的非空二维数组 grid , 一个 岛屿 是由四个方向 (水平或垂直) 的 1 (代表土地) 构成的组合。你可以假设二维矩阵的四个边缘都被水包围着。</p>
-<p>找到给定的二维数组中最大的岛屿面积。(如果没有岛屿，则返回面积为0。)</p>
-<blockquote>
-<p>示例 1:</p>
-</blockquote>
-<p>[[0,0,1,0,0,0,0,1,0,0,0,0,0],<br> [0,0,0,0,0,0,0,1,1,1,0,0,0],<br> [0,1,1,0,1,0,0,0,0,0,0,0,0],<br> [0,1,0,0,1,1,0,0,1,0,1,0,0],<br> [0,1,0,0,1,1,0,0,1,1,1,0,0],<br> [0,0,0,0,0,0,0,0,0,0,1,0,0],<br> [0,0,0,0,0,0,0,1,1,1,0,0,0],<br> [0,0,0,0,0,0,0,1,1,0,0,0,0]]<br>对于上面这个给定矩阵应返回 6。注意答案不应该是11，因为岛屿只能包含水平或垂直的四个方向的‘1’。</p>
-<blockquote>
-<p>示例 2:</p>
-</blockquote>
-<p>[[0,0,0,0,0,0,0,0]]<br>对于上面这个给定的矩阵, 返回 0。</p>
-<blockquote>
-<p>解法一：DFS</p>
-</blockquote>
-<p>对于这种求矩阵最大连接的问题，一般可以按照无向图来做。主要有 <code>DFS</code> 和 <code>BFS</code> 两种思路，不同的题目中的思路都是大同小异的。这道题中主要的思路是，每到一个新的 <code>grid[i] [j]</code> ，都调用一下 <code>dfs</code> 函数进行深度优先搜索，如果当前节点不为1（为 0 或者已经遍历过），则return；如果为1且未遍历过，则计数 <code>count</code>，并且跟 <code>res</code> 进行比较更新 <code>res</code>，将这个位置置0表示已经遍历过，同时继续对这个点的上下左右调用 <code>DFS</code> 来进一步更新 <code>count</code>。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">maxAreaOfIsland</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; grid)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> m = grid.size(), n = grid[<span class="number">0</span>].size(), res = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; m; ++i) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; n; ++j) &#123;</span><br><span class="line">                <span class="keyword">if</span> (grid[i][j] != <span class="number">1</span>) <span class="keyword">continue</span>;</span><br><span class="line">                <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line">                dfs(grid, i, j, count, res);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">dfs</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; grid, <span class="keyword">int</span> i, <span class="keyword">int</span> j, <span class="keyword">int</span>&amp; count, <span class="keyword">int</span>&amp; res)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> m = grid.size(), n = grid[<span class="number">0</span>].size();</span><br><span class="line">        <span class="keyword">if</span> (i &lt; <span class="number">0</span> || i &gt;= m || j &lt; <span class="number">0</span> || j &gt;= n || grid[i][j] &lt;= <span class="number">0</span>) <span class="keyword">return</span>;</span><br><span class="line">        ++count;</span><br><span class="line">        res = max(res, count);</span><br><span class="line">        grid[i][j] = <span class="number">0</span>;</span><br><span class="line">        dfs(grid, i + <span class="number">1</span>, j, count, res);</span><br><span class="line">        dfs(grid, i - <span class="number">1</span>, j, count, res);</span><br><span class="line">        dfs(grid, i, j + <span class="number">1</span>, count, res);</span><br><span class="line">        dfs(grid, i, j - <span class="number">1</span>, count, res);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>时间复杂度：<code>O(R * C)</code>。其中 R 是给定网格中的行数，C 是列数。我们访问每个网格最多一次。</p>
-<p>空间复杂度：<code>O(R * C)</code>，递归的深度最大可能是整个网格的大小，因此最大可能使用 O(R * C) 的栈空间。</p>
-<blockquote>
-<p>解法二：DFS + 栈</p>
-</blockquote>
-<p>我们可以用栈来实现深度优先搜索算法。这种方法本质与方法一相同，唯一的区别是：</p>
-<p>方法一通过函数的调用来表示接下来想要遍历哪些土地，让下一层函数来访问这些土地。而方法二把接下来想要遍历的土地放在栈里，然后在取出这些土地的时候访问它们。</p>
-<p>访问每一片土地时，我们将对围绕它四个方向进行探索，找到还未访问的土地，加入到栈 stack 中；</p>
-<p>另外，只要栈 <code>stack</code> 不为空，就说明我们还有土地待访问，那么就从栈中取出一个元素并访问。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">maxAreaOfIsland</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; grid)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i != grid.size(); ++i)</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j != grid[<span class="number">0</span>].size(); ++j) &#123;</span><br><span class="line">                <span class="keyword">int</span> cur = <span class="number">0</span>;</span><br><span class="line">                <span class="built_in">stack</span>&lt;<span class="keyword">int</span>&gt; stacki;</span><br><span class="line">                <span class="built_in">stack</span>&lt;<span class="keyword">int</span>&gt; stackj;</span><br><span class="line">                stacki.push(i);</span><br><span class="line">                stackj.push(j);</span><br><span class="line">                <span class="keyword">while</span> (!stacki.empty()) &#123;</span><br><span class="line">                    <span class="keyword">int</span> cur_i = stacki.top(), cur_j = stackj.top();</span><br><span class="line">                    stacki.pop();</span><br><span class="line">                    stackj.pop();</span><br><span class="line">                    <span class="keyword">if</span> (cur_i &lt; <span class="number">0</span> || cur_j &lt; <span class="number">0</span> || cur_i == grid.size() || cur_j == grid[<span class="number">0</span>].size() || grid[cur_i][cur_j] != <span class="number">1</span>)</span><br><span class="line">                        <span class="keyword">continue</span>;</span><br><span class="line">                    ++cur;</span><br><span class="line">                    grid[cur_i][cur_j] = <span class="number">0</span>;</span><br><span class="line">                    <span class="keyword">int</span> di[<span class="number">4</span>] = &#123;<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">-1</span>&#125;;</span><br><span class="line">                    <span class="keyword">int</span> dj[<span class="number">4</span>] = &#123;<span class="number">1</span>, <span class="number">-1</span>, <span class="number">0</span>, <span class="number">0</span>&#125;;</span><br><span class="line">                    <span class="keyword">for</span> (<span class="keyword">int</span> index = <span class="number">0</span>; index != <span class="number">4</span>; ++index) &#123;</span><br><span class="line">                        <span class="keyword">int</span> next_i = cur_i + di[index], next_j = cur_j + dj[index];</span><br><span class="line">                        stacki.push(next_i);</span><br><span class="line">                        stackj.push(next_j);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                ans = max(ans, cur);</span><br><span class="line">            &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>时间复杂度：<code>O(R * C)</code>，其中 R 是给定网格中的行数，C 是列数。我们访问每个网格最多一次。</p>
-<p>空间复杂度：<code>O(R * C)</code>，栈中最多会存放所有的土地，土地的数量最多为 R <em> C 块，因此使用的空间为 O(R </em> C)。</p>
-<blockquote>
-<p>解法三：BFS</p>
-</blockquote>
-<p> <code>BFS</code> 与 <code>DFS</code> 其实实现的方式差不多，只不过在方法二中的 <code>栈</code> 的数据结构换成了 <code>队列</code> ，从 <code>先进后出</code> 换成了 <code>先进先出</code>。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">maxAreaOfIsland</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; grid)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i != grid.size(); ++i)</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j != grid[<span class="number">0</span>].size(); ++j) &#123;</span><br><span class="line">                <span class="keyword">int</span> cur = <span class="number">0</span>;</span><br><span class="line">                <span class="built_in">queue</span>&lt;<span class="keyword">int</span>&gt; queuei;</span><br><span class="line">                <span class="built_in">queue</span>&lt;<span class="keyword">int</span>&gt; queuej;</span><br><span class="line">                queuei.push(i);</span><br><span class="line">                queuej.push(j);</span><br><span class="line">                <span class="keyword">while</span> (!queuei.empty()) &#123;</span><br><span class="line">                    <span class="keyword">int</span> cur_i = queuei.front(), cur_j = queuej.front();</span><br><span class="line">                    queuei.pop();</span><br><span class="line">                    queuej.pop();</span><br><span class="line">                    <span class="keyword">if</span> (cur_i &lt; <span class="number">0</span> || cur_j &lt; <span class="number">0</span> || cur_i == grid.size() || cur_j == grid[<span class="number">0</span>].size() || grid[cur_i][cur_j] != <span class="number">1</span>)</span><br><span class="line">                        <span class="keyword">continue</span>;</span><br><span class="line">                    ++cur;</span><br><span class="line">                    grid[cur_i][cur_j] = <span class="number">0</span>;</span><br><span class="line">                    <span class="keyword">int</span> di[<span class="number">4</span>] = &#123;<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">-1</span>&#125;;</span><br><span class="line">                    <span class="keyword">int</span> dj[<span class="number">4</span>] = &#123;<span class="number">1</span>, <span class="number">-1</span>, <span class="number">0</span>, <span class="number">0</span>&#125;;</span><br><span class="line">                    <span class="keyword">for</span> (<span class="keyword">int</span> index = <span class="number">0</span>; index != <span class="number">4</span>; ++index) &#123;</span><br><span class="line">                        <span class="keyword">int</span> next_i = cur_i + di[index], next_j = cur_j + dj[index];</span><br><span class="line">                        queuei.push(next_i);</span><br><span class="line">                        queuej.push(next_j);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                ans = max(ans, cur);</span><br><span class="line">            &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>时间复杂度：O(R * C)。其中 R 是给定网格中的行数，C 是列数。我们访问每个网格最多一次。</p>
-<p>空间复杂度：O(R <em> C)，队列中最多会存放所有的土地，土地的数量最多为 R </em> C块，因此使用的空间为 O(R * C)。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2136,7 +2134,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">139</span>
+                  <span class="site-state-item-count">140</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
