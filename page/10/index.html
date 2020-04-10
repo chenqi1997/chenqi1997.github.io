@@ -263,6 +263,368 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/22/J46. 把数字翻译成字符串/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈琦">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cq的Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/22/J46. 把数字翻译成字符串/" itemprop="url">剑指offer_46 把数字翻译成字符串</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-22T15:10:00+08:00">
+                2020-03-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/剑指offer/" itemprop="url" rel="index">
+                    <span itemprop="name">剑指offer</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/剑指offer/Medium/" itemprop="url" rel="index">
+                    <span itemprop="name">Medium</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="J46-把数字翻译成字符串"><a href="#J46-把数字翻译成字符串" class="headerlink" title="J46. 把数字翻译成字符串"></a>J46. 把数字翻译成字符串</h1><blockquote>
+<p>题目：</p>
+</blockquote>
+<p>给定一个数字，我们按照如下规则把它翻译为字符串：0 翻译成 “a” ，1 翻译成 “b”，……，11 翻译成 “l”，……，25 翻译成 “z”。一个数字可能有多个翻译。请编程实现一个函数，用来计算一个数字有多少种不同的翻译方法。</p>
+<blockquote>
+<p>示例 1:</p>
+</blockquote>
+<p>输入: 12258<br>输出: 5<br>解释: 12258有5种不同的翻译，分别是”bccfi”, “bwfi”, “bczi”, “mcfi”和”mzi”</p>
+<blockquote>
+<p>提示：</p>
+</blockquote>
+<p>0 &lt;= num &lt; $2^{31}$</p>
+<blockquote>
+<p>解法：</p>
+</blockquote>
+<p>这道题的解法跟前面的 <code>J10 青蛙跳台阶问题</code> 很像，都是可以用<code>递归</code>和 <code>动态规划</code> 的思想来做。我用的是动态规划的方法。我们维护一个 <code>n + 1</code> 维的动态规划数组 <code>dp[]</code>，对于前两个初始值设为 1，后面的状态转移方程要分两个情况讨论：</p>
+<ol>
+<li><p>当前的数字可以和前一个数字组合成 10 - 25之间的字符，那么这个时候分两种情况讨论可以得到当前的</p>
+<p> <code>d[i] = d[i - 1] + d[i - 2]</code></p>
+</li>
+<li><p>当前的数字和前一个数字不能组合，那么就没得选了</p>
+<p><code>d[i] = d[i - 1]</code></p>
+<p>时间复杂度和空间复杂度均为 <code>O(n)</code> 。</p>
+</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">translateNum</span><span class="params">(<span class="keyword">int</span> num)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">string</span> nums = to_string(num);</span><br><span class="line">        <span class="keyword">int</span> n = nums.size();</span><br><span class="line">        <span class="keyword">int</span> dp[n + <span class="number">1</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">        dp[<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">        dp[<span class="number">1</span>] = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">2</span>; i &lt;= n; ++i) &#123;</span><br><span class="line">            <span class="keyword">if</span>(nums[i - <span class="number">2</span>] == <span class="string">'1'</span> || (nums[i - <span class="number">2</span>] == <span class="string">'2'</span> &amp;&amp; nums[i - <span class="number">1</span>] - <span class="string">'5'</span> &lt;= <span class="number">0</span>)) dp[i] = dp[i - <span class="number">1</span>] + dp[i - <span class="number">2</span>];</span><br><span class="line">            <span class="keyword">else</span> dp[i] = dp[i - <span class="number">1</span>];</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">return</span> dp[n];            </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>递归太麻烦了…就不写了…</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/22/J45. 把数组排成最小的数/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈琦">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cq的Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/22/J45. 把数组排成最小的数/" itemprop="url">剑指offer_45 把数组排成最小的数</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-22T13:08:00+08:00">
+                2020-03-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/剑指offer/" itemprop="url" rel="index">
+                    <span itemprop="name">剑指offer</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/剑指offer/Medium/" itemprop="url" rel="index">
+                    <span itemprop="name">Medium</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="J45-把数组排成最小的数"><a href="#J45-把数组排成最小的数" class="headerlink" title="J45. 把数组排成最小的数"></a>J45. 把数组排成最小的数</h1><blockquote>
+<p>题目：</p>
+</blockquote>
+<p>输入一个正整数数组，把数组里所有数字拼接起来排成一个数，打印能拼接出的所有数字中最小的一个。</p>
+<blockquote>
+<p>示例 1:</p>
+</blockquote>
+<p>输入: [10,2]<br>输出: “102”</p>
+<blockquote>
+<p>示例 2:</p>
+</blockquote>
+<p>输入: [3,30,34,5,9]<br>输出: “3033459”</p>
+<blockquote>
+<p>提示:</p>
+</blockquote>
+<p>0 &lt; nums.length &lt;= 100</p>
+<blockquote>
+<p>说明:</p>
+</blockquote>
+<p>输出结果可能非常大，所以你需要返回一个字符串而不是整数<br>拼接起来的数字可能会有前导 0，最后结果不需要去掉前导 0</p>
+<blockquote>
+<p>解法：</p>
+</blockquote>
+<p>这道题最开始上来的思路就是，先把这个正整数数组放到一个 <code>vector&lt;sting&gt;</code>  变量 <code>res</code>里，然后对 <code>res</code>  做一个 <code>sort</code> ，就可以获得按照从小到大的数的顺序排序的字符串数组。这里面在 <code>sort</code> 的时候可以用到自己定义的比较方式 <code>compare</code> 。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sort(begin, end, cmp)，其中begin为指向待sort()的数组的第一个元素的指针，end为指向待sort()的数组的最后一个元素的下一个位置的指针，cmp参数为排序准则，如果没有的话，默认以非降序排序。</span><br></pre></td></tr></table></figure>
+<p>默认的 <code>compare</code> 函数是：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">cmp</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> x &lt; y;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里面我们自己定义的 <code>compare</code> 函数是：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">compare</span><span class="params">(<span class="keyword">const</span> <span class="built_in">string</span>&amp; a, <span class="keyword">const</span> <span class="built_in">string</span>&amp; b)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> a + b &lt; b + a;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里面与传统的字符串相比较不一样的是，需要比较的是两两拼接起来之后对于整体数字的影响，取较小的一个排在前面，如 <code>3</code> 和 <code>30</code>，拼接分别为 <code>330</code> 和 <code>303</code> ，因此需要将30排在3前面，使得总体最小。代码如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="built_in">string</span> <span class="title">minNumber</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; strs;</span><br><span class="line">        <span class="built_in">string</span> res;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> num:nums) &#123;</span><br><span class="line">            strs.push_back(to_string(num));</span><br><span class="line">        &#125;</span><br><span class="line">        sort(strs.begin(),strs.end(), compare);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> str:strs) &#123;</span><br><span class="line">            res += str;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">bool</span> <span class="title">compare</span><span class="params">(<span class="keyword">const</span> <span class="built_in">string</span>&amp; a, <span class="keyword">const</span> <span class="built_in">string</span>&amp; b)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> a + b &lt; b + a;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/22/J44. 数字序列中某一位的数字 Leetcode 400/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1726,374 +2088,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/19/J36. 二叉搜索树与双向链表/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈琦">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/head.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Cq的Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/03/19/J36. 二叉搜索树与双向链表/" itemprop="url">剑指offer_36 二叉搜索树与双向链表</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-19T20:08:00+08:00">
-                2020-03-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/剑指offer/" itemprop="url" rel="index">
-                    <span itemprop="name">剑指offer</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/剑指offer/Medium/" itemprop="url" rel="index">
-                    <span itemprop="name">Medium</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="J36-二叉搜索树与双向链表"><a href="#J36-二叉搜索树与双向链表" class="headerlink" title="J36*. 二叉搜索树与双向链表"></a>J36*. 二叉搜索树与双向链表</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>输入一棵二叉搜索树，将该二叉搜索树转换成一个排序的循环双向链表。要求不能创建任何新的节点，只能调整树中节点指针的指向。</p>
-<p>为了让您更好地理解问题，以下面的二叉搜索树为例：</p>
-<p><img src="../images/J36_1.png" alt="J36_1"></p>
-<p>我们希望将这个二叉搜索树转化为双向循环链表。链表中的每个节点都有一个前驱和后继指针。对于双向循环链表，第一个节点的前驱是最后一个节点，最后一个节点的后继是第一个节点。</p>
-<p>下图展示了上面的二叉搜索树转化成的链表。“head” 表示指向链表中有最小元素的节点。</p>
-<p><img src="../images/J36_2.png" alt="J36_2"></p>
-<blockquote>
-<p>解法：递归+中序遍历</p>
-</blockquote>
-<p>⭐⭐⭐二叉搜索树的特点就是中序遍历是单调递增的，可以利用这个性质进行递归改节点连接。中序遍历的递归要仔细想，挺难琢磨的。。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">tail-&gt;right = root;</span><br><span class="line">            root-&gt;left = pre;</span><br><span class="line">            tail = root;</span><br></pre></td></tr></table></figure>
-<p>这一段保证了中序遍历里面的双向指针的连接，同时<code>tail = root;</code> 可以保证在每一次中序遍历结束要跳到下一层的时候，<code>tail</code> 指针是指向当前层最大值的节点。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">Node* <span class="title">treeToDoublyList</span><span class="params">(Node* root)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!root) <span class="keyword">return</span> <span class="literal">nullptr</span>;</span><br><span class="line">        Node* head = <span class="literal">nullptr</span>, *tail = <span class="literal">nullptr</span>;</span><br><span class="line">        helper(root, head, tail);</span><br><span class="line">        head-&gt;left = tail;</span><br><span class="line">        tail-&gt;right = head;</span><br><span class="line">        <span class="keyword">return</span> head;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">helper</span><span class="params">(Node* root, Node*&amp; head, Node*&amp; tail)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!root)  <span class="keyword">return</span>;</span><br><span class="line">        helper(root-&gt;left, head, tail);</span><br><span class="line">        <span class="keyword">if</span>(!head) &#123;</span><br><span class="line">            head = root;   <span class="comment">// 找到head</span></span><br><span class="line">            tail = root;    <span class="comment">// 对pre进行初始化</span></span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            tail-&gt;right = root;</span><br><span class="line">            root-&gt;left = tail;</span><br><span class="line">            tail = root;</span><br><span class="line">        &#125;</span><br><span class="line">        helper(root-&gt;right, head, tail);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/19/J35. 复杂链表的复制/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈琦">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/head.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Cq的Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/03/19/J35. 复杂链表的复制/" itemprop="url">剑指offer_35 复杂链表的复制</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-19T18:48:00+08:00">
-                2020-03-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/剑指offer/" itemprop="url" rel="index">
-                    <span itemprop="name">剑指offer</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/剑指offer/Medium/" itemprop="url" rel="index">
-                    <span itemprop="name">Medium</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="J35-复杂链表的复制"><a href="#J35-复杂链表的复制" class="headerlink" title="J35. 复杂链表的复制"></a>J35. 复杂链表的复制</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>请实现 <code>copyRandomList</code> 函数，复制一个复杂链表。在复杂链表中，每个节点除了有一个 <code>next</code> 指针指向下一个节点，还有一个 <code>random</code> 指针指向链表中的任意节点或者 <code>null</code>。</p>
-<p><strong>示例 1：</strong></p>
-<p><img src="../images/J35_2.png" alt="img"></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：head = [[7,null],[13,0],[11,4],[10,2],[1,0]]</span><br><span class="line">输出：[[7,null],[13,0],[11,4],[10,2],[1,0]]</span><br></pre></td></tr></table></figure>
-<p><strong>示例 2：</strong></p>
-<p><img src="../images/J35_3.png" alt="img"></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：head = [[1,1],[2,1]]</span><br><span class="line">输出：[[1,1],[2,1]]</span><br></pre></td></tr></table></figure>
-<p><strong>示例 3：</strong></p>
-<p><img src="../images/J35_4.png" alt="img">**</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：head = [[3,null],[3,0],[3,null]]</span><br><span class="line">输出：[[3,null],[3,0],[3,null]]</span><br></pre></td></tr></table></figure>
-<p><strong>示例 4：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：head = []</span><br><span class="line">输出：[]</span><br><span class="line">解释：给定的链表为空（空指针），因此返回 null。</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p><strong>提示：</strong></p>
-</blockquote>
-<ul>
-<li><code>-10000 &lt;= Node.val &lt;= 10000</code></li>
-<li><code>Node.random</code> 为空（null）或指向链表中的节点。</li>
-<li>节点数目不超过 1000 。</li>
-</ul>
-<blockquote>
-<p>解法一：遍历两遍+哈希表建立联系</p>
-</blockquote>
-<p>第一遍遍历的时候先通过 <code>new</code> 一个 <code>Node()</code> 来作为 <code>copyhead</code> 上面 copy 过来的每一个节点，同时在遍历的时候用<code>unordered_map&lt;Node*, Node*&gt; map;</code>来保存原链表 <code>head</code> 与复制链表 <code>copyhead</code> 的映射关系。然后在第二次遍历的时候依次将 <code>map[p-&gt;random]</code> 在<code>copyhead</code> 复制链表中的指针赋值给 <code>c-&gt;random</code>。</p>
-<p>时间复杂度O(n)，空间复杂度O(n)</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">Node* <span class="title">copyRandomList</span><span class="params">(Node* head)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(head == <span class="literal">NULL</span>) <span class="keyword">return</span> head;</span><br><span class="line">        Node* copyhead = <span class="keyword">new</span> Node(head-&gt;val);</span><br><span class="line">        <span class="built_in">unordered_map</span>&lt;Node*, Node*&gt; <span class="built_in">map</span>;</span><br><span class="line">        Node* p = head;</span><br><span class="line">        Node* c = copyhead;</span><br><span class="line">        <span class="keyword">while</span>(p != <span class="literal">NULL</span>) &#123;</span><br><span class="line">            <span class="built_in">map</span>[p] = c;</span><br><span class="line">            p = p-&gt;next;</span><br><span class="line">            <span class="keyword">if</span>(p == <span class="literal">NULL</span>) c-&gt;next = <span class="literal">NULL</span>;</span><br><span class="line">            <span class="keyword">else</span> &#123;</span><br><span class="line">                Node* next = <span class="keyword">new</span> Node(p-&gt;val);</span><br><span class="line">                c-&gt;next = next;</span><br><span class="line">            &#125;</span><br><span class="line">            c = c-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        p = head;</span><br><span class="line">        c = copyhead;</span><br><span class="line">        <span class="keyword">while</span>(p != <span class="literal">NULL</span>) &#123;</span><br><span class="line">            c-&gt;random = <span class="built_in">map</span>[p-&gt;random];</span><br><span class="line">            p = p-&gt;next;</span><br><span class="line">            c = c-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">return</span> copyhead;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>⭐⭐⭐注意这里面其实新建的 <code>Node* c</code> 指针其实在迭代的过程中可以相应的由 map[p] 来代替，参考了别人写的迭代的做法就很简洁：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">Node* <span class="title">copyRandomList</span><span class="params">(Node* head)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!head) <span class="keyword">return</span> <span class="literal">nullptr</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="built_in">unordered_map</span>&lt;Node*, Node*&gt; mp;</span><br><span class="line">        <span class="keyword">for</span> (Node *it = head; it; it = it-&gt;next) &#123;</span><br><span class="line">            mp[it] = <span class="keyword">new</span> Node(it-&gt;val);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (Node *it = head; it; it = it-&gt;next) &#123;</span><br><span class="line">            <span class="keyword">if</span> (it-&gt;next) mp[it]-&gt;next = mp[it-&gt;next];</span><br><span class="line">            <span class="keyword">if</span> (it-&gt;random) mp[it]-&gt;random = mp[it-&gt;random];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> mp[head];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法二：BFS/DFS</p>
-</blockquote>
-<p>这种复杂的链表可以看成是有向图，对于图的遍历方式可以用到 <code>BFS</code> 和 <code>DFS</code> 。<img src="../images/J35_1.png" alt="J35_1"></p>
-<h4 id="DFS："><a href="#DFS：" class="headerlink" title="DFS："></a><code>DFS</code>：</h4><p>哈希表用来判断当前节点是否被拷贝过，如果已经被拷贝过的话不需要再重复拷贝，没有拷贝过的话 <code>new Node*</code> 来拷贝，并且将拷贝过的节点放在哈希表中。再使用递归拷贝所有的 <code>next</code> 和 <code>random</code> 节点。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">Node* <span class="title">copyRandomList</span><span class="params">(Node* head)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">unordered_map</span>&lt;Node*, Node*&gt; used;</span><br><span class="line">        <span class="keyword">return</span> dfs(head, used);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function">Node* <span class="title">dfs</span><span class="params">(Node* head, <span class="built_in">unordered_map</span>&lt;Node*, Node*&gt;&amp; used)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!head) <span class="keyword">return</span> <span class="literal">nullptr</span>;</span><br><span class="line">        <span class="keyword">if</span> (used.count(head)) <span class="keyword">return</span> used[head];</span><br><span class="line">        Node *res = <span class="keyword">new</span> Node(head-&gt;val);</span><br><span class="line">        used[head] = res;</span><br><span class="line">        res-&gt;next = dfs(head-&gt;next, used);</span><br><span class="line">        res-&gt;random = dfs(head-&gt;random, used);    </span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<h4 id="BFS"><a href="#BFS" class="headerlink" title="BFS"></a><code>BFS</code></h4><ol>
-<li>创建哈希表保存已拷贝结点，格式 <code>{原结点：拷贝结点}</code></li>
-<li>创建队列，并将头结点入队；</li>
-<li>当队列不为空时，弹出一个结点，如果该结点的 <code>next</code> 结点未被拷贝过，则拷贝 <code>next</code> 结点并加入队列；同理，如果该结点的 <code>random</code> 结点未被拷贝过，则拷贝 <code>random</code> 结点并加入队列；</li>
-</ol>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">Node* <span class="title">copyRandomList</span><span class="params">(Node* head)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> bfs(head);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function">Node* <span class="title">bfs</span><span class="params">(Node* head)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!head) <span class="keyword">return</span> <span class="literal">nullptr</span>;</span><br><span class="line">        <span class="built_in">unordered_map</span>&lt;Node*, Node*&gt; used;</span><br><span class="line">        used[head] = <span class="keyword">new</span> Node(head-&gt;val);</span><br><span class="line">        <span class="built_in">queue</span>&lt;Node*&gt; q;</span><br><span class="line">        q.push(head);</span><br><span class="line">        <span class="keyword">while</span> (!q.empty()) &#123;</span><br><span class="line">            <span class="keyword">int</span> siz = q.size();</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; siz; i++) &#123;</span><br><span class="line">                Node *t = q.front(); q.pop();</span><br><span class="line">                <span class="keyword">if</span> (t-&gt;next) &#123;</span><br><span class="line">                    <span class="keyword">if</span> (!used[t-&gt;next]) &#123;</span><br><span class="line">                        used[t-&gt;next] = <span class="keyword">new</span> Node(t-&gt;next-&gt;val);</span><br><span class="line">                        q.push(t-&gt;next);</span><br><span class="line">                    &#125;</span><br><span class="line">                    used[t]-&gt;next = used[t-&gt;next];</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span> (t-&gt;random) &#123;</span><br><span class="line">                    <span class="keyword">if</span> (!used[t-&gt;random]) &#123;</span><br><span class="line">                        used[t-&gt;random] = <span class="keyword">new</span> Node(t-&gt;random-&gt;val);</span><br><span class="line">                        q.push(t-&gt;random);</span><br><span class="line">                    &#125;</span><br><span class="line">                    used[t]-&gt;random = used[t-&gt;random];</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> used[head];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/9/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><a class="extend next" rel="next" href="/page/11/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/9/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/11/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2141,7 +2140,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">160</span>
+                  <span class="site-state-item-count">162</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
