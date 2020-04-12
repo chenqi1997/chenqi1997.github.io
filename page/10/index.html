@@ -263,6 +263,356 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/23/J53-II. 0到n-1中缺失的数字/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈琦">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cq的Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/23/J53-II. 0到n-1中缺失的数字/" itemprop="url">剑指offer_53-II 0~n-1中缺失的数字</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-23T19:19:00+08:00">
+                2020-03-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/剑指offer/" itemprop="url" rel="index">
+                    <span itemprop="name">剑指offer</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/剑指offer/Easy/" itemprop="url" rel="index">
+                    <span itemprop="name">Easy</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="J53-II-0到n-1中缺失的数字"><a href="#J53-II-0到n-1中缺失的数字" class="headerlink" title="J53-II. 0到n-1中缺失的数字"></a>J53-II. 0到n-1中缺失的数字</h1><blockquote>
+<p>题目：</p>
+</blockquote>
+<p>一个长度为n-1的递增排序数组中的所有数字都是唯一的，并且每个数字都在范围0～n-1之内。在范围0～n-1内的n个数字中有且只有一个数字不在该数组中，请找出这个数字。</p>
+<blockquote>
+<p>示例 1:</p>
+</blockquote>
+<p>输入: [0,1,3]<br>输出: 2</p>
+<blockquote>
+<p>示例 2:</p>
+</blockquote>
+<p>输入: [0,1,2,3,4,5,6,7,9]<br>输出: 8</p>
+<blockquote>
+<p>限制：</p>
+</blockquote>
+<p>1 &lt;= 数组长度 &lt;= 10000</p>
+<blockquote>
+<p>解法：二分查找</p>
+</blockquote>
+<p><strong>有序就要二分！！！</strong></p>
+<p>很简单的二分查找问题，注意，这里面有一种情况是如果最后 <code>left == n - 1</code> 的话，比如输入是 <code>[0, 1, 2, 3, 4, 5, 6, 7]</code> 。这就说明 <code>0 ~ n - 1</code> 的元素都没有缺，缺的是 <code>n</code> 自己，需要返回 <code>n</code> 。这种情况不要忘记了😓</p>
+<p>需要进行如下的讨论：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> left == n - <span class="number">1</span> &amp;&amp; nums[left] == n - <span class="number">1</span> ? n : left;</span><br></pre></td></tr></table></figure>
+<p>最终时间复杂度为 <code>O(logn)</code> 的代码如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">missingNumber</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = nums.size();</span><br><span class="line">        <span class="keyword">int</span> left = <span class="number">0</span>, right = n - <span class="number">1</span>, mid = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span>(left &lt; right) &#123;</span><br><span class="line">            mid = left + (right - left) / <span class="number">2</span>;</span><br><span class="line">            <span class="keyword">if</span>(mid != nums[mid]) right = mid;</span><br><span class="line">            <span class="keyword">else</span> left = mid + <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> left == n - <span class="number">1</span> ? n : left;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/23/J53-I. 在排序数组中查找数字I Leetcode 34/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈琦">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cq的Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/23/J53-I. 在排序数组中查找数字I Leetcode 34/" itemprop="url">剑指offer_53-I 在排序数组中查找数字I / Leetcode 34</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-23T18:19:00+08:00">
+                2020-03-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/剑指offer/" itemprop="url" rel="index">
+                    <span itemprop="name">剑指offer</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/剑指offer/Easy/" itemprop="url" rel="index">
+                    <span itemprop="name">Easy</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="J53-I-在排序数组中查找数字-I-Leetcode-34"><a href="#J53-I-在排序数组中查找数字-I-Leetcode-34" class="headerlink" title="J53-I. 在排序数组中查找数字 I / Leetcode 34"></a>J53-I. 在排序数组中查找数字 I / Leetcode 34</h1><blockquote>
+<p>题目：</p>
+</blockquote>
+<p>统计一个数字在排序数组中出现的次数。</p>
+<blockquote>
+<p>示例 1:</p>
+</blockquote>
+<p>输入: nums = [5,7,7,8,8,10], target = 8<br>输出: 2</p>
+<blockquote>
+<p>示例 2:</p>
+</blockquote>
+<p>输入: nums = [5,7,7,8,8,10], target = 6<br>输出: 0</p>
+<blockquote>
+<p>限制：</p>
+</blockquote>
+<p>0 &lt;= 数组长度 &lt;= 50000</p>
+<blockquote>
+<p>解法一：二分查找</p>
+</blockquote>
+<p>显然直接用O(n)的查找太捞了，想到用二分查找来进行查找，由于整个数组是排序过的，所以可以分别控制if条件，使得当前的left指针分别通过两次循环指向连续的target的左端和右端，即可通过这个范围求出次数。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">search</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(nums.empty()) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> n = nums.size();</span><br><span class="line">        <span class="keyword">int</span> left = <span class="number">0</span>, right = n - <span class="number">1</span>, mid = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span>(left &lt; right) &#123;</span><br><span class="line">            mid = left + (right - left) / <span class="number">2</span>;</span><br><span class="line">            <span class="keyword">if</span>(nums[mid] &gt;= target) right = mid;</span><br><span class="line">            <span class="keyword">else</span> left = mid + <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(nums[left] != target) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> l = left;</span><br><span class="line">        right = n;</span><br><span class="line">        <span class="keyword">while</span>(left &lt; right) &#123;</span><br><span class="line">            mid = left + (right - left) / <span class="number">2</span>;</span><br><span class="line">            <span class="keyword">if</span>(nums[mid] &lt;= target) left = mid + <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">else</span> right = mid;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> r = left;</span><br><span class="line">        <span class="keyword">return</span> r - l;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/23/876. 链表的中间节点/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1707,373 +2057,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/22/J46. 把数字翻译成字符串/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈琦">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/head.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Cq的Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/03/22/J46. 把数字翻译成字符串/" itemprop="url">剑指offer_46 把数字翻译成字符串</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-22T15:10:00+08:00">
-                2020-03-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/剑指offer/" itemprop="url" rel="index">
-                    <span itemprop="name">剑指offer</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/剑指offer/Medium/" itemprop="url" rel="index">
-                    <span itemprop="name">Medium</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="J46-把数字翻译成字符串"><a href="#J46-把数字翻译成字符串" class="headerlink" title="J46. 把数字翻译成字符串"></a>J46. 把数字翻译成字符串</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>给定一个数字，我们按照如下规则把它翻译为字符串：0 翻译成 “a” ，1 翻译成 “b”，……，11 翻译成 “l”，……，25 翻译成 “z”。一个数字可能有多个翻译。请编程实现一个函数，用来计算一个数字有多少种不同的翻译方法。</p>
-<blockquote>
-<p>示例 1:</p>
-</blockquote>
-<p>输入: 12258<br>输出: 5<br>解释: 12258有5种不同的翻译，分别是”bccfi”, “bwfi”, “bczi”, “mcfi”和”mzi”</p>
-<blockquote>
-<p>提示：</p>
-</blockquote>
-<p>0 &lt;= num &lt; $2^{31}$</p>
-<blockquote>
-<p>解法：</p>
-</blockquote>
-<p>这道题的解法跟前面的 <code>J10 青蛙跳台阶问题</code> 很像，都是可以用<code>递归</code>和 <code>动态规划</code> 的思想来做。我用的是动态规划的方法。我们维护一个 <code>n + 1</code> 维的动态规划数组 <code>dp[]</code>，对于前两个初始值设为 1，后面的状态转移方程要分两个情况讨论：</p>
-<ol>
-<li><p>当前的数字可以和前一个数字组合成 10 - 25之间的字符，那么这个时候分两种情况讨论可以得到当前的</p>
-<p> <code>d[i] = d[i - 1] + d[i - 2]</code></p>
-</li>
-<li><p>当前的数字和前一个数字不能组合，那么就没得选了</p>
-<p><code>d[i] = d[i - 1]</code></p>
-<p>时间复杂度和空间复杂度均为 <code>O(n)</code> 。</p>
-</li>
-</ol>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">translateNum</span><span class="params">(<span class="keyword">int</span> num)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">string</span> nums = to_string(num);</span><br><span class="line">        <span class="keyword">int</span> n = nums.size();</span><br><span class="line">        <span class="keyword">int</span> dp[n + <span class="number">1</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">        dp[<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">        dp[<span class="number">1</span>] = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">2</span>; i &lt;= n; ++i) &#123;</span><br><span class="line">            <span class="keyword">if</span>(nums[i - <span class="number">2</span>] == <span class="string">'1'</span> || (nums[i - <span class="number">2</span>] == <span class="string">'2'</span> &amp;&amp; nums[i - <span class="number">1</span>] - <span class="string">'5'</span> &lt;= <span class="number">0</span>)) dp[i] = dp[i - <span class="number">1</span>] + dp[i - <span class="number">2</span>];</span><br><span class="line">            <span class="keyword">else</span> dp[i] = dp[i - <span class="number">1</span>];</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">return</span> dp[n];            </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>递归太麻烦了…就不写了…</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/22/J45. 把数组排成最小的数/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈琦">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/head.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Cq的Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/03/22/J45. 把数组排成最小的数/" itemprop="url">剑指offer_45 把数组排成最小的数</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-22T13:08:00+08:00">
-                2020-03-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/剑指offer/" itemprop="url" rel="index">
-                    <span itemprop="name">剑指offer</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/剑指offer/Medium/" itemprop="url" rel="index">
-                    <span itemprop="name">Medium</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="J45-把数组排成最小的数"><a href="#J45-把数组排成最小的数" class="headerlink" title="J45. 把数组排成最小的数"></a>J45. 把数组排成最小的数</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>输入一个正整数数组，把数组里所有数字拼接起来排成一个数，打印能拼接出的所有数字中最小的一个。</p>
-<blockquote>
-<p>示例 1:</p>
-</blockquote>
-<p>输入: [10,2]<br>输出: “102”</p>
-<blockquote>
-<p>示例 2:</p>
-</blockquote>
-<p>输入: [3,30,34,5,9]<br>输出: “3033459”</p>
-<blockquote>
-<p>提示:</p>
-</blockquote>
-<p>0 &lt; nums.length &lt;= 100</p>
-<blockquote>
-<p>说明:</p>
-</blockquote>
-<p>输出结果可能非常大，所以你需要返回一个字符串而不是整数<br>拼接起来的数字可能会有前导 0，最后结果不需要去掉前导 0</p>
-<blockquote>
-<p>解法：</p>
-</blockquote>
-<p>这道题最开始上来的思路就是，先把这个正整数数组放到一个 <code>vector&lt;sting&gt;</code>  变量 <code>res</code>里，然后对 <code>res</code>  做一个 <code>sort</code> ，就可以获得按照从小到大的数的顺序排序的字符串数组。这里面在 <code>sort</code> 的时候可以用到自己定义的比较方式 <code>compare</code> 。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sort(begin, end, cmp)，其中begin为指向待sort()的数组的第一个元素的指针，end为指向待sort()的数组的最后一个元素的下一个位置的指针，cmp参数为排序准则，如果没有的话，默认以非降序排序。</span><br></pre></td></tr></table></figure>
-<p>默认的 <code>compare</code> 函数是：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">cmp</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> x &lt; y;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这里面我们自己定义的 <code>compare</code> 函数是：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">compare</span><span class="params">(<span class="keyword">const</span> <span class="built_in">string</span>&amp; a, <span class="keyword">const</span> <span class="built_in">string</span>&amp; b)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> a + b &lt; b + a;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这里面与传统的字符串相比较不一样的是，需要比较的是两两拼接起来之后对于整体数字的影响，取较小的一个排在前面，如 <code>3</code> 和 <code>30</code>，拼接分别为 <code>330</code> 和 <code>303</code> ，因此需要将30排在3前面，使得总体最小。代码如下：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="built_in">string</span> <span class="title">minNumber</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; strs;</span><br><span class="line">        <span class="built_in">string</span> res;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> num:nums) &#123;</span><br><span class="line">            strs.push_back(to_string(num));</span><br><span class="line">        &#125;</span><br><span class="line">        sort(strs.begin(),strs.end(), compare);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> str:strs) &#123;</span><br><span class="line">            res += str;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">bool</span> <span class="title">compare</span><span class="params">(<span class="keyword">const</span> <span class="built_in">string</span>&amp; a, <span class="keyword">const</span> <span class="built_in">string</span>&amp; b)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> a + b &lt; b + a;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/9/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/11/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/9/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/11/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2121,7 +2109,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">170</span>
+                  <span class="site-state-item-count">172</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
