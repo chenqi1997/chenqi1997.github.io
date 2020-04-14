@@ -263,6 +263,190 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/17/1160. 拼写单词/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈琦">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cq的Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/17/1160. 拼写单词/" itemprop="url">Leetcode_1160 拼写单词</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-17T11:04:00+08:00">
+                2020-03-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/每日一题/" itemprop="url" rel="index">
+                    <span itemprop="name">每日一题</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/每日一题/Easy/" itemprop="url" rel="index">
+                    <span itemprop="name">Easy</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="1160-Find-Words-That-Can-Be-Formed-by-Characters-拼写单词"><a href="#1160-Find-Words-That-Can-Be-Formed-by-Characters-拼写单词" class="headerlink" title="1160. Find Words That Can Be Formed by Characters/拼写单词"></a>1160. Find Words That Can Be Formed by Characters/拼写单词</h1><blockquote>
+<p><strong>题目</strong></p>
+</blockquote>
+<p>给你一份『词汇表』（字符串数组） <code>words</code> 和一张『字母表』（字符串） <code>chars</code>。</p>
+<p>假如你可以用 <code>chars</code> 中的『字母』（字符）拼写出 <code>words</code> 中的某个『单词』（字符串），那么我们就认为你掌握了这个单词。</p>
+<p>注意：每次拼写时，<code>chars</code> 中的每个字母都只能用一次。</p>
+<p>返回词汇表 <code>words</code> 中你掌握的所有单词的 <strong>长度之和</strong>。</p>
+<blockquote>
+<p><strong>示例 1：</strong></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输入：words = [&quot;cat&quot;,&quot;bt&quot;,&quot;hat&quot;,&quot;tree&quot;], chars = &quot;atach&quot;</span><br><span class="line">输出：6</span><br><span class="line">解释： </span><br><span class="line">可以形成字符串 &quot;cat&quot; 和 &quot;hat&quot;，所以答案是 3 + 3 = 6。</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>示例 2：</strong></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输入：words = [&quot;hello&quot;,&quot;world&quot;,&quot;leetcode&quot;], chars = &quot;welldonehoneyr&quot;</span><br><span class="line">输出：10</span><br><span class="line">解释：</span><br><span class="line">可以形成字符串 &quot;hello&quot; 和 &quot;world&quot;，所以答案是 5 + 5 = 10。</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>提示：</strong></p>
+</blockquote>
+<ol>
+<li><code>1 &lt;= words.length &lt;= 1000</code></li>
+<li><code>1 &lt;= words[i].length, chars.length &lt;= 100</code></li>
+<li>所有字符串中都仅包含小写英文字母</li>
+</ol>
+<blockquote>
+<p>解法：</p>
+</blockquote>
+<p>看到这道题中的，每次拼写时， <code>chars</code> 中的每个字母都只能使用一次的限制，想到可以构建一个 <code>&lt;char, int&gt;</code>的哈希表来存储每一个字符的个数，分别对 <code>words</code> 和 <code>chars</code> 进行记录，判断条件是如果 <code>words</code> 记录中每个字符的个数都不多于 <code>chars</code> 的个数，那么这个 <code>words</code> 即是可行的。</p>
+<p>之前自己写的 for 循环比较繁琐，要用到 chars.size() ，参考了一下别人写的 for 循环，在 <code>C++11</code> 之后可以用 </p>
+<p><code>for(char c: chars)</code> 来实现 <code>Range-based for loop</code>，跟python比较像。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">countCharacters</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&amp; words, <span class="built_in">string</span> chars)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">unordered_map</span>&lt;<span class="keyword">char</span>,<span class="keyword">int</span>&gt; char_count;</span><br><span class="line">        <span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">char</span> c: chars) &#123;</span><br><span class="line">            ++char_count[c];</span><br><span class="line">        &#125; </span><br><span class="line">        <span class="keyword">for</span>(<span class="built_in">string</span> word : words) &#123;</span><br><span class="line">            <span class="built_in">unordered_map</span>&lt;<span class="keyword">char</span>,<span class="keyword">int</span>&gt; word_count;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">char</span> c : word) &#123;</span><br><span class="line">                ++word_count[c];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">int</span> tmp = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">bool</span> flag = <span class="literal">true</span>;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">char</span> c : word) &#123;</span><br><span class="line">                <span class="keyword">if</span>(char_count[c] &lt; word_count[c]) &#123;</span><br><span class="line">                    flag = <span class="literal">false</span>;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            tmp = flag?word.size():<span class="number">0</span>;</span><br><span class="line">            res += tmp;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>这种解法的时间复杂度为 O(n) ，空间复杂度为 O(s) ，其中 S 为本题中的字符集大小 26，因此也可以不构建哈希表，直接自己建立一个大小为26的数组，计数通过<code>for(char c:chars) ch[c-&#39;a&#39;]++;</code>来实现。时间和空间的性能要比使用哈希表的方法好不少，代码如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">countCharacters</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&amp; words, <span class="built_in">string</span> chars)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> res=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> ch[<span class="number">26</span>]=&#123;<span class="number">0</span>&#125;;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">char</span> c:chars)</span><br><span class="line">            ch[c-<span class="string">'a'</span>]++;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span>(<span class="built_in">string</span> word:words)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">int</span> wd[<span class="number">26</span>]=&#123;<span class="number">0</span>&#125;;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">char</span> c:word)</span><br><span class="line">                wd[c-<span class="string">'a'</span>]++;</span><br><span class="line">            res+=word.size();</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">char</span> c:word)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span>(ch[c-<span class="string">'a'</span>]&lt;wd[c-<span class="string">'a'</span>])</span><br><span class="line">                &#123;</span><br><span class="line">                    res-=word.size();</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;    </span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/16/J24. 反转链表 Leetcode 206/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -396,6 +580,172 @@
 <p>思路是，通过递归调用到最深的函数层内，找到最深处的节点 newhead 作为新的反转链表的头节点，然后在递归从内层到外层的结构中依次改变当前 <code>head-&gt;next-&gt;next</code>的值来实现链表反向。解释图如下：</p>
 <p><img src="../images/j24_2.jpg" alt="j24_2"></p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">ListNode* <span class="title">reverseList</span><span class="params">(ListNode* head)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (head == <span class="literal">NULL</span> || head-&gt;next == <span class="literal">NULL</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> head;</span><br><span class="line">        &#125;</span><br><span class="line">        ListNode* ret = reverseList(head-&gt;next);</span><br><span class="line">        head-&gt;next-&gt;next = head;</span><br><span class="line">        head-&gt;next = <span class="literal">NULL</span>;</span><br><span class="line">        <span class="keyword">return</span> ret;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/16/J22. 链表中的倒数第k个节点/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈琦">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cq的Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/16/J22. 链表中的倒数第k个节点/" itemprop="url">剑指offer_22 链表中的倒数第k个节点</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-16T21:44:00+08:00">
+                2020-03-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/剑指offer/" itemprop="url" rel="index">
+                    <span itemprop="name">剑指offer</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/剑指offer/Easy/" itemprop="url" rel="index">
+                    <span itemprop="name">Easy</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="J22-链表中的倒数第k个节点"><a href="#J22-链表中的倒数第k个节点" class="headerlink" title="J22. 链表中的倒数第k个节点"></a>J22. 链表中的倒数第k个节点</h1><blockquote>
+<p>题目：</p>
+</blockquote>
+<p>输入一个链表，输出该链表中倒数第k个节点。为了符合大多数人的习惯，本题从1开始计数，即链表的尾节点是倒数第1个节点。例如，一个链表有6个节点，从头节点开始，它们的值依次是1、2、3、4、5、6。这个链表的倒数第3个节点是值为4的节点。</p>
+<blockquote>
+<p>示例：</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">给定一个链表: 1-&gt;2-&gt;3-&gt;4-&gt;5, 和 k = 2.</span><br><span class="line"></span><br><span class="line">返回链表 4-&gt;5.</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>解法：</p>
+</blockquote>
+<p>这种题最容易想到的就是双指针法，p,q两个指针，让p先走k步，然后p,q一起走，直到p为null。</p>
+<p>结果也很好，时间空间双100%😄。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">ListNode* <span class="title">getKthFromEnd</span><span class="params">(ListNode* head, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        ListNode* p1 = head;</span><br><span class="line">        ListNode* p2 = head; </span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; k; ++i) &#123;</span><br><span class="line">            p1 = p1-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span>(p1) &#123;</span><br><span class="line">            p1 = p1-&gt;next;</span><br><span class="line">            p2 = p2-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">return</span> p2;        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
           
         
@@ -1710,395 +2060,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/14/J14-I. 剪绳子 Leetcode 343/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈琦">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/head.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Cq的Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/03/14/J14-I. 剪绳子 Leetcode 343/" itemprop="url">剑指offer_14-I&II. 剪绳子 / Leetcode 343</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-14T18:28:00+08:00">
-                2020-03-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/剑指offer/" itemprop="url" rel="index">
-                    <span itemprop="name">剑指offer</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/剑指offer/Medium/" itemprop="url" rel="index">
-                    <span itemprop="name">Medium</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="J14-I-amp-II-剪绳子-Leetcode-343"><a href="#J14-I-amp-II-剪绳子-Leetcode-343" class="headerlink" title="J14-I&amp;II. 剪绳子/ Leetcode 343"></a>J14-I&amp;II. 剪绳子/ Leetcode 343</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>给你一根长度为 n 的绳子，请把绳子剪成整数长度的 m 段（m、n都是整数，n &gt; 1并且m &gt; 1），每段绳子的长度记为 k[0],k[1]…k[m] 。请问 k[0]*k[1]*…*k[m] 可能的最大乘积是多少？例如，当绳子的长度是8时，我们把它剪成长度分别为2、3、3的三段，此时得到的最大乘积是18。</p>
-<blockquote>
-<p>示例 1：</p>
-</blockquote>
-<p>输入: 2<br>输出: 1<br>解释: 2 = 1 + 1, 1 × 1 = 1</p>
-<blockquote>
-<p>示例 2:</p>
-</blockquote>
-<p>输入: 10<br>输出: 36<br>解释: 10 = 3 + 3 + 4, 3 × 3 × 4 = 36</p>
-<blockquote>
-<p>提示：</p>
-</blockquote>
-<p>2 &lt;= n &lt;= 58</p>
-<blockquote>
-<p>解法一：动态规划</p>
-</blockquote>
-<p>首先最容易想到的是复杂度为O(n2)的动态规划解法，维护一个一维的 <code>dp</code> 数组，dp[i]表示数字 i 拆分成至少两个正整数的和的最大乘积， <code>dp</code> 数组大小为 n + 1，初始值全部设为 1。由于 n = 1, 2的时候 dp[n] 均为1，因此我们可以设置 i 从3到 n 遍历。在循环 j 中，对于小于 i 的 j，我们按照两种情况进行讨论：如果是拆分成两个数字，即为 <code>j * (i - j)</code>，如果是拆分成多个数字，由于我们是遍历 j ，因此要考虑将 i - j 拆分，这样才可以避免重复，因此构造的动态规划状态转移方程为：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dp[i] = max(dp[i], max(j * (i - j), j * dp[i - j]));</span><br></pre></td></tr></table></figure>
-<p>随着 i 循环的结束，我们最终得到的 <code>dp[n]</code> 即为最终的乘积最大的结果。</p>
-<p>时间复杂度O(n2)，空间复杂度O(n)，但是在 <code>Leetcode</code> 上可以得到双100%的成绩。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">cuttingRope</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; dp(n + <span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">3</span>; i &lt;= n; ++i) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt; i; ++j) &#123;</span><br><span class="line">                dp[i] = max(max(j * dp[i - j], j * (i - j)), dp[i]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> dp[n];                </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>⭐解法二：数学解法+贪心规则</p>
-</blockquote>
-<p>通过数学计算可以得到贪心规则如下：</p>
-<p>最高优先级： 3 。把绳子尽可能切为多个长度为 3 的片段，留下的最后一段绳子的长度可能为 0,1,2 三种情况。<br>次高优先级： 2 。若最后一段绳子长度为 2，则保留，不再拆为 1+1 。<br>最低优先级： 1； 若最后一段绳子长度为 1；则应把最后的 3 + 1 替换为 2 + 2，因为2×2 &gt; 3×1。</p>
-<blockquote>
-<p>算法流程：<br>当 n \leq 3n≤3 时，按照贪心规则应直接保留原数字，但由于题目要求必须剪成 m&gt;1m&gt;1 段，因此必须剪出一段长度为 11 的绳子，即返回 n - 1n−1 。<br>当 n &gt; 3 时，求 n 除以 3 的 整数部分 a 和 余数部分 b （即 n = 3a + b ），并分为以下三种情况：</p>
-</blockquote>
-<ol>
-<li>当 b = 0 时，直接返回 $3^a$.</li>
-<li>当 b = 1 时，要将一个 1+3 转换为 2+2，因此返回 $3 ^(a-1) × 4$.</li>
-<li>当 b = 2 时，返回 $3^a ×2$。</li>
-</ol>
-<p>时间空间复杂度都为O(1)。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">integerBreak</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (n == <span class="number">2</span> || n == <span class="number">3</span>) <span class="keyword">return</span> n - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span> (n == <span class="number">4</span>) <span class="keyword">return</span> <span class="number">4</span>;</span><br><span class="line">        n -= <span class="number">5</span>;</span><br><span class="line">        <span class="keyword">return</span> (<span class="keyword">int</span>)<span class="built_in">pow</span>(<span class="number">3</span>, (n / <span class="number">3</span> + <span class="number">1</span>)) * (n % <span class="number">3</span> + <span class="number">2</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<h1 id="II"><a href="#II" class="headerlink" title="II"></a>II</h1><p>II里面把 n 的范围提升到了 <code>2 &lt;= n &lt;= 1000</code> ，答案也需要取模 1e9+7（1000000007），如计算初始结果为：1000000008，请返回 1。</p>
-<p>因此原来的动态规划方法做不了了，只能自己定义一个返回值为 long long int的幂指函数：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">cuttingRope</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(n == <span class="number">2</span>) <span class="keyword">return</span> <span class="number">1</span>;    <span class="comment">// 如果绳子长度为2,只能分成1*1</span></span><br><span class="line">        <span class="keyword">if</span>(n == <span class="number">3</span>) <span class="keyword">return</span> <span class="number">2</span>;    <span class="comment">// 如果绳子长度为3,只能分成1*2</span></span><br><span class="line">        <span class="comment">// if(n == 4) return 4;</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> numsOf3 = n / <span class="number">3</span>;</span><br><span class="line">        <span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(n % <span class="number">3</span> == <span class="number">1</span>)&#123;</span><br><span class="line">            <span class="comment">// 说明最后会剩下一个4,这时要把4拆分成2*2</span></span><br><span class="line">            <span class="keyword">return</span> (iPow(<span class="number">3</span>, (numsOf3 - <span class="number">1</span>)) * <span class="number">4</span>) % <span class="number">1000000007</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(n % <span class="number">3</span> == <span class="number">2</span>)&#123;</span><br><span class="line">            <span class="comment">// 说明最后会剩下一个2</span></span><br><span class="line">            <span class="keyword">return</span> (iPow(<span class="number">3</span>, numsOf3) * <span class="number">2</span>) % <span class="number">1000000007</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> (iPow(<span class="number">3</span>, numsOf3)) % <span class="number">1000000007</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">long</span> <span class="keyword">long</span> <span class="keyword">int</span> <span class="title">iPow</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">int</span> e)</span></span>&#123;</span><br><span class="line">        <span class="comment">// 因为pow会溢出，这里设计一个iPow</span></span><br><span class="line">        <span class="comment">// res来存放结果，为了保证res不溢出这里设置为long long</span></span><br><span class="line">        <span class="keyword">long</span> <span class="keyword">long</span> <span class="keyword">int</span> res = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; e; ++i)&#123;</span><br><span class="line">            res *= n;</span><br><span class="line">            <span class="keyword">if</span>(res * n &gt; <span class="number">1000000007</span>)&#123;</span><br><span class="line">                <span class="comment">// 对结果取模</span></span><br><span class="line">                res %= <span class="number">1000000007</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/14/300. 最长递增子序列/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈琦">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/head.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Cq的Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/03/14/300. 最长递增子序列/" itemprop="url">Leetcode_300 最长递增子序列</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-14T16:24:00+08:00">
-                2020-03-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/每日一题/" itemprop="url" rel="index">
-                    <span itemprop="name">每日一题</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/每日一题/Medium/" itemprop="url" rel="index">
-                    <span itemprop="name">Medium</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="300-Longest-Increasing-Subsequence-最长递增子序列"><a href="#300-Longest-Increasing-Subsequence-最长递增子序列" class="headerlink" title="300. Longest Increasing Subsequence/最长递增子序列"></a>300. Longest Increasing Subsequence/最长递增子序列</h1><blockquote>
-<p>题目</p>
-</blockquote>
-<p>给定一个无序的整数数组，找到其中最长上升子序列的长度。</p>
-<blockquote>
-<p>示例:</p>
-</blockquote>
-<p>输入: [10,9,2,5,3,7,101,18]<br>输出: 4<br>解释: 最长的上升子序列是 [2,3,7,101]，它的长度是 4。</p>
-<blockquote>
-<p>说明:</p>
-</blockquote>
-<p>可能会有多种最长上升子序列的组合，你只需要输出对应的长度即可。<br>你算法的时间复杂度应该为 O(n2) 。</p>
-<blockquote>
-<p>进阶: 你能将算法的时间复杂度降低到 O(n log n) 吗?</p>
-</blockquote>
-<blockquote>
-<p>解法一：暴力dp法</p>
-</blockquote>
-<p>题目中要求的最低时间复杂度O(n2)可以用暴力<code>动态规划</code>来实现，我们维护一个一维的dp数组 <code>dp[]</code> ，dp[i] 表示以 nums[i] 为结尾的最长递增子串的长度。在 for 循环中的状态转移方程可以表示为：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dp[i] = max(dp[i], dp[j] + <span class="number">1</span>); 其中<span class="number">0</span> &lt;= j &lt; i &amp;&amp; nums[j] &lt; nums[i]</span><br></pre></td></tr></table></figure>
-<p>在外层 for 循环中，通过 <code>res</code> 来存储每个 i 的循环中最长的递增子串长度。</p>
-<p>时间复杂度为O(n2)，空间复杂度为O(n)</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">lengthOfLIS</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; dp(nums.size(), <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nums.size(); ++i) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; i; ++j) &#123;</span><br><span class="line">                <span class="keyword">if</span> (nums[i] &gt; nums[j]) &#123;</span><br><span class="line">                    dp[i] = max(dp[i], dp[j] + <span class="number">1</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            res = max(res, dp[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>⭐解法二：贪心法 + 二分查找</p>
-</blockquote>
-<p>题目中的进阶要求达到 <code>O(nlogn)</code> 的时间复杂度，因此可以考虑使用二分查找来实现把上面的某一个 n 降为 <code>logn</code> 的复杂度。那么怎么去实现这个二分查找呢？考虑上面的动态规划问题，维护的数组其实可以按照贪心法的思想，如果我们要使上升子序列尽可能的长，则我们需要让序列上升得尽可能慢，因此我们希望每次在上升子序列最后加上的那个数尽可能的小。</p>
-<p>基于上面的贪心思路，我们维护一个数组 <code>d[i]</code> ，表示长度为 i 的最长上升子序列的末尾元素的最小值，用 <code>len</code>记录目前最长上升子序列的长度，起始时<code>len</code> 为 1，<code>d[1] = nums[0]</code>。即 <code>d[i]</code> 表示长度为 i + 1的所有最长上升子序列的结尾元素的最小值。下面为了使用二分法来定位 i ，我们要证明这个数组 <code>d[i]</code> 是单调递增的：</p>
-<blockquote>
-<p>反证法</p>
-</blockquote>
-<p>对于此处的 <code>d[i]</code> 而言，对应一个上升子序列 <code>[a0, a1, ..., ai]</code>，依据定义 <code>d[i] = ai</code> ；<br>对于此处的 <code>d[j]</code> 而言，对应一个上升子序列 <code>[b0, b1 ,...,bi ,...,bj ]</code>，依据定义 <code>d[j] = bj</code>;</p>
-<p>由于 <code>d[i] &gt;= d[j]</code> ，等价于 <code>ai &gt;= bj</code> ，而在上升子序列 <code>[b0, b1 ,...,bi ,...,bj ]</code> 中，bi 严格小于 bj ，故有 <code>ai &gt;= bj &gt; bi</code> , 即上升子序列 <code>[b0, b1, ... , bi]</code> 也是一个长度为 i + 1但是结尾元素更小的最长上升子序列，故矛盾！</p>
-<p>因此整个算法的流程为：</p>
-<p>设当前已求出的最长上升子序列的长度为 <code>len</code>（初始时为 1），从前往后遍历数组 <code>nums</code>，在遍历到 <code>nums[i]</code> 时：</p>
-<ol>
-<li><p>如果 <code>nums[i] &gt; d[len]</code>  ，则直接加入到 <code>d[]</code> 数组末尾，并更新 <code>len = len + 1</code>；</p>
-</li>
-<li><p>否则，在 <code>d[]</code> 数组中二分查找，找到第一个比 <code>nums[i]</code> 小的数 <code>d[k]</code> ，并更新 <code>d[k+1]=nums[i]</code>。</p>
-</li>
-</ol>
-<p>这样可以保证我们维护的数组 <code>d[]</code>是贪心的，时间复杂度O(nlogn)，空间复杂度O(n)。需要额外使用长度为 n 的 <code>d[]</code> 数组。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">lengthOfLIS</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> len = <span class="number">1</span>, n = (<span class="keyword">int</span>)nums.size();</span><br><span class="line">        <span class="keyword">if</span> (n == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; d(n + <span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line">        d[len] = nums[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; n; ++i) &#123;</span><br><span class="line">            <span class="keyword">if</span> (nums[i] &gt; d[len]) d[++len] = nums[i];</span><br><span class="line">            <span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="keyword">int</span> l = <span class="number">1</span>, r = len, pos = <span class="number">0</span>; </span><br><span class="line">                <span class="comment">// 如果找不到说明所有的数都比 nums[i] 大，此时要更新 d[1]，所以这里将 pos 设为 0</span></span><br><span class="line">                <span class="keyword">while</span> (l &lt;= r) &#123;</span><br><span class="line">                    <span class="keyword">int</span> mid = (l + r) &gt;&gt; <span class="number">1</span>;</span><br><span class="line">                    <span class="keyword">if</span> (d[mid] &lt; nums[i]) &#123;</span><br><span class="line">                        pos = mid;</span><br><span class="line">                        l = mid + <span class="number">1</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="keyword">else</span> r = mid - <span class="number">1</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                d[pos + <span class="number">1</span>] = nums[i];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> len;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2151,7 +2112,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">176</span>
+                  <span class="site-state-item-count">178</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2162,7 +2123,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">13</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>

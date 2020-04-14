@@ -263,6 +263,369 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/25/892. 三维形体的表面积/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈琦">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cq的Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/25/892. 三维形体的表面积/" itemprop="url">Leetcode_892 三维形体的表面积</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-25T12:03:00+08:00">
+                2020-03-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/每日一题/" itemprop="url" rel="index">
+                    <span itemprop="name">每日一题</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/每日一题/Easy/" itemprop="url" rel="index">
+                    <span itemprop="name">Easy</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="892-Surface-Area-of-3D-Shapes-三维形体的表面积"><a href="#892-Surface-Area-of-3D-Shapes-三维形体的表面积" class="headerlink" title="892. Surface Area of 3D Shapes / 三维形体的表面积"></a>892. Surface Area of 3D Shapes / 三维形体的表面积</h1><blockquote>
+<p>题目：</p>
+</blockquote>
+<p>在 <code>N * N</code> 的网格上，我们放置一些 <code>1 * 1 * 1</code> 的立方体。</p>
+<p>每个值 <code>v = grid[i][j]</code> 表示 <code>v</code> 个正方体叠放在对应单元格 <code>(i, j)</code> 上。</p>
+<p>请你返回最终形体的表面积。</p>
+<p><strong>示例 1：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：[[2]]</span><br><span class="line">输出：10</span><br></pre></td></tr></table></figure>
+<p><strong>示例 2：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：[[1,2],[3,4]]</span><br><span class="line">输出：34</span><br></pre></td></tr></table></figure>
+<p><strong>示例 3：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：[[1,0],[0,2]]</span><br><span class="line">输出：16</span><br></pre></td></tr></table></figure>
+<p><strong>示例 4：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：[[1,1,1],[1,0,1],[1,1,1]]</span><br><span class="line">输出：32</span><br></pre></td></tr></table></figure>
+<p><strong>示例 5：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：[[2,2,2],[2,1,2],[2,2,2]]</span><br><span class="line">输出：46</span><br></pre></td></tr></table></figure>
+<p><strong>提示：</strong></p>
+<ul>
+<li><code>1 &lt;= N &lt;= 50</code></li>
+<li><code>0 &lt;= grid[i][j] &lt;= 50</code></li>
+</ul>
+<blockquote>
+<p>解法：</p>
+</blockquote>
+<p>简单的计算，每次从左到右从上到下遍历一个新的节点的时候，要将最终的结果先加上这个 <code>grid</code> 带来的表面积，再减去这个 <code>grid</code> 和左侧 <code>grid</code> 以及上方 <code>grid</code> 的重合部分。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">surfaceArea</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; grid)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> m = grid.size(), n = grid[<span class="number">0</span>].size();</span><br><span class="line">        <span class="keyword">int</span> res = <span class="number">0</span>; </span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; m; ++i) &#123;   </span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; n; ++j) &#123;</span><br><span class="line">                <span class="keyword">if</span>(grid[i][j])&#123;</span><br><span class="line">                    res += <span class="number">6</span> * grid[i][j] - (grid[i][j] - <span class="number">1</span>) * <span class="number">2</span>;</span><br><span class="line">                <span class="comment">//减去上面重叠的</span></span><br><span class="line">                <span class="keyword">if</span>(i &gt; <span class="number">0</span> &amp;&amp; grid[i<span class="number">-1</span>][j])</span><br><span class="line">                    res -= <span class="number">2</span> * min(grid[i][j], grid[i<span class="number">-1</span>][j]);</span><br><span class="line">                <span class="comment">//减去左面重叠的</span></span><br><span class="line">                <span class="keyword">if</span>(j &gt; <span class="number">0</span> &amp;&amp; grid[i][j<span class="number">-1</span>])</span><br><span class="line">                    res -= <span class="number">2</span> * min(grid[i][j], grid[i][j<span class="number">-1</span>]);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/24/J56-II. 数组中数字出现的次数II/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈琦">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cq的Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/24/J56-II. 数组中数字出现的次数II/" itemprop="url">剑指offer_56-II 数组中数字出现的次数 II</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-24T20:21:00+08:00">
+                2020-03-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/剑指offer/" itemprop="url" rel="index">
+                    <span itemprop="name">剑指offer</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/剑指offer/Medium/" itemprop="url" rel="index">
+                    <span itemprop="name">Medium</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="J56-II-数组中数字出现的次数-II"><a href="#J56-II-数组中数字出现的次数-II" class="headerlink" title="J56-II*. 数组中数字出现的次数 II"></a>J56-II*. 数组中数字出现的次数 II</h1><blockquote>
+<p>题目：</p>
+</blockquote>
+<p>在一个数组 nums 中除一个数字只出现一次之外，其他数字都出现了三次。请找出那个只出现一次的数字。</p>
+<blockquote>
+<p>示例 1：</p>
+</blockquote>
+<p>输入：nums = [3,4,3,3]<br>输出：4</p>
+<blockquote>
+<p>示例 2：</p>
+</blockquote>
+<p>输入：nums = [9,1,7,9,7,9,7]<br>输出：1</p>
+<blockquote>
+<p>限制：</p>
+</blockquote>
+<p>1 &lt;= nums.length &lt;= 10000<br>1 &lt;= nums[i] &lt; 2^31</p>
+<blockquote>
+<p>解法一：哈希表+迭代器</p>
+</blockquote>
+<p>这道题没有时间空间复杂度要求，因此可以用哈希表的方式记录下每个数字出现的次数，再用哈希表的迭代器 iterator 依次迭代哈希表中保存的元素，如果遇到个数为1的即返回。</p>
+<p>时间复杂度 <code>O(N)</code> ，空间复杂度 <code>O(N)</code> 。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">//unordered_map的迭代器是一个指针，指向这个元素，通过迭代器来取得它的值。</span><br><span class="line">1 unordered_map&lt;Key,T&gt;::iterator it;</span><br><span class="line">2 (*it).first;             // the key value (of type Key)</span><br><span class="line">3 (*it).second;            // the mapped value (of type T)</span><br><span class="line">4 (*it);                   // the &quot;element value&quot; (of type pair&lt;const Key,T&gt;)</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">singleNumber</span><span class="params">(<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;nums)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (nums.empty()) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 哈希表存储数和其出现次数</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">unordered_map</span>&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt; <span class="built_in">map</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> num : nums) &#123;</span><br><span class="line">        <span class="built_in">map</span>[num]++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 遍历哈希表</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> iter : <span class="built_in">map</span>) &#123;</span><br><span class="line">        <span class="comment">// 找到出现次数的数并返回</span></span><br><span class="line">        <span class="keyword">if</span> (iter.second == <span class="number">1</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> iter.first;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>解法二：位运算</p>
+</blockquote>
+<ul>
+<li>如果一个数字出现三次，则它二进制表示的每一位也出现三次。</li>
+<li>如果把所有出现三次的数字的二进制表示的每一位都分别加起来，则每一位的和都能被3整除。</li>
+<li>将数组中的所有数字的二进制表示的每一位都加起来。如果某一位的和能被3整除，则只出现一次数字的二进制表示中对应的那一位是0，否则就是1。</li>
+</ul>
+<p>具体的实现代码如下，时间复杂度为O(N)，空间复杂度为O(N)。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">singleNumber</span><span class="params">(<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;nums)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (nums.empty()) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">    <span class="comment">// 存储所有数字二进制表示的每一位的和</span></span><br><span class="line">    <span class="keyword">int</span> bitSum[<span class="number">32</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">    <span class="comment">// 该位是0或1</span></span><br><span class="line">    <span class="keyword">int</span> bit = <span class="number">0</span>;</span><br><span class="line">    <span class="comment">// 遍历数组中的数</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> num : nums) &#123;</span><br><span class="line">        <span class="comment">// 每次更新无符号整数掩码为1</span></span><br><span class="line">        <span class="keyword">unsigned</span> <span class="keyword">int</span> bitMask = <span class="number">1</span>;</span><br><span class="line">        <span class="comment">// 对数字的32位进行累加，从低位开始</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">31</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">            <span class="comment">// 计算该位是1还是0</span></span><br><span class="line">            bit = num &amp; bitMask;</span><br><span class="line">            <span class="comment">// 如果不是0，则将存储每位和的数组的该位加1</span></span><br><span class="line">            <span class="keyword">if</span> (bit != <span class="number">0</span>) &#123;</span><br><span class="line">                bitSum[i] += <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 将掩码的1左移，接着计算右起开始的下一位</span></span><br><span class="line">            bitMask &lt;&lt;= <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 遍历二进制每一位和的数组，从高位开始</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> b : bitSum) &#123;</span><br><span class="line">        <span class="comment">// 考虑到最后一位的情况，</span></span><br><span class="line">        <span class="comment">// 应该先左移再计算</span></span><br><span class="line">        ans &lt;&lt;= <span class="number">1</span>;</span><br><span class="line">        <span class="comment">// 如果和的该位整除3则为0，</span></span><br><span class="line">        <span class="comment">// 否则为1</span></span><br><span class="line">        ans += (b % <span class="number">3</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/24/J56-I. 数组中数字出现的次数 Leetcode 260/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1689,381 +2052,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/23/J51. 数组中的逆序对/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈琦">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/head.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Cq的Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/03/23/J51. 数组中的逆序对/" itemprop="url">剑指offer_51 数组中的逆序对</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-23T15:01:00+08:00">
-                2020-03-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/剑指offer/" itemprop="url" rel="index">
-                    <span itemprop="name">剑指offer</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/剑指offer/Hard/" itemprop="url" rel="index">
-                    <span itemprop="name">Hard</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="J51-数组中的逆序对"><a href="#J51-数组中的逆序对" class="headerlink" title="J51. 数组中的逆序对"></a>J51. 数组中的逆序对</h1><blockquote>
-<p>题目</p>
-</blockquote>
-<p>在数组中的两个数字，如果前面一个数字大于后面的数字，则这两个数字组成一个逆序对。输入一个数组，求出这个数组中的逆序对的总数。</p>
-<blockquote>
-<p>示例 1:</p>
-</blockquote>
-<p>输入: [7,5,6,4]<br>输出: 5</p>
-<blockquote>
-<p>限制：</p>
-</blockquote>
-<p>0 &lt;= 数组长度 &lt;= 50000</p>
-<blockquote>
-<p>解法一：动态规划（超出时间限制）</p>
-</blockquote>
-<p>最容易想到的是O(n^2)的动态规划实现方法，超出时间限制了。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">reversePairs</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(nums.empty()) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> n = nums.size();</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; dp(n + <span class="number">1</span>);</span><br><span class="line">        dp[<span class="number">0</span>] = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; n; ++i) &#123;</span><br><span class="line">            <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; i; ++j) &#123;</span><br><span class="line">                <span class="keyword">if</span>(nums[j] &gt; nums[i]) ++count;</span><br><span class="line">            &#125;</span><br><span class="line">            dp[i] = dp[i - <span class="number">1</span>] + count;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">return</span> dp[n - <span class="number">1</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>⭐⭐⭐解法二：分治法/归并排序</p>
-</blockquote>
-<p>归并排序（MERGE-SORT）是利用<strong>归并</strong>的思想实现的排序方法，该算法采用经典的<strong>分治</strong>（divide-and-conquer）策略（分治法将问题<strong>分</strong>(divide)成一些小的问题然后递归求解，而<strong>治(conquer)</strong>的阶段则将分的阶段得到的各答案”修补”在一起，即分而治之)。</p>
-<p><img src="../images/J51_1.png" alt="J51_1"></p>
-<p>可以看到这种结构很像一棵完全二叉树。<strong>分</strong>阶段可以理解为就是递归拆分子序列的过程，递归深度为 <code>logn</code> 。</p>
-<p><strong>治</strong>阶段，我们需要将两个已经有序的子序列合并成一个有序序列，比如上图中的最后一次合并，要将[4,5,7,8]和[1,2,3,6]两个已经有序的子序列，合并为最终序列[1,2,3,4,5,6,7,8]，来看下实现步骤。</p>
-<p><img src="../images/J51_2.png" alt="J51_2"></p>
-<p><img src="../images/J51_3.png" alt="J51_3"></p>
-<p>归并排序中每次合并的操作需要时间复杂度为 <code>O(n)</code> ，完全二叉树的深度为 <code>O(logn)</code> ，因此最终的平均时间复杂度为 <code>O(nlogn)</code> 。</p>
-<p>对于本题，我们可以发现逆序对的来源由三个部分组成：</p>
-<ol>
-<li>左边区间的逆序对</li>
-<li>右边区间的逆序对</li>
-<li>横跨两个区间的逆序对</li>
-</ol>
-<p>归并排序的核心在于合并，我们可以在合并两个有序数组的时候统计相应的逆序数。</p>
-<p>归并排序利用递归调用的方式来实现，首先不断 <code>DFS</code>递归直到 <code>logn</code> 步之后得到各个单独的元素，然后再合并，在合并的时候要注意：以arr = [7, 5, 4, 6]为例</p>
-<p>按照归并排序的思路，会将 <code>arr</code> 分解为 <code>arrL = [7,5]</code> , <code>arrR = [6,4]</code> ; 继续分解为 <code>arrLL = [7]</code> ,  <code>arrLR = [5]</code> ; <code>arrRL = [6]</code>,  <code>arrRR = [4]</code> ; 自此分解完成。</p>
-<p>接下来合并：</p>
-<p>假设 <code>i</code> 为 <code>arrLL</code> 的数组下标， <code>j</code> 为 <code>arrLR</code> 的数组下标,  <code>index</code> 为新数组 <code>res</code> 的下标，初始值都为0</p>
-<p>首先 <code>arrLL</code> 与 <code>arrLR</code> 合并，因为 <code>arrLL[i] &gt; arrLR[j]</code>，</p>
-<p><strong>所以可以说明 <code>arrLL</code> 中7及其之后的所有数字都大于 <code>arrLR</code> 中的5，也就是说7及其之后的所有元素都可以与5组成逆序对，所以此时7及其之后的所有元素个数<code>（leftLen - i）</code>即我们要的逆序对数，需要添加到结果 <code>sum</code> 中。即 <code>sum += leftLen - i</code> 。</strong></p>
-<p>（这也就是此算法高效的地方，一次可以查找到好多次的逆序对数，而且不会重复）</p>
-<p>合并之后为 <code>arrL=[5,7]</code>，根据上述方法将 <code>arrRL</code> 和 <code>arrRR</code> 合并为 <code>arrR=[4,6]</code> ;</p>
-<p>现在将 <code>arrL</code> 和 <code>arrR</code> 合并为 <code>arr</code> ：</p>
-<p>5 &gt; 4，说明5及其之后的所有元素都能与4组成逆序对；所以sum += （leftLen - 1）；</p>
-<p>5 &lt; 6，正常排序，不做处理</p>
-<p>7 &gt; 6，说明7及其之后的所有元素都能与6组成逆序对；所以sum += （leftLen - 1）；</p>
-<p>7，正常排序，不作处理</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">reversePairs</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; tmp(nums.size(), <span class="number">0</span>);</span><br><span class="line">        <span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line">        MergeSort(nums, <span class="number">0</span>, nums.size() - <span class="number">1</span>, tmp, res);</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">MergeSort</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums, <span class="keyword">int</span> l, <span class="keyword">int</span> r, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; tmp, <span class="keyword">int</span>&amp; res)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(l &lt; r) &#123;</span><br><span class="line">            <span class="keyword">int</span> mid = l + (r - l) / <span class="number">2</span>;</span><br><span class="line">            MergeSort(nums, l, mid, tmp, res);</span><br><span class="line">            MergeSort(nums, mid + <span class="number">1</span>, r, tmp, res);</span><br><span class="line">            <span class="keyword">int</span> lpos = l, rpos = mid + <span class="number">1</span>, tpos = l;</span><br><span class="line">            <span class="keyword">while</span>(lpos &lt;= mid &amp;&amp; rpos &lt;= r) &#123;</span><br><span class="line">                <span class="keyword">if</span>(nums[lpos] &gt; nums[rpos]) &#123;</span><br><span class="line">                    tmp[tpos++] = nums[rpos++];</span><br><span class="line">                    res += mid - lpos + <span class="number">1</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span> &#123;</span><br><span class="line">                    tmp[tpos++] = nums[lpos++];</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">while</span>(lpos &lt;= mid) &#123;</span><br><span class="line">                tmp[tpos++] = nums[lpos++];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">while</span>(rpos &lt;= r) &#123;</span><br><span class="line">                tmp[tpos++] = nums[rpos++];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//最后把排好序的放回到nums[]中</span></span><br><span class="line">            <span class="keyword">while</span>(l &lt;= r) &#123;</span><br><span class="line">                nums[l] = tmp[l];</span><br><span class="line">                l++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>这里面建立了一个跟 <code>nums</code> 同样大小的空数组 <code>tmp</code> ，用来保存在每一层上合并之后得到的有序数组。对于每一层，归并的都是已经在底层排序好了的有序数组，因此只需要做一次 <code>while循环</code> ，将 <code>nums[rpos] &lt; nums[lpos]</code>的情况下，把我们的 <code>res</code> 加上从 <code>lpos</code> 到 <code>mid</code> 中间的所有元素的个数，这些数与后面的<code>nums[rpos]</code> 都将构成逆序对。如果不满足的话就说明左边的 <code>nums[lpos]</code> 符合顺序，将 <code>nums[lpos++]</code> 存入对应的 <code>tmp[tpos++]</code> 。当跳出循环之后判断一下，如果 <code>lpos &lt;= mid</code> 说明左边没用完，继续顺序加左边的；右边的也同理。⭐注意最后一定要在这一层里面把 <code>[l, r]</code>之间的 <code>tmp[]</code> 值对应覆盖到nums[]数组里面，这样可以保证每次从小到大递归函数中引用的 <code>nums</code> 数组都是有序的。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/23/J50. 第一个只出现一次的字符/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈琦">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/head.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Cq的Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/03/23/J50. 第一个只出现一次的字符/" itemprop="url">剑指offer_50 第一个只出现一次的字符</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-23T13:19:00+08:00">
-                2020-03-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/剑指offer/" itemprop="url" rel="index">
-                    <span itemprop="name">剑指offer</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/剑指offer/Easy/" itemprop="url" rel="index">
-                    <span itemprop="name">Easy</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="J50-第一个只出现一次的字符"><a href="#J50-第一个只出现一次的字符" class="headerlink" title="J50. 第一个只出现一次的字符"></a>J50. 第一个只出现一次的字符</h1><blockquote>
-<p>题目</p>
-</blockquote>
-<p>在字符串 s 中找出第一个只出现一次的字符。如果没有，返回一个单空格。</p>
-<blockquote>
-<p>示例:</p>
-</blockquote>
-<p>s = “abaccdeff”<br>返回 “b”</p>
-<p>s = “”<br>返回 “ “</p>
-<blockquote>
-<p>限制：</p>
-</blockquote>
-<p>0 &lt;= s 的长度 &lt;= 50000</p>
-<blockquote>
-<p>解法：哈希表</p>
-</blockquote>
-<p>很简单的解法，用一个 <code>unordered_map&lt;char,int&gt; m</code>来在第一个 <code>for</code> 循环中存储每个字符对应的出现次数，然后再用一个 <code>for</code> 循环来遍历字符串找出第一个 <code>m[c] == 1</code> 的字符串 <code>c</code> 来返回。注意，如果没有满足条件的要在最后返回一个<code>&#39; &#39;</code>。</p>
-<p>看了看别人的题解好像也没有时间空间的优化的方式-。-</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">char</span> <span class="title">firstUniqChar</span><span class="params">(<span class="built_in">string</span> s)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(s == <span class="string">""</span>) <span class="keyword">return</span> <span class="string">' '</span>;</span><br><span class="line">        <span class="built_in">unordered_map</span>&lt;<span class="keyword">char</span>,<span class="keyword">int</span>&gt; m;</span><br><span class="line">        <span class="keyword">int</span> n = s.size();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">char</span> c : s) &#123;</span><br><span class="line">            m[c] += <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">char</span> c : s) &#123;</span><br><span class="line">            <span class="keyword">if</span>(m[c] == <span class="number">1</span>) <span class="keyword">return</span> c;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">' '</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>注意，s为空的空字符串 <code>&quot; &quot;</code>，返回的字符为空是空字符 <code>&#39; &#39;</code>。</p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2116,7 +2104,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">176</span>
+                  <span class="site-state-item-count">178</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2127,7 +2115,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">13</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
