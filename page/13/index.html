@@ -263,6 +263,185 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/23/J49. 丑数 Leetcode 264/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈琦">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cq的Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/23/J49. 丑数 Leetcode 264/" itemprop="url">剑指offer_49 丑数 / Leetcode 264</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-23T12:17:12+08:00">
+                2020-03-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/剑指offer/" itemprop="url" rel="index">
+                    <span itemprop="name">剑指offer</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/剑指offer/Medium/" itemprop="url" rel="index">
+                    <span itemprop="name">Medium</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="J49-丑数-Leetcode-264"><a href="#J49-丑数-Leetcode-264" class="headerlink" title="J49. 丑数 / Leetcode 264"></a>J49. 丑数 / Leetcode 264</h1><blockquote>
+<p>题目：</p>
+</blockquote>
+<p>我们把只包含因子 2、3 和 5 的数称作丑数（Ugly Number）。求按从小到大的顺序的第 n 个丑数。</p>
+<blockquote>
+<p>示例:</p>
+</blockquote>
+<p>输入: n = 10<br>输出: 12<br>解释: 1, 2, 3, 4, 5, 6, 8, 9, 10, 12 是前 10 个丑数。</p>
+<blockquote>
+<p>说明:  </p>
+</blockquote>
+<p>1 是丑数。<br>n 不超过1690。</p>
+<blockquote>
+<p>解法一：动态规划+指针</p>
+</blockquote>
+<p>这道题的思想跟前面的 <code>J10 青蛙上台阶问题</code>有点相似，对于每一个没出现过的丑数，它只可能是由前面的丑数×2，×3或者是×5得来的。而究竟是乘以哪一个并不得而知，但是可以确定的是新的dp[i]的状态转移方程是：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dp[i] = min(dp[p2] * <span class="number">2</span>, min(dp[p3] * <span class="number">3</span>, dp[p5] * <span class="number">5</span>));</span><br></pre></td></tr></table></figure>
+<p>这里面 <code>p2</code> , <code>p3</code> , <code>p5</code> 分别是指向前面已经出现过的 <code>dp[p2]</code>，<code>dp[p3]</code>，<code>dp[p5]</code>。他们的作用是保存分别乘以2 ,3, 5还没有出现的丑数。如果新的 <code>dp[i] == dp[p2] * 2</code>，则说明这个 <code>dp[p2]</code> 前面的丑数 × 2肯定是已经出现过的了，所以需要 <code>p2++</code>。这样，通过三个指针不停地从前向后指，可以不断更新最新的 <code>dp[i]</code> 的值。这道题也算是借鉴了一点点 <code>双指针</code> 的思想？这个思想也可以看成是三个有序链表的无重复合并问题。</p>
+<p>⭐注意，这里面每个for循环中的三个if语句不是只能同时调用一个的，比如1, 2, 3, 4, 5, 6, 8, 9, 10。这里面在 i = 5的时候dp[i] = 6，是同时满足<code>dp[i] == dp[p2]*2</code> ，<code>dp[i] == dp[p3]*3</code>的，因此p2 p3都需要++，从而避免了存入重复丑数的情况。</p>
+<p>注意这里面用 <code>min()</code> 函数只能两个两个比较，也可以用 <code>C++11</code> 的新特性：</p>
+<p><code>min({dp[p2] * 2, dp[p3] * 3, dp[p5] * 5});</code></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">nthUglyNumber</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; dp(n);</span><br><span class="line">        dp[<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> p2 = <span class="number">0</span>, p3 = <span class="number">0</span>, p5 = <span class="number">0</span>;<span class="comment">//三个指针分别对应 /2 /3 /5的子丑数</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; n; i++) &#123;</span><br><span class="line">            dp[i] = min(dp[p2]*<span class="number">2</span>, min(dp[p3]*<span class="number">3</span>, dp[p5]*<span class="number">5</span>));</span><br><span class="line">            <span class="keyword">if</span> (dp[i] == dp[p2]*<span class="number">2</span>) ++p2;</span><br><span class="line">            <span class="keyword">if</span> (dp[i] == dp[p3]*<span class="number">3</span>) ++p3;</span><br><span class="line">            <span class="keyword">if</span> (dp[i] == dp[p5]*<span class="number">5</span>) ++p5;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[n - <span class="number">1</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>解法二：最小堆实现</p>
+</blockquote>
+<p>我们也可以使用 <code>优先级队列</code> 实现的 <code>最小堆</code> 来做，首先放进去一个1，然后从1遍历到n，每次取出堆顶元素，为了确保没有重复数字，进行一次 while 循环，将此时和堆顶元素相同的都取出来，然后分别将这个取出的数字乘以 2，3，5，并分别加入最小堆。这样最终 for 循环退出后，堆顶元素就是所求的第n个丑陋数，参见代码如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">nthUglyNumber</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        priority_queue&lt;<span class="keyword">long</span>, <span class="built_in">vector</span>&lt;<span class="keyword">long</span>&gt;, greater&lt;<span class="keyword">long</span>&gt;&gt; pq;</span><br><span class="line">        pq.push(<span class="number">1</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">long</span> i = <span class="number">1</span>; i &lt; n; ++i) &#123;</span><br><span class="line">            <span class="keyword">long</span> t = pq.top(); pq.pop();</span><br><span class="line">            <span class="keyword">while</span> (!pq.empty() &amp;&amp; pq.top() == t) &#123;</span><br><span class="line">                t = pq.top(); pq.pop();</span><br><span class="line">            &#125;</span><br><span class="line">            pq.push(t * <span class="number">2</span>);</span><br><span class="line">            pq.push(t * <span class="number">3</span>);</span><br><span class="line">            pq.push(t * <span class="number">5</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> pq.top();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/23/J48. 最长不含重复字符的字符串 Leetcode 3/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1880,203 +2059,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/20/J40. 最小的k个数/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈琦">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/head.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Cq的Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/03/20/J40. 最小的k个数/" itemprop="url">剑指offer_40 最小的k个数</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-20T19:24:00+08:00">
-                2020-03-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/剑指offer/" itemprop="url" rel="index">
-                    <span itemprop="name">剑指offer</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/剑指offer/Easy/" itemprop="url" rel="index">
-                    <span itemprop="name">Easy</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="J40-最小的k个数"><a href="#J40-最小的k个数" class="headerlink" title="J40*. 最小的k个数"></a>J40*. 最小的k个数</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>输入整数数组 <code>arr</code> ，找出其中最小的 <code>k</code> 个数。例如，输入4、5、1、6、2、7、3、8这8个数字，则最小的4个数字是1、2、3、4。</p>
-<blockquote>
-<p><strong>示例 1：</strong></p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：arr = [3,2,1], k = 2</span><br><span class="line">输出：[1,2] 或者 [2,1]</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p><strong>示例 2：</strong></p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：arr = [0,1,2,1], k = 1</span><br><span class="line">输出：[0]</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p><strong>限制：</strong></p>
-</blockquote>
-<ul>
-<li><code>0 &lt;= k &lt;= arr.length &lt;= 10000</code></li>
-<li><code>0 &lt;= arr[i] &lt;= 10000</code></li>
-</ul>
-<blockquote>
-<p>解法一：排序法</p>
-</blockquote>
-<p>轮子哥教我们不要重复造轮子：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; getLeastNumbers(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; arr, <span class="keyword">int</span> k) &#123;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; res(k, <span class="number">0</span>);</span><br><span class="line">        sort(arr.begin(), arr.end());</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; k; ++i) &#123;</span><br><span class="line">            res[i] = arr[i];</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>时间复杂度 <code>O(nlogn)</code> ，空间复杂度 <code>O(logn)</code> 。</p>
-<blockquote>
-<p>解法二：⭐堆</p>
-</blockquote>
-<p><strong>堆的概念</strong></p>
-<p>堆是将一组数据按照完全二叉树的存储顺序，将数据存储在一个一维数组中的结构。<br>堆有两种结构，一种称为大顶堆，一种称为小顶堆：<br>小顶堆：任意结点的值均小于等于它的左右孩子，并且<strong>最小的值位于堆顶</strong>，即根节点处。<br>大顶堆：任意结点的值均大于等于它的左右孩子，并且<strong>最大的值位于堆顶</strong>，即根节点处。</p>
-<p>在C++的标准库中，提供了优先级队列这个容器，其实底层就是一个堆的结构，只不过将堆封装了一层而已。其实名字叫个优先级队列，但总觉得和队列是不沾边的。<code>priority_queue</code>  是容器适配器，它提供常数时间的（默认）最大元素查找，对数代价的插入与释出。用 <code>priority_queue</code> 工作类似管理某些随机访问容器中的堆，好处是不可能突然把堆非法化。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; getLeastNumbers(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; arr, <span class="keyword">int</span> k) &#123;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;vec(k, <span class="number">0</span>);</span><br><span class="line">        <span class="keyword">if</span> (k == <span class="number">0</span>) <span class="keyword">return</span> vec; <span class="comment">// 排除 0 的情况</span></span><br><span class="line">        priority_queue&lt;<span class="keyword">int</span>&gt;Q;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; k; ++i) Q.push(arr[i]);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = k; i &lt; (<span class="keyword">int</span>)arr.size(); ++i) &#123;</span><br><span class="line">            <span class="keyword">if</span> (Q.top() &gt; arr[i]) &#123;</span><br><span class="line">                Q.pop();</span><br><span class="line">                Q.push(arr[i]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; k; ++i) &#123;</span><br><span class="line">            vec[i] = Q.top();</span><br><span class="line">            Q.pop();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> vec;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>大根堆实时维护的是一个前k小的值，因此插入删除时间复杂度均为 <code>O(logk)</code>，最坏情况下需要插入 <code>n</code> 个数，因此时间复杂度为 <code>O(nlogk)</code> 。空间复杂度为 <code>O(k)</code> 。</p>
-<blockquote>
-<p>解法三：⭐⭐⭐快排</p>
-</blockquote>
-<p>我们可以借鉴快速排序的思想。我们知道快排的划分函数每次执行完后都能将数组分成两个部分，小于等于分界值 <code>pivot</code> 的元素的都会被放到数组的左边，大于的都会被放到数组的右边，然后返回分界值的下标。与快速排序不同的是，快速排序会根据分界值的下标递归处理划分的两侧，而这里我们只处理划分的一边。</p>
-<p>我们定义函数 <code>randomized_selected(arr, l, r, k)</code> 表示划分数组 <code>arr</code> 的 <code>[l,r]</code> 部分，使前 <code>k</code> 小的数在数组的左侧，在函数里我们调用快排的划分函数，假设划分函数返回的下标是 <code>pos</code>（表示分界值 <code>pivot</code> 最终在数组中的位置），即 <code>pivot</code> 是数组中第 <code>pos - l + 1</code> 小的数，那么一共会有三种情况：</p>
-<ul>
-<li>如果 <code>pos - l + 1 == k</code>，表示 <code>pivot</code> 就是第 k<em>k</em> 小的数，直接返回即可；</li>
-<li>如果 <code>pos - l + 1 &lt; k</code>，表示第 k<em>k</em> 小的数在 <code>pivot</code> 的右侧，因此递归调用 <code>randomized_selected(arr, pos + 1, r, k - (pos - l + 1))</code>；</li>
-<li>如果 <code>pos - l + 1 &gt; k</code>，表示第 k<em>k</em> 小的数在 <code>pivot</code> 的左侧，递归调用 <code>randomized_selected(arr, l, pos - 1, k)</code>。</li>
-</ul>
-<p>函数递归入口为 <code>randomized_selected(arr, 0, arr.length - 1, k)</code>。在函数返回后，将前 <code>k</code> 个数放入答案数组返回即可。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">partition</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums, <span class="keyword">int</span> l, <span class="keyword">int</span> r)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> pivot = nums[r];</span><br><span class="line">        <span class="keyword">int</span> i = l - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = l; j &lt;= r - <span class="number">1</span>; ++j) &#123;</span><br><span class="line">            <span class="keyword">if</span> (nums[j] &lt;= pivot) &#123;</span><br><span class="line">                i = i + <span class="number">1</span>;</span><br><span class="line">                swap(nums[i], nums[j]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        swap(nums[i + <span class="number">1</span>], nums[r]);</span><br><span class="line">        <span class="keyword">return</span> i + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 基于随机的划分</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">randomized_partition</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums, <span class="keyword">int</span> l, <span class="keyword">int</span> r)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> i = rand() % (r - l + <span class="number">1</span>) + l;</span><br><span class="line">        swap(nums[r], nums[i]);</span><br><span class="line">        <span class="keyword">return</span> partition(nums, l, r);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">randomized_selected</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; arr, <span class="keyword">int</span> l, <span class="keyword">int</span> r, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (l &gt;= r) <span class="keyword">return</span>;</span><br><span class="line">        <span class="keyword">int</span> pos = randomized_partition(arr, l, r);</span><br><span class="line">        <span class="keyword">int</span> num = pos - l + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span> (k == num) <span class="keyword">return</span>;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (k &lt; num) randomized_selected(arr, l, pos - <span class="number">1</span>, k);</span><br><span class="line">        <span class="keyword">else</span> randomized_selected(arr, pos + <span class="number">1</span>, r, k - num);   </span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; getLeastNumbers(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; arr, <span class="keyword">int</span> k) &#123;</span><br><span class="line">        srand((<span class="keyword">unsigned</span>)time(<span class="literal">NULL</span>));</span><br><span class="line">        randomized_selected(arr, <span class="number">0</span>, (<span class="keyword">int</span>)arr.size() - <span class="number">1</span>, k);</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;vec;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; k; ++i) vec.push_back(arr[i]);</span><br><span class="line">        <span class="keyword">return</span> vec;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2129,7 +2111,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">195</span>
+                  <span class="site-state-item-count">196</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
