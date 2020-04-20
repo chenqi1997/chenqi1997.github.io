@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="BFS,DFS,">
+  <meta name="keywords" content="BFS,岛屿问题,DFS,">
 
 
 
@@ -80,14 +80,14 @@
 
 
 <meta name="description" content="695. Max Area of Island/岛的最大面积 题目  给定一个包含了一些 0 和 1的非空二维数组 grid , 一个 岛屿 是由四个方向 (水平或垂直) 的 1 (代表土地) 构成的组合。你可以假设二维矩阵的四个边缘都被水包围着。 找到给定的二维数组中最大的岛屿面积。(如果没有岛屿，则返回面积为0。)  示例 1:  [[0,0,1,0,0,0,0,1,0,0,0,0,0], [">
-<meta name="keywords" content="BFS,DFS">
+<meta name="keywords" content="BFS,岛屿问题,DFS">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Leetcode_695 岛的最大面积">
 <meta property="og:url" content="http://yoursite.com/2020/03/15/695. 岛的最大面积/index.html">
 <meta property="og:site_name" content="Cq的Blog">
 <meta property="og:description" content="695. Max Area of Island/岛的最大面积 题目  给定一个包含了一些 0 和 1的非空二维数组 grid , 一个 岛屿 是由四个方向 (水平或垂直) 的 1 (代表土地) 构成的组合。你可以假设二维矩阵的四个边缘都被水包围着。 找到给定的二维数组中最大的岛屿面积。(如果没有岛屿，则返回面积为0。)  示例 1:  [[0,0,1,0,0,0,0,1,0,0,0,0,0], [">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-03-23T10:09:10.886Z">
+<meta property="og:updated_time" content="2020-04-20T03:46:07.541Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Leetcode_695 岛的最大面积">
 <meta name="twitter:description" content="695. Max Area of Island/岛的最大面积 题目  给定一个包含了一些 0 和 1的非空二维数组 grid , 一个 岛屿 是由四个方向 (水平或垂直) 的 1 (代表土地) 构成的组合。你可以假设二维矩阵的四个边缘都被水包围着。 找到给定的二维数组中最大的岛屿面积。(如果没有岛屿，则返回面积为0。)  示例 1:  [[0,0,1,0,0,0,0,1,0,0,0,0,0], [">
@@ -379,7 +379,7 @@
 <blockquote>
 <p>解法一：DFS</p>
 </blockquote>
-<p>对于这种求矩阵最大连接的问题，一般可以按照无向图来做。主要有 <code>DFS</code> 和 <code>BFS</code> 两种思路，不同的题目中的思路都是大同小异的。这道题中主要的思路是，每到一个新的 <code>grid[i] [j]</code> ，都调用一下 <code>dfs</code> 函数进行深度优先搜索，如果当前节点不为1（为 0 或者已经遍历过），则return；如果为1且未遍历过，则计数 <code>count</code>，并且跟 <code>res</code> 进行比较更新 <code>res</code>，将这个位置置0表示已经遍历过，同时继续对这个点的上下左右调用 <code>DFS</code> 来进一步更新 <code>count</code>。</p>
+<p>对于这种求矩阵最大连接的问题，一般可以按照无向图来做。主要有 <code>DFS</code> 和 <code>BFS</code> 两种思路，不同的题目中的思路都是大同小异的。这道题中主要的思路是，每到一个新的 <code>grid[i][j]</code> ，都调用一下 <code>dfs</code> 函数进行深度优先搜索，如果当前节点不为1（为 0 或者已经遍历过），则return；如果为1且未遍历过，则计数 <code>count</code>，并且跟 <code>res</code> 进行比较更新 <code>res</code>，将这个位置置0表示已经遍历过，同时继续对这个点的上下左右调用 <code>DFS</code> 来进一步更新 <code>count</code>。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">maxAreaOfIsland</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; grid)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> m = grid.size(), n = grid[<span class="number">0</span>].size(), res = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; m; ++i) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; n; ++j) &#123;</span><br><span class="line">                <span class="keyword">if</span> (grid[i][j] != <span class="number">1</span>) <span class="keyword">continue</span>;</span><br><span class="line">                <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line">                dfs(grid, i, j, count, res);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">dfs</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; grid, <span class="keyword">int</span> i, <span class="keyword">int</span> j, <span class="keyword">int</span>&amp; count, <span class="keyword">int</span>&amp; res)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> m = grid.size(), n = grid[<span class="number">0</span>].size();</span><br><span class="line">        <span class="keyword">if</span> (i &lt; <span class="number">0</span> || i &gt;= m || j &lt; <span class="number">0</span> || j &gt;= n || grid[i][j] &lt;= <span class="number">0</span>) <span class="keyword">return</span>;</span><br><span class="line">        ++count;</span><br><span class="line">        res = max(res, count);</span><br><span class="line">        grid[i][j] = <span class="number">0</span>;</span><br><span class="line">        dfs(grid, i + <span class="number">1</span>, j, count, res);</span><br><span class="line">        dfs(grid, i - <span class="number">1</span>, j, count, res);</span><br><span class="line">        dfs(grid, i, j + <span class="number">1</span>, count, res);</span><br><span class="line">        dfs(grid, i, j - <span class="number">1</span>, count, res);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <p>时间复杂度：<code>O(R * C)</code>。其中 R 是给定网格中的行数，C 是列数。我们访问每个网格最多一次。</p>
 <p>空间复杂度：<code>O(R * C)</code>，递归的深度最大可能是整个网格的大小，因此最大可能使用 O(R * C) 的栈空间。</p>
@@ -418,6 +418,8 @@
         <div class="post-tags">
           
             <a href="/tags/BFS/" rel="tag"># BFS</a>
+          
+            <a href="/tags/岛屿问题/" rel="tag"># 岛屿问题</a>
           
             <a href="/tags/DFS/" rel="tag"># DFS</a>
           
@@ -523,7 +525,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">192</span>
+                  <span class="site-state-item-count">195</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -545,7 +547,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-count">49</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
