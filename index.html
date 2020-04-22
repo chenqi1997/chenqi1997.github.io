@@ -263,6 +263,183 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/22/114. 二叉树展开为链表/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈琦">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cq的Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/04/22/114. 二叉树展开为链表/" itemprop="url">Leetcode_114 二叉树展开为链表</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-22T18:36:00+08:00">
+                2020-04-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/LeetCode/" itemprop="url" rel="index">
+                    <span itemprop="name">LeetCode</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/LeetCode/Medium/" itemprop="url" rel="index">
+                    <span itemprop="name">Medium</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="114-Flatten-Binary-Tree-to-Linked-List-二叉树展开为链表"><a href="#114-Flatten-Binary-Tree-to-Linked-List-二叉树展开为链表" class="headerlink" title="114. Flatten Binary Tree to Linked List/二叉树展开为链表"></a>114. Flatten Binary Tree to Linked List/二叉树展开为链表</h1><blockquote>
+<p>题目：</p>
+</blockquote>
+<p>给定一个二叉树，<a href="https://baike.baidu.com/item/%E5%8E%9F%E5%9C%B0%E7%AE%97%E6%B3%95/8010757" target="_blank" rel="noopener">原地</a>将它展开为链表。</p>
+<p>例如，给定二叉树</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">    1</span><br><span class="line">   / \</span><br><span class="line">  2   5</span><br><span class="line"> / \   \</span><br><span class="line">3   4   6</span><br></pre></td></tr></table></figure>
+<p>将其展开为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">1</span><br><span class="line"> \</span><br><span class="line">  2</span><br><span class="line">   \</span><br><span class="line">    3</span><br><span class="line">     \</span><br><span class="line">      4</span><br><span class="line">       \</span><br><span class="line">        5</span><br><span class="line">         \</span><br><span class="line">          6</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>解法一：迭代</p>
+</blockquote>
+<p>这道题刚开始想错了，后来参考了别人的迭代思想。这里面的迭代不需要借助栈或者是队列的数据结构，而且让 <code>root</code> 不断指向右子树直到指向空为止，这里面每次 <code>while</code> 的过程中其实采用的是以下三步：</p>
+<ol>
+<li>如果 <code>root</code> 有左子树，那么找到左子树的最右的子节点，然后把这个节点指向当前 <code>root</code> 的右子树</li>
+<li>将当前 <code>root</code> 的左子树放到右子树的位置上</li>
+<li>然后把左子树清空 <code>root-&gt;left = nullptr</code></li>
+</ol>
+<p>通过这样的循环迭代实现将左子树挤压到右子树的位置上。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">flatten</span><span class="params">(TreeNode* root)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">while</span> (root != <span class="literal">nullptr</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (root-&gt;left != <span class="literal">nullptr</span>) &#123;</span><br><span class="line">                TreeNode* most_right = root-&gt;left; </span><br><span class="line">                <span class="comment">// 如果左子树不为空, 那么就先找到左子树的最右节点</span></span><br><span class="line">                <span class="keyword">while</span> (most_right-&gt;right != <span class="literal">nullptr</span>) most_right = most_right-&gt;right;</span><br><span class="line">                <span class="comment">// 找最右节点</span></span><br><span class="line">                most_right-&gt;right = root-&gt;right; </span><br><span class="line">                <span class="comment">// 然后将跟的右孩子放到最右节点的右子树上</span></span><br><span class="line">                root-&gt;right = root-&gt;left; </span><br><span class="line">                <span class="comment">// 这时候跟的右孩子可以释放, 因此我令左孩子放到右孩子上</span></span><br><span class="line">                root-&gt;left = <span class="literal">nullptr</span>;</span><br><span class="line">                <span class="comment">// 将左孩子置为空</span></span><br><span class="line">            &#125;</span><br><span class="line">            root = root-&gt;right; <span class="comment">// 继续下一个节点</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>解法二：递归</p>
+</blockquote>
+<p>❗ 注意其实递归是运用了栈的，不能完全说是原地算法。</p>
+<p>递归的思想是跟迭代的差不多的思想，主要还是在于不停循环将左子树靠在右子树的位置上。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">TreeNode* last = <span class="literal">nullptr</span>;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">flatten</span><span class="params">(TreeNode* root)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (root == <span class="literal">nullptr</span>) <span class="keyword">return</span>;</span><br><span class="line">        flatten(root-&gt;left);</span><br><span class="line">        flatten(root-&gt;right);</span><br><span class="line">        <span class="keyword">if</span> (root-&gt;left != <span class="literal">nullptr</span>) &#123;</span><br><span class="line">            Treenode* pre = root-&gt;left;</span><br><span class="line">            <span class="keyword">while</span> (pre-&gt;right != <span class="literal">nullptr</span>) pre = pre-&gt;right;</span><br><span class="line">            pre-&gt;right = root-&gt;right;</span><br><span class="line">            root-&gt;right = root-&gt;left;</span><br><span class="line">            root-&gt;left = <span class="literal">nullptr</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        root = root-&gt;right;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/22/113. 路径总和 II/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1778,175 +1955,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/20/107. 二叉树的层次遍历 II/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈琦">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/head.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Cq的Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/04/20/107. 二叉树的层次遍历 II/" itemprop="url">Leetcode_107 二叉树的层次遍历 II</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-20T15:31:00+08:00">
-                2020-04-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/LeetCode/" itemprop="url" rel="index">
-                    <span itemprop="name">LeetCode</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/LeetCode/Easy/" itemprop="url" rel="index">
-                    <span itemprop="name">Easy</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="107-Binary-Tree-Level-Order-Traversal-II-二叉树的层次遍历-II"><a href="#107-Binary-Tree-Level-Order-Traversal-II-二叉树的层次遍历-II" class="headerlink" title="107. Binary Tree Level Order Traversal II/二叉树的层次遍历 II"></a>107. Binary Tree Level Order Traversal II/二叉树的层次遍历 II</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>给定一个二叉树，返回其节点值自底向上的层次遍历。 （即按从叶子节点所在层到根节点所在的层，逐层从左向右遍历）</p>
-<p>例如：<br>给定二叉树 <code>[3,9,20,null,null,15,7]</code>,</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">  3</span><br><span class="line"> / \</span><br><span class="line">9  20</span><br><span class="line">  /  \</span><br><span class="line"> 15   7</span><br></pre></td></tr></table></figure>
-<p>返回其自底向上的层次遍历为：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">  [15,7],</span><br><span class="line">  [9,20],</span><br><span class="line">  [3]</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法一：队列层次遍历+栈</p>
-</blockquote>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; levelOrderBottom(TreeNode* root) &#123;</span><br><span class="line">        <span class="keyword">if</span>(!root) <span class="keyword">return</span> &#123;&#125;;</span><br><span class="line">        <span class="built_in">queue</span>&lt;TreeNode*&gt; q;</span><br><span class="line">        <span class="built_in">stack</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; s;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; res;</span><br><span class="line">        q.push(root);</span><br><span class="line">        <span class="keyword">while</span>(!q.empty()) &#123;</span><br><span class="line">            <span class="keyword">int</span> length = q.size();</span><br><span class="line">            <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; cur;</span><br><span class="line">            <span class="keyword">while</span>(length) &#123;</span><br><span class="line">                TreeNode* tmp = q.front();q.pop();</span><br><span class="line">                <span class="keyword">if</span>(tmp-&gt;left) q.push(tmp-&gt;left);</span><br><span class="line">                <span class="keyword">if</span>(tmp-&gt;right) q.push(tmp-&gt;right);</span><br><span class="line">                cur.push_back(tmp-&gt;val);</span><br><span class="line">                --length;</span><br><span class="line">            &#125;</span><br><span class="line">            s.push(cur);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span>(!s.empty()) &#123;</span><br><span class="line">            <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; a = s.top();</span><br><span class="line">            s.pop();</span><br><span class="line">            res.push_back(a);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法二：直接reverse</p>
-</blockquote>
-<p>后来一琢磨，用什么栈啊，直接 <code>reverse res</code> 就行-。-太蠢了</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; levelOrderBottom(TreeNode* root) &#123;</span><br><span class="line">        <span class="keyword">if</span>(!root) <span class="keyword">return</span> &#123;&#125;;</span><br><span class="line">        <span class="built_in">queue</span>&lt;TreeNode*&gt; q;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; res;</span><br><span class="line">        q.push(root);</span><br><span class="line">        <span class="keyword">while</span>(!q.empty()) &#123;</span><br><span class="line">            <span class="keyword">int</span> length = q.size();</span><br><span class="line">            <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; cur;</span><br><span class="line">            <span class="keyword">while</span>(length) &#123;</span><br><span class="line">                TreeNode* tmp = q.front();q.pop();</span><br><span class="line">                <span class="keyword">if</span>(tmp-&gt;left) q.push(tmp-&gt;left);</span><br><span class="line">                <span class="keyword">if</span>(tmp-&gt;right) q.push(tmp-&gt;right);</span><br><span class="line">                cur.push_back(tmp-&gt;val);</span><br><span class="line">                --length;</span><br><span class="line">            &#125;</span><br><span class="line">            res.push_back(cur);</span><br><span class="line">        &#125;</span><br><span class="line">        reverse(res.begin(), res.end());</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1999,7 +2007,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">203</span>
+                  <span class="site-state-item-count">204</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
