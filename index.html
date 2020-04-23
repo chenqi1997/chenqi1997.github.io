@@ -263,6 +263,188 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/23/J70. 硬币/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈琦">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cq的Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/04/23/J70. 硬币/" itemprop="url">08.11 硬币</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-23T10:29:00+08:00">
+                2020-04-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/每日一题/" itemprop="url" rel="index">
+                    <span itemprop="name">每日一题</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/每日一题/中等/" itemprop="url" rel="index">
+                    <span itemprop="name">中等</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="J70-Coin-LCCI-硬币"><a href="#J70-Coin-LCCI-硬币" class="headerlink" title="J70. Coin LCCI/硬币"></a>J70. Coin LCCI/硬币</h1><blockquote>
+<p>题目：</p>
+</blockquote>
+<p>硬币。给定数量不限的硬币，币值为25分、10分、5分和1分，编写代码计算n分有几种表示法。(结果可能会很大，你需要将结果模上1000000007)</p>
+<p><strong>示例1:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> 输入: n = 5</span><br><span class="line"> 输出：2</span><br><span class="line"> 解释: 有两种方式可以凑成总金额:</span><br><span class="line">5=5</span><br><span class="line">5=1+1+1+1+1</span><br></pre></td></tr></table></figure>
+<p><strong>示例2:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"> 输入: n = 10</span><br><span class="line"> 输出：4</span><br><span class="line"> 解释: 有四种方式可以凑成总金额:</span><br><span class="line">10=10</span><br><span class="line">10=5+5</span><br><span class="line">10=5+1+1+1+1+1</span><br><span class="line">10=1+1+1+1+1+1+1+1+1+1</span><br></pre></td></tr></table></figure>
+<p><strong>说明：</strong></p>
+<p>注意:</p>
+<p>你可以假设：</p>
+<ul>
+<li>0 &lt;= n (总金额) &lt;= 1000000</li>
+</ul>
+<blockquote>
+<p>解法：动态规划</p>
+</blockquote>
+<ol>
+<li>令 <code>dp[i][j]</code>为遍历到当下这个硬币时，组成金额 <code>j</code> 的方法数，<code>v[i]</code> 为对应的硬币面值。</li>
+<li>有两种可能性<ol>
+<li>当前这个硬币没有取，<code>dp[i][j]=dp[i - 1][j]</code>；</li>
+<li>当前这个硬币取了，<code>dp[i][j]=dp[i][j - v[i]]</code>。最后的结果是两者的和</li>
+</ol>
+</li>
+<li>将状态转移方程翻译成代码，并处理边界条件</li>
+</ol>
+<p>所以整理得到的状态转移方程为：<code>dp[i][j]=dp[i - 1][j]+dp[i][j - v[i]]</code></p>
+<p>同时由于<code>dp[i][j]</code> 只跟钱一个状态有关，因此可以通过滚动一维 <code>dp</code> 数组的方式来实现如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dp[j] = (dp[j] + dp[j - v[i]])</span><br></pre></td></tr></table></figure>
+<p>最终得到代码如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">waysToChange</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">const</span> <span class="keyword">int</span> mod = <span class="number">1e9</span> + <span class="number">7</span>;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; dp(n + <span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line">        dp[<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> v[<span class="number">4</span>] = &#123;<span class="number">1</span>, <span class="number">5</span>, <span class="number">10</span>, <span class="number">25</span>&#125;;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">4</span>; ++ i) &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = v[i]; j &lt;= n; ++ j) &#123;</span><br><span class="line">                dp[j] = (dp[j] + dp[j - v[i]]) % mod;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[n];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/22/114. 二叉树展开为链表/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1782,179 +1964,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/20/105. 从前序与中序遍历序列构造二叉树/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈琦">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/head.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Cq的Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/04/20/105. 从前序与中序遍历序列构造二叉树/" itemprop="url">Leetcode_105 从前序与中序遍历序列构造二叉树</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-20T15:31:00+08:00">
-                2020-04-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/LeetCode/" itemprop="url" rel="index">
-                    <span itemprop="name">LeetCode</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/LeetCode/Medium/" itemprop="url" rel="index">
-                    <span itemprop="name">Medium</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="105-Construct-Binary-Tree-from-Preorder-and-Inorder-Traversal-从前序与中序遍历序列构造二叉树"><a href="#105-Construct-Binary-Tree-from-Preorder-and-Inorder-Traversal-从前序与中序遍历序列构造二叉树" class="headerlink" title="105. Construct Binary Tree from Preorder and Inorder Traversal/从前序与中序遍历序列构造二叉树"></a>105. Construct Binary Tree from Preorder and Inorder Traversal/从前序与中序遍历序列构造二叉树</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>根据一棵树的前序遍历与中序遍历构造二叉树。</p>
-<p><strong>注意:</strong><br>你可以假设树中没有重复的元素。</p>
-<p>例如，给出</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">前序遍历 preorder = [3,9,20,15,7]</span><br><span class="line">中序遍历 inorder = [9,3,15,20,7]</span><br></pre></td></tr></table></figure>
-<p>返回如下的二叉树：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">  3</span><br><span class="line"> / \</span><br><span class="line">9  20</span><br><span class="line">  /  \</span><br><span class="line"> 15   7</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法一：递归法</p>
-</blockquote>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">TreeNode* <span class="title">buildTree</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; preorder, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; inorder)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!preorder.size() || !inorder.size()) <span class="keyword">return</span> <span class="literal">nullptr</span>;</span><br><span class="line">        <span class="keyword">return</span> dfs(preorder, <span class="number">0</span>, preorder.size() - <span class="number">1</span>, inorder, <span class="number">0</span>, inorder.size() - <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function">TreeNode* <span class="title">dfs</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; preorder, <span class="keyword">int</span> ps, <span class="keyword">int</span> pe, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; inorder, <span class="keyword">int</span> is, <span class="keyword">int</span> ie)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> rootval = preorder[ps];</span><br><span class="line">        TreeNode* root = <span class="keyword">new</span> TreeNode(rootval);</span><br><span class="line">        root-&gt;left = <span class="literal">nullptr</span>;</span><br><span class="line">        root-&gt;right = <span class="literal">nullptr</span>;</span><br><span class="line">        <span class="keyword">int</span> i = is;</span><br><span class="line">        <span class="keyword">while</span>(i &lt;= ie &amp;&amp; inorder[i] != rootval) ++i;</span><br><span class="line">        <span class="keyword">int</span> leftlen = i - is;</span><br><span class="line">        <span class="keyword">int</span> rightlen = ie - i;</span><br><span class="line">        <span class="keyword">if</span>(leftlen &gt; <span class="number">0</span>) </span><br><span class="line">            root-&gt;left = dfs(preorder, ps + <span class="number">1</span>, ps + leftlen, inorder, is, is + leftlen - <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">if</span>(rightlen &gt; <span class="number">0</span>) </span><br><span class="line">            root-&gt;right = dfs(preorder, ps + leftlen + <span class="number">1</span>, pe, inorder, is + leftlen + <span class="number">1</span>, ie);</span><br><span class="line">        <span class="keyword">return</span> root;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法二：⭐⭐⭐⭐⭐迭代+栈</p>
-</blockquote>
-<p>我们用一个栈保存已经遍历过的节点，遍历前序遍历的数组，一直作为当前根节点的左子树，直到当前节点和中序遍历的数组的节点相等了，那么我们正序遍历中序遍历的数组，倒着遍历已经遍历过的根节点（用栈的 <code>pop</code> 实现），找到最后一次相等的位置，把它作为该节点的右子树。</p>
-<p>上边的分析就是迭代总体的思想，代码的话还有一些细节注意一下。用一个栈保存已经遍历的节点，用 <code>cur</code> 保存当前正在遍历的节点。如果当前的 <code>back</code> 不是 <code>nullptr</code> 的话，就说明在这一层的迭代之中，<code>cur</code> 已经遍历完了左子树，开始走到了第一个右子树的根节点，此时的 <code>back</code> 装的是 <code>root</code> 节点；如果 <code>back</code> 还是 <code>nullptr</code> 的话，说明还没有开始进入 <code>while</code> 循环遍历左子树，因此要把当前的节点入栈，同时这个节点是当前栈顶的节点的左子树。就像例子中的 <code>9</code> 和 <code>3</code> 一样</p>
-<p>要配合如下的二叉树来判断：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">  3</span><br><span class="line"> / \</span><br><span class="line">9  20</span><br><span class="line">  /  \</span><br><span class="line"> 15   7</span><br></pre></td></tr></table></figure>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">TreeNode* <span class="title">buildTree</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; preorder, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; inorder)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (preorder.empty()) <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">        <span class="built_in">stack</span>&lt;TreeNode*&gt; S;</span><br><span class="line">        TreeNode* root = <span class="keyword">new</span> TreeNode(preorder[<span class="number">0</span>]);</span><br><span class="line">        S.push(root);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>, j = <span class="number">0</span>; i &lt; preorder.size(); i++) &#123;  <span class="comment">// i-前序序号，j-中序序号</span></span><br><span class="line">            TreeNode *back = <span class="literal">NULL</span>, *cur = <span class="keyword">new</span> TreeNode(preorder[i]);</span><br><span class="line">            <span class="keyword">while</span> (!S.empty() &amp;&amp; S.top()-&gt;val == inorder[j]) back = S.top(), S.pop(), j++;</span><br><span class="line">            <span class="keyword">if</span> (back)</span><br><span class="line">            back-&gt;right = cur;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            S.top()-&gt;left = cur;</span><br><span class="line">            S.push(cur);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> root;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2007,7 +2016,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">204</span>
+                  <span class="site-state-item-count">205</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2018,7 +2027,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-count">14</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -2029,7 +2038,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-count">49</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
