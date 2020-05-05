@@ -263,6 +263,369 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/05/166. 分数到小数/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈琦">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cq的Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/05/05/166. 分数到小数/" itemprop="url">Leetcode_166 分数到小数</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-05T17:03:00+08:00">
+                2020-05-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/LeetCode/" itemprop="url" rel="index">
+                    <span itemprop="name">LeetCode</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/LeetCode/Medium/" itemprop="url" rel="index">
+                    <span itemprop="name">Medium</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="166-Fraction-to-Recurring-Decimal-分数到小数"><a href="#166-Fraction-to-Recurring-Decimal-分数到小数" class="headerlink" title="166*. Fraction to Recurring Decimal/分数到小数"></a>166*. Fraction to Recurring Decimal/分数到小数</h1><blockquote>
+<p>题目：</p>
+</blockquote>
+<p>给定两个整数，分别表示分数的分子 numerator 和分母 denominator，以字符串形式返回小数。</p>
+<p>如果小数部分为循环小数，则将循环的部分括在括号内。</p>
+<p><strong>示例 1:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: numerator = 1, denominator = 2</span><br><span class="line">输出: &quot;0.5&quot;</span><br></pre></td></tr></table></figure>
+<p><strong>示例 2:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: numerator = 2, denominator = 1</span><br><span class="line">输出: &quot;2&quot;</span><br></pre></td></tr></table></figure>
+<p><strong>示例 3:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: numerator = 2, denominator = 3</span><br><span class="line">输出: &quot;0.(6)&quot;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>解法：模拟除法+哈希表找循环</p>
+</blockquote>
+<p>这道题思路很简单，但是要想一点问题都没有比较困难，我这个花了很久的时间，一次一次试错才写出来最终的解答。。吐了🤮测试样例真难满足啊。。</p>
+<p><img src="../images/166_1.png" alt="166_1"></p>
+<p>主要踩过的错误如下：</p>
+<ol>
+<li>如果直接整除了则不需要添加 <code>.</code></li>
+<li><code>1/6 = 0.1(6)</code>，因此需要一个参数 <code>idx</code> 定位开始进入循环的点，如果 idx == 0 则直接 <code>res += &#39;(&#39; + totalnum + &#39;)&#39;;</code> 否则，需要 <code>res += totalnum.substr(0, idx) + &#39;(&#39; + totalnum.substr(idx) + &#39;)&#39;;</code> 先把不循环的字符串加上，再把循环的部分字符串放到括号内加到后面。</li>
+<li>负号的问题，直接在前面判断一下加上，然后对分子分母同取绝对值。</li>
+<li>分母为 <code>0</code> 直接返回 <code>0</code>。</li>
+<li><code>1/-2147483648</code> 这个样例无法取绝对值，会超出 <code>int</code> 范围，同时在模拟除法计算的时候也会 <code>overflow</code>，因此需要把 <code>numerator</code> 和 <code>denominator</code> 进行强制类型转换，模拟除法的余数也应该是 <code>long long</code> 类型的，后来烦了干脆把所有的参数都设置为 <code>long long</code> 类型。</li>
+<li></li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="built_in">string</span> <span class="title">fractionToDecimal</span><span class="params">(<span class="keyword">int</span> numerator, <span class="keyword">int</span> denominator)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">unordered_map</span>&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt; <span class="built_in">map</span>;</span><br><span class="line">        <span class="built_in">string</span> res = <span class="string">""</span>;</span><br><span class="line">        <span class="keyword">if</span>(denominator == <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">return</span> res;</span><br><span class="line">        <span class="keyword">long</span> <span class="keyword">long</span> num = numerator;</span><br><span class="line">        <span class="keyword">long</span> <span class="keyword">long</span> denom = denominator;</span><br><span class="line">        <span class="comment">//处理符号</span></span><br><span class="line">        <span class="keyword">if</span>((num &lt; <span class="number">0</span> &amp;&amp; denom &gt; <span class="number">0</span>) || (num &gt; <span class="number">0</span> &amp;&amp; denom &lt; <span class="number">0</span>))</span><br><span class="line">            res += <span class="string">"-"</span>;</span><br><span class="line">        num = <span class="built_in">abs</span>(num);</span><br><span class="line">        denom = <span class="built_in">abs</span>(denom);</span><br><span class="line">        <span class="keyword">long</span> <span class="keyword">long</span> cur = num / denom, tmp = num % denom, cnt = <span class="number">1</span>;</span><br><span class="line">        <span class="built_in">string</span> totalnum = <span class="string">""</span>;</span><br><span class="line">        <span class="comment">//能整除就不需要小数点了</span></span><br><span class="line">        <span class="keyword">if</span>(tmp == <span class="number">0</span>) </span><br><span class="line">            <span class="keyword">return</span> res + to_string(cur);</span><br><span class="line">        res += to_string(cur) + <span class="string">'.'</span>;</span><br><span class="line">        <span class="comment">//判断循环</span></span><br><span class="line">        <span class="built_in">map</span>[tmp] = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span>(tmp != <span class="number">0</span>) &#123;</span><br><span class="line">            cur = (tmp * <span class="number">10</span>) / denom;</span><br><span class="line">            tmp = (tmp * <span class="number">10</span>) % denom;</span><br><span class="line">            totalnum += to_string(cur);</span><br><span class="line">            <span class="keyword">if</span>(<span class="built_in">map</span>.count(tmp)) &#123;</span><br><span class="line">                <span class="keyword">int</span> idx = <span class="built_in">map</span>[tmp];</span><br><span class="line">                <span class="keyword">if</span>(idx == <span class="number">0</span>) &#123;</span><br><span class="line">                    res += <span class="string">'('</span> + totalnum + <span class="string">')'</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span> &#123;</span><br><span class="line">                    res += totalnum.substr(<span class="number">0</span>, idx) + <span class="string">'('</span> + totalnum.substr(idx) + <span class="string">')'</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">return</span> res;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="built_in">map</span>[tmp] = cnt;</span><br><span class="line">            ++cnt;</span><br><span class="line">        &#125;</span><br><span class="line">        res += totalnum;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/05/165. 比较版本号/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈琦">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cq的Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/05/05/165. 比较版本号/" itemprop="url">Leetcode_165 比较版本号</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-05T16:03:00+08:00">
+                2020-05-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/LeetCode/" itemprop="url" rel="index">
+                    <span itemprop="name">LeetCode</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/LeetCode/Medium/" itemprop="url" rel="index">
+                    <span itemprop="name">Medium</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="165-Compare-Version-Numbers-比较版本号"><a href="#165-Compare-Version-Numbers-比较版本号" class="headerlink" title="165. Compare Version Numbers/比较版本号"></a>165. Compare Version Numbers/比较版本号</h1><blockquote>
+<p>题目：</p>
+</blockquote>
+<p>比较两个版本号 <em>version1</em> 和 <em>version2</em>。<br>如果 <code>version1 &gt; version2</code> 返回 <code>1</code>，如果 <code>version1 &lt; version2</code> 返回 <code>-1</code>， 除此之外返回 <code>0</code>。</p>
+<p>你可以假设版本字符串非空，并且只包含数字和 <code>.</code> 字符。</p>
+<p> <code>.</code> 字符不代表小数点，而是用于分隔数字序列。</p>
+<p>例如，<code>2.5</code> 不是“两个半”，也不是“差一半到三”，而是第二版中的第五个小版本。</p>
+<p>你可以假设版本号的每一级的默认修订版号为 <code>0</code>。例如，版本号 <code>3.4</code> 的第一级（大版本）和第二级（小版本）修订号分别为 <code>3</code> 和 <code>4</code>。其第三级和第四级修订号均为 <code>0</code>。</p>
+<p><strong>示例 1:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: version1 = &quot;0.1&quot;, version2 = &quot;1.1&quot;</span><br><span class="line">输出: -1</span><br></pre></td></tr></table></figure>
+<p><strong>示例 2:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: version1 = &quot;1.0.1&quot;, version2 = &quot;1&quot;</span><br><span class="line">输出: 1</span><br></pre></td></tr></table></figure>
+<p><strong>示例 3:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: version1 = &quot;7.5.2.4&quot;, version2 = &quot;7.5.3&quot;</span><br><span class="line">输出: -1</span><br></pre></td></tr></table></figure>
+<p><strong>示例 4：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：version1 = &quot;1.01&quot;, version2 = &quot;1.001&quot;</span><br><span class="line">输出：0</span><br><span class="line">解释：忽略前导零，“01” 和 “001” 表示相同的数字 “1”。</span><br></pre></td></tr></table></figure>
+<p><strong>示例 5：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：version1 = &quot;1.0&quot;, version2 = &quot;1.0.0&quot;</span><br><span class="line">输出：0</span><br><span class="line">解释：version1 没有第三级修订号，这意味着它的第三级修订号默认为 “0”。</span><br></pre></td></tr></table></figure>
+<p><strong>提示：</strong></p>
+<ol>
+<li>版本字符串由以点 （<code>.</code>） 分隔的数字字符串组成。这个数字字符串<strong>可能</strong>有前导零。</li>
+<li>版本字符串不以点开始或结束，并且其中不会有两个连续的点。</li>
+</ol>
+<blockquote>
+<p>解法：简单循环+双指针</p>
+</blockquote>
+<p>这个看了看好像也没啥特殊的技巧，主要是从前向后简单遍历每一层版本号就行，需要注意的一点是在内层循环的时候也要加上 <code>i &lt; version1.size()</code> 这个判断，否则在最后一个版本号如 <code>7.5.3</code> 的 <code>3</code> 它不是通过 <code>.</code> 来停止的。有点双指针的感觉？</p>
+<blockquote>
+<p>执行用时 :0 ms, 在所有 C++ 提交中击败了100.00%的用户</p>
+<p>内存消耗 :6.1 MB, 在所有 C++ 提交中击败了100.00%的用户</p>
+</blockquote>
+<p>看了看题解里面还有兄弟们用队列和栈来做这道题的，好像没啥必要学习他们的思路了-。-</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">compareVersion</span><span class="params">(<span class="built_in">string</span> version1, <span class="built_in">string</span> version2)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">0</span>, j = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span>(i &lt; version1.size() || j &lt; version2.size()) &#123;</span><br><span class="line">            <span class="keyword">int</span> cur1 = <span class="number">0</span>, cur2 = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">while</span>(i &lt; version1.size() &amp;&amp; version1[i] != <span class="string">'.'</span>) &#123;</span><br><span class="line">                cur1 = cur1 * <span class="number">10</span> + (version1[i] - <span class="string">'0'</span>);</span><br><span class="line">                ++i;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">while</span>(j &lt; version2.size() &amp;&amp; version2[j] != <span class="string">'.'</span>) &#123;</span><br><span class="line">                cur2 = cur2 * <span class="number">10</span> + (version2[j] - <span class="string">'0'</span>);</span><br><span class="line">                ++j;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(cur1 &gt; cur2) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">if</span>(cur1 &lt; cur2) <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">            <span class="keyword">else</span> &#123;</span><br><span class="line">                ++i;</span><br><span class="line">                ++j;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/04/162. 寻找峰值/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1679,371 +2042,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/02/143. 重排链表/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈琦">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/head.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Cq的Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/05/02/143. 重排链表/" itemprop="url">Leetcode_143 重排链表</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-02T17:46:00+08:00">
-                2020-05-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/LeetCode/" itemprop="url" rel="index">
-                    <span itemprop="name">LeetCode</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/LeetCode/Medium/" itemprop="url" rel="index">
-                    <span itemprop="name">Medium</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="143-Reorder-List-重排链表"><a href="#143-Reorder-List-重排链表" class="headerlink" title="143. Reorder List/重排链表"></a>143. Reorder List/重排链表</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>给定一个单链表 <em>L</em>：<em>L</em>0→<em>L</em>1→…→<em>L**n</em>-1→<em>L</em>n ，<br>将其重新排列后变为： <em>L</em>0→<em>L**n</em>→<em>L</em>1→<em>L**n</em>-1→<em>L</em>2→<em>L**n</em>-2→…</p>
-<p>你不能只是单纯的改变节点内部的值，而是需要实际的进行节点交换。</p>
-<p><strong>示例 1:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">给定链表 1-&gt;2-&gt;3-&gt;4, 重新排列为 1-&gt;4-&gt;2-&gt;3.</span><br></pre></td></tr></table></figure>
-<p><strong>示例 2:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">给定链表 1-&gt;2-&gt;3-&gt;4-&gt;5, 重新排列为 1-&gt;5-&gt;2-&gt;4-&gt;3.</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法一：递归（好慢）</p>
-</blockquote>
-<p>这种穿插重排的问题如果是数组就很简单用双指针做就可以了，可惜这个是链表，找前驱节点很麻烦，因此我想到的最基本的想法就是利用递归，利用递归来不断把尾节点连到前面来。</p>
-<p>每一层递归都是在完成以下的步骤：</p>
-<blockquote>
-<p>本层头指针-&gt;本层的尾巴-&gt;内层头指针</p>
-</blockquote>
-<p>然后在最后根据奇数和偶数来讨论一下最后的边缘情况，指向 <code>nullptr</code> 即可。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">reorderList</span><span class="params">(ListNode* head)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!head || !head-&gt;next || !head-&gt;next-&gt;next) <span class="keyword">return</span>;</span><br><span class="line">        ListNode* cur = head;</span><br><span class="line">        <span class="keyword">int</span> count = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span>(cur-&gt;next) &#123;</span><br><span class="line">            cur = cur-&gt;next;</span><br><span class="line">            ++count;</span><br><span class="line">        &#125;</span><br><span class="line">        head = reorderList(head, count);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function">ListNode* <span class="title">reorderList</span><span class="params">(ListNode* head, <span class="keyword">int</span> count)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(count == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">nullptr</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(count == <span class="number">1</span>) &#123;</span><br><span class="line">            head-&gt;next = <span class="literal">nullptr</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            ListNode *tail = head;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; count; ++i) &#123;</span><br><span class="line">                tail = tail-&gt;next;</span><br><span class="line">            &#125;</span><br><span class="line">            tail-&gt;next = reorderList(head-&gt;next, count - <span class="number">2</span>);</span><br><span class="line">            head-&gt;next = tail;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> head;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法二：放到 <code>vector</code> 里面</p>
-</blockquote>
-<p>有点无赖的做法-。-不过时间复杂度是 <code>O(N)</code> 低了不少。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    void reorderList(ListNode* head)&#123;</span><br><span class="line">        if(!head)</span><br><span class="line">            return;</span><br><span class="line">        vector&lt;ListNode*&gt; res;</span><br><span class="line">        while(head) &#123;</span><br><span class="line">            res.push_back(head);</span><br><span class="line">            head = head-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        int i = 0, j = res.size()-1;</span><br><span class="line">        while (i &lt; j)&#123;</span><br><span class="line">            res[i]-&gt;next = res[j];</span><br><span class="line">            if(j == i + 1)</span><br><span class="line">                break;</span><br><span class="line">            res[j]-&gt;next = res[i + 1];</span><br><span class="line">            ++i;</span><br><span class="line">            --j;</span><br><span class="line">        &#125;</span><br><span class="line">        res[j]-&gt;next = nullptr;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法三：反转后半段链表</p>
-</blockquote>
-<p>先把链表分成前半段和后半段，把后半段逆序排列，再合并这两段。这样就可以做到反向交叉插入了，时间复杂度为 <code>O(N)</code>。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">reorderList</span><span class="params">(ListNode* head)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!head)&#123;<span class="keyword">return</span> ;&#125;</span><br><span class="line">        ListNode* slow=head;</span><br><span class="line">        ListNode* fast=head;</span><br><span class="line">        <span class="keyword">while</span>(fast &amp;&amp; fast-&gt;next)&#123;</span><br><span class="line">            slow = slow-&gt;next;</span><br><span class="line">            fast = fast-&gt;next-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        ListNode* preNode = <span class="literal">nullptr</span>;</span><br><span class="line">        ListNode* p = slow-&gt;next;</span><br><span class="line">        slow-&gt;next = <span class="literal">nullptr</span>;</span><br><span class="line">        <span class="comment">//反转后半段</span></span><br><span class="line">        <span class="keyword">while</span>(p)&#123;</span><br><span class="line">            ListNode* next = p-&gt;next;</span><br><span class="line">            p-&gt;next = preNode;</span><br><span class="line">            preNode = p;</span><br><span class="line">            p = next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//拼接</span></span><br><span class="line">        ListNode* res = <span class="keyword">new</span> ListNode(<span class="number">-1</span>);</span><br><span class="line">        <span class="keyword">while</span>(preNode)&#123;</span><br><span class="line">            res-&gt;next = head;</span><br><span class="line">            head = head-&gt;next;</span><br><span class="line">            res = res-&gt;next;</span><br><span class="line">            res-&gt;next = preNode;</span><br><span class="line">            preNode = preNode-&gt;next;</span><br><span class="line">            res = res-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        res-&gt;next = head;</span><br><span class="line">        head = res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/02/287. 寻找重复数/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈琦">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/head.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Cq的Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/05/02/287. 寻找重复数/" itemprop="url">Leetcode_287 寻找重复数</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-02T14:05:00+08:00">
-                2020-05-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/每日一题/" itemprop="url" rel="index">
-                    <span itemprop="name">每日一题</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/每日一题/Medium/" itemprop="url" rel="index">
-                    <span itemprop="name">Medium</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="287-Find-the-Duplicate-Number-寻找重复数"><a href="#287-Find-the-Duplicate-Number-寻找重复数" class="headerlink" title="287. Find the Duplicate Number/寻找重复数"></a>287. Find the Duplicate Number/寻找重复数</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>给定一个包含 <em>n</em> + 1 个整数的数组 <em>nums</em>，其数字都在 1 到 <em>n</em> 之间（包括 1 和 <em>n</em>），可知至少存在一个重复的整数。假设只有一个重复的整数，找出这个重复的数。</p>
-<p><strong>示例 1:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: [1,3,4,2,2]</span><br><span class="line">输出: 2</span><br></pre></td></tr></table></figure>
-<p><strong>示例 2:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: [3,1,3,4,2]</span><br><span class="line">输出: 3</span><br></pre></td></tr></table></figure>
-<p><strong>说明：</strong></p>
-<ol>
-<li><strong>不能</strong>更改原数组（假设数组是只读的）。</li>
-<li>只能使用额外的 <em>O</em>(1) 的空间。</li>
-<li>时间复杂度小于 <em>O</em>(<em>n</em>2) 。</li>
-<li>数组中只有一个重复的数字，但它可能不止重复出现一次。</li>
-</ol>
-<blockquote>
-<p>解法一：⭐⭐⭐双指针</p>
-</blockquote>
-<p>跟 <code>Leetcode 141 142</code> 相似，这道题居然也可以用双指针来做我是没想到的。</p>
-<p>在这道题中，我们可以把数组看成是一个链表，其中<strong>数组的下标就是指向元素的指针，把数组的元素也看作指针。如0是指针，指向nums[0]，而nums[0]也是指针，指向nums[nums[0]]。</strong></p>
-<p>这样我们就可以用到之前 <code>Leetcode 142</code> 中判断链表成环的位置的方法：</p>
-<blockquote>
-<p>假设有这样一个样例：[1,2,3,4,5,6,7,8,9,5]。如果我们按照上面的循环下去就会得到这样一个路径: 1 2 3 4 5 [6 7 8 9] [6 7 8 9] [6 7 8 9] . . .这样就有了一个环，也就是6 7 8 9。point会一直在环中循环的前进。<br>这时我们设置两个一快(fast)一慢(slow)两个指针，一个每次走两步，一个每次走一步，这样让他们一直走下去，直到他们在重复的序列中相遇。</p>
-</blockquote>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">findDuplicate</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">int</span> fast = <span class="number">0</span>, slow = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span>(<span class="literal">true</span>)&#123;</span><br><span class="line">            fast = nums[nums[fast]];</span><br><span class="line">            slow = nums[slow];</span><br><span class="line">            <span class="keyword">if</span>(fast == slow) &#123;</span><br><span class="line">                fast = <span class="number">0</span>;</span><br><span class="line">                <span class="keyword">while</span>(slow != fast) &#123;</span><br><span class="line">                    slow = nums[slow];</span><br><span class="line">                    fast = nums[fast];</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">return</span> slow;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法二：⭐⭐⭐⭐⭐二分法+抽屉原理</p>
-</blockquote>
-<p>以 <code>[1, 2, 2, 3, 4, 5, 6, 7]</code> 为例，一共 <code>8</code> 个数，<code>n + 1 = 8</code> ，<code>n = 7</code>，根据题目意思，每个数都在 <code>1</code> 和 <code>7</code> 之间。</p>
-<p>例如：区间 <code>[1, 7]</code> 的中位数是 <code>4</code>，遍历整个数组，统计小于等于 <code>4</code> 的整数的个数，至多应该为 <code>4</code> 个。换句话说，整个数组里小于等于 <code>4</code> 的整数的个数如果严格大于 <code>4</code> 个，就说明重复的数存在于区间 <code>[1, 4]</code>，它的反面是：重复的数存在于区间 <code>[5, 7]</code> 。</p>
-<p>于是，二分法的思路是先二分地猜一个数（有效范围 <code>[left, right]</code> 里的中间数 <code>mid</code>），然后统计原始数组中<strong>小于等于</strong>这个中间数的元素的个数 <code>cnt</code>，如果 <code>cnt</code> <strong>严格大于</strong> <code>mid</code>，依然根据抽屉原理，重复元素就应该在区间 <code>[left, mid]</code> 里。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    int findDuplicate(vector&lt;int&gt; &amp;nums) &#123;</span><br><span class="line">        int len = nums.size();</span><br><span class="line">        int left = 1;</span><br><span class="line">        int right = len - 1;</span><br><span class="line"></span><br><span class="line">        while (left &lt; right) &#123;</span><br><span class="line">            int mid = left + (right - left) / 2;</span><br><span class="line">            int cnt = 0;</span><br><span class="line">            for (int num : nums) &#123;</span><br><span class="line">                if (num &lt;= mid) &#123;</span><br><span class="line">                    cnt++;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            // 根据抽屉原理，小于等于 4 的数的个数如果严格大于 4 个，</span><br><span class="line">            // 此时重复元素一定出现在 [1, 4] 区间里</span><br><span class="line">            if (cnt &gt; mid) &#123;</span><br><span class="line">                // 重复的元素一定出现在 [left, mid] 区间里</span><br><span class="line">                right = mid;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                // if 分析正确了以后，else 搜索的区间就是 if 的反面</span><br><span class="line">                // [mid + 1, right]</span><br><span class="line">                // 注意：此时需要调整中位数的取法为上取整</span><br><span class="line">                left = mid + 1;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return left;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2096,7 +2094,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">244</span>
+                  <span class="site-state-item-count">246</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2118,7 +2116,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">54</span>
+                  <span class="site-state-item-count">55</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
