@@ -263,7 +263,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/16/J22. 链表中的倒数第k个节点/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/17/J27. 二叉树的镜像 Leetcode 226/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="陈琦">
@@ -282,7 +282,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/03/16/J22. 链表中的倒数第k个节点/" itemprop="url">剑指offer_22 链表中的倒数第k个节点</a></h1>
+                <a class="post-title-link" href="/2020/03/17/J27. 二叉树的镜像 Leetcode 226/" itemprop="url">剑指offer_27 二叉树的镜像 / Leetcode 226</a></h1>
         
 
         <div class="post-meta">
@@ -294,8 +294,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-16T21:44:00+08:00">
-                2020-03-16
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-17T14:44:00+08:00">
+                2020-03-17
               </time>
             
 
@@ -367,20 +367,420 @@
       
         
           
-            <h1 id="J22-链表中的倒数第k个节点"><a href="#J22-链表中的倒数第k个节点" class="headerlink" title="J22. 链表中的倒数第k个节点"></a>J22. 链表中的倒数第k个节点</h1><blockquote>
+            <h1 id="J27-二叉树的镜像-Leetcode-226"><a href="#J27-二叉树的镜像-Leetcode-226" class="headerlink" title="J27. 二叉树的镜像 / Leetcode 226"></a>J27. 二叉树的镜像 / Leetcode 226</h1><blockquote>
 <p>题目：</p>
 </blockquote>
-<p>输入一个链表，输出该链表中倒数第k个节点。为了符合大多数人的习惯，本题从1开始计数，即链表的尾节点是倒数第1个节点。例如，一个链表有6个节点，从头节点开始，它们的值依次是1、2、3、4、5、6。这个链表的倒数第3个节点是值为4的节点。</p>
-<blockquote>
-<p>示例：</p>
+<p>请完成一个函数，输入一个二叉树，该函数输出它的镜像。</p>
+<p>例如输入：</p>
+<pre><code>     4
+   /   \
+  2     7
+ / \   / \
+1   3 6   9
+</code></pre><p>镜像输出：</p>
+<pre><code>     4
+   /   \
+  7     2
+ / \   / \
+9   6 3   1
+</code></pre><blockquote>
+<p>示例 1：</p>
 </blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">给定一个链表: 1-&gt;2-&gt;3-&gt;4-&gt;5, 和 k = 2.</span><br><span class="line"></span><br><span class="line">返回链表 4-&gt;5.</span><br></pre></td></tr></table></figure>
+<p>输入：root = [4,2,7,1,3,6,9]<br>输出：[4,7,2,9,6,3,1]</p>
+<blockquote>
+<p>限制：</p>
+</blockquote>
+<p>0 &lt;= 节点个数 &lt;= 1000</p>
+<blockquote>
+<p>解法一：递归法</p>
+</blockquote>
+<p>遇到树最先想到的想法是做递归，通过不断进行递归向下完成树的从上到下的旋转。在每一层的旋转过程中都借助一个 tmp 指针来交换传递左右指针，最后返回根节点。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">TreeNode* <span class="title">mirrorTree</span><span class="params">(TreeNode* root)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!root) <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">        TreeNode* tmp = root-&gt;left;</span><br><span class="line">        root-&gt;left = mirrorTree(root-&gt;right);</span><br><span class="line">        root-&gt;right = mirrorTree(tmp);</span><br><span class="line">        <span class="keyword">return</span> root;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>⭐解法二：非递归法：队列实现</p>
+</blockquote>
+<p>递归的实现方法可以通过队列的先入先出性质来实现，在遍历节点的过程中，先放入根节点 root，再取出头节点并交换左右节点，如果左右节点存在，再存入队列中并且依次取出，从而不断向下遍历。</p>
+<p>注意 <code>queue</code> 队列类没有 <code>top</code> 函数，有的是 <code>front</code> , <code>back</code> , <code>pop</code> , <code>empty</code> , <code>size</code> 。不要跟栈弄混了。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">TreeNode* <span class="title">mirrorTree</span><span class="params">(TreeNode* root)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!root) <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">        <span class="built_in">queue</span>&lt;TreeNode*&gt; q;</span><br><span class="line">        q.push(root);</span><br><span class="line">        <span class="keyword">while</span> (!q.empty()) &#123;</span><br><span class="line">            TreeNode* node = q.front();</span><br><span class="line">            q.pop();</span><br><span class="line">            TreeNode* tmp = node-&gt;left;</span><br><span class="line">            node-&gt;left = node-&gt;right;</span><br><span class="line">            node-&gt;right = tmp;</span><br><span class="line">            <span class="keyword">if</span>(node-&gt;left) q.push(node-&gt;left);</span><br><span class="line">            <span class="keyword">if</span>(node-&gt;right) q.push(node-&gt;right);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> root;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/17/J26. 树的子结构/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈琦">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cq的Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/17/J26. 树的子结构/" itemprop="url">剑指offer_26 树的子结构</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-17T13:24:00+08:00">
+                2020-03-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/剑指offer/" itemprop="url" rel="index">
+                    <span itemprop="name">剑指offer</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/剑指offer/Medium/" itemprop="url" rel="index">
+                    <span itemprop="name">Medium</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="J26-树的子结构"><a href="#J26-树的子结构" class="headerlink" title="J26. 树的子结构"></a>J26. 树的子结构</h1><blockquote>
+<p>题目：</p>
+</blockquote>
+<p>输入两棵二叉树A和B，判断B是不是A的子结构。(约定空树不是任意一个树的子结构)</p>
+<p>B是A的子结构， 即 A中有出现和B相同的结构和节点值。</p>
+<p>例如:<br>给定的树 A:</p>
+<pre><code>    3
+   / \
+  4   5
+ / \
+1   2
+</code></pre><p>给定的树 B：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">  4 </span><br><span class="line"> /</span><br><span class="line">1</span><br></pre></td></tr></table></figure>
+<p>返回 true，因为 B 与 A 的一个子树拥有相同的结构和节点值。</p>
+<blockquote>
+<p>示例 1：</p>
+</blockquote>
+<p>输入：A = [1,2,3], B = [3,1]<br>输出：false</p>
+<blockquote>
+<p>示例 2：</p>
+</blockquote>
+<p>输入：A = [3,4,5,1,2], B = [4,1]<br>输出：true</p>
+<blockquote>
+<p>限制：</p>
+</blockquote>
+<p>0 &lt;= 节点个数 &lt;= 10000</p>
 <blockquote>
 <p>解法：</p>
 </blockquote>
-<p>这种题最容易想到的就是双指针法，p,q两个指针，让p先走k步，然后p,q一起走，直到p为null。</p>
-<p>结果也很好，时间空间双100%😄。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">ListNode* <span class="title">getKthFromEnd</span><span class="params">(ListNode* head, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        ListNode* p1 = head;</span><br><span class="line">        ListNode* p2 = head; </span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; k; ++i) &#123;</span><br><span class="line">            p1 = p1-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span>(p1) &#123;</span><br><span class="line">            p1 = p1-&gt;next;</span><br><span class="line">            p2 = p2-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">return</span> p2;        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>如果树 B 是树 A 的子结构，那么树 B 根节点一定是树 A 的某一个子节点，这里面对于二叉树的遍历分为两步：</p>
+<ol>
+<li>先序遍历树 A 中的每个节点，递归调用 <code>isSubStructure</code> 函数，来判断当前 A 的节点是否为 B 的根节点。</li>
+<li>如果已经是 B 的根节点了，递归调用 <code>recur</code> 函数来进行 <code>DFS</code> 搜索，在搜索过程中判断 B 是否与找到的 A 的子树有相同的结构和节点值，这里面搜索的过程判断的应该是 当前节点值相等，再调用左右子树做 DFS 搜索。</li>
+</ol>
+<p><img src="../images/J26_1.png" alt="J26_1"></p>
+<p>代码如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isSubStructure</span><span class="params">(TreeNode* A, TreeNode* B)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">if</span>(!A || !B) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            <span class="keyword">return</span> (isSubStructure(A-&gt;left, B) || isSubStructure(A-&gt;right, B) || recur(A, B));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">recur</span><span class="params">(TreeNode* A, TreeNode* B)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!B) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">if</span>(!A) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">return</span> A-&gt;val == B-&gt;val &amp;&amp; recur(A-&gt;left, B-&gt;left) &amp;&amp; recur(A-&gt;right, B-&gt;right);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>⭐注意这里面在 <code>recur</code> 函数中，一定要先判断 <code>if(!B) return true;</code> ，再判断 <code>if(!A) return false;</code>  。因为这里面</p>
+<ol>
+<li>如果 B 为空，则说明 B 已经全部匹配完成，应该返回 <code>true</code> 。</li>
+<li>再判断 A 是否为空，如果 B 非空而 A 为空，则说明 A 的这部分子树匹配不上 B，应该返回 <code>false</code>。</li>
+<li>再判断 A 和 B 均非空时，对应的节点值是否相同，如果相同才可以继续递归向下。</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/17/1160. 拼写单词/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈琦">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cq的Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/17/1160. 拼写单词/" itemprop="url">Leetcode_1160 拼写单词</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-17T11:04:00+08:00">
+                2020-03-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/每日一题/" itemprop="url" rel="index">
+                    <span itemprop="name">每日一题</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/每日一题/Easy/" itemprop="url" rel="index">
+                    <span itemprop="name">Easy</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="1160-Find-Words-That-Can-Be-Formed-by-Characters-拼写单词"><a href="#1160-Find-Words-That-Can-Be-Formed-by-Characters-拼写单词" class="headerlink" title="1160. Find Words That Can Be Formed by Characters/拼写单词"></a>1160. Find Words That Can Be Formed by Characters/拼写单词</h1><blockquote>
+<p><strong>题目</strong></p>
+</blockquote>
+<p>给你一份『词汇表』（字符串数组） <code>words</code> 和一张『字母表』（字符串） <code>chars</code>。</p>
+<p>假如你可以用 <code>chars</code> 中的『字母』（字符）拼写出 <code>words</code> 中的某个『单词』（字符串），那么我们就认为你掌握了这个单词。</p>
+<p>注意：每次拼写时，<code>chars</code> 中的每个字母都只能用一次。</p>
+<p>返回词汇表 <code>words</code> 中你掌握的所有单词的 <strong>长度之和</strong>。</p>
+<blockquote>
+<p><strong>示例 1：</strong></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输入：words = [&quot;cat&quot;,&quot;bt&quot;,&quot;hat&quot;,&quot;tree&quot;], chars = &quot;atach&quot;</span><br><span class="line">输出：6</span><br><span class="line">解释： </span><br><span class="line">可以形成字符串 &quot;cat&quot; 和 &quot;hat&quot;，所以答案是 3 + 3 = 6。</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>示例 2：</strong></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输入：words = [&quot;hello&quot;,&quot;world&quot;,&quot;leetcode&quot;], chars = &quot;welldonehoneyr&quot;</span><br><span class="line">输出：10</span><br><span class="line">解释：</span><br><span class="line">可以形成字符串 &quot;hello&quot; 和 &quot;world&quot;，所以答案是 5 + 5 = 10。</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>提示：</strong></p>
+</blockquote>
+<ol>
+<li><code>1 &lt;= words.length &lt;= 1000</code></li>
+<li><code>1 &lt;= words[i].length, chars.length &lt;= 100</code></li>
+<li>所有字符串中都仅包含小写英文字母</li>
+</ol>
+<blockquote>
+<p>解法：</p>
+</blockquote>
+<p>看到这道题中的，每次拼写时， <code>chars</code> 中的每个字母都只能使用一次的限制，想到可以构建一个 <code>&lt;char, int&gt;</code>的哈希表来存储每一个字符的个数，分别对 <code>words</code> 和 <code>chars</code> 进行记录，判断条件是如果 <code>words</code> 记录中每个字符的个数都不多于 <code>chars</code> 的个数，那么这个 <code>words</code> 即是可行的。</p>
+<p>之前自己写的 for 循环比较繁琐，要用到 chars.size() ，参考了一下别人写的 for 循环，在 <code>C++11</code> 之后可以用 </p>
+<p><code>for(char c: chars)</code> 来实现 <code>Range-based for loop</code>，跟python比较像。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">countCharacters</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&amp; words, <span class="built_in">string</span> chars)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">unordered_map</span>&lt;<span class="keyword">char</span>,<span class="keyword">int</span>&gt; char_count;</span><br><span class="line">        <span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">char</span> c: chars) &#123;</span><br><span class="line">            ++char_count[c];</span><br><span class="line">        &#125; </span><br><span class="line">        <span class="keyword">for</span>(<span class="built_in">string</span> word : words) &#123;</span><br><span class="line">            <span class="built_in">unordered_map</span>&lt;<span class="keyword">char</span>,<span class="keyword">int</span>&gt; word_count;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">char</span> c : word) &#123;</span><br><span class="line">                ++word_count[c];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">int</span> tmp = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">bool</span> flag = <span class="literal">true</span>;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">char</span> c : word) &#123;</span><br><span class="line">                <span class="keyword">if</span>(char_count[c] &lt; word_count[c]) &#123;</span><br><span class="line">                    flag = <span class="literal">false</span>;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            tmp = flag?word.size():<span class="number">0</span>;</span><br><span class="line">            res += tmp;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>这种解法的时间复杂度为 O(n) ，空间复杂度为 O(s) ，其中 S 为本题中的字符集大小 26，因此也可以不构建哈希表，直接自己建立一个大小为26的数组，计数通过<code>for(char c:chars) ch[c-&#39;a&#39;]++;</code>来实现。时间和空间的性能要比使用哈希表的方法好不少，代码如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">countCharacters</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&amp; words, <span class="built_in">string</span> chars)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> res=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> ch[<span class="number">26</span>]=&#123;<span class="number">0</span>&#125;;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">char</span> c:chars)</span><br><span class="line">            ch[c-<span class="string">'a'</span>]++;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span>(<span class="built_in">string</span> word:words)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">int</span> wd[<span class="number">26</span>]=&#123;<span class="number">0</span>&#125;;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">char</span> c:word)</span><br><span class="line">                wd[c-<span class="string">'a'</span>]++;</span><br><span class="line">            res+=word.size();</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">char</span> c:word)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span>(ch[c-<span class="string">'a'</span>]&lt;wd[c-<span class="string">'a'</span>])</span><br><span class="line">                &#123;</span><br><span class="line">                    res-=word.size();</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;    </span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
           
         
@@ -562,6 +962,172 @@
 <p>思路是，通过递归调用到最深的函数层内，找到最深处的节点 newhead 作为新的反转链表的头节点，然后在递归从内层到外层的结构中依次改变当前 <code>head-&gt;next-&gt;next</code>的值来实现链表反向。解释图如下：</p>
 <p><img src="../images/j24_2.jpg" alt="j24_2"></p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">ListNode* <span class="title">reverseList</span><span class="params">(ListNode* head)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (head == <span class="literal">NULL</span> || head-&gt;next == <span class="literal">NULL</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> head;</span><br><span class="line">        &#125;</span><br><span class="line">        ListNode* ret = reverseList(head-&gt;next);</span><br><span class="line">        head-&gt;next-&gt;next = head;</span><br><span class="line">        head-&gt;next = <span class="literal">NULL</span>;</span><br><span class="line">        <span class="keyword">return</span> ret;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/16/J22. 链表中的倒数第k个节点/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈琦">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cq的Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/16/J22. 链表中的倒数第k个节点/" itemprop="url">剑指offer_22 链表中的倒数第k个节点</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-16T21:44:00+08:00">
+                2020-03-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/剑指offer/" itemprop="url" rel="index">
+                    <span itemprop="name">剑指offer</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/剑指offer/Easy/" itemprop="url" rel="index">
+                    <span itemprop="name">Easy</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="J22-链表中的倒数第k个节点"><a href="#J22-链表中的倒数第k个节点" class="headerlink" title="J22. 链表中的倒数第k个节点"></a>J22. 链表中的倒数第k个节点</h1><blockquote>
+<p>题目：</p>
+</blockquote>
+<p>输入一个链表，输出该链表中倒数第k个节点。为了符合大多数人的习惯，本题从1开始计数，即链表的尾节点是倒数第1个节点。例如，一个链表有6个节点，从头节点开始，它们的值依次是1、2、3、4、5、6。这个链表的倒数第3个节点是值为4的节点。</p>
+<blockquote>
+<p>示例：</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">给定一个链表: 1-&gt;2-&gt;3-&gt;4-&gt;5, 和 k = 2.</span><br><span class="line"></span><br><span class="line">返回链表 4-&gt;5.</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>解法：</p>
+</blockquote>
+<p>这种题最容易想到的就是双指针法，p,q两个指针，让p先走k步，然后p,q一起走，直到p为null。</p>
+<p>结果也很好，时间空间双100%😄。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">ListNode* <span class="title">getKthFromEnd</span><span class="params">(ListNode* head, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        ListNode* p1 = head;</span><br><span class="line">        ListNode* p2 = head; </span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; k; ++i) &#123;</span><br><span class="line">            p1 = p1-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span>(p1) &#123;</span><br><span class="line">            p1 = p1-&gt;next;</span><br><span class="line">            p2 = p2-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">return</span> p2;        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
           
         
@@ -1516,560 +2082,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/15/695. 岛的最大面积/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈琦">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/head.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Cq的Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/03/15/695. 岛的最大面积/" itemprop="url">Leetcode_695 岛的最大面积</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-15T14:46:00+08:00">
-                2020-03-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/每日一题/" itemprop="url" rel="index">
-                    <span itemprop="name">每日一题</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/每日一题/Medium/" itemprop="url" rel="index">
-                    <span itemprop="name">Medium</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="695-Max-Area-of-Island-岛的最大面积"><a href="#695-Max-Area-of-Island-岛的最大面积" class="headerlink" title="695. Max Area of Island/岛的最大面积"></a>695. Max Area of Island/岛的最大面积</h1><blockquote>
-<p>题目</p>
-</blockquote>
-<p>给定一个包含了一些 0 和 1的非空二维数组 grid , 一个 岛屿 是由四个方向 (水平或垂直) 的 1 (代表土地) 构成的组合。你可以假设二维矩阵的四个边缘都被水包围着。</p>
-<p>找到给定的二维数组中最大的岛屿面积。(如果没有岛屿，则返回面积为0。)</p>
-<blockquote>
-<p>示例 1:</p>
-</blockquote>
-<p>[[0,0,1,0,0,0,0,1,0,0,0,0,0],<br> [0,0,0,0,0,0,0,1,1,1,0,0,0],<br> [0,1,1,0,1,0,0,0,0,0,0,0,0],<br> [0,1,0,0,1,1,0,0,1,0,1,0,0],<br> [0,1,0,0,1,1,0,0,1,1,1,0,0],<br> [0,0,0,0,0,0,0,0,0,0,1,0,0],<br> [0,0,0,0,0,0,0,1,1,1,0,0,0],<br> [0,0,0,0,0,0,0,1,1,0,0,0,0]]<br>对于上面这个给定矩阵应返回 6。注意答案不应该是11，因为岛屿只能包含水平或垂直的四个方向的‘1’。</p>
-<blockquote>
-<p>示例 2:</p>
-</blockquote>
-<p>[[0,0,0,0,0,0,0,0]]<br>对于上面这个给定的矩阵, 返回 0。</p>
-<blockquote>
-<p>解法一：DFS</p>
-</blockquote>
-<p>对于这种求矩阵最大连接的问题，一般可以按照无向图来做。主要有 <code>DFS</code> 和 <code>BFS</code> 两种思路，不同的题目中的思路都是大同小异的。这道题中主要的思路是，每到一个新的 <code>grid[i][j]</code> ，都调用一下 <code>dfs</code> 函数进行深度优先搜索，如果当前节点不为1（为 0 或者已经遍历过），则return；如果为1且未遍历过，则计数 <code>count</code>，并且跟 <code>res</code> 进行比较更新 <code>res</code>，将这个位置置0表示已经遍历过，同时继续对这个点的上下左右调用 <code>DFS</code> 来进一步更新 <code>count</code>。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">maxAreaOfIsland</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; grid)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> m = grid.size(), n = grid[<span class="number">0</span>].size(), res = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; m; ++i) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; n; ++j) &#123;</span><br><span class="line">                <span class="keyword">if</span> (grid[i][j] != <span class="number">1</span>) <span class="keyword">continue</span>;</span><br><span class="line">                <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line">                dfs(grid, i, j, count, res);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">dfs</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; grid, <span class="keyword">int</span> i, <span class="keyword">int</span> j, <span class="keyword">int</span>&amp; count, <span class="keyword">int</span>&amp; res)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> m = grid.size(), n = grid[<span class="number">0</span>].size();</span><br><span class="line">        <span class="keyword">if</span> (i &lt; <span class="number">0</span> || i &gt;= m || j &lt; <span class="number">0</span> || j &gt;= n || grid[i][j] &lt;= <span class="number">0</span>) <span class="keyword">return</span>;</span><br><span class="line">        ++count;</span><br><span class="line">        res = max(res, count);</span><br><span class="line">        grid[i][j] = <span class="number">0</span>;</span><br><span class="line">        dfs(grid, i + <span class="number">1</span>, j, count, res);</span><br><span class="line">        dfs(grid, i - <span class="number">1</span>, j, count, res);</span><br><span class="line">        dfs(grid, i, j + <span class="number">1</span>, count, res);</span><br><span class="line">        dfs(grid, i, j - <span class="number">1</span>, count, res);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>时间复杂度：<code>O(R * C)</code>。其中 R 是给定网格中的行数，C 是列数。我们访问每个网格最多一次。</p>
-<p>空间复杂度：<code>O(R * C)</code>，递归的深度最大可能是整个网格的大小，因此最大可能使用 O(R * C) 的栈空间。</p>
-<blockquote>
-<p>解法二：DFS + 栈</p>
-</blockquote>
-<p>我们可以用栈来实现深度优先搜索算法。这种方法本质与方法一相同，唯一的区别是：</p>
-<p>方法一通过函数的调用来表示接下来想要遍历哪些土地，让下一层函数来访问这些土地。而方法二把接下来想要遍历的土地放在栈里，然后在取出这些土地的时候访问它们。</p>
-<p>访问每一片土地时，我们将对围绕它四个方向进行探索，找到还未访问的土地，加入到栈 stack 中；</p>
-<p>另外，只要栈 <code>stack</code> 不为空，就说明我们还有土地待访问，那么就从栈中取出一个元素并访问。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">maxAreaOfIsland</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; grid)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i != grid.size(); ++i)</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j != grid[<span class="number">0</span>].size(); ++j) &#123;</span><br><span class="line">                <span class="keyword">int</span> cur = <span class="number">0</span>;</span><br><span class="line">                <span class="built_in">stack</span>&lt;<span class="keyword">int</span>&gt; stacki;</span><br><span class="line">                <span class="built_in">stack</span>&lt;<span class="keyword">int</span>&gt; stackj;</span><br><span class="line">                stacki.push(i);</span><br><span class="line">                stackj.push(j);</span><br><span class="line">                <span class="keyword">while</span> (!stacki.empty()) &#123;</span><br><span class="line">                    <span class="keyword">int</span> cur_i = stacki.top(), cur_j = stackj.top();</span><br><span class="line">                    stacki.pop();</span><br><span class="line">                    stackj.pop();</span><br><span class="line">                    <span class="keyword">if</span> (cur_i &lt; <span class="number">0</span> || cur_j &lt; <span class="number">0</span> || cur_i == grid.size() || cur_j == grid[<span class="number">0</span>].size() || grid[cur_i][cur_j] != <span class="number">1</span>)</span><br><span class="line">                        <span class="keyword">continue</span>;</span><br><span class="line">                    ++cur;</span><br><span class="line">                    grid[cur_i][cur_j] = <span class="number">0</span>;</span><br><span class="line">                    <span class="keyword">int</span> di[<span class="number">4</span>] = &#123;<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">-1</span>&#125;;</span><br><span class="line">                    <span class="keyword">int</span> dj[<span class="number">4</span>] = &#123;<span class="number">1</span>, <span class="number">-1</span>, <span class="number">0</span>, <span class="number">0</span>&#125;;</span><br><span class="line">                    <span class="keyword">for</span> (<span class="keyword">int</span> index = <span class="number">0</span>; index != <span class="number">4</span>; ++index) &#123;</span><br><span class="line">                        <span class="keyword">int</span> next_i = cur_i + di[index], next_j = cur_j + dj[index];</span><br><span class="line">                        stacki.push(next_i);</span><br><span class="line">                        stackj.push(next_j);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                ans = max(ans, cur);</span><br><span class="line">            &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>时间复杂度：<code>O(R * C)</code>，其中 R 是给定网格中的行数，C 是列数。我们访问每个网格最多一次。</p>
-<p>空间复杂度：<code>O(R * C)</code>，栈中最多会存放所有的土地，土地的数量最多为 R <em> C 块，因此使用的空间为 O(R </em> C)。</p>
-<blockquote>
-<p>解法三：BFS</p>
-</blockquote>
-<p> <code>BFS</code> 与 <code>DFS</code> 其实实现的方式差不多，只不过在方法二中的 <code>栈</code> 的数据结构换成了 <code>队列</code> ，从 <code>先进后出</code> 换成了 <code>先进先出</code>。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">maxAreaOfIsland</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; grid)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i != grid.size(); ++i)</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j != grid[<span class="number">0</span>].size(); ++j) &#123;</span><br><span class="line">                <span class="keyword">int</span> cur = <span class="number">0</span>;</span><br><span class="line">                <span class="built_in">queue</span>&lt;<span class="keyword">int</span>&gt; queuei;</span><br><span class="line">                <span class="built_in">queue</span>&lt;<span class="keyword">int</span>&gt; queuej;</span><br><span class="line">                queuei.push(i);</span><br><span class="line">                queuej.push(j);</span><br><span class="line">                <span class="keyword">while</span> (!queuei.empty()) &#123;</span><br><span class="line">                    <span class="keyword">int</span> cur_i = queuei.front(), cur_j = queuej.front();</span><br><span class="line">                    queuei.pop();</span><br><span class="line">                    queuej.pop();</span><br><span class="line">                    <span class="keyword">if</span> (cur_i &lt; <span class="number">0</span> || cur_j &lt; <span class="number">0</span> || cur_i == grid.size() || cur_j == grid[<span class="number">0</span>].size() || grid[cur_i][cur_j] != <span class="number">1</span>)</span><br><span class="line">                        <span class="keyword">continue</span>;</span><br><span class="line">                    ++cur;</span><br><span class="line">                    grid[cur_i][cur_j] = <span class="number">0</span>;</span><br><span class="line">                    <span class="keyword">int</span> di[<span class="number">4</span>] = &#123;<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">-1</span>&#125;;</span><br><span class="line">                    <span class="keyword">int</span> dj[<span class="number">4</span>] = &#123;<span class="number">1</span>, <span class="number">-1</span>, <span class="number">0</span>, <span class="number">0</span>&#125;;</span><br><span class="line">                    <span class="keyword">for</span> (<span class="keyword">int</span> index = <span class="number">0</span>; index != <span class="number">4</span>; ++index) &#123;</span><br><span class="line">                        <span class="keyword">int</span> next_i = cur_i + di[index], next_j = cur_j + dj[index];</span><br><span class="line">                        queuei.push(next_i);</span><br><span class="line">                        queuej.push(next_j);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                ans = max(ans, cur);</span><br><span class="line">            &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>时间复杂度：O(R * C)。其中 R 是给定网格中的行数，C 是列数。我们访问每个网格最多一次。</p>
-<p>空间复杂度：O(R <em> C)，队列中最多会存放所有的土地，土地的数量最多为 R </em> C块，因此使用的空间为 O(R * C)。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/14/J15. 二进制中1的个数/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈琦">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/head.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Cq的Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/03/14/J15. 二进制中1的个数/" itemprop="url">剑指offer_15. 二进制中1的个数</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-14T20:48:00+08:00">
-                2020-03-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/剑指offer/" itemprop="url" rel="index">
-                    <span itemprop="name">剑指offer</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/剑指offer/Easy/" itemprop="url" rel="index">
-                    <span itemprop="name">Easy</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="J15-二进制中1的个数-Leetcode-191"><a href="#J15-二进制中1的个数-Leetcode-191" class="headerlink" title="J15. 二进制中1的个数/Leetcode 191"></a>J15. 二进制中1的个数/Leetcode 191</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>请实现一个函数，输入一个整数，输出该数二进制表示中 1 的个数。例如，把 9 表示成二进制是 1001，有 2 位是 1。因此，如果输入 9，则该函数输出 2。</p>
-<blockquote>
-<p>示例 1：</p>
-</blockquote>
-<p>输入：00000000000000000000000000001011<br>输出：3<br>解释：输入的二进制串 00000000000000000000000000001011 中，共有三位为 ‘1’。</p>
-<blockquote>
-<p>示例 2：</p>
-</blockquote>
-<p>输入：00000000000000000000000010000000<br>输出：1<br>解释：输入的二进制串 00000000000000000000000010000000 中，共有一位为 ‘1’。</p>
-<blockquote>
-<p>示例 3：</p>
-</blockquote>
-<p>输入：11111111111111111111111111111101<br>输出：31<br>解释：输入的二进制串 11111111111111111111111111111101 中，共有 31 位为 ‘1’。</p>
-<p>汉明重量是一串符号中非零符号的个数。因此它等同于同样长度的全零符号串的汉明距离。在最为常见的数据位符号串中，它是1的个数。汉明重量是以理查德·卫斯里·汉明的名字命名的，它在包括信息论、编码理论、密码学等多个领域都有应用。</p>
-<p>本题很简单，通过移位运算就可以实现：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">hammingWeight</span><span class="params">(<span class="keyword">uint32_t</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">32</span>; ++i) &#123;</span><br><span class="line">            res += (n &amp; <span class="number">1</span>);</span><br><span class="line">            n = n &gt;&gt; <span class="number">1</span>;</span><br><span class="line">        &#125;  </span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/14/J14-I. 剪绳子 Leetcode 343/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈琦">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/head.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Cq的Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/03/14/J14-I. 剪绳子 Leetcode 343/" itemprop="url">剑指offer_14-I&II. 剪绳子 / Leetcode 343</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-14T18:28:00+08:00">
-                2020-03-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/剑指offer/" itemprop="url" rel="index">
-                    <span itemprop="name">剑指offer</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/剑指offer/Medium/" itemprop="url" rel="index">
-                    <span itemprop="name">Medium</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="J14-I-amp-II-剪绳子-Leetcode-343"><a href="#J14-I-amp-II-剪绳子-Leetcode-343" class="headerlink" title="J14-I&amp;II. 剪绳子/ Leetcode 343"></a>J14-I&amp;II. 剪绳子/ Leetcode 343</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>给你一根长度为 n 的绳子，请把绳子剪成整数长度的 m 段（m、n都是整数，n &gt; 1并且m &gt; 1），每段绳子的长度记为 k[0],k[1]…k[m] 。请问 k[0]*k[1]*…*k[m] 可能的最大乘积是多少？例如，当绳子的长度是8时，我们把它剪成长度分别为2、3、3的三段，此时得到的最大乘积是18。</p>
-<blockquote>
-<p>示例 1：</p>
-</blockquote>
-<p>输入: 2<br>输出: 1<br>解释: 2 = 1 + 1, 1 × 1 = 1</p>
-<blockquote>
-<p>示例 2:</p>
-</blockquote>
-<p>输入: 10<br>输出: 36<br>解释: 10 = 3 + 3 + 4, 3 × 3 × 4 = 36</p>
-<blockquote>
-<p>提示：</p>
-</blockquote>
-<p>2 &lt;= n &lt;= 58</p>
-<blockquote>
-<p>解法一：动态规划</p>
-</blockquote>
-<p>首先最容易想到的是复杂度为O(n2)的动态规划解法，维护一个一维的 <code>dp</code> 数组，dp[i]表示数字 i 拆分成至少两个正整数的和的最大乘积， <code>dp</code> 数组大小为 n + 1，初始值全部设为 1。由于 n = 1, 2的时候 dp[n] 均为1，因此我们可以设置 i 从3到 n 遍历。在循环 j 中，对于小于 i 的 j，我们按照两种情况进行讨论：如果是拆分成两个数字，即为 <code>j * (i - j)</code>，如果是拆分成多个数字，由于我们是遍历 j ，因此要考虑将 i - j 拆分，这样才可以避免重复，因此构造的动态规划状态转移方程为：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dp[i] = max(dp[i], max(j * (i - j), j * dp[i - j]));</span><br></pre></td></tr></table></figure>
-<p>随着 i 循环的结束，我们最终得到的 <code>dp[n]</code> 即为最终的乘积最大的结果。</p>
-<p>时间复杂度O(n2)，空间复杂度O(n)，但是在 <code>Leetcode</code> 上可以得到双100%的成绩。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">cuttingRope</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; dp(n + <span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">3</span>; i &lt;= n; ++i) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt; i; ++j) &#123;</span><br><span class="line">                dp[i] = max(max(j * dp[i - j], j * (i - j)), dp[i]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> dp[n];                </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>⭐解法二：数学解法+贪心规则</p>
-</blockquote>
-<p>通过数学计算可以得到贪心规则如下：</p>
-<p>最高优先级： 3 。把绳子尽可能切为多个长度为 3 的片段，留下的最后一段绳子的长度可能为 0,1,2 三种情况。<br>次高优先级： 2 。若最后一段绳子长度为 2，则保留，不再拆为 1+1 。<br>最低优先级： 1； 若最后一段绳子长度为 1；则应把最后的 3 + 1 替换为 2 + 2，因为2×2 &gt; 3×1。</p>
-<blockquote>
-<p>算法流程：<br>当 n \leq 3n≤3 时，按照贪心规则应直接保留原数字，但由于题目要求必须剪成 m&gt;1m&gt;1 段，因此必须剪出一段长度为 11 的绳子，即返回 n - 1n−1 。<br>当 n &gt; 3 时，求 n 除以 3 的 整数部分 a 和 余数部分 b （即 n = 3a + b ），并分为以下三种情况：</p>
-</blockquote>
-<ol>
-<li>当 b = 0 时，直接返回 $3^a$.</li>
-<li>当 b = 1 时，要将一个 1+3 转换为 2+2，因此返回 $3 ^(a-1) × 4$.</li>
-<li>当 b = 2 时，返回 $3^a ×2$。</li>
-</ol>
-<p>时间空间复杂度都为O(1)。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">integerBreak</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (n == <span class="number">2</span> || n == <span class="number">3</span>) <span class="keyword">return</span> n - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span> (n == <span class="number">4</span>) <span class="keyword">return</span> <span class="number">4</span>;</span><br><span class="line">        n -= <span class="number">5</span>;</span><br><span class="line">        <span class="keyword">return</span> (<span class="keyword">int</span>)<span class="built_in">pow</span>(<span class="number">3</span>, (n / <span class="number">3</span> + <span class="number">1</span>)) * (n % <span class="number">3</span> + <span class="number">2</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<h1 id="II"><a href="#II" class="headerlink" title="II"></a>II</h1><p>II里面把 n 的范围提升到了 <code>2 &lt;= n &lt;= 1000</code> ，答案也需要取模 1e9+7（1000000007），如计算初始结果为：1000000008，请返回 1。</p>
-<p>因此原来的动态规划方法做不了了，只能自己定义一个返回值为 long long int的幂指函数：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">cuttingRope</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(n == <span class="number">2</span>) <span class="keyword">return</span> <span class="number">1</span>;    <span class="comment">// 如果绳子长度为2,只能分成1*1</span></span><br><span class="line">        <span class="keyword">if</span>(n == <span class="number">3</span>) <span class="keyword">return</span> <span class="number">2</span>;    <span class="comment">// 如果绳子长度为3,只能分成1*2</span></span><br><span class="line">        <span class="comment">// if(n == 4) return 4;</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> numsOf3 = n / <span class="number">3</span>;</span><br><span class="line">        <span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(n % <span class="number">3</span> == <span class="number">1</span>)&#123;</span><br><span class="line">            <span class="comment">// 说明最后会剩下一个4,这时要把4拆分成2*2</span></span><br><span class="line">            <span class="keyword">return</span> (iPow(<span class="number">3</span>, (numsOf3 - <span class="number">1</span>)) * <span class="number">4</span>) % <span class="number">1000000007</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(n % <span class="number">3</span> == <span class="number">2</span>)&#123;</span><br><span class="line">            <span class="comment">// 说明最后会剩下一个2</span></span><br><span class="line">            <span class="keyword">return</span> (iPow(<span class="number">3</span>, numsOf3) * <span class="number">2</span>) % <span class="number">1000000007</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> (iPow(<span class="number">3</span>, numsOf3)) % <span class="number">1000000007</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">long</span> <span class="keyword">long</span> <span class="keyword">int</span> <span class="title">iPow</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">int</span> e)</span></span>&#123;</span><br><span class="line">        <span class="comment">// 因为pow会溢出，这里设计一个iPow</span></span><br><span class="line">        <span class="comment">// res来存放结果，为了保证res不溢出这里设置为long long</span></span><br><span class="line">        <span class="keyword">long</span> <span class="keyword">long</span> <span class="keyword">int</span> res = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; e; ++i)&#123;</span><br><span class="line">            res *= n;</span><br><span class="line">            <span class="keyword">if</span>(res * n &gt; <span class="number">1000000007</span>)&#123;</span><br><span class="line">                <span class="comment">// 对结果取模</span></span><br><span class="line">                res %= <span class="number">1000000007</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2122,7 +2134,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">247</span>
+                  <span class="site-state-item-count">250</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
