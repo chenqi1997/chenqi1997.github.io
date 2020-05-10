@@ -263,6 +263,191 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/24/J56-II. 数组中数字出现的次数II/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈琦">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cq的Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/24/J56-II. 数组中数字出现的次数II/" itemprop="url">剑指offer_56-II 数组中数字出现的次数 II</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-24T20:21:00+08:00">
+                2020-03-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/剑指offer/" itemprop="url" rel="index">
+                    <span itemprop="name">剑指offer</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/剑指offer/Medium/" itemprop="url" rel="index">
+                    <span itemprop="name">Medium</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="J56-II-数组中数字出现的次数-II"><a href="#J56-II-数组中数字出现的次数-II" class="headerlink" title="J56-II*. 数组中数字出现的次数 II"></a>J56-II*. 数组中数字出现的次数 II</h1><blockquote>
+<p>题目：</p>
+</blockquote>
+<p>在一个数组 nums 中除一个数字只出现一次之外，其他数字都出现了三次。请找出那个只出现一次的数字。</p>
+<blockquote>
+<p>示例 1：</p>
+</blockquote>
+<p>输入：nums = [3,4,3,3]<br>输出：4</p>
+<blockquote>
+<p>示例 2：</p>
+</blockquote>
+<p>输入：nums = [9,1,7,9,7,9,7]<br>输出：1</p>
+<blockquote>
+<p>限制：</p>
+</blockquote>
+<p>1 &lt;= nums.length &lt;= 10000<br>1 &lt;= nums[i] &lt; 2^31</p>
+<blockquote>
+<p>解法一：哈希表+迭代器</p>
+</blockquote>
+<p>这道题没有时间空间复杂度要求，因此可以用哈希表的方式记录下每个数字出现的次数，再用哈希表的迭代器 iterator 依次迭代哈希表中保存的元素，如果遇到个数为1的即返回。</p>
+<p>时间复杂度 <code>O(N)</code> ，空间复杂度 <code>O(N)</code> 。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">//unordered_map的迭代器是一个指针，指向这个元素，通过迭代器来取得它的值。</span><br><span class="line">1 unordered_map&lt;Key,T&gt;::iterator it;</span><br><span class="line">2 (*it).first;             // the key value (of type Key)</span><br><span class="line">3 (*it).second;            // the mapped value (of type T)</span><br><span class="line">4 (*it);                   // the &quot;element value&quot; (of type pair&lt;const Key,T&gt;)</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">singleNumber</span><span class="params">(<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;nums)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (nums.empty()) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 哈希表存储数和其出现次数</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">unordered_map</span>&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt; <span class="built_in">map</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> num : nums) &#123;</span><br><span class="line">        <span class="built_in">map</span>[num]++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 遍历哈希表</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> iter : <span class="built_in">map</span>) &#123;</span><br><span class="line">        <span class="comment">// 找到出现次数的数并返回</span></span><br><span class="line">        <span class="keyword">if</span> (iter.second == <span class="number">1</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> iter.first;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>解法二：位运算</p>
+</blockquote>
+<ul>
+<li>如果一个数字出现三次，则它二进制表示的每一位也出现三次。</li>
+<li>如果把所有出现三次的数字的二进制表示的每一位都分别加起来，则每一位的和都能被3整除。</li>
+<li>将数组中的所有数字的二进制表示的每一位都加起来。如果某一位的和能被3整除，则只出现一次数字的二进制表示中对应的那一位是0，否则就是1。</li>
+</ul>
+<p>具体的实现代码如下，时间复杂度为O(N)，空间复杂度为O(N)。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">singleNumber</span><span class="params">(<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;nums)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (nums.empty()) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">    <span class="comment">// 存储所有数字二进制表示的每一位的和</span></span><br><span class="line">    <span class="keyword">int</span> bitSum[<span class="number">32</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">    <span class="comment">// 该位是0或1</span></span><br><span class="line">    <span class="keyword">int</span> bit = <span class="number">0</span>;</span><br><span class="line">    <span class="comment">// 遍历数组中的数</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> num : nums) &#123;</span><br><span class="line">        <span class="comment">// 每次更新无符号整数掩码为1</span></span><br><span class="line">        <span class="keyword">unsigned</span> <span class="keyword">int</span> bitMask = <span class="number">1</span>;</span><br><span class="line">        <span class="comment">// 对数字的32位进行累加，从低位开始</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">31</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">            <span class="comment">// 计算该位是1还是0</span></span><br><span class="line">            bit = num &amp; bitMask;</span><br><span class="line">            <span class="comment">// 如果不是0，则将存储每位和的数组的该位加1</span></span><br><span class="line">            <span class="keyword">if</span> (bit != <span class="number">0</span>) &#123;</span><br><span class="line">                bitSum[i] += <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 将掩码的1左移，接着计算右起开始的下一位</span></span><br><span class="line">            bitMask &lt;&lt;= <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 遍历二进制每一位和的数组，从高位开始</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> b : bitSum) &#123;</span><br><span class="line">        <span class="comment">// 考虑到最后一位的情况，</span></span><br><span class="line">        <span class="comment">// 应该先左移再计算</span></span><br><span class="line">        ans &lt;&lt;= <span class="number">1</span>;</span><br><span class="line">        <span class="comment">// 如果和的该位整除3则为0，</span></span><br><span class="line">        <span class="comment">// 否则为1</span></span><br><span class="line">        ans += (b % <span class="number">3</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/24/J56-I. 数组中数字出现的次数 Leetcode 260/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1894,180 +2079,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/23/J50. 第一个只出现一次的字符/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈琦">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/head.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Cq的Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/03/23/J50. 第一个只出现一次的字符/" itemprop="url">剑指offer_50 第一个只出现一次的字符</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-23T13:19:00+08:00">
-                2020-03-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/剑指offer/" itemprop="url" rel="index">
-                    <span itemprop="name">剑指offer</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/剑指offer/Easy/" itemprop="url" rel="index">
-                    <span itemprop="name">Easy</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="J50-第一个只出现一次的字符"><a href="#J50-第一个只出现一次的字符" class="headerlink" title="J50. 第一个只出现一次的字符"></a>J50. 第一个只出现一次的字符</h1><blockquote>
-<p>题目</p>
-</blockquote>
-<p>在字符串 s 中找出第一个只出现一次的字符。如果没有，返回一个单空格。</p>
-<blockquote>
-<p>示例:</p>
-</blockquote>
-<p>s = “abaccdeff”<br>返回 “b”</p>
-<p>s = “”<br>返回 “ “</p>
-<blockquote>
-<p>限制：</p>
-</blockquote>
-<p>0 &lt;= s 的长度 &lt;= 50000</p>
-<blockquote>
-<p>解法：哈希表</p>
-</blockquote>
-<p>很简单的解法，用一个 <code>unordered_map&lt;char,int&gt; m</code>来在第一个 <code>for</code> 循环中存储每个字符对应的出现次数，然后再用一个 <code>for</code> 循环来遍历字符串找出第一个 <code>m[c] == 1</code> 的字符串 <code>c</code> 来返回。注意，如果没有满足条件的要在最后返回一个<code>&#39; &#39;</code>。</p>
-<p>看了看别人的题解好像也没有时间空间的优化的方式-。-</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">char</span> <span class="title">firstUniqChar</span><span class="params">(<span class="built_in">string</span> s)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(s == <span class="string">""</span>) <span class="keyword">return</span> <span class="string">' '</span>;</span><br><span class="line">        <span class="built_in">unordered_map</span>&lt;<span class="keyword">char</span>,<span class="keyword">int</span>&gt; m;</span><br><span class="line">        <span class="keyword">int</span> n = s.size();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">char</span> c : s) &#123;</span><br><span class="line">            m[c] += <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">char</span> c : s) &#123;</span><br><span class="line">            <span class="keyword">if</span>(m[c] == <span class="number">1</span>) <span class="keyword">return</span> c;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">' '</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>注意，s为空的空字符串 <code>&quot; &quot;</code>，返回的字符为空是空字符 <code>&#39; &#39;</code>。</p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2120,7 +2131,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">265</span>
+                  <span class="site-state-item-count">266</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

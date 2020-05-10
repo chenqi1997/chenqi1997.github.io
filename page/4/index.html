@@ -263,6 +263,183 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/03/149. 直线上最多的点数/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈琦">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cq的Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/05/03/149. 直线上最多的点数/" itemprop="url">Leetcode_149 直线上最多的点数</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-03T14:55:00+08:00">
+                2020-05-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/LeetCode/" itemprop="url" rel="index">
+                    <span itemprop="name">LeetCode</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/LeetCode/Hard/" itemprop="url" rel="index">
+                    <span itemprop="name">Hard</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="149-Max-Points-on-a-Line-直线上最多的点数"><a href="#149-Max-Points-on-a-Line-直线上最多的点数" class="headerlink" title="149*. Max Points on a Line/直线上最多的点数"></a>149*. Max Points on a Line/直线上最多的点数</h1><blockquote>
+<p>题目：</p>
+</blockquote>
+<p>给定一个二维平面，平面上有 <em>n</em> 个点，求最多有多少个点在同一条直线上。</p>
+<p><strong>示例 1:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">输入: [[1,1],[2,2],[3,3]]</span><br><span class="line">输出: 3</span><br><span class="line">解释:</span><br><span class="line">^</span><br><span class="line">|</span><br><span class="line">|        o</span><br><span class="line">|     o</span><br><span class="line">|  o  </span><br><span class="line">+-------------&gt;</span><br><span class="line">0  1  2  3  4</span><br></pre></td></tr></table></figure>
+<p><strong>示例 2:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">输入: [[1,1],[3,2],[5,3],[4,1],[2,3],[1,4]]</span><br><span class="line">输出: 4</span><br><span class="line">解释:</span><br><span class="line">^</span><br><span class="line">|</span><br><span class="line">|  o</span><br><span class="line">|     o        o</span><br><span class="line">|        o</span><br><span class="line">|  o        o</span><br><span class="line">+-------------------&gt;</span><br><span class="line">0  1  2  3  4  5  6</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>解法：⭐⭐⭐⭐⭐两次循环+哈希表</p>
+</blockquote>
+<p>这道题其实思想并不难，难的是如何控制时间并且考虑好边缘情况。可能出现的边缘情况如下。</p>
+<ol>
+<li>点重合</li>
+<li>斜率为 0 或 $\infty $ 。</li>
+<li>后来遍历的点在之前的直线上已经遍历过。</li>
+<li>存在哈希表中的斜率精度难以满足。</li>
+</ol>
+<p>其中尤其以第 <code>4</code> 个问题难以解决。测试样例中有 <code>[[0,0],[94911150,94911151],[94911151,94911152]]</code> 这个样例会被判断为在一个直线上，使用了 <code>long double</code> 也无法达到精度。因此可以考虑使用消除了最大公因数的斜率 (y, x) 对来当作哈希表的键值，键值对应的 value 为这个斜率的直线上包含的所有元素。</p>
+<p>同时，为了解决可能出现的重合点的问题，需要在内层循环就进行一个判断，如果是重合的点就 ++samepoints， 如果不是的话通过：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curmax = max(curmax, ++count[getSlope(p1_x, p1_y, p2_x, p2_y)]);</span><br></pre></td></tr></table></figure>
+<p>用当前斜率下的直线上的点的个数值来更新 <code>curmax</code> 的值，再在外层循环内用 <code>curmax + samepoints</code> 来更新最大的结果。这里要琢磨一下，其实 <code>samepoints</code> 这里面的个数是与外层循环的每一个 <code>(p1_x, p1_y)</code> 相等的点的个数，必然可以加到从 <code>(p1_x, p1_y)</code> 出发的直线上。</p>
+<p>❗❗❗❗❗❗</p>
+<p>这里最开始我习惯性用的是 <code>unordered_map</code>， 不过 <code>unordered_map</code> 的键值不能使用自定义的 <code>pair&lt;int, int&gt;</code> 类型，如果要用自定义键值的话需要重写 <code>my_key</code> 和 <code>hash</code> 函数，太麻烦了 -。-因此这道题里面我们用 <code>map</code> 数据结构。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">maxPoints</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; points)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(points.empty() || points[<span class="number">0</span>].empty()) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span>(points.size() &lt; <span class="number">3</span>) <span class="keyword">return</span> points.size();</span><br><span class="line">        <span class="keyword">int</span> res = <span class="number">0</span>, n = points.size();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n - <span class="number">1</span>; ++i) &#123;</span><br><span class="line">            <span class="keyword">int</span> p1_x = points[i][<span class="number">0</span>];</span><br><span class="line">            <span class="keyword">int</span> p1_y = points[i][<span class="number">1</span>];</span><br><span class="line">            <span class="keyword">int</span> curmax = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">int</span> samepoints = <span class="number">1</span>;</span><br><span class="line">            <span class="built_in">map</span>&lt;pair&lt;<span class="keyword">int</span>,<span class="keyword">int</span>&gt;, <span class="keyword">int</span>&gt; count;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = i + <span class="number">1</span>; j &lt; n; ++j) &#123;</span><br><span class="line">                <span class="keyword">int</span> p2_x = points[j][<span class="number">0</span>];</span><br><span class="line">                <span class="keyword">int</span> p2_y = points[j][<span class="number">1</span>];</span><br><span class="line">                <span class="keyword">if</span>(p1_x == p2_x &amp;&amp; p1_y == p2_y)</span><br><span class="line">                    ++samepoints;</span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                    curmax = max(curmax, ++count[getSlope(p1_x, p1_y, p2_x, p2_y)]);</span><br><span class="line">            &#125;</span><br><span class="line">            res = max(res, curmax + samepoints);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//返回值是(y, x)形式保存斜率</span></span><br><span class="line">    pair&lt;<span class="keyword">int</span>,<span class="keyword">int</span>&gt; getSlope(<span class="keyword">int</span> p1_x, <span class="keyword">int</span> p1_y, <span class="keyword">int</span> p2_x, <span class="keyword">int</span> p2_y) &#123;</span><br><span class="line">        <span class="keyword">int</span> dx = p2_x - p1_x;</span><br><span class="line">        <span class="keyword">int</span> dy = p2_y - p1_y;</span><br><span class="line">        <span class="keyword">if</span>(dx == <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">return</span> &#123;<span class="number">0</span>, p1_x&#125;;</span><br><span class="line">        <span class="keyword">if</span>(dy == <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">return</span> &#123;p1_y, <span class="number">0</span>&#125;;</span><br><span class="line">        <span class="keyword">int</span> d = gcd(dy, dx);</span><br><span class="line">        <span class="keyword">return</span> &#123;dy / d, dx / d&#125;;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//辗转相除求最大公因数</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">gcd</span><span class="params">(<span class="keyword">int</span> m, <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> n == <span class="number">0</span> ? m : gcd(n, m % n);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/03/148. 排序链表/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1885,173 +2062,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/30/137. 只出现一次的数字II/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈琦">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/head.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Cq的Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/04/30/137. 只出现一次的数字II/" itemprop="url">Leetcode_137 只出现一次的数字II</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-30T15:46:00+08:00">
-                2020-04-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/LeetCode/" itemprop="url" rel="index">
-                    <span itemprop="name">LeetCode</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/LeetCode/Medium/" itemprop="url" rel="index">
-                    <span itemprop="name">Medium</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="137-Single-Number-II-只出现一次的数字-II"><a href="#137-Single-Number-II-只出现一次的数字-II" class="headerlink" title="137. Single Number II/只出现一次的数字 II"></a>137. Single Number II/只出现一次的数字 II</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>给定一个<strong>非空</strong>整数数组，除了某个元素只出现一次以外，其余每个元素均出现了三次。找出那个只出现了一次的元素。</p>
-<p><strong>说明：</strong></p>
-<p>你的算法应该具有线性时间复杂度。 你可以不使用额外空间来实现吗？</p>
-<p><strong>示例 1:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: [2,2,3,2]</span><br><span class="line">输出: 3</span><br></pre></td></tr></table></figure>
-<p><strong>示例 2:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: [0,1,0,1,0,1,99]</span><br><span class="line">输出: 99</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法：⭐⭐⭐⭐位运算</p>
-</blockquote>
-<p>统计所有数字中每个位中 <code>1</code> 出现的总数，那么对于某个位， <code>1</code> 出现的次数一定是 <code>3</code> 的倍数 <code>+1</code> 或 <code>0</code> ，那么对这个数 <code>%3</code> 得到的结果就是目的数字在该位上的值。这里面在遍历某一位 <code>i</code> 的时候，要先把 <code>nums[j]</code> 右移位到最右边，然后 <code>&amp;1</code> 来判断这个值是不是 <code>1</code> 。然后将当前位所有值加起来 <code>%3</code> 的值左移 <code>i</code> 位到 <code>res</code> 上。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">singleNumber</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; <span class="number">32</span>;++i)&#123;</span><br><span class="line">            <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>;j &lt; nums.size();++j)&#123;</span><br><span class="line">                sum += (nums[j] &gt;&gt; i) &amp; <span class="number">1</span>;<span class="comment">//取最后一位</span></span><br><span class="line">            &#125;</span><br><span class="line">            res ^= (sum % <span class="number">3</span>) &lt;&lt; i;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2104,7 +2114,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">265</span>
+                  <span class="site-state-item-count">266</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
