@@ -263,6 +263,364 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/04/152. 乘积最大子数组/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈琦">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cq的Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/05/04/152. 乘积最大子数组/" itemprop="url">Leetcode_152 乘积最大子数组</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-04T11:09:00+08:00">
+                2020-05-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/LeetCode/" itemprop="url" rel="index">
+                    <span itemprop="name">LeetCode</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/LeetCode/Medium/" itemprop="url" rel="index">
+                    <span itemprop="name">Medium</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="152-Maximum-Product-Subarray-乘积最大子数组"><a href="#152-Maximum-Product-Subarray-乘积最大子数组" class="headerlink" title="152. Maximum Product Subarray/乘积最大子数组"></a>152. Maximum Product Subarray/乘积最大子数组</h1><blockquote>
+<p>题目：</p>
+</blockquote>
+<p>给你一个整数数组 <code>nums</code> ，请你找出数组中乘积最大的连续子数组（该子数组中至少包含一个数字）。</p>
+<p><strong>示例 1:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入: [2,3,-2,4]</span><br><span class="line">输出: 6</span><br><span class="line">解释: 子数组 [2,3] 有最大乘积 6。</span><br></pre></td></tr></table></figure>
+<p><strong>示例 2:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入: [-2,0,-1]</span><br><span class="line">输出: 0</span><br><span class="line">解释: 结果不能为 2, 因为 [-2,-1] 不是子数组。</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>解法一：动态规划</p>
+</blockquote>
+<p>这道题乍一看跟之前的 <code>Leetcode 53. 最大子序和</code> 非常像，肯定是可以用动态规划的思想来做，动态数组的值为当前位置之前所能达到的最大值。然后这里是我欠考虑了-。-因为在最大乘积子数组的问题下，下一个遍历到的最大值有三种可能：</p>
+<ol>
+<li>下一个数很大。</li>
+<li>上一个乘积最大的 <code>dp</code>  * 下一个数很大。</li>
+<li>上一个乘积最小的负值 <code>dp</code>  * 下一个负数很大。</li>
+</ol>
+<p>所以这里面就不能单单使用一个 <code>dp</code> 数组记录目前乘积最大值，还应该加上一个 <code>dp</code> 数组来记录目前的乘积最小值，用来计算下一个数可能是负数的情况。</p>
+<h4 id="可以得到动态规划的状态转移方程如下："><a href="#可以得到动态规划的状态转移方程如下：" class="headerlink" title="可以得到动态规划的状态转移方程如下："></a>可以得到动态规划的状态转移方程如下：</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">maxDP[i + <span class="number">1</span>] = max(maxDP[i] * A[i + <span class="number">1</span>], A[i + <span class="number">1</span>],minDP[i] * A[i + <span class="number">1</span>])</span><br><span class="line">minDP[i + <span class="number">1</span>] = min(minDP[i] * A[i + <span class="number">1</span>], A[i + <span class="number">1</span>],maxDP[i] * A[i + <span class="number">1</span>])</span><br><span class="line">dp[i + <span class="number">1</span>] = max(dp[i], maxDP[i + <span class="number">1</span>])</span><br></pre></td></tr></table></figure>
+<p>我们注意到更新 <code>dp[i]</code> 的时候，我们只用到 <code>dp[i-1]</code> 的信息，再之前的信息就用不到了。所以我们完全不需要一个数组，只需要一个变量去重复覆盖更新即可。这里同样可以迭代改变同一个变量 <code>curmax</code> , <code>curmin</code> 来一词保存每一步的乘积最大值和最小值。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">maxProduct</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = nums.size();</span><br><span class="line">        <span class="keyword">if</span>(n == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span>(n == <span class="number">1</span>) <span class="keyword">return</span> nums[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">int</span> res = nums[<span class="number">0</span>], curmax = nums[<span class="number">0</span>], curmin = nums[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; n; ++i) &#123;</span><br><span class="line">            <span class="keyword">int</span> tmp = curmax;</span><br><span class="line">            curmax = max(max(curmin * nums[i], nums[i]), curmax * nums[i]);</span><br><span class="line">            curmin = min(min(curmin * nums[i], nums[i]), tmp * nums[i]);</span><br><span class="line">            res = max(res, curmax);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/03/150. 逆波兰表达式求值/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈琦">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cq的Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/05/03/150. 逆波兰表达式求值/" itemprop="url">Leetcode_150 逆波兰表达式求值</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-03T16:55:00+08:00">
+                2020-05-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/LeetCode/" itemprop="url" rel="index">
+                    <span itemprop="name">LeetCode</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/LeetCode/Medium/" itemprop="url" rel="index">
+                    <span itemprop="name">Medium</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="150-Evaluate-Reverse-Polish-Notation-逆波兰表达式求值"><a href="#150-Evaluate-Reverse-Polish-Notation-逆波兰表达式求值" class="headerlink" title="150. Evaluate Reverse Polish Notation/逆波兰表达式求值"></a>150. Evaluate Reverse Polish Notation/逆波兰表达式求值</h1><blockquote>
+<p>题目：</p>
+</blockquote>
+<p>根据<a href="https://baike.baidu.com/item/%E9%80%86%E6%B3%A2%E5%85%B0%E5%BC%8F/128437" target="_blank" rel="noopener">逆波兰表示法</a>，求表达式的值。</p>
+<p>有效的运算符包括 <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code> 。每个运算对象可以是整数，也可以是另一个逆波兰表达式。</p>
+<p><strong>说明：</strong></p>
+<ul>
+<li>整数除法只保留整数部分。</li>
+<li>给定逆波兰表达式总是有效的。换句话说，表达式总会得出有效数值且不存在除数为 0 的情况。</li>
+</ul>
+<p><strong>示例 1：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入: [&quot;2&quot;, &quot;1&quot;, &quot;+&quot;, &quot;3&quot;, &quot;*&quot;]</span><br><span class="line">输出: 9</span><br><span class="line">解释: ((2 + 1) * 3) = 9</span><br></pre></td></tr></table></figure>
+<p><strong>示例 2：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入: [&quot;4&quot;, &quot;13&quot;, &quot;5&quot;, &quot;/&quot;, &quot;+&quot;]</span><br><span class="line">输出: 6</span><br><span class="line">解释: (4 + (13 / 5)) = 6</span><br></pre></td></tr></table></figure>
+<p><strong>示例 3：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">输入: [&quot;10&quot;, &quot;6&quot;, &quot;9&quot;, &quot;3&quot;, &quot;+&quot;, &quot;-11&quot;, &quot;*&quot;, &quot;/&quot;, &quot;*&quot;, &quot;17&quot;, &quot;+&quot;, &quot;5&quot;, &quot;+&quot;]</span><br><span class="line">输出: 22</span><br><span class="line">解释: </span><br><span class="line">  ((10 * (6 / ((9 + 3) * -11))) + 17) + 5</span><br><span class="line">= ((10 * (6 / (12 * -11))) + 17) + 5</span><br><span class="line">= ((10 * (6 / -132)) + 17) + 5</span><br><span class="line">= ((10 * 0) + 17) + 5</span><br><span class="line">= (0 + 17) + 5</span><br><span class="line">= 17 + 5</span><br><span class="line">= 22</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>解法一：栈</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">逆波兰式（Reverse Polish notation，RPN，或逆波兰记法），也叫后缀表达式（将运算符写在操作数之后）</span><br></pre></td></tr></table></figure>
+<p>可以直接利用栈的性质来进行后缀表达式计算，这里面要注意输入的是 <code>vector&lt;string&gt;</code> 型的元素，我们的栈里保存的也是 <code>string</code> ，在进行四则运算的时候需要用到 <code>stoi</code> 库函数，在入栈的时候需要用到 <code>to_string</code> 库函数。</p>
+<blockquote>
+<p>注意：</p>
+</blockquote>
+<p>C++的<strong>switch</strong> 语句中的 <strong>expression</strong> 必须是一个整型或枚举类型，或者是一个 <code>class</code> 类型，其中 <code>class</code> 有一个单一的转换函数将其转换为整型或枚举类型。这道题要想用 switch 还得再写个转换函数，算了算了。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">evalRPN</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&amp; tokens)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">stack</span>&lt;<span class="built_in">string</span>&gt; s;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> c : tokens) &#123;</span><br><span class="line">            <span class="keyword">int</span> tmp = <span class="number">0</span>, topval1 = <span class="number">0</span>, topval2 = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">if</span>(c == <span class="string">"+"</span> || c == <span class="string">"-"</span> || c == <span class="string">"*"</span> || c == <span class="string">"/"</span>) &#123;</span><br><span class="line">                topval1 = stoi(s.top());s.pop();</span><br><span class="line">                topval2 = stoi(s.top());s.pop();</span><br><span class="line">                <span class="keyword">if</span>(c == <span class="string">"+"</span>) </span><br><span class="line">                    tmp = topval1 + topval2;</span><br><span class="line">                <span class="keyword">if</span>(c == <span class="string">"-"</span>) </span><br><span class="line">                    tmp = topval2 - topval1;</span><br><span class="line">                <span class="keyword">if</span>(c == <span class="string">"*"</span>) </span><br><span class="line">                    tmp = topval1 * topval2;</span><br><span class="line">                <span class="keyword">if</span>(c == <span class="string">"/"</span>)</span><br><span class="line">                    tmp = topval2 / topval1;</span><br><span class="line">                <span class="built_in">string</span> res = to_string(tmp);</span><br><span class="line">                s.push(res);</span><br><span class="line">                &#125;</span><br><span class="line">            <span class="keyword">else</span> &#123;</span><br><span class="line">                s.push(c);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> stoi(s.top());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>❓解法二：用数组代替栈</p>
+</blockquote>
+<p>很巧妙的一个思路，可惜我这个会报如下的错误：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Line <span class="number">923</span>: Char <span class="number">34</span>: runtime error: addition of <span class="keyword">unsigned</span> offset to <span class="number">0x603000000040</span> overflowed to <span class="number">0x60300000003c</span> (stl_vector.h)</span><br></pre></td></tr></table></figure>
+<p>逻辑上没什么问题，目前这个还没有解决-。-</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">evalRPN</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&amp; tokens)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = tokens.size(), index = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; numstack(n, <span class="number">0</span>);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> c : tokens) &#123;</span><br><span class="line">            <span class="keyword">if</span>(c == <span class="string">"+"</span>) </span><br><span class="line">                numstack[index - <span class="number">2</span>] += numstack[--index];</span><br><span class="line">            <span class="keyword">if</span>(c == <span class="string">"-"</span>) </span><br><span class="line">                numstack[index - <span class="number">2</span>] -= numstack[--index];</span><br><span class="line">            <span class="keyword">if</span>(c == <span class="string">"*"</span>) </span><br><span class="line">                numstack[index - <span class="number">2</span>] *= numstack[--index];</span><br><span class="line">            <span class="keyword">if</span>(c == <span class="string">"/"</span>)</span><br><span class="line">                numstack[index - <span class="number">2</span>] /= numstack[--index];</span><br><span class="line">            <span class="keyword">else</span> &#123;</span><br><span class="line">                numstack[index++] = stoi(c);</span><br><span class="line">                <span class="built_in">cout</span>&lt;&lt;stoi(c)&lt;&lt;index&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> numstack[<span class="number">0</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/03/149. 直线上最多的点数/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1682,386 +2040,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/01/140. 单词拆分II/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈琦">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/head.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Cq的Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/05/01/140. 单词拆分II/" itemprop="url">Leetcode_140 单词拆分II</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-01T19:46:00+08:00">
-                2020-05-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/LeetCode/" itemprop="url" rel="index">
-                    <span itemprop="name">LeetCode</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/LeetCode/Hard/" itemprop="url" rel="index">
-                    <span itemprop="name">Hard</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="140-Word-Break-II-单词拆分II"><a href="#140-Word-Break-II-单词拆分II" class="headerlink" title="140*. Word Break II/单词拆分II"></a>140*. Word Break II/单词拆分II</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>给定一个<strong>非空</strong>字符串 <em>s</em> 和一个包含<strong>非空</strong>单词列表的字典 <em>wordDict</em>，在字符串中增加空格来构建一个句子，使得句子中所有的单词都在词典中。返回所有这些可能的句子。</p>
-<p><strong>说明：</strong></p>
-<ul>
-<li>分隔时可以重复使用字典中的单词。</li>
-<li>你可以假设字典中没有重复的单词。</li>
-</ul>
-<p><strong>示例 1：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">输入:</span><br><span class="line">s = &quot;catsanddog&quot;</span><br><span class="line">wordDict = [&quot;cat&quot;, &quot;cats&quot;, &quot;and&quot;, &quot;sand&quot;, &quot;dog&quot;]</span><br><span class="line">输出:</span><br><span class="line">[</span><br><span class="line">  &quot;cats and dog&quot;,</span><br><span class="line">  &quot;cat sand dog&quot;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
-<p><strong>示例 2：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">输入:</span><br><span class="line">s = &quot;pineapplepenapple&quot;</span><br><span class="line">wordDict = [&quot;apple&quot;, &quot;pen&quot;, &quot;applepen&quot;, &quot;pine&quot;, &quot;pineapple&quot;]</span><br><span class="line">输出:</span><br><span class="line">[</span><br><span class="line">  &quot;pine apple pen apple&quot;,</span><br><span class="line">  &quot;pineapple pen apple&quot;,</span><br><span class="line">  &quot;pine applepen apple&quot;</span><br><span class="line">]</span><br><span class="line">解释: 注意你可以重复使用字典中的单词。</span><br></pre></td></tr></table></figure>
-<p><strong>示例 3：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">输入:</span><br><span class="line">s = &quot;catsandog&quot;</span><br><span class="line">wordDict = [&quot;cats&quot;, &quot;dog&quot;, &quot;sand&quot;, &quot;and&quot;, &quot;cat&quot;]</span><br><span class="line">输出:</span><br><span class="line">[]</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法一：⭐⭐⭐⭐⭐记忆化回溯</p>
-</blockquote>
-<p>这道题一上来的想法肯定是可以用回溯的方法来实现，不过在试验了一下回溯之后发现，在以下测试样例会超时：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&quot;aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&quot;</span><br><span class="line">[&quot;a&quot;,&quot;aa&quot;,&quot;aaa&quot;,&quot;aaaa&quot;,&quot;aaaaa&quot;,&quot;aaaaaa&quot;,&quot;aaaaaaa&quot;,&quot;aaaaaaaa&quot;,&quot;aaaaaaaaa&quot;,&quot;aaaaaaaaaa&quot;]</span><br></pre></td></tr></table></figure>
-<p>因此可以考虑使用哈希表记录下已经遍历过的字符串对应的结果，这样在每一次递归中如果发现已经存在了之前的字符串结果，就可以直接使用这个结果了。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; wordBreak(<span class="built_in">string</span> s, <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&amp; wordDict) &#123;</span><br><span class="line">        <span class="built_in">unordered_map</span>&lt;<span class="built_in">string</span>, <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&gt; m;</span><br><span class="line">        <span class="keyword">return</span> backTrack(s, wordDict, m);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; backTrack(<span class="built_in">string</span> s, <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&amp; wordDict, <span class="built_in">unordered_map</span>&lt;<span class="built_in">string</span>, <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&gt;&amp; m) &#123;</span><br><span class="line">        <span class="keyword">if</span>(m.count(s)) <span class="keyword">return</span> m[s];</span><br><span class="line">        <span class="keyword">if</span>(s.empty()) <span class="keyword">return</span> &#123;<span class="string">""</span>&#125;;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; res;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> word : wordDict) &#123;</span><br><span class="line">            <span class="keyword">if</span>(s.substr(<span class="number">0</span>, word.size()) != word) <span class="keyword">continue</span>;</span><br><span class="line">            <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; tmp = backTrack(s.substr(word.size()), wordDict, m);</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">auto</span> itm : tmp) &#123;</span><br><span class="line">                res.push_back(word + (itm.empty() ? <span class="string">""</span> : <span class="string">" "</span> + itm));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        m[s] = res;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法二：动态规划</p>
-</blockquote>
-<p>利用了 <code>Leetcode 139 单词拆分</code>  的函数。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; wordBreak(<span class="built_in">string</span> s, <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&amp; wordDict)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (!wordBreak_139(s, wordDict)) <span class="keyword">return</span> &#123;&#125;;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">size_t</span> validEnd = <span class="number">0</span>;</span><br><span class="line">		<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&gt; dp(s.size() + <span class="number">1</span>, <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;());</span><br><span class="line"></span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt; s.size(); i++)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">if</span> (i == validEnd + <span class="number">1</span>) <span class="keyword">return</span> &#123;&#125;;</span><br><span class="line">			<span class="keyword">if</span> (i != <span class="number">0</span> &amp;&amp; dp[i].empty()) <span class="keyword">continue</span>;</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">auto</span>&amp; word : wordDict)</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="keyword">size_t</span> newEnd = i + word.size();</span><br><span class="line">				<span class="keyword">if</span> (newEnd &gt; s.size()) <span class="keyword">continue</span>;</span><br><span class="line">				<span class="keyword">if</span> (<span class="built_in">memcmp</span>(&amp;s[i], &amp;word[<span class="number">0</span>], word.size()) != <span class="number">0</span>) <span class="keyword">continue</span>;</span><br><span class="line">				validEnd = max(validEnd, newEnd);</span><br><span class="line">				<span class="keyword">if</span> (i == <span class="number">0</span>)</span><br><span class="line">				&#123;</span><br><span class="line">					dp[newEnd].push_back(word);</span><br><span class="line">					<span class="keyword">continue</span>;</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">for</span> (<span class="keyword">auto</span>&amp; d : dp[i])</span><br><span class="line">				&#123;</span><br><span class="line">					dp[newEnd].push_back(d + <span class="string">" "</span> + word);</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">return</span> dp.back();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">bool</span> <span class="title">wordBreak_139</span><span class="params">(<span class="built_in">string</span>&amp; s, <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&amp; wordDict)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">size_t</span> validEnd = <span class="number">0</span>;</span><br><span class="line">		<span class="built_in">vector</span>&lt;<span class="keyword">bool</span>&gt; dp(s.size() + <span class="number">1</span>, <span class="literal">false</span>);</span><br><span class="line">		dp[<span class="number">0</span>] = <span class="literal">true</span>;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt; s.size(); i++)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">if</span> (i == validEnd + <span class="number">1</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">			<span class="keyword">if</span> (!dp[i]) <span class="keyword">continue</span>;</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">auto</span>&amp; word : wordDict)</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="keyword">size_t</span> newEnd = i + word.size();</span><br><span class="line">				<span class="keyword">if</span> (newEnd &gt; s.size()) <span class="keyword">continue</span>;</span><br><span class="line">				<span class="keyword">if</span> (<span class="built_in">memcmp</span>(&amp;s[i], &amp;word[<span class="number">0</span>], word.size()) == <span class="number">0</span>)</span><br><span class="line">				&#123;</span><br><span class="line">					dp[newEnd] = <span class="literal">true</span>;</span><br><span class="line">					validEnd = max(validEnd, newEnd);</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> dp.back();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/01/139. 单词拆分/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈琦">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/head.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Cq的Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/05/01/139. 单词拆分/" itemprop="url">Leetcode_139 单词拆分</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-01T15:46:00+08:00">
-                2020-05-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/LeetCode/" itemprop="url" rel="index">
-                    <span itemprop="name">LeetCode</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/LeetCode/Medium/" itemprop="url" rel="index">
-                    <span itemprop="name">Medium</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="139-Word-Break-单词拆分"><a href="#139-Word-Break-单词拆分" class="headerlink" title="139. Word Break/单词拆分"></a>139. Word Break/单词拆分</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>给定一个<strong>非空</strong>字符串 <em>s</em> 和一个包含<strong>非空</strong>单词列表的字典 <em>wordDict</em>，判定 <em>s</em> 是否可以被空格拆分为一个或多个在字典中出现的单词。</p>
-<p><strong>说明：</strong></p>
-<ul>
-<li>拆分时可以重复使用字典中的单词。</li>
-<li>你可以假设字典中没有重复的单词。</li>
-</ul>
-<p><strong>示例 1：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入: s = &quot;leetcode&quot;, wordDict = [&quot;leet&quot;, &quot;code&quot;]</span><br><span class="line">输出: true</span><br><span class="line">解释: 返回 true 因为 &quot;leetcode&quot; 可以被拆分成 &quot;leet code&quot;。</span><br></pre></td></tr></table></figure>
-<p><strong>示例 2：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输入: s = &quot;applepenapple&quot;, wordDict = [&quot;apple&quot;, &quot;pen&quot;]</span><br><span class="line">输出: true</span><br><span class="line">解释: 返回 true 因为 &quot;applepenapple&quot; 可以被拆分成 &quot;apple pen apple&quot;。</span><br><span class="line">     注意你可以重复使用字典中的单词。</span><br></pre></td></tr></table></figure>
-<p><strong>示例 3：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: s = &quot;catsandog&quot;, wordDict = [&quot;cats&quot;, &quot;dog&quot;, &quot;sand&quot;, &quot;and&quot;, &quot;cat&quot;]</span><br><span class="line">输出: false</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法一：循环+回溯（部分样例超时）</p>
-</blockquote>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">wordBreak</span><span class="params">(<span class="built_in">string</span> s, <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&amp; wordDict)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">bool</span> flag = <span class="literal">false</span>;</span><br><span class="line">        backTrack(s, wordDict, <span class="number">0</span>, flag);</span><br><span class="line">        <span class="keyword">return</span> flag;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">backTrack</span><span class="params">(<span class="keyword">const</span> <span class="built_in">string</span>&amp; s, <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&amp; wordDict, <span class="keyword">int</span> start, <span class="keyword">bool</span>&amp; flag)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(start == s.size()) &#123;</span><br><span class="line">            flag = <span class="literal">true</span>;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> word : wordDict) &#123;</span><br><span class="line">            <span class="keyword">int</span> i = start, j = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">if</span>(word[<span class="number">0</span>] != s[i]) <span class="keyword">continue</span>;</span><br><span class="line">            <span class="keyword">while</span>(j &lt; word.size()) &#123;</span><br><span class="line">                <span class="keyword">if</span>(word[j] == s[i]) &#123;</span><br><span class="line">                    ++i;</span><br><span class="line">                    ++j;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">break</span>;</span><br><span class="line">                <span class="keyword">if</span>(j == word.size()) &#123;</span><br><span class="line">                    backTrack(s, wordDict, i, flag);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法二：⭐⭐⭐记忆化回溯</p>
-</blockquote>
-<p>拿 <code>[aaaab]</code> 来举例，它可分为 <code>[&quot;a&quot;,&quot;a&quot;,&quot;aab&quot;]</code> , <code>[&quot;aa&quot;,&quot;aab&quot;]</code> , 两个都包含了 <code>&quot;aab&quot;</code> ,所以就产生了重复的递归。这时，就可以用一个哈希表记录 <code>&quot;aab&quot;</code> 这种情况。当再次递归时，先判断一下，如果是 <code>&quot;aab&quot;</code> ,就直接返回。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">unordered_map</span>&lt;<span class="built_in">string</span>,<span class="keyword">bool</span>&gt;<span class="built_in">map</span>;</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">wordBreak</span><span class="params">(<span class="built_in">string</span> s, <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&amp; wordDict )</span> </span>&#123;</span><br><span class="line">        <span class="built_in">unordered_set</span>&lt;<span class="built_in">string</span>&gt; m(wordDict.begin(), wordDict.end());</span><br><span class="line">        <span class="keyword">return</span> dfs(s, wordDict,m);</span><br><span class="line">    &#125;</span><br><span class="line">     <span class="function"><span class="keyword">bool</span> <span class="title">dfs</span><span class="params">(<span class="built_in">string</span> s,<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&amp;wordDict ,<span class="built_in">unordered_set</span>&lt;<span class="built_in">string</span>&gt; m)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(s.empty()) </span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">map</span>[s])</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>;i &lt;= s.size();i++) &#123;</span><br><span class="line">            <span class="built_in">string</span> temp = s.substr(<span class="number">0</span>, i);</span><br><span class="line">            <span class="keyword">if</span>(m.find(temp) != m.end()) &#123;</span><br><span class="line">                <span class="comment">//substr(i)表示从i到end</span></span><br><span class="line">                <span class="keyword">if</span>(!dfs(s.substr(i), wordDict, m))</span><br><span class="line">                    <span class="built_in">map</span>[s.substr(i)] = <span class="literal">true</span>;</span><br><span class="line">                <span class="keyword">else</span> </span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;  </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法三：⭐⭐⭐⭐动态规划+贪心思想</p>
-</blockquote>
-<ol>
-<li>定义 <code>vector&lt;bool&gt; dp(s.size() + 1, false)</code></li>
-<li><code>dp[i]</code> 表示第 <code>i</code> 个字符前，所有的字符是否可以按字典拆分成单词；其中第 <code>i - 1</code> 个字符是上一个词的结尾字母，第 <code>i</code> 个字符是一个新词的开头字母。</li>
-<li>初始值 <code>dp[0] = true</code> ，表示第 <code>0</code> 个字符是一个新词的开头字母；所求的答案为 <code>dp[s.size()]</code> ，表示这个字符串是否可以拆分成字典中的单词。</li>
-<li>从前往后遍历字符串，我们只对新词的开头字母进行字典匹配，将每一个匹配成功的词后面的字母更新为新词开头字母。</li>
-<li>设置一个变量记录所有最大的新词开头字母，如果当前字符已经超过了所有新词开头字母，可以剪枝返回 <code>false</code> 了。</li>
-</ol>
-<p>这个解法里面用到了 <code>C++</code> 的 <code>memcmp</code> 库函数：</p>
-<blockquote>
-<p>库函数 <strong>int memcmp(const void *str1, const void *str2, size_t n))</strong> 把存储区 <strong>str1</strong> 和存储区 <strong>str2</strong> 的前 <strong>n</strong> 个字节进行比较。</p>
-<ul>
-<li><strong>str1</strong> – 指向内存块的指针。</li>
-<li><strong>str2</strong> – 指向内存块的指针。</li>
-<li><strong>n</strong> – 要被比较的字节数。</li>
-<li>如果返回值 &lt; 0，则表示 str1 小于 str2。</li>
-<li>如果返回值 &gt; 0，则表示 str2 小于 str1。</li>
-<li>如果返回值 = 0，则表示 str1 等于 str2。</li>
-</ul>
-</blockquote>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">wordBreak</span><span class="params">(<span class="built_in">string</span> s, <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&amp; wordDict)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> cur = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">bool</span>&gt; dp(s.size() + <span class="number">1</span>, <span class="literal">false</span>);</span><br><span class="line">        dp[<span class="number">0</span>] = <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; s.size(); i++) &#123;</span><br><span class="line">            <span class="comment">//i == cur + 1说明这一轮并没有单词能够匹配</span></span><br><span class="line">            <span class="keyword">if</span> (i == cur + <span class="number">1</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            <span class="keyword">if</span> (!dp[i]) <span class="keyword">continue</span>;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">auto</span>&amp; word : wordDict) &#123;</span><br><span class="line">                <span class="keyword">int</span> newEnd = i + word.size();</span><br><span class="line">                <span class="keyword">if</span> (newEnd &gt; s.size()) <span class="keyword">continue</span>;</span><br><span class="line">                <span class="keyword">if</span> (<span class="built_in">memcmp</span>(&amp;s[i], &amp;word[<span class="number">0</span>], word.size()) == <span class="number">0</span>) &#123;</span><br><span class="line">                    dp[newEnd] = <span class="literal">true</span>;</span><br><span class="line">                    cur = max(cur, newEnd);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[s.size()];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>当然也可以不用库函数，直接用一个 <code>while</code> 循环来实现：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">wordBreak</span><span class="params">(<span class="built_in">string</span> s, <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&amp; wordDict)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> cur = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">bool</span>&gt; dp(s.size() + <span class="number">1</span>, <span class="literal">false</span>);</span><br><span class="line">        dp[<span class="number">0</span>] = <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; s.size(); i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (i == cur + <span class="number">1</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            <span class="keyword">if</span> (!dp[i]) <span class="keyword">continue</span>;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">auto</span>&amp; word : wordDict) &#123;</span><br><span class="line">                <span class="keyword">int</span> newEnd = i + word.size();</span><br><span class="line">                <span class="keyword">if</span> (newEnd &gt; s.size()) <span class="keyword">continue</span>;</span><br><span class="line">                <span class="keyword">int</span> j = <span class="number">0</span>, l = i;</span><br><span class="line">                <span class="keyword">while</span>(j &lt; word.size()) &#123;</span><br><span class="line">                    <span class="keyword">if</span>(s[l] == word[j]) &#123;</span><br><span class="line">                        ++l;</span><br><span class="line">                        ++j;</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="keyword">else</span> <span class="keyword">break</span>;</span><br><span class="line">                    <span class="keyword">if</span>(j == word.size()) &#123;</span><br><span class="line">                        dp[newEnd] = <span class="literal">true</span>;</span><br><span class="line">                        cur = max(cur, newEnd);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[s.size()];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2114,7 +2092,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">266</span>
+                  <span class="site-state-item-count">268</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2136,7 +2114,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-count">62</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

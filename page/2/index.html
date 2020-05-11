@@ -263,6 +263,362 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/09/190. 颠倒二进制位/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈琦">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cq的Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/05/09/190. 颠倒二进制位/" itemprop="url">Leetcode_190 颠倒二进制位</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-09T11:37:00+08:00">
+                2020-05-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/LeetCode/" itemprop="url" rel="index">
+                    <span itemprop="name">LeetCode</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/LeetCode/Easy/" itemprop="url" rel="index">
+                    <span itemprop="name">Easy</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="190-Reverse-Bits-颠倒二进制位"><a href="#190-Reverse-Bits-颠倒二进制位" class="headerlink" title="190. Reverse Bits/颠倒二进制位"></a>190. Reverse Bits/颠倒二进制位</h1><blockquote>
+<p>题目：</p>
+</blockquote>
+<p>颠倒给定的 32 位无符号整数的二进制位。</p>
+<p> <strong>示例 1：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输入: 00000010100101000001111010011100</span><br><span class="line">输出: 00111001011110000010100101000000</span><br><span class="line">解释: 输入的二进制串 00000010100101000001111010011100 表示无符号整数 43261596，</span><br><span class="line">      因此返回 964176192，其二进制表示形式为 00111001011110000010100101000000。</span><br></pre></td></tr></table></figure>
+<p><strong>示例 2：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输入：11111111111111111111111111111101</span><br><span class="line">输出：10111111111111111111111111111111</span><br><span class="line">解释：输入的二进制串 11111111111111111111111111111101 表示无符号整数 4294967293，</span><br><span class="line">      因此返回 3221225471 其二进制表示形式为 10111111111111111111111111111111 。</span><br></pre></td></tr></table></figure>
+<p><strong>提示：</strong></p>
+<ul>
+<li>请注意，在某些语言（如 Java）中，没有无符号整数类型。在这种情况下，输入和输出都将被指定为有符号整数类型，并且不应影响您的实现，因为无论整数是有符号的还是无符号的，其内部的二进制表示形式都是相同的。</li>
+<li>在 Java 中，编译器使用<a href="https://baike.baidu.com/item/%E4%BA%8C%E8%BF%9B%E5%88%B6%E8%A1%A5%E7%A0%81/5295284" target="_blank" rel="noopener">二进制补码</a>记法来表示有符号整数。因此，在上面的 <strong>示例 2</strong> 中，输入表示有符号整数 <code>-3</code>，输出表示有符号整数 <code>-1073741825</code>。</li>
+</ul>
+<p><strong>进阶</strong>:<br>如果多次调用这个函数，你将如何优化你的算法？</p>
+<blockquote>
+<p>解法：位运算+双指针</p>
+</blockquote>
+<p>如果在传统的颠倒字符串问题中，我们可以从右至左反向遍历字符串的每一个位，再重新拼接成一个字符串。其实这种思路运用于颠倒某个数的二进制形式并生成一个新的数也同样适用。但由于正整数（uint 类型）并不可以通过下标去访问其于二进制上的每一位的比特值，所以可以通过按位操作符来取得相同的效果。</p>
+<p>这里面可以用到类似双指针的思想，我们定义一个左指针 <code>uint32_t mask = 1 &lt;&lt; 31</code> 指向最左侧，一个右指针 <code>uint32_t cur = 1</code> 指向最右侧，那么对于新构造的结果 <code>res</code> 我们只需要每次在从右向左数的第 <code>i</code> 位加上从左向右数第 <code>i</code> 位的 <code>bit</code> 即可。这样通过 <code>mask &gt;&gt;= 1</code> 和 <code>cur &lt;&lt;= 1</code> 即可反向遍历整个无符号整数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    uint32_t reverseBits(uint32_t n) &#123;</span><br><span class="line">        uint32_t res = 0;</span><br><span class="line">        uint32_t mask = 1 &lt;&lt; 31;</span><br><span class="line">        uint32_t cur = 1;</span><br><span class="line">        for(int i = 0; i &lt; 32; ++i) &#123;</span><br><span class="line">            res += n &amp; mask ? cur : 0;</span><br><span class="line">            mask &gt;&gt;= 1;</span><br><span class="line">            cur &lt;&lt;= 1;</span><br><span class="line">        &#125;</span><br><span class="line">        return res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>还可以进一步优化，因为 <code>mask</code> 可以直接在循环中由 <code>1 &lt;&lt; 31 - i</code> 得到，<code>cur</code> 也可以在循环中由 <code>1 &lt;&lt; i</code> 得到。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">uint32_t</span> reverseBits(<span class="keyword">uint32_t</span> n) &#123;</span><br><span class="line">        <span class="keyword">uint32_t</span> result = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">32</span>;i++) &#123;</span><br><span class="line">            result += ((n &amp; (<span class="number">1</span> &lt;&lt; <span class="number">31</span> - i)) != <span class="number">0</span> ? <span class="number">1</span> &lt;&lt; i : <span class="number">0</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/09/189. 旋转数组/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈琦">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cq的Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/05/09/189. 旋转数组/" itemprop="url">Leetcode_189 旋转数组</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-09T10:37:00+08:00">
+                2020-05-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/LeetCode/" itemprop="url" rel="index">
+                    <span itemprop="name">LeetCode</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/LeetCode/Easy/" itemprop="url" rel="index">
+                    <span itemprop="name">Easy</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="189-Rotate-Array-旋转数组"><a href="#189-Rotate-Array-旋转数组" class="headerlink" title="189. Rotate Array/旋转数组"></a>189. Rotate Array/旋转数组</h1><blockquote>
+<p>题目：</p>
+</blockquote>
+<p>给定一个数组，将数组中的元素向右移动 <em>k</em> 个位置，其中 <em>k</em> 是非负数。</p>
+<p><strong>示例 1:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">输入: [1,2,3,4,5,6,7] 和 k = 3</span><br><span class="line">输出: [5,6,7,1,2,3,4]</span><br><span class="line">解释:</span><br><span class="line">向右旋转 1 步: [7,1,2,3,4,5,6]</span><br><span class="line">向右旋转 2 步: [6,7,1,2,3,4,5]</span><br><span class="line">向右旋转 3 步: [5,6,7,1,2,3,4]</span><br></pre></td></tr></table></figure>
+<p><strong>示例 2:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">输入: [-1,-100,3,99] 和 k = 2</span><br><span class="line">输出: [3,99,-1,-100]</span><br><span class="line">解释: </span><br><span class="line">向右旋转 1 步: [99,-1,-100,3]</span><br><span class="line">向右旋转 2 步: [3,99,-1,-100]</span><br></pre></td></tr></table></figure>
+<p><strong>说明:</strong></p>
+<ul>
+<li>尽可能想出更多的解决方案，至少有三种不同的方法可以解决这个问题。</li>
+<li>要求使用空间复杂度为 O(1) 的 <strong>原地</strong> 算法。</li>
+</ul>
+<blockquote>
+<p>解法一：</p>
+</blockquote>
+<p>环状替换。这个是我一开始想到的方法，不过第一次考虑忽略了 k 与 n 可能有最大公因数的情况，当<code>k&gt;nums.size()</code> 时，可以将 <code>k % s</code>，得到最小移动距离。</p>
+<h4 id="环状替换"><a href="#环状替换" class="headerlink" title="环状替换"></a>环状替换</h4><p>例如：<code>s = 6</code>，<code>k % s = 2</code> 时，<code>gcd(6,2) = 2</code> , 环状替换链就需要有两条 <code>(0-&gt;2-&gt;4-&gt;0)</code> 和 <code>(1-&gt;3-&gt;5-&gt;1)</code>。<br>那么在环状替换的外层需要另外的边界条件，来切换到另外的环状替换链上。</p>
+<p>而当 <code>s</code> 和 <code>k</code> 互质时，即 <code>gcd(s,k) = 1</code> 时，替换链只需一条，即可遍历到所有的元素。<br>例如：<code>s=6</code> ，<code>k % s = 5</code> 时，环状替换链为 <code>(0-&gt;5-&gt;4-&gt;3-&gt;2-&gt;1-&gt;0)</code> 。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    void rotate(vector&lt;int&gt;&amp; nums, int k) &#123;</span><br><span class="line">        int n = nums.size();</span><br><span class="line">        k = k % n;</span><br><span class="line">        int count = gcd(n, k);</span><br><span class="line">        for(int i = 0; i &lt; count; ++i) &#123;</span><br><span class="line">            int tmp = nums[i];</span><br><span class="line">            int j = i + k;</span><br><span class="line">            while(j % n != i) &#123;</span><br><span class="line">                int cur = nums[j % n];</span><br><span class="line">                nums[j % n] = tmp;</span><br><span class="line">                tmp = cur;</span><br><span class="line">                j += k;</span><br><span class="line">            &#125;</span><br><span class="line">            nums[i] = tmp;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    int gcd(int a, int b) &#123;</span><br><span class="line">        if(a &lt; b) swap(a, b);</span><br><span class="line">        return b == 0 ? a : gcd(b, a % b);</span><br><span class="line">    &#125; </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>解法二：环状替换+不使用gcd函数</p>
+</blockquote>
+<p>这个比较巧妙地用一个外层循环 <code>count &lt; n</code> 来判断是否完成了环状替换。第一个同学离开座位去第 <code>k + 1</code> 个座位，第 <code>k + 1</code>个座位的同学被挤出去了，他就去坐他后 <code>k</code> 个座位，如此反复。但是会出现一种情况，就是其中一个同学被挤开之后，坐到了第一个同学的位置（空位置，没人被挤出来）也就是 <code>j == cur &amp;&amp; cnt != n</code> 的情况，但是此时还有人没有调换位置，这样就顺着让第二个同学换位置。 那么什么时候就可以保证每个同学都换完了呢？<code>n</code> 个同学，换 <code>n</code> 次，所以用一个<code>count</code> 来计数即可。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">rotate</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums, <span class="keyword">int</span> k)</span></span>&#123;</span><br><span class="line">        <span class="keyword">int</span> cnt = <span class="number">0</span>, n = nums.size();</span><br><span class="line">        <span class="keyword">int</span> tmp = <span class="number">0</span>, pre = nums[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">int</span> cur = <span class="number">0</span>, j = <span class="number">0</span>;        </span><br><span class="line">        <span class="keyword">while</span>(cnt &lt; n)&#123;	</span><br><span class="line">            j = (j + k &lt;= n - <span class="number">1</span> ? (j + k) : ((j + k) % n)); <span class="comment">//目的地</span></span><br><span class="line">            tmp = nums[j];        <span class="comment">//tmp存储现在离开座位的元素</span></span><br><span class="line">            nums[j] = pre;        <span class="comment">//pre是上一次离开座位的元素</span></span><br><span class="line">            cnt++;           </span><br><span class="line">            pre = tmp; 		  </span><br><span class="line">            <span class="keyword">if</span>(j == cur &amp;&amp; cnt != n)&#123;</span><br><span class="line">                cur++;</span><br><span class="line">                j = cur;</span><br><span class="line">                pre = nums[j];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>解法三：三次reverse</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">原始数组                  : 1 2 3 4 5 6 7</span><br><span class="line">反转所有数字后             : 7 6 5 4 3 2 1</span><br><span class="line">反转前 k 个数字后          : 5 6 7 4 3 2 1</span><br><span class="line">反转后 n-k 个数字后        : 5 6 7 1 2 3 4 --&gt; 结果</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">rotate</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//采用反转</span></span><br><span class="line">        <span class="keyword">int</span> n = nums.size();</span><br><span class="line">        k %= n;</span><br><span class="line">        reverse(&amp;nums[<span class="number">0</span>],&amp;nums[n]);</span><br><span class="line">        reverse(&amp;nums[<span class="number">0</span>],&amp;nums[k]);</span><br><span class="line">        reverse(&amp;nums[k],&amp;nums[n]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/08/188. 买卖股票的最佳时机IV/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1684,374 +2040,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/06/171. Excel表列序号/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈琦">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/head.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Cq的Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/05/06/171. Excel表列序号/" itemprop="url">Leetcode_171 Excel表列序号</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-06T13:30:00+08:00">
-                2020-05-06
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/LeetCode/" itemprop="url" rel="index">
-                    <span itemprop="name">LeetCode</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/LeetCode/Easy/" itemprop="url" rel="index">
-                    <span itemprop="name">Easy</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="171-Excel-Sheet-Column-Number-Excel表列序号"><a href="#171-Excel-Sheet-Column-Number-Excel表列序号" class="headerlink" title="171. Excel Sheet Column Number/Excel表列序号"></a>171. Excel Sheet Column Number/Excel表列序号</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>给定一个Excel表格中的列名称，返回其相应的列序号。</p>
-<p>例如，</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">A -&gt; 1</span><br><span class="line">B -&gt; 2</span><br><span class="line">C -&gt; 3</span><br><span class="line">...</span><br><span class="line">Z -&gt; 26</span><br><span class="line">AA -&gt; 27</span><br><span class="line">AB -&gt; 28 </span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<p><strong>示例 1:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: &quot;A&quot;</span><br><span class="line">输出: 1</span><br></pre></td></tr></table></figure>
-<p><strong>示例 2:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: &quot;AB&quot;</span><br><span class="line">输出: 28</span><br></pre></td></tr></table></figure>
-<p><strong>示例 3:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: &quot;ZY&quot;</span><br><span class="line">输出: 701</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法：简单迭代</p>
-</blockquote>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">titleToNumber</span><span class="params">(<span class="built_in">string</span> s)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span>&amp; c : s) &#123;</span><br><span class="line">            <span class="keyword">int</span> tmp = c - <span class="string">'A'</span> + <span class="number">1</span>;</span><br><span class="line">            res = res * <span class="number">26</span> + tmp;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/06/169. 多数元素/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈琦">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/head.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Cq的Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/05/06/169. 多数元素/" itemprop="url">Leetcode_169 多数元素</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-06T13:28:00+08:00">
-                2020-05-06
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/LeetCode/" itemprop="url" rel="index">
-                    <span itemprop="name">LeetCode</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/LeetCode/Easy/" itemprop="url" rel="index">
-                    <span itemprop="name">Easy</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="169-Majority-Element-多数元素"><a href="#169-Majority-Element-多数元素" class="headerlink" title="169. Majority Element/多数元素"></a>169. Majority Element/多数元素</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>给定一个大小为 n 的数组，找到其中的多数元素。多数元素是指在数组中出现次数大于 ⌊ n/2 ⌋ 的元素。</p>
-<p>你可以假设数组是非空的，并且给定的数组总是存在多数元素。</p>
-<blockquote>
-<p>示例 1:</p>
-</blockquote>
-<p>输入: [3,2,3]<br>输出: 3</p>
-<blockquote>
-<p>示例 2:</p>
-</blockquote>
-<p>输入: [2,2,1,1,1,2,2]<br>输出: 2</p>
-<p><strong>总体上来说，求大多数问题中有如下几种解法：哈希表法，摩尔投票法(Moore Voting)，分治法</strong></p>
-<blockquote>
-<p>解法一：哈希表</p>
-</blockquote>
-<p>我们知道出现次数最多的元素大于 n / 2 次，所以可以用哈希表来快速统计每个元素出现的次数。</p>
-<p>我们使用<code>哈希映射</code>（HashMap）来存储每个元素以及出现的次数。对于哈希映射中的每个键值对，键表示一个元素，值表示该元素出现的次数。</p>
-<p>我们用一个循环遍历数组 nums 并将数组中的每个元素加入哈希映射中。在这之后，我们遍历哈希映射中的所有键值对，返回值最大的键。我们同样也可以在遍历数组 nums 时候使用打擂台的方法，维护最大的值，这样省去了最后对哈希映射的遍历。</p>
-<blockquote>
-<p>时间复杂度O(n)，空间复杂度O(n)</p>
-</blockquote>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">majorityElement</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">unordered_map</span>&lt;<span class="keyword">int</span>,<span class="keyword">int</span>&gt; counts;</span><br><span class="line">        <span class="keyword">int</span> res = <span class="number">0</span>, n = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nums.size(); ++i) &#123;</span><br><span class="line">            ++counts[nums[i]];</span><br><span class="line">            <span class="keyword">if</span> (counts[nums[i]] &gt; n) &#123;</span><br><span class="line">                res = nums[i];</span><br><span class="line">                n = counts[nums[i]];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法二：摩尔投票法⭐⭐⭐</p>
-</blockquote>
-<p><code>摩尔投票法</code>(Moore Voting)先将第一个数字假设为过半数，然后把计数器设为1，比较下一个数和此数是否相等，若相等则计数器加一，反之减一。然后看此时计数器的值，若为零，则将下一个值设为候选过半数。以此类推直到遍历完整个数组，当前候选过半数即为该数组的过半数。不仔细弄懂摩尔投票法的精髓的话，过一阵子还是会忘记的，首先要明确的是这个方法是有前提的，就是<code>数组中一定要有过半数的存在</code>才能使用。</p>
-<p>下面来看本算法的思路，这是一种先假设候选者，然后再进行验证的算法。现将数组中的第一个数假设为过半数，然后进行统计其出现的次数，如果遇到同样的数，则计数器自增1，否则计数器自减1，如果计数器减到了0，则更换下一个数字为候选者。这是一个很巧妙的设定，也是本算法的精髓所在，为啥遇到不同的要计数器减1呢，为啥减到0了又要更换候选者呢？首先是有那个强大的前提存在，一定会有一个出现超过半数的数字存在，那么如果计数器减到0了话，说明目前不是候选者数字的个数已经跟候选者的出现个数相同了，那么这个候选者已经很 weak，不一定能出现超过半数，此时选择更换当前的候选者。那有可能你会有疑问，那万一后面又大量的出现了之前的候选者怎么办，不需要担心，如果之前的候选者在后面大量出现的话，其又会重新变为候选者，直到最终验证成为正确的过半数。</p>
-<blockquote>
-<p>时间复杂度O(n)，空间复杂度O(1)</p>
-</blockquote>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">majorityElement</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> res = <span class="number">0</span>, cnt = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> num : nums) &#123;</span><br><span class="line">            <span class="keyword">if</span> (cnt == <span class="number">0</span>) &#123;res = num; ++cnt;&#125;</span><br><span class="line">            <span class="keyword">else</span> (num == res) ? ++cnt : --cnt;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>位运算法：</p>
-</blockquote>
-<p>将这个大多数按位来建立，从0到31位，每次统计下数组中该位上0和1的个数，如果1多，那么将结果 res 中该位变为1，最后累加出来的 res 就是过半数了：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">majorityElement</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> res = <span class="number">0</span>, n = nums.size();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">32</span>; ++i) &#123;</span><br><span class="line">            <span class="keyword">int</span> ones = <span class="number">0</span>, zeros = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> num : nums) &#123;</span><br><span class="line">                <span class="keyword">if</span> (ones &gt; n / <span class="number">2</span> || zeros &gt; n / <span class="number">2</span>) <span class="keyword">break</span>;</span><br><span class="line">                <span class="keyword">if</span> ((num &amp; (<span class="number">1</span> &lt;&lt; i)) != <span class="number">0</span>) ++ones;</span><br><span class="line">                <span class="keyword">else</span> ++zeros;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (ones &gt; zeros) res |= (<span class="number">1</span> &lt;&lt; i);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>分治法：</p>
-</blockquote>
-<p>如果数 a 是数组 nums 的众数，如果我们将 nums 分成两部分，那么 a 必定是至少一部分的众数。</p>
-<p>我们可以使用反证法来证明这个结论。假设 a 既不是左半部分的众数，也不是右半部分的众数，那么 a 出现的次数少于 l / 2 + r / 2 次，其中 l 和 r 分别是左半部分和右半部分的长度。由于 l / 2 + r / 2 &lt;= (l + r) / 2，说明 a 也不是数组 nums 的众数，因此出现了矛盾。所以这个结论是正确的。</p>
-<p>这样以来，我们就可以使用分治法解决这个问题：将数组分成左右两部分，分别求出左半部分的众数 a1 以及右半部分的众数 a2，随后在 a1 和 a2 中选出正确的众数。</p>
-<blockquote>
-<p>时间复杂度O(logn)，空间复杂度O(logn)</p>
-</blockquote>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">count_in_range</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums, <span class="keyword">int</span> target, <span class="keyword">int</span> lo, <span class="keyword">int</span> hi)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = lo; i &lt;= hi; ++i)</span><br><span class="line">            <span class="keyword">if</span> (nums[i] == target)</span><br><span class="line">                ++count;</span><br><span class="line">        <span class="keyword">return</span> count;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">majority_element_rec</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums, <span class="keyword">int</span> lo, <span class="keyword">int</span> hi)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (lo == hi)</span><br><span class="line">            <span class="keyword">return</span> nums[lo];</span><br><span class="line">        <span class="keyword">int</span> mid = (lo + hi) / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">int</span> left_majority = majority_element_rec(nums, lo, mid);</span><br><span class="line">        <span class="keyword">int</span> right_majority = majority_element_rec(nums, mid + <span class="number">1</span>, hi);</span><br><span class="line">        <span class="keyword">if</span> (count_in_range(nums, left_majority, lo, hi) &gt; (hi - lo + <span class="number">1</span>) / <span class="number">2</span>)</span><br><span class="line">            <span class="keyword">return</span> left_majority;</span><br><span class="line">        <span class="keyword">if</span> (count_in_range(nums, right_majority, lo, hi) &gt; (hi - lo + <span class="number">1</span>) / <span class="number">2</span>)</span><br><span class="line">            <span class="keyword">return</span> right_majority;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">majorityElement</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> majority_element_rec(nums, <span class="number">0</span>, nums.size() - <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2104,7 +2092,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">266</span>
+                  <span class="site-state-item-count">268</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2126,7 +2114,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-count">62</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
