@@ -263,6 +263,697 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/20/238. 除自身以外数组的乘积/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈琦">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cq的Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/05/20/238. 除自身以外数组的乘积/" itemprop="url">Leetcode_238 除自身以外数组的乘积</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-20T14:56:00+08:00">
+                2020-05-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Leetcode/" itemprop="url" rel="index">
+                    <span itemprop="name">Leetcode</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Leetcode/Medium/" itemprop="url" rel="index">
+                    <span itemprop="name">Medium</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="238-Product-of-Array-Except-Self-除自身以外数组的乘积"><a href="#238-Product-of-Array-Except-Self-除自身以外数组的乘积" class="headerlink" title="238. Product of Array Except Self/除自身以外数组的乘积"></a>238. Product of Array Except Self/除自身以外数组的乘积</h1><blockquote>
+<p>题目：</p>
+</blockquote>
+<p>给你一个长度为 <em>n</em> 的整数数组 <code>nums</code>，其中 <em>n</em> &gt; 1，返回输出数组 <code>output</code> ，其中 <code>output[i]</code> 等于 <code>nums</code> 中除 <code>nums[i]</code> 之外其余各元素的乘积。</p>
+<p><strong>示例:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: [1,2,3,4]</span><br><span class="line">输出: [24,12,8,6]</span><br></pre></td></tr></table></figure>
+<p><strong>提示：</strong>题目数据保证数组之中任意元素的全部前缀元素和后缀（甚至是整个数组）的乘积都在 32 位整数范围内。</p>
+<p><strong>说明:</strong> 请<strong>不要使用除法，</strong>且在 O(<em>n</em>) 时间复杂度内完成此题。</p>
+<p><strong>进阶：</strong><br>你可以在常数空间复杂度内完成这个题目吗？（ 出于对空间复杂度分析的目的，输出数组<strong>不被视为</strong>额外空间。）</p>
+<blockquote>
+<p>解法：两次遍历</p>
+</blockquote>
+<p>时间复杂度 <code>O(N)</code> ，空间复杂度 <code>O(1)</code> 因为只是用了一个结果的输出数组。整体思想就是从左向右遍历一次然后从右向左遍历一次，遍历的条件是在从左向右遍历到元素 <code>i</code> 的时候，将 <code>sum[i]</code> 乘上前面 <code>[0, i - 1]</code> 所有的元素的乘积 <code>left</code> ，从右向左遍历到元素 <code>i</code> 的时候，将 <code>sum[i]</code> 乘上后面 <code>[i + 1, nums.size() - 1]</code> 所有的元素的乘积 <code>right</code> 。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; productExceptSelf(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums) &#123;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; sum(nums.size(), <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">int</span> left = <span class="number">1</span>, right = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; nums.size(); ++i) &#123;</span><br><span class="line">            left *= nums[i - <span class="number">1</span>];</span><br><span class="line">            sum[i] *= left;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j = nums.size() - <span class="number">2</span>; j &gt;= <span class="number">0</span>; --j) &#123;</span><br><span class="line">            right *= nums[j + <span class="number">1</span>];</span><br><span class="line">            sum[j] *= right;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> sum;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/20/237. 删除链表中的节点/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈琦">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cq的Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/05/20/237. 删除链表中的节点/" itemprop="url">Leetcode_237 删除链表中的节点</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-20T14:29:00+08:00">
+                2020-05-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Leetcode/" itemprop="url" rel="index">
+                    <span itemprop="name">Leetcode</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Leetcode/Easy/" itemprop="url" rel="index">
+                    <span itemprop="name">Easy</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="237-Delete-Node-in-a-Linked-List-删除链表中的节点"><a href="#237-Delete-Node-in-a-Linked-List-删除链表中的节点" class="headerlink" title="237. Delete Node in a Linked List/删除链表中的节点"></a>237. Delete Node in a Linked List/删除链表中的节点</h1><blockquote>
+<p>题目：</p>
+</blockquote>
+<p>请编写一个函数，使其可以删除某个链表中给定的（非末尾）节点，你将只被给定要求被删除的节点。</p>
+<p><strong>示例 1:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入: head = [4,5,1,9], node = 5</span><br><span class="line">输出: [4,1,9]</span><br><span class="line">解释: 给定你链表中值为 5 的第二个节点，那么在调用了你的函数之后，该链表应变为 4 -&gt; 1 -&gt; 9.</span><br></pre></td></tr></table></figure>
+<p><strong>示例 2:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入: head = [4,5,1,9], node = 1</span><br><span class="line">输出: [4,5,9]</span><br><span class="line">解释: 给定你链表中值为 1 的第三个节点，那么在调用了你的函数之后，该链表应变为 4 -&gt; 5 -&gt; 9.</span><br></pre></td></tr></table></figure>
+<p><strong>说明:</strong></p>
+<ul>
+<li>链表至少包含两个节点。</li>
+<li>链表中所有节点的值都是唯一的。</li>
+<li>给定的节点为非末尾节点并且一定是链表中的一个有效节点。</li>
+<li>不要从你的函数中返回任何结果。</li>
+</ul>
+<blockquote>
+<p>解法：复制替换法</p>
+</blockquote>
+<p>👴要吐了，这个题目阅读理解太难了。所以最后的意思就是给的这个 <code>node</code> 节点就是链表中要删除的那个节点了，要怎么操作能把他直接从链表中删除，那么由于无法获得他的前驱节点的信息，我们只能把他的节点值赋值为它的后继节点的值，然后把它的 <code>next</code> 指针指向 <code>next-&gt;next</code> 。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">deleteNode</span><span class="params">(ListNode* node)</span> </span>&#123;</span><br><span class="line">        node-&gt;val = node-&gt;next-&gt;val;</span><br><span class="line">        node-&gt;next = node-&gt;next-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/20/234. 回文链表/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈琦">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cq的Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/05/20/234. 回文链表/" itemprop="url">Leetcode_234 回文链表</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-20T14:15:00+08:00">
+                2020-05-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Leetcode/" itemprop="url" rel="index">
+                    <span itemprop="name">Leetcode</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Leetcode/Easy/" itemprop="url" rel="index">
+                    <span itemprop="name">Easy</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="234-Palindrome-Linked-List-回文链表"><a href="#234-Palindrome-Linked-List-回文链表" class="headerlink" title="234. Palindrome Linked List/回文链表"></a>234. Palindrome Linked List/回文链表</h1><blockquote>
+<p>题目：</p>
+</blockquote>
+<p>请判断一个链表是否为回文链表。</p>
+<p><strong>示例 1:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: 1-&gt;2</span><br><span class="line">输出: false</span><br></pre></td></tr></table></figure>
+<p><strong>示例 2:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: 1-&gt;2-&gt;2-&gt;1</span><br><span class="line">输出: true</span><br></pre></td></tr></table></figure>
+<p><strong>进阶：</strong><br>你能否用 O(n) 时间复杂度和 O(1) 空间复杂度解决此题？</p>
+<blockquote>
+<p>解法一：双指针+链表反转</p>
+</blockquote>
+<p>为了满足 <code>O(N)</code> 时间复杂度和 <code>O(1)</code> 的空间复杂度，我打算的是用快慢指针来分别遍历整个链表，对于慢指针，在每一次遍历的同时要把遍历到的节点都反转，然后当满指针到达链表中点(奇数个节点)或者是链表中点靠左的节点(偶数个节点)的时候，再分别用两个指针从中间向两端进行遍历判断是否是回文，具体实现的过程比较简单，但是会有很多小坑：</p>
+<ol>
+<li>常规的反转链表思想在 <code>while</code> 循环结束之后是没有改变当前的 <code>left</code> 指针的 <code>next</code> 指向上一个指针的。</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&lt;-2&lt;-3 4-&gt;3-&gt;2-&gt;1</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>为了解决上面的问题想到在 <code>while</code> 循环结束之后加上一个 <code>left-&gt;next = pre</code> 。</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&lt;-2&lt;-3&lt;-4 3-&gt;2-&gt;1</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>那么为了保存到右边遍历的头节点，还得在 <code>left-&gt;next = pre</code> 前面加上 <code>s2 = left -&gt; next</code> 。同时要注意 s1 的讨论情况，如果总节点个数是奇数，那么 <code>left</code> 要取到上一个节点 <code>pre</code> 的值，因为我们不可能从中间的 <code>4</code>来开始两头的遍历，这一个节点只能有一个后继。</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isPalindrome</span><span class="params">(ListNode* head)</span> </span>&#123;</span><br><span class="line">        ListNode *left = head, *right = head, *pre = <span class="literal">nullptr</span>, *nxt = head;</span><br><span class="line">        <span class="keyword">if</span>(!head) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">if</span>(!head-&gt;next) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">if</span>(!head-&gt;next-&gt;next) <span class="keyword">return</span> head-&gt;val == head-&gt;next-&gt;val;</span><br><span class="line">        <span class="keyword">while</span>(right-&gt;next &amp;&amp; right-&gt;next-&gt;next) &#123;</span><br><span class="line">            right = right-&gt;next-&gt;next;</span><br><span class="line">            <span class="comment">//reverse</span></span><br><span class="line">            nxt = left-&gt;next;</span><br><span class="line">            left-&gt;next = pre;</span><br><span class="line">            pre = left;</span><br><span class="line">            left = nxt;</span><br><span class="line">        &#125;</span><br><span class="line">        ListNode *s2 = left-&gt;next;</span><br><span class="line">        left-&gt;next = pre;</span><br><span class="line">        ListNode *s1 = right-&gt;next ? left : pre;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span>(s1 &amp;&amp; s2) &#123;</span><br><span class="line">            <span class="keyword">if</span>(s1-&gt;val != s2-&gt;val) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="built_in">cout</span>&lt;&lt;s1-&gt;val&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">            <span class="built_in">cout</span>&lt;&lt;s2-&gt;val&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">            s1 = s1-&gt;next;</span><br><span class="line">            s2 = s2-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/20/1371. 每个元音包含偶数次的最长子字符串/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈琦">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cq的Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/05/20/1371. 每个元音包含偶数次的最长子字符串/" itemprop="url">Leetcode_1371 每个元音包含偶数次的最长子字符串</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-20T11:16:00+08:00">
+                2020-05-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/每日一题/" itemprop="url" rel="index">
+                    <span itemprop="name">每日一题</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/每日一题/Medium/" itemprop="url" rel="index">
+                    <span itemprop="name">Medium</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="1371-Find-the-Longest-Substring-Containing-Vowels-in-Even-Counts-每个元音包含偶数次的最长子字符串"><a href="#1371-Find-the-Longest-Substring-Containing-Vowels-in-Even-Counts-每个元音包含偶数次的最长子字符串" class="headerlink" title="1371. Find the Longest Substring Containing Vowels in Even Counts/每个元音包含偶数次的最长子字符串"></a>1371. Find the Longest Substring Containing Vowels in Even Counts/每个元音包含偶数次的最长子字符串</h1><blockquote>
+<p>题目:</p>
+</blockquote>
+<p>给你一个字符串 <code>s</code> ，请你返回满足以下条件的最长子字符串的长度：每个元音字母，即 ‘a’，’e’，’i’，’o’，’u’ ，在子字符串中都恰好出现了偶数次。</p>
+<p><strong>示例 1：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：s = &quot;eleetminicoworoep&quot;</span><br><span class="line">输出：13</span><br><span class="line">解释：最长子字符串是 &quot;leetminicowor&quot; ，它包含 e，i，o 各 2 个，以及 0 个 a，u 。</span><br></pre></td></tr></table></figure>
+<p><strong>示例 2：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：s = &quot;leetcodeisgreat&quot;</span><br><span class="line">输出：5</span><br><span class="line">解释：最长子字符串是 &quot;leetc&quot; ，其中包含 2 个 e 。</span><br></pre></td></tr></table></figure>
+<p><strong>示例 3：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：s = &quot;bcbcbc&quot;</span><br><span class="line">输出：6</span><br><span class="line">解释：这个示例中，字符串 &quot;bcbcbc&quot; 本身就是最长的，因为所有的元音 a，e，i，o，u 都出现了 0 次。</span><br></pre></td></tr></table></figure>
+<p><strong>提示：</strong></p>
+<ul>
+<li><code>1 &lt;= s.length &lt;= 5 x 10^5</code></li>
+<li><code>s</code> 只包含小写英文字母。</li>
+</ul>
+<blockquote>
+<p>解法：位运算+状态编码+哈希表思想+前缀和</p>
+</blockquote>
+<p>这道题我上来确实没想到这种巧妙的做法，只想到了暴力法-。-</p>
+<p>这里面首先是考虑到只有 <code>a</code> , <code>e</code> , <code>i</code> , <code>o</code> , <code>u</code> 这五种情况是需要进行判断的，常规的暴力前缀和思想是用 <code>dp[i][j]</code>来记录下来字符串前 <code>i</code> 个字符中包含第 <code>k</code> 个元音字母的次数，然后再通过前缀和的差值 <code>dp[r][k] - dp[l - 1][k]</code> 来求得 <code>[l, r]</code> 区间范围内第 <code>k</code> 个元音字母出现的次数，再判断是否为偶数即可，但是这种做法的时间复杂的是 <code>O(N^2)</code> 的，还是无法通过。</p>
+<h4 id="优化一：哈希表"><a href="#优化一：哈希表" class="headerlink" title="优化一：哈希表"></a>优化一：哈希表</h4><p>这里面我们考虑枚举字符串的每个位置 <code>i</code> ，计算以它结尾的满足条件的最长字符串长度。其实我们要做的就是快速找到最小的 <code>j∈[0,i)</code> ，满足 <code>pre[i][k]-pre[j][k]</code>（即每一个元音字母出现的次数）均为偶数，那么以 <code>i</code> 结尾的最长字符串 <code>s[j+1,i]</code> 长度就是 <code>i − j</code> 。这里面为了降低时间复杂度可以用<strong>哈希表</strong>来空间换时间，然而这里面我们无法将当前遍历到的状态和之前在哈希表里保存的状态得到一个等式对应关系，这就需要进行下一步优化了。</p>
+<h4 id="优化二：状态压缩"><a href="#优化二：状态压缩" class="headerlink" title="优化二：状态压缩"></a>优化二：状态压缩</h4><p>其实这道题每一个位置的状态只有奇数或者是偶数，完全可以用 <code>0</code> <code>1</code> 状态编码来实现，因此我们就可以在哈希表中找到对应的同奇同偶状态的键值所保存的最近下标值，然后直接用当前下标值减去之前保存的同状态下标值再 <code>＋1</code> 即可得到目前的满足条件的长度。</p>
+<h4 id="优化三：位运算"><a href="#优化三：位运算" class="headerlink" title="优化三：位运算"></a>优化三：位运算</h4><p>进一步优化其实是可以不用哈希表， <code>a</code> , <code>e</code> , <code>i</code> , <code>o</code> , <code>u</code> 这五种情况可以分别从低到高存储在一个整数的二进制位上，如当前状态是有奇数个 <code>a</code> , <code>i</code> ，有偶数个 <code>e</code> , <code>o</code> , <code>u</code> ，那么我们目前的状态码可以是 <code>00101</code>，一共有 $2^5$个状态，因此我们只需要初始化一个长度为 <code>32</code> ，初始值为 -1 的数组就可以代替哈希表了。数组中下标为 <code>5</code> 的位置存储的是该状态 <code>00101</code> 所对应的最远一次出现的位置，因此在再一次出现这个状态 <code>status == 00101</code>  的时候，只需要用当前的位置减去最远一次出现的位置再 <code>+1</code> 就是当前的长度了。</p>
+<p>这里面由于初始化了 <code>pos[0] = 0</code> ，由于数组是从 <code>0</code> 开始的，所以我们需要每次保存 <code>i + 1</code> 作为索引，同时在计算长度的时候也要用 <code>i + 1</code> 来计算。</p>
+<p><code>pos[status]</code>存储的是<code>status</code>状态第一次出现的位置，如果喜欢的话也可以存<code>i</code>，但是由于<code>i ~ j</code>的长度是<code>j - i + 1</code>，所以初始化的时候需要<code>pos[0] = -1</code>，这样<code>0 ~ i</code>的长度才可以保证是<code>i + 1</code>。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">findTheLongestSubstring</span><span class="params">(<span class="built_in">string</span> s)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = s.size(), res = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; pos(<span class="number">32</span>, <span class="number">-1</span>);</span><br><span class="line">        pos[<span class="number">0</span>] = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> status = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; ++i) &#123;</span><br><span class="line">            <span class="keyword">switch</span> (s[i]) &#123;</span><br><span class="line">                <span class="keyword">case</span> <span class="string">'a'</span>: status ^= <span class="number">1</span>&lt;&lt;<span class="number">0</span>;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                <span class="keyword">case</span> <span class="string">'e'</span>: status ^= <span class="number">1</span>&lt;&lt;<span class="number">1</span>;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                <span class="keyword">case</span> <span class="string">'i'</span>: status ^= <span class="number">1</span>&lt;&lt;<span class="number">2</span>;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                <span class="keyword">case</span> <span class="string">'o'</span>: status ^= <span class="number">1</span>&lt;&lt;<span class="number">3</span>;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                <span class="keyword">case</span> <span class="string">'u'</span>: status ^= <span class="number">1</span>&lt;&lt;<span class="number">4</span>;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(pos[status] == <span class="number">-1</span>) &#123;</span><br><span class="line">                pos[status] = i + <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> &#123;</span><br><span class="line">                res = max(res, i + <span class="number">1</span> - pos[status]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/19/232. 用栈实现队列/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1325,710 +2016,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/18/227. 基本计算器II/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈琦">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/head.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Cq的Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/05/18/227. 基本计算器II/" itemprop="url">Leetcode_227 基本计算器II</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-18T12:25:00+08:00">
-                2020-05-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Leetcode/" itemprop="url" rel="index">
-                    <span itemprop="name">Leetcode</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Leetcode/Medium/" itemprop="url" rel="index">
-                    <span itemprop="name">Medium</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="227-Basic-Calculator-II-基本计算器II"><a href="#227-Basic-Calculator-II-基本计算器II" class="headerlink" title="227*. Basic Calculator II/基本计算器II"></a>227*. Basic Calculator II/基本计算器II</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>实现一个基本的计算器来计算一个简单的字符串表达式的值。</p>
-<p>字符串表达式仅包含非负整数，<code>+</code>， <code>-</code> ，<code>*</code>，<code>/</code> 四种运算符和空格 <code></code>。 整数除法仅保留整数部分。</p>
-<p><strong>示例 1:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: &quot;3+2*2&quot;</span><br><span class="line">输出: 7</span><br></pre></td></tr></table></figure>
-<p><strong>示例 2:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: &quot; 3/2 &quot;</span><br><span class="line">输出: 1</span><br></pre></td></tr></table></figure>
-<p><strong>示例 3:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: &quot; 3+5 / 2 &quot;</span><br><span class="line">输出: 5</span><br></pre></td></tr></table></figure>
-<p><strong>说明：</strong></p>
-<ul>
-<li>你可以假设所给定的表达式都是有效的。</li>
-<li>请<strong>不要</strong>使用内置的库函数 <code>eval</code>。</li>
-</ul>
-<blockquote>
-<p>解法：⭐⭐⭐栈+递归</p>
-</blockquote>
-<p>这道题跟前面的基本计算器 I 很接近，只不过是加上了乘除法。我们还是使用上一道题的整体思路，如果是加减法，我们把加减法运算符绑定在数字前面放入栈中，变成 <code>+3</code> <code>-4</code> 这样的，然后把它们转化成数字，放入栈中。最后将栈中所有的数字求和，就是原算式的结果。i就是从左到右扫描，<code>sign</code> 和 <code>num</code> 跟在它身后。当 <code>s[i]</code> 遇到一个运算符时，根据上一个保存的 <code>sign</code> 的 <code>case</code> 不同选择 <code>nums</code> 的正负号，存入栈中，然后更新 <code>sign</code> 并清零<code>nums</code> 记录下一对儿符合和数字的组合。</p>
-<p>另外注意，不只是遇到新的符号会触发入栈，当i走到了算式的尽头（i == s.size() - 1），也应该将前面的数字入栈，方便后续计算最终结果。<strong>乘除法优先于加减法体现在，乘除法可以和栈顶的数结合，而加减法只能把自己放入栈</strong>。这样在做乘法的时候就只需要把栈顶的数字拿出来，然后和栈顶的数相乘，再放入栈中即可。</p>
-<p>这道题字符串中还可能出现空格字符，只需要多加一个判断即可。</p>
-<h4 id="处理括号"><a href="#处理括号" class="headerlink" title="处理括号"></a>处理括号</h4><p>这里面可以很巧妙地利用递归来处理括号的问题，因为括号本身具有递归性质。我们拿字符串 <code>3 * (4 - 5 / 2) - 6</code> 举例：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">calculate(<span class="number">3</span> * (<span class="number">4</span> - <span class="number">5</span> / <span class="number">2</span>) - <span class="number">6</span>)</span><br><span class="line">= <span class="number">3</span> * calculate(<span class="number">4</span> - <span class="number">5</span> / <span class="number">2</span>) - <span class="number">6</span></span><br><span class="line">= <span class="number">3</span> * <span class="number">2</span> - <span class="number">6</span></span><br><span class="line">= <span class="number">0</span></span><br></pre></td></tr></table></figure>
-<p>所以无论多少层括号嵌套，通过 <code>calculate</code> 函数递归调用自己，都可以将括号中的算式化简成一个数字。换句话说，括号包含的算式，我们直接视为一个数字就行了。</p>
-<p>现在的问题是，递归的开始条件和结束条件是什么？遇到 <code>(</code> 开始递归，遇到 <code>)</code> 结束递归：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">calculate</span><span class="params">(<span class="built_in">string</span> s)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> begin = <span class="number">0</span>;</span><br><span class="line">       <span class="keyword">return</span> calHelper(s, begin);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">calHelper</span><span class="params">(<span class="built_in">string</span> s, <span class="keyword">int</span>&amp; i)</span> <span class="comment">//i用于记录计算开始的索引</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">char</span> operation = <span class="string">'+'</span>;</span><br><span class="line">        <span class="built_in">stack</span>&lt;<span class="keyword">int</span>&gt; nums;</span><br><span class="line">        <span class="keyword">int</span> num = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">bool</span> flag = <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">for</span>(i; i &lt; s.size(); i++) &#123;</span><br><span class="line">            <span class="keyword">if</span>(s[i] &gt;= <span class="string">'0'</span> &amp;&amp; s[i] &lt;= <span class="string">'9'</span>) &#123;</span><br><span class="line">                num = num * <span class="number">10</span> + (s[i] - <span class="string">'0'</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(s[i] == <span class="string">'('</span>) &#123;</span><br><span class="line">                num = calHelper(s, ++i); <span class="comment">//从i的下一个开始计算， 进入递归</span></span><br><span class="line">                i++; <span class="comment">//这一层递归结束之后的i指向)所以再++</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(((s[i] &lt; <span class="string">'0'</span> || s[i] &gt; <span class="string">'9'</span>) &amp;&amp; s[i] != <span class="string">' '</span>) || i &gt;= s.size() - <span class="number">1</span>) &#123;</span><br><span class="line">                <span class="keyword">int</span> pre = <span class="number">0</span>;</span><br><span class="line">                <span class="keyword">switch</span> (operation) &#123;</span><br><span class="line">                <span class="keyword">case</span> <span class="string">'+'</span>: nums.push(num);</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                <span class="keyword">case</span> <span class="string">'-'</span>: nums.push(-num);</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                <span class="keyword">case</span> <span class="string">'*'</span>:</span><br><span class="line">                    pre = nums.top();</span><br><span class="line">                    nums.pop();</span><br><span class="line">                    nums.push(pre * num);</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                <span class="keyword">case</span> <span class="string">'/'</span>:</span><br><span class="line">                    pre = nums.top();</span><br><span class="line">                    nums.pop();</span><br><span class="line">                    nums.push(pre / num);</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                operation = s[i];</span><br><span class="line">                num = <span class="number">0</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (s[i] == <span class="string">')'</span>) <span class="comment">//遇到)回到上一级递归</span></span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span> (!nums.empty())</span><br><span class="line">        &#123;</span><br><span class="line">            res += nums.top();</span><br><span class="line">            nums.pop();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/16/225. 用队列实现栈/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈琦">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/head.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Cq的Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/05/16/225. 用队列实现栈/" itemprop="url">Leetcode_225 用队列实现栈</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-16T14:45:00+08:00">
-                2020-05-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Leetcode/" itemprop="url" rel="index">
-                    <span itemprop="name">Leetcode</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Leetcode/Easy/" itemprop="url" rel="index">
-                    <span itemprop="name">Easy</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="225-Implement-Stack-using-Queues-用队列实现栈"><a href="#225-Implement-Stack-using-Queues-用队列实现栈" class="headerlink" title="225. Implement Stack using Queues/用队列实现栈"></a>225. Implement Stack using Queues/用队列实现栈</h1><blockquote>
-<p>题目:</p>
-</blockquote>
-<p>使用队列实现栈的下列操作：</p>
-<ul>
-<li>push(x) – 元素 x 入栈</li>
-<li>pop() – 移除栈顶元素</li>
-<li>top() – 获取栈顶元素</li>
-<li>empty() – 返回栈是否为空</li>
-</ul>
-<p><strong>注意:</strong></p>
-<ul>
-<li>你只能使用队列的基本操作– 也就是 <code>push to back</code>, <code>peek/pop from front</code>, <code>size</code>, 和 <code>is empty</code> 这些操作是合法的。</li>
-<li>你所使用的语言也许不支持队列。 你可以使用 list 或者 deque（双端队列）来模拟一个队列 , 只要是标准的队列操作即可。</li>
-<li>你可以假设所有操作都是有效的（例如, 对一个空的栈不会调用 pop 或者 top 操作）。</li>
-</ul>
-<blockquote>
-<p>解法一：单队列法</p>
-</blockquote>
-<p>入栈时间复杂度为 <code>O(N)</code> ，出栈时间复杂度为 <code>O(1)</code> 。</p>
-<p>主要思想就是始终保持队列的 <code>front</code> 是栈的 <code>top</code> ，每次入队列的时候都把前面 <code>n - 1</code> 个数字循环插入到队列。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">|1|   |2|   |3|</span><br><span class="line">| |==&gt;|1|==&gt;|2|</span><br><span class="line">| |   | |   |1|</span><br></pre></td></tr></table></figure>
-<p>代码如下：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyStack</span> &#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="built_in">queue</span>&lt;<span class="keyword">int</span>&gt; q;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">/** Initialize your data structure here. */</span></span><br><span class="line">    MyStack() &#123;&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/** Push element x onto stack. */</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">push</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> size = q.size();</span><br><span class="line">        q.push(x);</span><br><span class="line">        <span class="keyword">while</span>(size &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">int</span> tmp = q.front();</span><br><span class="line">            q.pop();</span><br><span class="line">            q.push(tmp);</span><br><span class="line">            --size;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/** Removes the element on top of the stack and returns that element. */</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">pop</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> tmp = q.front();</span><br><span class="line">        q.pop();</span><br><span class="line">        <span class="keyword">return</span> tmp;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/** Get the top element. */</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">top</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> q.front();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/** Returns whether the stack is empty. */</span></span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">empty</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> q.empty();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法二：双队列法</p>
-</blockquote>
-<ol>
-<li>用两个队列 <code>q1</code> 和 <code>q2</code> ，总是保持一个队列为空。</li>
-<li>入栈时向非空的一个队列 <code>push</code> ；</li>
-<li>出栈时，假设 <code>q1</code> 非空，则从 <code>q1</code> 队头取元素入队到 <code>q2</code> 中，直到 <code>q1</code> 中剩下一个元素，这个元素就是栈顶元素；</li>
-<li>求top直接返回非空队列的队尾 <code>back()</code> 即可。</li>
-</ol>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyStack</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">queue</span>&lt;<span class="keyword">int</span>&gt; q1, q2;</span><br><span class="line">    MyStack() &#123;&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">push</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(q1.empty())&#123;</span><br><span class="line">            q2.push(x);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(q2.empty())&#123;</span><br><span class="line">            q1.push(x);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">pop</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> t;</span><br><span class="line">        <span class="keyword">if</span>(q1.empty())&#123;</span><br><span class="line">            <span class="keyword">if</span>(q2.size() == <span class="number">1</span>)&#123;</span><br><span class="line">                t = q2.front();</span><br><span class="line">                q2.pop();</span><br><span class="line">                <span class="keyword">return</span> t;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="keyword">while</span>(q2.size() &gt; <span class="number">1</span>)&#123;</span><br><span class="line">                    q1.push(q2.front());</span><br><span class="line">                    q2.pop();</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">//剩最后一个</span></span><br><span class="line">                t = q2.front();</span><br><span class="line">                q2.pop();</span><br><span class="line">                <span class="keyword">return</span> t;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(q2.empty())&#123;</span><br><span class="line">            <span class="keyword">if</span>(q1.size() == <span class="number">1</span>)&#123;</span><br><span class="line">                t = q1.front();</span><br><span class="line">                q1.pop();</span><br><span class="line">                <span class="keyword">return</span> t;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="keyword">while</span>(q1.size() &gt; <span class="number">1</span>)&#123;</span><br><span class="line">                    q2.push(q1.front());</span><br><span class="line">                    q1.pop();</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">//剩最后一个</span></span><br><span class="line">                t = q1.front();</span><br><span class="line">                q1.pop();</span><br><span class="line">                <span class="keyword">return</span> t;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">top</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(q1.empty())</span><br><span class="line">            <span class="keyword">return</span> q2.back();</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            <span class="keyword">return</span> q1.back();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">empty</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> q1.empty() &amp;&amp; q2.empty();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/16/224. 基本计算器/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈琦">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/head.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Cq的Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/05/16/224. 基本计算器/" itemprop="url">Leetcode_224 基本计算器</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-16T14:09:00+08:00">
-                2020-05-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Leetcode/" itemprop="url" rel="index">
-                    <span itemprop="name">Leetcode</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Leetcode/Hard/" itemprop="url" rel="index">
-                    <span itemprop="name">Hard</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="224-Basic-Calculator-基本计算器"><a href="#224-Basic-Calculator-基本计算器" class="headerlink" title="224*.Basic Calculator/基本计算器"></a>224*.Basic Calculator/基本计算器</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>实现一个基本的计算器来计算一个简单的字符串表达式的值。</p>
-<p>字符串表达式可以包含左括号 <code>(</code> ，右括号 <code>)</code>，加号 <code>+</code> ，减号 <code>-</code>，<strong>非负</strong>整数和空格 <code></code>。</p>
-<p><strong>示例 1:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: &quot;1 + 1&quot;</span><br><span class="line">输出: 2</span><br></pre></td></tr></table></figure>
-<p><strong>示例 2:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: &quot; 2-1 + 2 &quot;</span><br><span class="line">输出: 3</span><br></pre></td></tr></table></figure>
-<p><strong>示例 3:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: &quot;(1+(4+5+2)-3)+(6+8)&quot;</span><br><span class="line">输出: 23</span><br></pre></td></tr></table></figure>
-<p><strong>说明：</strong></p>
-<ul>
-<li>你可以假设所给定的表达式都是有效的。</li>
-<li>请<strong>不要</strong>使用内置的库函数 <code>eval</code>。</li>
-</ul>
-<blockquote>
-<p>解法：⭐⭐⭐⭐⭐利用栈</p>
-</blockquote>
-<p>参考了别人优雅题解，这里面由于只涉及到加法和减法，所以可以用一个 <code>sign</code> 变量来表示要进行加法运算还是减法运算。如果 <code>s[i] == &#39;+&#39;</code> 那么 <code>sign</code> 就等于 <code>1</code> ，如果 <code>s[i] == &#39;-&#39;</code>  那么 <code>sign</code> 就等于  <code>-1</code> 。 同时如果遇到 <code>&#39;(&#39;</code> 就入栈，入栈的操作是把当前括号外的计算结果 <code>res</code> 入栈，以及当前这个括号之前需要进行的运算符 <code>sign</code> 入栈，同时要将 <code>res</code> 和 <code>sign</code> 置零；如果遇到 <code>&#39;)&#39;</code> 就出栈，出栈后先 <code>res *= st.top();</code> 把当前需要的运算符 <code>sign</code> 乘上，然后再 <code>res += st.top();</code> 把前面的结果加上。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">calculate</span><span class="params">(<span class="built_in">string</span> s)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">stack</span>&lt;<span class="keyword">int</span>&gt; st;</span><br><span class="line">        <span class="keyword">int</span> res = <span class="number">0</span>, sign = <span class="number">1</span>, n = s.size();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; ++i) &#123;</span><br><span class="line">            <span class="keyword">int</span> num = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">if</span>(s[i] &gt;= <span class="string">'0'</span>) &#123;</span><br><span class="line">                <span class="keyword">while</span>(i &lt; n &amp;&amp; s[i] &gt;= <span class="string">'0'</span>) &#123;</span><br><span class="line">                    num = num * <span class="number">10</span> + (s[i] - <span class="string">'0'</span>);</span><br><span class="line">                    ++i;</span><br><span class="line">                &#125;</span><br><span class="line">                --i;</span><br><span class="line">                res += sign * num;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span>(s[i] == <span class="string">'+'</span>) sign = <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span>(s[i] == <span class="string">'-'</span>) sign = <span class="number">-1</span>;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span>(s[i] == <span class="string">'('</span>) &#123;</span><br><span class="line">                st.push(res);</span><br><span class="line">                st.push(sign);</span><br><span class="line">                res = <span class="number">0</span>;</span><br><span class="line">                sign = <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span>(s[i] == <span class="string">')'</span>) &#123;</span><br><span class="line">                res *= st.top();</span><br><span class="line">                st.pop();</span><br><span class="line">                res += st.top();</span><br><span class="line">                st.pop();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/16/223. 矩形面积/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="陈琦">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/head.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Cq的Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/05/16/223. 矩形面积/" itemprop="url">Leetcode_223 矩形面积</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-16T12:35:00+08:00">
-                2020-05-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Leetcode/" itemprop="url" rel="index">
-                    <span itemprop="name">Leetcode</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Leetcode/Medium/" itemprop="url" rel="index">
-                    <span itemprop="name">Medium</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="223-Rectangle-Area-矩形面积"><a href="#223-Rectangle-Area-矩形面积" class="headerlink" title="223. Rectangle Area/矩形面积"></a>223. Rectangle Area/矩形面积</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>在<strong>二维</strong>平面上计算出两个<strong>由直线构成的</strong>矩形重叠后形成的总面积。</p>
-<p>每个矩形由其左下顶点和右上顶点坐标表示，如图所示。</p>
-<p><img src="../images/223_1.png" alt="223_1"></p>
-<p><strong>示例:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: -3, 0, 3, 4, 0, -1, 9, 2</span><br><span class="line">输出: 45</span><br></pre></td></tr></table></figure>
-<p><strong>说明:</strong> 假设矩形面积不会超出 <strong>int</strong> 的范围。</p>
-<blockquote>
-<p>解法：简单计算</p>
-</blockquote>
-<p>为了简单起见，省去不必要的讨论，其实可以在确定必有重叠区域的情况下，把 <code>x</code> 轴坐标和 <code>y</code> 轴坐标放进 <code>vector</code> 里排序，重叠矩形的面积必为 <code>第二大 - 第三大</code> 的 <code>x</code> , <code>y</code> 坐标相乘。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">computeArea</span><span class="params">(<span class="keyword">int</span> A, <span class="keyword">int</span> B, <span class="keyword">int</span> C, <span class="keyword">int</span> D, <span class="keyword">int</span> E, <span class="keyword">int</span> F, <span class="keyword">int</span> G, <span class="keyword">int</span> H)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">long</span> <span class="keyword">long</span> area1 = <span class="built_in">abs</span>((A - C) * (B - D));</span><br><span class="line">        <span class="keyword">long</span> <span class="keyword">long</span> area2 = <span class="built_in">abs</span>((E - G) * (F - H));</span><br><span class="line">        <span class="keyword">long</span> <span class="keyword">long</span> overlap = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span>(!(E &gt;= C || G &lt;= A || D &lt;= F || B &gt;= H)) &#123;</span><br><span class="line">            <span class="built_in">vector</span>&lt;<span class="keyword">long</span> <span class="keyword">long</span>&gt; x = &#123;A, C, E, G&#125;;</span><br><span class="line">            <span class="built_in">vector</span>&lt;<span class="keyword">long</span> <span class="keyword">long</span>&gt; y = &#123;B, D, F, H&#125;;</span><br><span class="line">            sort(x.begin(), x.end());</span><br><span class="line">            sort(y.begin(), y.end());</span><br><span class="line">            overlap = (x[<span class="number">2</span>] - x[<span class="number">1</span>]) * (y[<span class="number">2</span>] - y[<span class="number">1</span>]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> area1 + area2 - overlap;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2081,7 +2068,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">292</span>
+                  <span class="site-state-item-count">296</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2103,7 +2090,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">73</span>
+                  <span class="site-state-item-count">74</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
