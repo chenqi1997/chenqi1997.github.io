@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Cq的Blog">
 <meta property="og:description" content="J59-I. 滑动窗口的最大值 / Leetcode 239 题目：  给定一个数组 nums 和滑动窗口的大小 k，请找出所有滑动窗口里的最大值。 示例: 123456789101112输入: nums = [1,3,-1,-3,5,3,6,7], 和 k = 3输出: [3,3,5,5,6,7] 解释:   滑动窗口的位置                最大值---------------">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-03-25T10:15:50.777Z">
+<meta property="og:updated_time" content="2020-05-21T04:23:37.577Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="剑指offer_59-I 滑动窗口的最大值 &#x2F; Leetcode 239">
 <meta name="twitter:description" content="J59-I. 滑动窗口的最大值 / Leetcode 239 题目：  给定一个数组 nums 和滑动窗口的大小 k，请找出所有滑动窗口里的最大值。 示例: 123456789101112输入: nums = [1,3,-1,-3,5,3,6,7], 和 k = 3输出: [3,3,5,5,6,7] 解释:   滑动窗口的位置                最大值---------------">
@@ -381,7 +381,7 @@
 <p>解法二：⭐⭐⭐双端队列法</p>
 </blockquote>
 <p>如何优化时间复杂度呢？首先想到的是使用堆，因为在最大堆中<code>heap[0]</code>永远是最大的元素。在大小为<code>k</code>的堆中插入一个元素消耗 <code>log(k)</code> 时间，因此算法的时间复杂度为 <code>O(Nlog(k))</code>。</p>
-<p>我们可以使用双端队列 <code>deque</code> 结构。</p>
+<p>那么为了获得 <code>O(N)</code> 的时间复杂度的算法，我们可以使用双端队列 <code>deque</code> 结构。</p>
 <ol>
 <li><p>处理前 k 个元素，初始化双向队列。</p>
 </li>
@@ -391,7 +391,7 @@
 <p>移除比当前元素小的所有元素，它们不可能是最大的。<br>将当前元素添加到双向队列中。<br>将 deque[0] 添加到输出中。<br>返回输出数组。</p>
 </li>
 </ol>
-<p>在这个维护的双端队列中，存储的是nums[]中对应的下标，而且注意，队列的front()最前端保存的是这一次遍历过程中最大值的下标；当进入一个新的下标 i 的时候，要将新的下标对应的值和队列尾部的下标对应的值进行比较，直到找到比 nums[i] 大的队尾下标。同时还要维护队列的front()在窗口范围内，</p>
+<p>在这个维护的双端队列中，存储的是 <code>nums[]</code> 中对应的下标，而且注意，队列的 <code>front()</code> 最前端保存的是这一次遍历过程中最大值的下标；当进入一个新的下标 <code>i</code> 的时候，要将新的下标对应的值和队列尾部的下标对应的值进行比较，直到找到比 <code>nums[i]</code> 大的队尾下标。同时还要维护队列的 <code>front()</code> 在窗口范围内，</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; maxSlidingWindow(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums, <span class="keyword">int</span> k) &#123;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; ans;</span><br><span class="line">        <span class="built_in">deque</span>&lt;<span class="keyword">int</span>&gt; deq;</span><br><span class="line">        <span class="keyword">int</span> n = nums.size();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)&#123;</span><br><span class="line">            <span class="keyword">while</span>(!deq.empty() &amp;&amp; nums[i] &gt; nums[deq.back()])&#123;</span><br><span class="line">                deq.pop_back();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//判断最左边的front是不是超过了当前窗口的最左侧值</span></span><br><span class="line">            <span class="keyword">if</span> (!deq.empty() &amp;&amp; deq.front() &lt; i - k + <span class="number">1</span>) deq.pop_front();</span><br><span class="line">            deq.push_back(i);</span><br><span class="line">            <span class="keyword">if</span> (i &gt;= k <span class="number">-1</span>) ans.push_back(nums[deq.front()]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
       
@@ -516,7 +516,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">296</span>
+                  <span class="site-state-item-count">300</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -538,7 +538,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">74</span>
+                  <span class="site-state-item-count">75</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
