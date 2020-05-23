@@ -91,7 +91,7 @@
 <meta property="og:image" content="http://yoursite.com/2020/03/06/images/5_2.png">
 <meta property="og:image" content="http://yoursite.com/2020/03/06/images/5_3.png">
 <meta property="og:image" content="http://yoursite.com/2020/03/06/images/5_4.png">
-<meta property="og:updated_time" content="2020-05-21T03:09:20.825Z">
+<meta property="og:updated_time" content="2020-05-22T06:45:51.732Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Leetcode_5 最长回文子串">
 <meta name="twitter:description" content="5. Longest Palindromic Substring/最长回文子串 题目：  给定一个字符串 s，找到 s 中最长的回文子串。你可以假设 s 的最大长度为 1000。  示例 1： 输入: “babad”输出: “bab”注意: “aba” 也是一个有效答案。示例 2： 输入: “cbbd”输出: “bb”   解法一：  刚看这道题的时候，第一反应是跟前面第三题的求最长不重复子串一样">
@@ -409,7 +409,13 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">字符:    #     a     #     b     #     a     #</span><br><span class="line">RL :     1    2     1     4     1     2     1</span><br><span class="line">RL-1:    0    1     0     3     0     1     0</span><br><span class="line">位置:     0    1     2     3     4     5     6</span><br><span class="line"></span><br><span class="line">字符:    #     a     #     b     #     b     #     a     #</span><br><span class="line">RL :     1     2     1     2     5     2     1     2     1</span><br><span class="line">RL-1:    0     1     0     1     4     1     0     1     0</span><br><span class="line">位置:     0     1     2     3     4     5     6     7     8</span><br></pre></td></tr></table></figure>
 <p>通过观察可以发现，<code>RL[i] - 1</code> 的值，正是在原本那个没有插入过分隔符的串中，以位置 <code>i</code> 为对称轴的最长回文串的长度（注意，这里是全串的总长度，不要和 <code>RL</code> 半径混在一起了）。</p>
 <p>于是问题变成了，怎样高效地求的 <code>RL</code> 数组。基本思路是利用<strong>回文串的对称性</strong>，扩展回文串。</p>
-<h4 id="算法过程"><a href="#算法过程" class="headerlink" title="算法过程"></a>算法过程</h4><p>我们再引入一个辅助变量 <code>MaxRight</code> ，表示当前访问到的所有回文子串，所能触及的最右一个字符的位置。另外还要记录下 <code>MaxRight</code> 对应的回文串的对称轴所在的位置，记为 <code>pos</code>，它们的位置关系如下。</p>
+<h4 id="算法过程"><a href="#算法过程" class="headerlink" title="算法过程"></a>算法过程</h4><p>总的来说就三个步骤：</p>
+<ol>
+<li>插入<code>‘#’</code> 。</li>
+<li>对于每一个 <code>i</code> ，根据对称性初始化 <code>RL[i]</code> 。</li>
+<li>向两侧拓展 <code>RL[i]</code> 并且更新 <code>MaxRight</code> ,  <code>pos</code> ,  <code>MaxRL</code> ,  <code>MaxPos</code> 等参数。 </li>
+</ol>
+<p>我们再引入一个辅助变量 <code>MaxRight</code> ，表示当前访问到的所有回文子串，所能触及的最右一个字符的位置。另外还要记录下 <code>MaxRight</code> 对应的回文串的对称轴所在的位置，记为 <code>pos</code>，它们的位置关系如下。</p>
 <p><img src="../images/5_1.png" alt="5_1"></p>
 <p>我们从左往右地访问字符串来求 <code>RL</code> ，假设当前访问到的位置为 <code>i</code> ，即要求 <code>RL[i]</code> ，在对应上图，因为我们是从左到右遍历 <code>i</code> , 而 <code>pos</code> 是遍历到的所有回文子串中某个对称轴位置（ <code>MaxRight</code> 最大时），所以必然有 <code>pos&lt;=i</code> ，所以我们更关注的是，<code>i</code> 是在 <code>MaxRight</code> 的左边还是右边。我们分情况来讨论。</p>
 <ol>
