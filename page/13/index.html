@@ -367,21 +367,21 @@
       
         
           
-            <h1 id="90-Subsets-II-子集-II"><a href="#90-Subsets-II-子集-II" class="headerlink" title="90. Subsets II/子集 II"></a>90. Subsets II/子集 II</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>给定一个可能包含重复元素的整数数组 <strong><em>nums</em></strong>，返回该数组所有可能的子集（幂集）。</p>
-<p><strong>说明：</strong>解集不能包含重复的子集。</p>
-<p><strong>示例:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">输入: [1,2,2]</span><br><span class="line">输出:</span><br><span class="line">[</span><br><span class="line">  [2],</span><br><span class="line">  [1],</span><br><span class="line">  [1,2,2],</span><br><span class="line">  [2,2],</span><br><span class="line">  [1,2],</span><br><span class="line">  []</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法一：DFS+剪枝回溯</p>
-</blockquote>
-<p>这个题跟前面的 <code>Leetcode 78 子集</code> 总体思路是一样的，只不过加上了可能重复的元素，面对这样的条件也是很套路化了，先 <code>sort</code> 一遍，然后按照正常的回溯法来依次加到 <code>tmp</code> 里，再把 <code>tmp</code> 依次加到 <code>res</code> 里。</p>
-<p>⭐⭐⭐整个代码最关键的一行在于 <code>if(i &gt; num &amp;&amp; nums[i] == nums[i - 1]) continue;</code></p>
-<p>这一行里面重点在于 <code>i &gt; num</code> 这一个剪枝判断方法，这一个的目的是可以用 <code>num</code> 作为区分重复元素应不应该放进 <code>tmp</code> 的标准。<code>i &gt; num</code> 就 <code>continue</code> 可以保证第一个 <code>i = num</code> 的时候可以取到重复元素的第一个元素并正常<code>push</code> 作为头节点。也就是说剪枝是从每一个递归层的第二层开始的，所以加上 <code>i &gt; num</code> 。 </p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; subsetsWithDup(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums) &#123;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; res;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; tmp;</span><br><span class="line">        sort(nums.begin(), nums.end());</span><br><span class="line">        backTrack(nums, res, tmp, <span class="number">0</span>);</span><br><span class="line">        <span class="keyword">return</span> res;    </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">backTrack</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums, <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; res, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; tmp, <span class="keyword">int</span> num)</span> </span>&#123;</span><br><span class="line">        res.push_back(tmp);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = num; i &lt; nums.size(); ++i) &#123;</span><br><span class="line">            <span class="keyword">if</span>(i &gt; num &amp;&amp; nums[i] == nums[i - <span class="number">1</span>]) <span class="keyword">continue</span>;</span><br><span class="line">            tmp.push_back(nums[i]);</span><br><span class="line">            backTrack(nums, res, tmp, i + <span class="number">1</span>);</span><br><span class="line">            tmp.pop_back();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-          
+          90. Subsets II/子集 II
+题目：
+
+给定一个可能包含重复元素的整数数组 nums，返回该数组所有可能的子集（幂集）。
+说明：解集不能包含重复的子集。
+示例:
+12345678910输入: [1,2,2]输出:[  [2],  [1],  [1,2,2],  [2,2],  [1,2]
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/04/15/90. 子集 II/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -532,37 +532,25 @@
       
         
           
-            <h1 id="542-01-Matrix-01矩阵"><a href="#542-01-Matrix-01矩阵" class="headerlink" title="542*. 01 Matrix/01矩阵"></a>542*. 01 Matrix/01矩阵</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>给定一个由 0 和 1 组成的矩阵，找出每个元素到最近的 0 的距离。</p>
-<p>两个相邻元素间的距离为 1 。</p>
-<p><strong>示例 1:</strong><br>输入:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">0 0 0</span><br><span class="line">0 1 0</span><br><span class="line">0 0 0</span><br></pre></td></tr></table></figure>
-<p>输出:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">0 0 0</span><br><span class="line">0 1 0</span><br><span class="line">0 0 0</span><br></pre></td></tr></table></figure>
-<p><strong>示例 2:</strong><br>输入:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">0 0 0</span><br><span class="line">0 1 0</span><br><span class="line">1 1 1</span><br></pre></td></tr></table></figure>
-<p>输出:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">0 0 0</span><br><span class="line">0 1 0</span><br><span class="line">1 2 1</span><br></pre></td></tr></table></figure>
-<p><strong>注意:</strong></p>
-<ol>
-<li>给定矩阵的元素个数不超过 10000。</li>
-<li>给定矩阵中至少有一个元素是 0。</li>
-<li>矩阵中的元素只在四个方向上相邻: 上、下、左、右。</li>
-</ol>
-<blockquote>
-<p>解法一：动态规划</p>
-</blockquote>
-<p>最开始想到的方法是动态规划，不过这里面题目中每一个点的值其实是取值与上下左右四个点的，而一般的动态规划只能够从左上到右下进行一次遍历，这样得到的结果是缺少了右侧和下方的数值的，因此可以想到用两次动态规划遍历同一个 <code>dp</code> 数组，第二次从右下向左上遍历。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; updateMatrix(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; matrix) &#123;</span><br><span class="line">        <span class="keyword">int</span> m = matrix.size(), n = matrix[<span class="number">0</span>].size();</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; dp (m, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; (n, <span class="number">0</span>));</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; m; ++i) &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; n; ++j) &#123;</span><br><span class="line">                <span class="keyword">if</span>(matrix[i][j] == <span class="number">0</span>) <span class="keyword">continue</span>;</span><br><span class="line">                <span class="keyword">int</span> left = j == <span class="number">0</span> ? <span class="number">10001</span> :dp[i][j - <span class="number">1</span>] + <span class="number">1</span>;</span><br><span class="line">                <span class="keyword">int</span> top = i == <span class="number">0</span> ? <span class="number">10001</span> : dp[i - <span class="number">1</span>][j] + <span class="number">1</span>;</span><br><span class="line">                dp[i][j] = min(left, top);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = m - <span class="number">1</span>; i &gt;= <span class="number">0</span>; --i) &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = n - <span class="number">1</span>; j &gt;= <span class="number">0</span>; --j) &#123;</span><br><span class="line">                <span class="keyword">if</span>(matrix[i][j] == <span class="number">0</span>) <span class="keyword">continue</span>;</span><br><span class="line">                <span class="keyword">int</span> right = j == n - <span class="number">1</span> ? <span class="number">10001</span> : dp[i][j + <span class="number">1</span>] + <span class="number">1</span>;</span><br><span class="line">                <span class="keyword">int</span> bottom = i == m - <span class="number">1</span> ? <span class="number">10001</span> : dp[i + <span class="number">1</span>][j] + <span class="number">1</span>;</span><br><span class="line">                dp[i][j] = min(dp[i][j], min(right, bottom));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法二：BFS</p>
-</blockquote>
-<p>相当于把所有的 <code>0</code> 看成是一个整体，存在一个 <code>超级零</code> 与所有的0相连，相当于最短路算法中的 <code>超级远点</code> ，连向所有的源点，用 <code>超级源点</code> 到终点的最短路等价多个源点到终点的终点。在起始的时候把所有的位置为 0 的点都放入队列中，然后不断广播更新 <code>result</code> 二维矩阵中的值：如果当前广播到的 <code>result[x][y]</code> 的值大于当前队首坐标的值 + 1 ，那么就可以用这个队首坐标的值 + 1来代替当前的 result。同时将这个目前广播到的(x, y) 入队，进行更深层次的广播。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; updateMatrix(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; matrix) &#123;</span><br><span class="line">        <span class="keyword">int</span> numr = matrix.size();</span><br><span class="line">        <span class="keyword">int</span> numc = matrix[<span class="number">0</span>].size();</span><br><span class="line">        <span class="built_in">vector</span>&lt;pair&lt;<span class="keyword">int</span>,<span class="keyword">int</span>&gt;&gt; around = &#123;&#123;<span class="number">0</span>,<span class="number">1</span>&#125;,&#123;<span class="number">0</span>,<span class="number">-1</span>&#125;,&#123;<span class="number">-1</span>,<span class="number">0</span>&#125;,&#123;<span class="number">1</span>,<span class="number">0</span>&#125;&#125;;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; result(numr, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;(numc, INT_MAX));</span><br><span class="line">        <span class="built_in">queue</span>&lt;pair&lt;<span class="keyword">int</span>,<span class="keyword">int</span>&gt;&gt; que;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; numr; i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; numc; j++)&#123;</span><br><span class="line">                <span class="keyword">if</span>(matrix[i][j] == <span class="number">0</span>)&#123;</span><br><span class="line">                    result[i][j] = <span class="number">0</span>;</span><br><span class="line">                    que.push(&#123;i, j&#125;);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span>(!que.empty())&#123;</span><br><span class="line">            <span class="keyword">auto</span> temp = que.front();</span><br><span class="line">            que.pop();</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">4</span>; i++)&#123;</span><br><span class="line">                <span class="keyword">int</span> x = temp.first + around[i].first;</span><br><span class="line">                <span class="keyword">int</span> y = temp.second + around[i].second;</span><br><span class="line">                <span class="keyword">if</span>(x &gt;= <span class="number">0</span> &amp;&amp; x &lt; numr &amp;&amp; y &gt;= <span class="number">0</span> &amp;&amp; y &lt; numc)&#123;</span><br><span class="line">                    <span class="keyword">if</span>(result[x][y] &gt; result[temp.first][temp.second] + <span class="number">1</span>)&#123;</span><br><span class="line">                        result[x][y] = result[temp.first][temp.second] + <span class="number">1</span>;</span><br><span class="line">                        que.push(&#123;x, y&#125;);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          542*. 01 Matrix/01矩阵
+题目：
 
-          
+给定一个由 0 和 1 组成的矩阵，找出每个元素到最近的 0 的距离。
+两个相邻元素间的距离为 1 。
+示例 1:输入:
+1230 0 00 1 00 0 0
+输出:
+1230 0 00 1 00 0 0
+示例 2:输入:
+1230 0 00 1 
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/04/15/542. 01矩阵/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -713,26 +701,21 @@
       
         
           
-            <h1 id="445-Add-Two-Numbers-II-两数相加-II"><a href="#445-Add-Two-Numbers-II-两数相加-II" class="headerlink" title="445. Add Two Numbers II/两数相加 II"></a>445. Add Two Numbers II/两数相加 II</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>给你两个 <strong>非空</strong> 链表来代表两个非负整数。数字最高位位于链表开始位置。它们的每个节点只存储一位数字。将这两数相加会返回一个新的链表。</p>
-<p>你可以假设除了数字 0 之外，这两个数字都不会以零开头。</p>
-<p><strong>进阶：</strong></p>
-<p>如果输入链表不能修改该如何处理？换句话说，你不能对列表中的节点进行翻转。</p>
-<p><strong>示例：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：(7 -&gt; 2 -&gt; 4 -&gt; 3) + (5 -&gt; 6 -&gt; 4)</span><br><span class="line">输出：7 -&gt; 8 -&gt; 0 -&gt; 7</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法一：先转数字再转链表（失败了）long long也过不了</p>
-</blockquote>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">ListNode* <span class="title">addTwoNumbers</span><span class="params">(ListNode* l1, ListNode* l2)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">long</span> <span class="keyword">long</span> num1 = listToNum(l1), num2 = listToNum(l2);</span><br><span class="line">        <span class="keyword">long</span> <span class="keyword">long</span> total = num1 + num2;</span><br><span class="line">        ListNode* res = numToList(total);</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">long</span> <span class="keyword">long</span> <span class="title">listToNum</span><span class="params">(ListNode* head)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">long</span> <span class="keyword">long</span> res = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> tmp = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span>(head) &#123;</span><br><span class="line">            tmp = head-&gt;val;</span><br><span class="line">            res = res * <span class="number">10</span> + tmp;</span><br><span class="line">            <span class="keyword">if</span>(head-&gt;next) head = head-&gt;next;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function">ListNode* <span class="title">numToList</span><span class="params">(<span class="keyword">long</span> <span class="keyword">long</span> num)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> cur = <span class="number">0</span>;</span><br><span class="line">        ListNode* dummy = <span class="keyword">new</span> ListNode(<span class="number">-1</span>);</span><br><span class="line">        dummy-&gt;next = <span class="literal">NULL</span>;</span><br><span class="line">        <span class="keyword">if</span>(num == <span class="number">0</span>) <span class="keyword">return</span> <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line">        <span class="keyword">while</span>(num &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            cur = num % <span class="number">10</span>;</span><br><span class="line">            num /= <span class="number">10</span>;</span><br><span class="line">            ListNode* tmp = <span class="keyword">new</span> ListNode(cur);</span><br><span class="line">            tmp-&gt;next = dummy-&gt;next;</span><br><span class="line">            dummy-&gt;next = tmp;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dummy-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法二：栈</p>
-</blockquote>
-<p>思想跟上面差不多，不过为了避免overflow，再加上考虑到逆序过程可以用栈的先进后出特性实现。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">ListNode* <span class="title">addTwoNumbers</span><span class="params">(ListNode* l1, ListNode* l2)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">stack</span>&lt;<span class="keyword">int</span>&gt; s1, s2;</span><br><span class="line">        <span class="keyword">while</span>(l1) &#123;</span><br><span class="line">            s1.push(l1-&gt;val);</span><br><span class="line">            l1 = l1-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span>(l2) &#123;</span><br><span class="line">            s2.push(l2-&gt;val);</span><br><span class="line">            l2 = l2-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> carry = <span class="number">0</span>;</span><br><span class="line">        ListNode* ans = <span class="literal">nullptr</span>;</span><br><span class="line">        <span class="keyword">while</span>(!s1.empty() || !s2.empty() || carry != <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">int</span> a = s1.empty() ? <span class="number">0</span> : s1.top();</span><br><span class="line">            <span class="keyword">int</span> b = s2.empty() ? <span class="number">0</span> : s2.top();</span><br><span class="line">            <span class="keyword">if</span>(!s1.empty()) s1.pop();</span><br><span class="line">            <span class="keyword">if</span>(!s2.empty()) s2.pop();</span><br><span class="line">            <span class="keyword">int</span> cur = a + b + carry;</span><br><span class="line">            carry = cur / <span class="number">10</span>;</span><br><span class="line">            cur %= <span class="number">10</span>;</span><br><span class="line">            ListNode* curnode = <span class="keyword">new</span> ListNode(cur);</span><br><span class="line">            curnode-&gt;next = ans;</span><br><span class="line">            ans = curnode;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          445. Add Two Numbers II/两数相加 II
+题目：
 
-          
+给你两个 非空 链表来代表两个非负整数。数字最高位位于链表开始位置。它们的每个节点只存储一位数字。将这两数相加会返回一个新的链表。
+你可以假设除了数字 0 之外，这两个数字都不会以零开头。
+进阶：
+如果输入链表不能修改该如何处
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/04/14/445. 两数相加/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -883,28 +866,21 @@
       
         
           
-            <h1 id="89-Grey-Code-格雷编码"><a href="#89-Grey-Code-格雷编码" class="headerlink" title="89. Grey Code/格雷编码"></a>89. Grey Code/格雷编码</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>格雷编码是一个二进制数字系统，在该系统中，两个连续的数值仅有一个位数的差异。</p>
-<p>给定一个代表编码总位数的非负整数 <em>n</em>，打印其格雷编码序列。格雷编码序列必须以 0 开头。</p>
-<p><strong>示例 1:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">输入: 2</span><br><span class="line">输出: [0,1,3,2]</span><br><span class="line">解释:</span><br><span class="line">00 - 0</span><br><span class="line">01 - 1</span><br><span class="line">11 - 3</span><br><span class="line">10 - 2</span><br><span class="line"></span><br><span class="line">对于给定的 n，其格雷编码序列并不唯一。</span><br><span class="line">例如，[0,2,3,1] 也是一个有效的格雷编码序列。</span><br><span class="line"></span><br><span class="line">00 - 0</span><br><span class="line">10 - 2</span><br><span class="line">11 - 3</span><br><span class="line">01 - 1</span><br></pre></td></tr></table></figure>
-<p><strong>示例 2:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">输入: 0</span><br><span class="line">输出: [0]</span><br><span class="line">解释: 我们定义格雷编码序列必须以 0 开头。</span><br><span class="line">     给定编码总位数为 n 的格雷编码序列，其长度为 2n。当 n = 0 时，长度为 20 = 1。</span><br><span class="line">     因此，当 n = 0 时，其格雷编码序列为 [0]。</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法：找规律</p>
-</blockquote>
-<p>可以看出来这里面是以 <code>2^n</code> 为规律向上递加。</p>
-<p>n = 0, [0]<br>n = 1, [0,1] //新的元素1，为0+2^0<br>n = 2, [0,1,3,2] // 新的元素[3,2]为[0,1]-&gt;[1,0]后分别加上2^1<br>n = 3, [0,1,3,2,6,7,5,4] // 新的元素[6,7,5,4]为[0,1,3,2]-&gt;[2,3,1,0]后分别加上2^2-&gt;[6,7,5,4]</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    vector&lt;int&gt; grayCode(int n) &#123;</span><br><span class="line">        int shift = 1;</span><br><span class="line">        vector&lt;int&gt; res;</span><br><span class="line">        while(n &gt;= 0) &#123;</span><br><span class="line">            if(res.size() == 0) res.push_back(0);</span><br><span class="line">            else &#123;</span><br><span class="line">                for(int i = shift - 1; i &gt;= 0; --i) </span><br><span class="line">                    res.push_back(res[i] + shift);</span><br><span class="line">                shift *= 2;</span><br><span class="line">            &#125;</span><br><span class="line">            --n;</span><br><span class="line">        &#125;</span><br><span class="line">        return res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法二：动态规划</p>
-</blockquote>
-<p>由n位推导n+1位结果时，n+1位结果包含n位结果，同时包含n位结果中在高位再增加一个位1所形成的令一半结果，但是这一半结果需要与前一半结果镜像排列。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; grayCode(<span class="keyword">int</span> n) &#123;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; result(<span class="number">1</span>);</span><br><span class="line">        result[<span class="number">0</span>] = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)&#123;</span><br><span class="line">            <span class="keyword">int</span> e = <span class="number">1</span> &lt;&lt; (i - <span class="number">1</span>);<span class="comment">//i - 1位结果前增加一位1</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j = result.size() - <span class="number">1</span>; j &gt;= <span class="number">0</span>; j--)&#123;<span class="comment">// 镜像排列</span></span><br><span class="line">            result.push_back(e + result[j]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          89. Grey Code/格雷编码
+题目：
 
-          
+格雷编码是一个二进制数字系统，在该系统中，两个连续的数值仅有一个位数的差异。
+给定一个代表编码总位数的非负整数 n，打印其格雷编码序列。格雷编码序列必须以 0 开头。
+示例 1:
+123456789101112131415输入: 2输出: [0,1,3
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/04/13/89. 格雷编码/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1055,32 +1031,20 @@
       
         
           
-            <h1 id="87-Scramble-String-扰乱字符串"><a href="#87-Scramble-String-扰乱字符串" class="headerlink" title="87. Scramble String/扰乱字符串"></a>87. Scramble String/扰乱字符串</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>给定一个字符串 <em>s1</em>，我们可以把它递归地分割成两个非空子字符串，从而将其表示为二叉树。</p>
-<p>下图是字符串 <em>s1</em> = <code>&quot;great&quot;</code> 的一种可能的表示形式。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">    great</span><br><span class="line">   /    \</span><br><span class="line">  gr    eat</span><br><span class="line"> / \    /  \</span><br><span class="line">g   r  e   at</span><br><span class="line">           / \</span><br><span class="line">          a   t</span><br></pre></td></tr></table></figure>
-<p>在扰乱这个字符串的过程中，我们可以挑选任何一个非叶节点，然后交换它的两个子节点。</p>
-<p>例如，如果我们挑选非叶节点 <code>&quot;gr&quot;</code> ，交换它的两个子节点，将会产生扰乱字符串 <code>&quot;rgeat&quot;</code> 。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">    rgeat</span><br><span class="line">   /    \</span><br><span class="line">  rg    eat</span><br><span class="line"> / \    /  \</span><br><span class="line">r   g  e   at</span><br><span class="line">           / \</span><br><span class="line">          a   t</span><br></pre></td></tr></table></figure>
-<p>我们将 <code>&quot;rgeat”</code> 称作 <code>&quot;great&quot;</code> 的一个扰乱字符串。</p>
-<p>同样地，如果我们继续交换节点 <code>&quot;eat&quot;</code> 和 <code>&quot;at&quot;</code> 的子节点，将会产生另一个新的扰乱字符串 <code>&quot;rgtae&quot;</code> 。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">    rgtae</span><br><span class="line">   /    \</span><br><span class="line">  rg    tae</span><br><span class="line"> / \    /  \</span><br><span class="line">r   g  ta  e</span><br><span class="line">       / \</span><br><span class="line">      t   a</span><br></pre></td></tr></table></figure>
-<p>我们将 <code>&quot;rgtae”</code> 称作 <code>&quot;great&quot;</code> 的一个扰乱字符串。</p>
-<p>给出两个长度相等的字符串 <em>s1</em> 和 <em>s2</em>，判断 <em>s2</em> 是否是 <em>s1</em> 的扰乱字符串。</p>
-<p><strong>示例 1:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: s1 = &quot;great&quot;, s2 = &quot;rgeat&quot;</span><br><span class="line">输出: true</span><br></pre></td></tr></table></figure>
-<p><strong>示例 2:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: s1 = &quot;abcde&quot;, s2 = &quot;caebd&quot;</span><br><span class="line">输出: false</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法一：暴力递归法</p>
-</blockquote>
-<p>这道题看了一下 <code>dp</code> 解法。好像并没有比递归简单很多，很多人给的 <code>dp</code> 法空间复杂度 <code>O(N^3)</code>，时间复杂度<code>O(N^4)</code>。琢磨了一下主要是因为递归可以对很多不符合的情况直接 <code>return</code> ，而动态规划需要依赖之前的状态一直计算下去。</p>
-<p>递归解法是我们不知道原始字符串可能分割的位置，因此需要遍历所有可能的分割点 <code>i</code> ，然后比较原字符串和扰乱字符串分割之后的子串是否相等；子串同样进行了分割，则需要再对子串进行分割判断。这个时候就可以使用递归了。分别判断分割后交换和不交换的字串符不符合，满足一个就能 <code>return true</code> ，然后依次递归向下。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isScramble</span><span class="params">(<span class="built_in">string</span> s1, <span class="built_in">string</span> s2)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(s1.size() &lt;= <span class="number">1</span>) <span class="keyword">return</span> s1 == s2 ? <span class="literal">true</span> : <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">return</span> dfs(s1, s2);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">dfs</span><span class="params">(<span class="built_in">string</span> s1, <span class="built_in">string</span> s2)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> m = s1.length();</span><br><span class="line">        <span class="keyword">if</span>(s1 == s2) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">int</span> count[<span class="number">26</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; m; ++i) &#123;</span><br><span class="line">            count[s1[i] - <span class="string">'a'</span>]++;</span><br><span class="line">            count[s2[i] - <span class="string">'a'</span>]--;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">26</span>; ++i) &#123;</span><br><span class="line">            <span class="keyword">if</span>(count[i] != <span class="number">0</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; m - <span class="number">1</span>; ++i) &#123;</span><br><span class="line">            <span class="keyword">if</span>(dfs(s1.substr(<span class="number">0</span>, i + <span class="number">1</span>), s2.substr(<span class="number">0</span>, i + <span class="number">1</span>)) </span><br><span class="line">            &amp;&amp; dfs(s1.substr(i + <span class="number">1</span>, m - i - <span class="number">1</span>), s2.substr(i + <span class="number">1</span>, m - i - <span class="number">1</span>)))</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">            <span class="keyword">if</span>(dfs(s1.substr(<span class="number">0</span>, i + <span class="number">1</span>), s2.substr(m - i - <span class="number">1</span>, i + <span class="number">1</span>)) </span><br><span class="line">            &amp;&amp; dfs(s1.substr(i + <span class="number">1</span>, m - i - <span class="number">1</span>), s2.substr(<span class="number">0</span>,  m - i - <span class="number">1</span>)))</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          87. Scramble String/扰乱字符串
+题目：
 
-          
+给定一个字符串 s1，我们可以把它递归地分割成两个非空子字符串，从而将其表示为二叉树。
+下图是字符串 s1 = &quot;great&quot; 的一种可能的表示形式。
+1234567    great   /    \  gr    
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/04/13/87. 扰乱字符串/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1231,21 +1195,21 @@
       
         
           
-            <h1 id="86-Partition-List-分隔链表"><a href="#86-Partition-List-分隔链表" class="headerlink" title="86. Partition List/分隔链表"></a>86. Partition List/分隔链表</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>给定一个链表和一个特定值 <em>x</em>，对链表进行分隔，使得所有小于 <em>x</em> 的节点都在大于或等于 <em>x</em> 的节点之前。</p>
-<p>你应当保留两个分区中每个节点的初始相对位置。</p>
-<p><strong>示例:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: head = 1-&gt;4-&gt;3-&gt;2-&gt;5-&gt;2, x = 3</span><br><span class="line">输出: 1-&gt;2-&gt;2-&gt;4-&gt;3-&gt;5</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法：⭐⭐⭐简单链表+双指针</p>
-</blockquote>
-<p>本来是10分钟能做完的，可惜写错了一点拖到了20分钟。这里面交换的思路很简单，就是使用两个指针 <code>pre</code> 和 <code>cur</code> ，分别保存从前到后第一个出现的大于等于 <code>x</code> 的节点的上一个节点，和当前遍历到的节点。然后如果当前遍历到的节点 <code>cur</code> 的下一个节点值小于 <code>x</code> ，则需要进行调换操作。注意，如果调换了的情况下 <code>cur</code> 是不需要右移的，如果没调换的话 <code>cur</code> 才需要右移。第一次解法弄错了这里。</p>
-<p>这里面还有一些需要注意的corner problem是比如头节点就比 <code>x</code> 大，因此我们需要使用一个哨兵节点 <code>dummy</code> 指向头节点，同时还有最后一个节点的情况也需要注意。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">ListNode* <span class="title">partition</span><span class="params">(ListNode* head, <span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!head) <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">        ListNode* dummy = <span class="keyword">new</span> ListNode(<span class="number">-1</span>);</span><br><span class="line">        dummy-&gt;next = head;</span><br><span class="line">        ListNode* pre = dummy;</span><br><span class="line">        ListNode* cur = dummy;</span><br><span class="line">        <span class="keyword">while</span>(pre-&gt;next &amp;&amp; pre-&gt;next-&gt;val &lt; x) &#123;</span><br><span class="line">            pre = pre-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        cur = pre-&gt;next;</span><br><span class="line">        <span class="keyword">if</span>(cur == <span class="literal">NULL</span>) <span class="keyword">return</span> dummy-&gt;next;<span class="comment">//对应的是如果只有一个元素的情况，cur已经变成NULL了</span></span><br><span class="line">        <span class="keyword">while</span>(cur-&gt;next) &#123;</span><br><span class="line">            ListNode* tmp = cur-&gt;next;</span><br><span class="line">            <span class="keyword">if</span>(tmp-&gt;val &lt; x) &#123;</span><br><span class="line">                cur-&gt;next = tmp-&gt;next ? tmp-&gt;next : <span class="literal">NULL</span>;</span><br><span class="line">                tmp-&gt;next = pre-&gt;next;</span><br><span class="line">                pre-&gt;next = tmp;</span><br><span class="line">                pre = pre-&gt;next;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> </span><br><span class="line">                cur = cur-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dummy-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          86. Partition List/分隔链表
+题目：
 
-          
+给定一个链表和一个特定值 x，对链表进行分隔，使得所有小于 x 的节点都在大于或等于 x 的节点之前。
+你应当保留两个分区中每个节点的初始相对位置。
+示例:
+12输入: head = 1-&gt;4-&gt;3-&gt;2-&gt;5-&gt
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/04/13/86. 分隔链表/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1396,20 +1360,20 @@
       
         
           
-            <h1 id="85-Maximal-Rectangle-最大矩形"><a href="#85-Maximal-Rectangle-最大矩形" class="headerlink" title="85. Maximal Rectangle/最大矩形"></a>85. Maximal Rectangle/最大矩形</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>给定一个仅包含 0 和 1 的二维二进制矩阵，找出只包含 1 的最大矩形，并返回其面积。</p>
-<p><strong>示例:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">输入:</span><br><span class="line">[</span><br><span class="line">  [&quot;1&quot;,&quot;0&quot;,&quot;1&quot;,&quot;0&quot;,&quot;0&quot;],</span><br><span class="line">  [&quot;1&quot;,&quot;0&quot;,&quot;1&quot;,&quot;1&quot;,&quot;1&quot;],</span><br><span class="line">  [&quot;1&quot;,&quot;1&quot;,&quot;1&quot;,&quot;1&quot;,&quot;1&quot;],</span><br><span class="line">  [&quot;1&quot;,&quot;0&quot;,&quot;0&quot;,&quot;1&quot;,&quot;0&quot;]</span><br><span class="line">]</span><br><span class="line">输出: 6</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法：⭐⭐⭐⭐⭐单调栈+dp</p>
-</blockquote>
-<p>这道题用到了跟上一题 <code>Leetcode 84</code> 相同的单调栈思想，如果用单纯的暴力解法这道题需要的时间是 <code>O(N^3)</code>，可以想到利用上一题的函数实现，在对每一行的遍历的过程中维护一个一维 <code>dp</code> 数组，记录的是当前行当前列元素上面柱形的高度是多少，状态转移方程为： <code>dp[j] = matrix[i][j] == &#39;1&#39; ? dp[j] + 1 : 0</code> </p>
-<p>然后再在每一层的递归当中不断调用 <code>largestRectangleArea()</code> 函数来更新 <code>maxarea</code> 的值。最终的时间复杂度为 <code>O(MN)</code> ，空间复杂度为 <code>O(M)</code> 。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">largestRectangleArea</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; heights)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = heights.size(), res = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span>(n == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span>(n == <span class="number">1</span>) <span class="keyword">return</span> heights[<span class="number">0</span>];</span><br><span class="line">        heights.push_back(<span class="number">0</span>);</span><br><span class="line">        <span class="built_in">stack</span>&lt;<span class="keyword">int</span>&gt; st;</span><br><span class="line">        st.push(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; heights.size(); ++i) &#123;</span><br><span class="line">            <span class="keyword">while</span>(!st.empty() &amp;&amp; heights[st.top()] &gt; heights[i]) &#123;</span><br><span class="line">                <span class="keyword">int</span> tmp = heights[st.top()];st.pop();</span><br><span class="line">                <span class="keyword">int</span> left = st.empty() ? <span class="number">-1</span> : st.top();</span><br><span class="line">                <span class="keyword">int</span> width = i - left - <span class="number">1</span>;</span><br><span class="line">                res = max(res, tmp * width);</span><br><span class="line">            &#125;</span><br><span class="line">            st.push(i);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">maximalRectangle</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">char</span>&gt;&gt;&amp; matrix)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(matrix.size() == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> n = matrix[<span class="number">0</span>].size(), maxarea = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; dp (n, <span class="number">0</span>);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; matrix.size(); ++i) &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; n; ++j) &#123;</span><br><span class="line">                dp[j] = matrix[i][j] == <span class="string">'1'</span> ? dp[j] + <span class="number">1</span> : <span class="number">0</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            maxarea = max(maxarea, largestRectangleArea(dp));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> maxarea;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          85. Maximal Rectangle/最大矩形
+题目：
 
-          
+给定一个仅包含 0 和 1 的二维二进制矩阵，找出只包含 1 的最大矩形，并返回其面积。
+示例:
+12345678输入:[  [&quot;1&quot;,&quot;0&quot;,&quot;1&quot;,&quot;0&quot
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/04/13/85. 最大矩形/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1560,25 +1524,21 @@
       
         
           
-            <h1 id="355-Design-Tweet-设计推特"><a href="#355-Design-Tweet-设计推特" class="headerlink" title="355. Design Tweet/设计推特"></a>355. Design Tweet/设计推特</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>设计一个简化版的推特(Twitter)，可以让用户实现发送推文，关注/取消关注其他用户，能够看见关注人（包括自己）的最近十条推文。你的设计需要支持以下的几个功能：</p>
-<ol>
-<li><strong>postTweet(userId, tweetId)</strong>: 创建一条新的推文</li>
-<li><strong>getNewsFeed(userId)</strong>: 检索最近的十条推文。每个推文都必须是由此用户关注的人或者是用户自己发出的。推文必须按照时间顺序由最近的开始排序。</li>
-<li><strong>follow(followerId, followeeId)</strong>: 关注一个用户</li>
-<li><strong>unfollow(followerId, followeeId)</strong>: 取消关注一个用户</li>
-</ol>
-<p><strong>示例:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">Twitter twitter = new Twitter();</span><br><span class="line"></span><br><span class="line">// 用户1发送了一条新推文 (用户id = 1, 推文id = 5).</span><br><span class="line">twitter.postTweet(1, 5);</span><br><span class="line"></span><br><span class="line">// 用户1的获取推文应当返回一个列表，其中包含一个id为5的推文.</span><br><span class="line">twitter.getNewsFeed(1);</span><br><span class="line"></span><br><span class="line">// 用户1关注了用户2.</span><br><span class="line">twitter.follow(1, 2);</span><br><span class="line"></span><br><span class="line">// 用户2发送了一个新推文 (推文id = 6).</span><br><span class="line">twitter.postTweet(2, 6);</span><br><span class="line"></span><br><span class="line">// 用户1的获取推文应当返回一个列表，其中包含两个推文，id分别为 -&gt; [6, 5].</span><br><span class="line">// 推文id6应当在推文id5之前，因为它是在5之后发送的.</span><br><span class="line">twitter.getNewsFeed(1);</span><br><span class="line"></span><br><span class="line">// 用户1取消关注了用户2.</span><br><span class="line">twitter.unfollow(1, 2);</span><br><span class="line"></span><br><span class="line">// 用户1的获取推文应当返回一个列表，其中包含一个id为5的推文.</span><br><span class="line">// 因为用户1已经不再关注用户2.</span><br><span class="line">twitter.getNewsFeed(1);</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法：哈希表+链表</p>
-</blockquote>
-<p>慢慢看…这里面哈希表存的是一个结构体，每次可以对应调用存储的 unordered_set 里面的用户关注的人以及该用户发的 tweet。难点在于查找前十篇推文，这里面采用 ++time 来记录每一篇推文的时间，并存在对应的哈希表里面</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Twitter</span> &#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">Node</span> &#123;</span></span><br><span class="line">        <span class="comment">// 哈希表存储关注人的 Id</span></span><br><span class="line">        <span class="built_in">unordered_set</span>&lt;<span class="keyword">int</span>&gt; followee;</span><br><span class="line">        <span class="comment">// 用链表存储 tweetId</span></span><br><span class="line">        <span class="built_in">list</span>&lt;<span class="keyword">int</span>&gt; tweet;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="comment">// getNewsFeed 检索的推文的上限以及 tweetId 的时间戳</span></span><br><span class="line">    <span class="keyword">int</span> recentMax, time;</span><br><span class="line">    <span class="comment">// tweetId 对应发送的时间</span></span><br><span class="line">    <span class="built_in">unordered_map</span>&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt; tweetTime;</span><br><span class="line">    <span class="comment">// 每个用户存储的信息</span></span><br><span class="line">    <span class="built_in">unordered_map</span>&lt;<span class="keyword">int</span>, Node&gt; user;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Twitter() &#123;</span><br><span class="line">        time = <span class="number">0</span>;</span><br><span class="line">        recentMax = <span class="number">10</span>;</span><br><span class="line">        user.clear();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 初始化</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">(<span class="keyword">int</span> userId)</span> </span>&#123;</span><br><span class="line">        user[userId].followee.clear();</span><br><span class="line">        user[userId].tweet.clear();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">postTweet</span><span class="params">(<span class="keyword">int</span> userId, <span class="keyword">int</span> tweetId)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (user.find(userId) == user.end()) &#123;</span><br><span class="line">            init(userId);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 达到限制，剔除链表末尾元素</span></span><br><span class="line">        <span class="keyword">if</span> (user[userId].tweet.size() == recentMax) &#123;</span><br><span class="line">            user[userId].tweet.pop_back();</span><br><span class="line">        &#125;</span><br><span class="line">        user[userId].tweet.push_front(tweetId);</span><br><span class="line">        tweetTime[tweetId] = ++time;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; getNewsFeed(<span class="keyword">int</span> userId) &#123;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; ans; ans.clear();</span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">list</span>&lt;<span class="keyword">int</span>&gt;::iterator it = user[userId].tweet.begin(); it != user[userId].tweet.end(); ++it) &#123;</span><br><span class="line">            ans.emplace_back(*it);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> followeeId: user[userId].followee) &#123;</span><br><span class="line">            <span class="keyword">if</span> (followeeId == userId) <span class="keyword">continue</span>; <span class="comment">// 可能出现自己关注自己的情况</span></span><br><span class="line">            <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; res; res.clear();</span><br><span class="line">            <span class="built_in">list</span>&lt;<span class="keyword">int</span>&gt;::iterator it = user[followeeId].tweet.begin();</span><br><span class="line">            <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">            <span class="comment">// 线性归并</span></span><br><span class="line">            <span class="keyword">while</span> (i &lt; (<span class="keyword">int</span>)ans.size() &amp;&amp; it != user[followeeId].tweet.end()) &#123;</span><br><span class="line">                <span class="keyword">if</span> (tweetTime[(*it)] &gt; tweetTime[ans[i]]) &#123;</span><br><span class="line">                    res.emplace_back(*it);</span><br><span class="line">                    ++it;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    res.emplace_back(ans[i]);</span><br><span class="line">                    ++i;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">// 已经找到这两个链表合起来后最近的 recentMax 条推文</span></span><br><span class="line">                <span class="keyword">if</span> ((<span class="keyword">int</span>)res.size() == recentMax) <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">for</span> (; i &lt; (<span class="keyword">int</span>)ans.size() &amp;&amp; (<span class="keyword">int</span>)res.size() &lt; recentMax; ++i) res.emplace_back(ans[i]);</span><br><span class="line">            <span class="keyword">for</span> (; it != user[followeeId].tweet.end() &amp;&amp; (<span class="keyword">int</span>)res.size() &lt; recentMax; ++it) res.emplace_back(*it);</span><br><span class="line">            ans.assign(res.begin(),res.end());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">follow</span><span class="params">(<span class="keyword">int</span> followerId, <span class="keyword">int</span> followeeId)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (user.find(followerId) == user.end()) &#123;</span><br><span class="line">            init(followerId);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (user.find(followeeId) == user.end()) &#123;</span><br><span class="line">            init(followeeId);</span><br><span class="line">        &#125;</span><br><span class="line">        user[followerId].followee.insert(followeeId);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">unfollow</span><span class="params">(<span class="keyword">int</span> followerId, <span class="keyword">int</span> followeeId)</span> </span>&#123;</span><br><span class="line">        user[followerId].followee.erase(followeeId);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          355. Design Tweet/设计推特
+题目：
 
-          
+设计一个简化版的推特(Twitter)，可以让用户实现发送推文，关注/取消关注其他用户，能够看见关注人（包括自己）的最近十条推文。你的设计需要支持以下的几个功能：
+
+postTweet(userId, tweetId): 创建一条新的推文
+ge
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/04/13/355. 设计推特/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1729,39 +1689,22 @@
       
         
           
-            <h1 id="84-Largest-Rectangle-in-Histogram-柱状图中最大的矩形"><a href="#84-Largest-Rectangle-in-Histogram-柱状图中最大的矩形" class="headerlink" title="84*. Largest Rectangle in Histogram/柱状图中最大的矩形"></a>84*. Largest Rectangle in Histogram/柱状图中最大的矩形</h1><blockquote>
-<p>题目:</p>
-</blockquote>
-<p>给定 <em>n</em> 个非负整数，用来表示柱状图中各个柱子的高度。每个柱子彼此相邻，且宽度为 1 。</p>
-<p>求在该柱状图中，能够勾勒出来的矩形的最大面积。</p>
-<p><strong>示例:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: [2,1,5,6,2,3]</span><br><span class="line">输出: 10</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法一：两次遍历笨法（超时）</p>
-</blockquote>
-<p>不过 <code>O(N^2)</code> 时间复杂度还是通过了 <code>94/96</code> 个样例hhh</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">largestRectangleArea</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; heights)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = heights.size(), res = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; ++i) &#123;</span><br><span class="line">            <span class="keyword">int</span> curmin = heights[i];</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = i; j &lt; n; ++j) &#123;</span><br><span class="line">                curmin = min(curmin, heights[j]);</span><br><span class="line">                res = max(res, (j - i + <span class="number">1</span>) * curmin);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法二：⭐⭐⭐⭐⭐单调栈</p>
-</blockquote>
-<p>很巧妙，类似的单调栈问题还有 <code>Leetcode 42/496/503/739/901</code> 。</p>
-<blockquote>
-<p>我们发现了，只要是遇到了当前柱形的高度比它上一个柱形的高度严格小的时候，一定可以确定它之前的某些柱形的最大宽度，并且确定的柱形宽度的顺序是从右边向左边。<br>这个现象告诉我们，在遍历的时候需要记录的信息就是遍历到的柱形的下标，它一左一右的两个柱形的下标的差就是这个面积最大的矩形对应的最大宽度。</p>
-</blockquote>
-<p>单调栈特别适合解决那些，<strong>两头大小决定中间值的大小</strong>的题。</p>
-<p>因为单调栈中，以单调增栈为例。<br>设栈顶元素为 b， 栈顶第二个元素为a，自然有 a &lt; b （因为堆栈越往上越大）<br>这时候， 若c出现，且c小于b， 那么b的左右第一个比b小的两个元素就找到了，分别是a和c，b在中间最大。<br>这时候你可以处理b，并重新整理堆栈，使其保持递增;若c大于b，那c入栈，继续循环就行了。<br>最后清理堆栈</p>
-<p><img src="../images/84_1.png" alt="84_1"></p>
-<blockquote>
-<p>思路：</p>
-</blockquote>
-<ol>
-<li>对于一个下标对应的高度，如果能得到向左和向右的边界</li>
-<li>那么就能对每个高度求一次面积</li>
-<li>遍历所有高度，即可得出最大面积</li>
-</ol>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">largestRectangleArea</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; heights)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = heights.size(), res = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span>(n == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span>(n == <span class="number">1</span>) <span class="keyword">return</span> heights[<span class="number">0</span>];</span><br><span class="line">        heights.push_back(<span class="number">0</span>);</span><br><span class="line">        <span class="built_in">stack</span>&lt;<span class="keyword">int</span>&gt; st;</span><br><span class="line">        st.push(<span class="number">0</span>);</span><br><span class="line">		<span class="comment">//注意这里要写成heights.size()，如果写n是要报错的，因为前面push_back(0)了</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; heights.size(); ++i) &#123;</span><br><span class="line">            <span class="keyword">while</span>(!st.empty() &amp;&amp; heights[st.top()] &gt; heights[i]) &#123;</span><br><span class="line">                <span class="keyword">int</span> tmp = heights[st.top()]; st.pop();</span><br><span class="line">                <span class="keyword">int</span> left = st.empty() ? <span class="number">-1</span> : st.top();</span><br><span class="line">                <span class="keyword">int</span> width = i - left - <span class="number">1</span>;</span><br><span class="line">                res = max(res, tmp * width);</span><br><span class="line">            &#125;</span><br><span class="line">            st.push(i);</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          84*. Largest Rectangle in Histogram/柱状图中最大的矩形
+题目:
 
-          
+给定 n 个非负整数，用来表示柱状图中各个柱子的高度。每个柱子彼此相邻，且宽度为 1 。
+求在该柱状图中，能够勾勒出来的矩形的最大面积。
+示例:
+12输入: [2,1,5,6,2,3]输出: 10
+
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/04/12/84. 柱状图中最大的矩形/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1912,20 +1855,22 @@
       
         
           
-            <h1 id="83-Remove-Duplicate-from-Sorted-List-删除排序链表中的重复元素"><a href="#83-Remove-Duplicate-from-Sorted-List-删除排序链表中的重复元素" class="headerlink" title="83. Remove Duplicate from Sorted List/删除排序链表中的重复元素"></a>83. Remove Duplicate from Sorted List/删除排序链表中的重复元素</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>给定一个排序链表，删除所有重复的元素，使得每个元素只出现一次。</p>
-<p><strong>示例 1:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: 1-&gt;1-&gt;2</span><br><span class="line">输出: 1-&gt;2</span><br></pre></td></tr></table></figure>
-<p><strong>示例 2:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: 1-&gt;1-&gt;2-&gt;3-&gt;3</span><br><span class="line">输出: 1-&gt;2-&gt;3</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法：简单</p>
-</blockquote>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">ListNode* <span class="title">deleteDuplicates</span><span class="params">(ListNode* head)</span> </span>&#123;</span><br><span class="line">        ListNode* cur = head;</span><br><span class="line">        ListNode* tmp = head;</span><br><span class="line">        <span class="keyword">if</span>(!head) <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">        <span class="keyword">while</span>(cur-&gt;next) &#123;</span><br><span class="line">            tmp = cur-&gt;next;</span><br><span class="line">            <span class="keyword">while</span>(tmp-&gt;next &amp;&amp; tmp-&gt;val == cur-&gt;val) &#123;</span><br><span class="line">                tmp = tmp-&gt;next;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(tmp-&gt;val == cur-&gt;val) cur-&gt;next = <span class="literal">NULL</span>;</span><br><span class="line">            <span class="keyword">else</span> &#123;</span><br><span class="line">                cur-&gt;next = tmp;</span><br><span class="line">                cur = cur-&gt;next;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> head;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          83. Remove Duplicate from Sorted List/删除排序链表中的重复元素
+题目：
 
-          
+给定一个排序链表，删除所有重复的元素，使得每个元素只出现一次。
+示例 1:
+12输入: 1-&gt;1-&gt;2输出: 1-&gt;2
+示例 2:
+12输入: 1-&gt;1-&gt;2
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/04/12/83. 删除排序链表中的重复元素/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>

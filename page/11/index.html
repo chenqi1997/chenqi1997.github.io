@@ -367,22 +367,21 @@
       
         
           
-            <h1 id="112-Path-Sum-路径总和"><a href="#112-Path-Sum-路径总和" class="headerlink" title="112. Path Sum/路径总和"></a>112. Path Sum/路径总和</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>给定一个二叉树和一个目标和，判断该树中是否存在根节点到叶子节点的路径，这条路径上所有节点值相加等于目标和。</p>
-<p><strong>说明:</strong> 叶子节点是指没有子节点的节点。</p>
-<p><strong>示例:</strong><br>给定如下二叉树，以及目标和 <code>sum = 22</code>，</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">      5</span><br><span class="line">     / \</span><br><span class="line">    4   8</span><br><span class="line">   /   / \</span><br><span class="line">  11  13  4</span><br><span class="line"> /  \      \</span><br><span class="line">7    2      1</span><br></pre></td></tr></table></figure>
-<p>返回 <code>true</code>, 因为存在目标和为 22 的根节点到叶子节点的路径 <code>5-&gt;4-&gt;11-&gt;2</code>。</p>
-<blockquote>
-<p>解法一：递归</p>
-</blockquote>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">hasPathSum</span><span class="params">(TreeNode* root, <span class="keyword">int</span> sum)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">bool</span> res = <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">if</span>(!root) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        res = dfs(root, sum);</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">dfs</span><span class="params">(TreeNode* root, <span class="keyword">int</span> sum)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!root) <span class="keyword">return</span> sum == <span class="number">0</span> ? <span class="literal">true</span> : <span class="literal">false</span>;</span><br><span class="line">        sum -= root-&gt;val;</span><br><span class="line">        <span class="keyword">bool</span> left = <span class="literal">false</span>, right = <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">if</span>(!root-&gt;left &amp;&amp; !root-&gt;right &amp;&amp; sum == <span class="number">0</span>) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">if</span>(root-&gt;left) left = left || dfs(root-&gt;left, sum);</span><br><span class="line">        <span class="keyword">if</span>(root-&gt;right) right = right || dfs(root-&gt;right, sum);</span><br><span class="line">        sum += root-&gt;val;</span><br><span class="line">        <span class="keyword">return</span> left || right;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>也可以简洁一些：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">hasPathSum</span><span class="params">(TreeNode *root, <span class="keyword">int</span> sum)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (root == <span class="literal">NULL</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">if</span> (root-&gt;val == sum &amp;&amp; root-&gt;left ==  <span class="literal">NULL</span> &amp;&amp; root-&gt;right == <span class="literal">NULL</span>) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">return</span> hasPathSum(root-&gt;left, sum-root-&gt;val) || hasPathSum(root-&gt;right, sum-root-&gt;val);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+          112. Path Sum/路径总和
+题目：
 
-          
+给定一个二叉树和一个目标和，判断该树中是否存在根节点到叶子节点的路径，这条路径上所有节点值相加等于目标和。
+说明: 叶子节点是指没有子节点的节点。
+示例:给定如下二叉树，以及目标和 sum = 22，
+1234567      5     / \   
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/04/22/112. 路径总和/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -533,23 +532,20 @@
       
         
           
-            <h1 id="199-Binary-Tree-Right-Side-View-二叉树的右视图"><a href="#199-Binary-Tree-Right-Side-View-二叉树的右视图" class="headerlink" title="199. Binary Tree Right Side View/二叉树的右视图"></a>199. Binary Tree Right Side View/二叉树的右视图</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>给定一棵二叉树，想象自己站在它的右侧，按照从顶部到底部的顺序，返回从右侧所能看到的节点值。</p>
-<p><strong>示例:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">输入: [1,2,3,null,5,null,4]</span><br><span class="line">输出: [1, 3, 4]</span><br><span class="line">解释:</span><br><span class="line"></span><br><span class="line">   1            &lt;---</span><br><span class="line"> /   \</span><br><span class="line">2     3         &lt;---</span><br><span class="line"> \     \</span><br><span class="line">  5     4       &lt;---</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法一：队列实现层序遍历+判断当前层最后一个元素</p>
-</blockquote>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; rightSideView(TreeNode* root) &#123;</span><br><span class="line">        <span class="keyword">if</span>(!root) <span class="keyword">return</span> &#123;&#125;;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; res;</span><br><span class="line">        <span class="built_in">queue</span>&lt;TreeNode*&gt; q;</span><br><span class="line">        q.push(root);</span><br><span class="line">        <span class="keyword">while</span>(!q.empty()) &#123;</span><br><span class="line">            <span class="keyword">int</span> length = q.size();</span><br><span class="line">            <span class="keyword">while</span>(length) &#123;</span><br><span class="line">                TreeNode* tmp = q.front();</span><br><span class="line">                q.pop();</span><br><span class="line">                <span class="keyword">if</span>(length == <span class="number">1</span>) res.push_back(tmp-&gt;val);</span><br><span class="line">                <span class="keyword">if</span>(tmp-&gt;left) q.push(tmp-&gt;left);</span><br><span class="line">                <span class="keyword">if</span>(tmp-&gt;right) q.push(tmp-&gt;right);</span><br><span class="line">                --length;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法二：递归+DFS</p>
-</blockquote>
-<p>这里面借鉴了别人的 <code>DFS</code> 思想，相当于通过递归不断找最深的 <code>depth</code> ，每次递归的时候先走右节点再走左节点，同时递归的时候将 <code>depth</code> 传递 <code>+1</code> 。这样到了每一层 <code>depth</code> 如果当前的 <code>res</code> 数目小于 <code>depth</code> 则说明这一层 <code>depth</code> 对应的右视图节点值还没有保存下来，需要将当前的 <code>root-&gt;val</code> 加入 <code>res</code> 中。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; res;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">dfs</span><span class="params">(TreeNode* root, <span class="keyword">int</span> depth)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!root) <span class="keyword">return</span>;</span><br><span class="line">        <span class="keyword">if</span> (res.size() &lt; depth) res.push_back(root-&gt;val);</span><br><span class="line">        <span class="keyword">if</span> (root-&gt;right) dfs(root-&gt;right, depth + <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">if</span> (root-&gt;left) dfs(root-&gt;left, depth + <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; rightSideView(TreeNode* root) &#123;</span><br><span class="line">        res.clear();</span><br><span class="line">        dfs(root, <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          199. Binary Tree Right Side View/二叉树的右视图
+题目：
 
-          
+给定一棵二叉树，想象自己站在它的右侧，按照从顶部到底部的顺序，返回从右侧所能看到的节点值。
+示例:
+123456789输入: [1,2,3,null,5,null,4]输出: [1, 3, 4]解释:   1
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/04/22/199. 二叉树的右视图/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -700,30 +696,23 @@
       
         
           
-            <h1 id="111-Minimum-Depth-of-Binary-Tree-二叉树的最小深度"><a href="#111-Minimum-Depth-of-Binary-Tree-二叉树的最小深度" class="headerlink" title="111. Minimum Depth of Binary Tree/二叉树的最小深度"></a>111. Minimum Depth of Binary Tree/二叉树的最小深度</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>给定一个二叉树，找出其最小深度。</p>
-<p>最小深度是从根节点到最近叶子节点的最短路径上的节点数量。</p>
-<p><strong>说明:</strong> 叶子节点是指没有子节点的节点。</p>
-<p><strong>示例:</strong></p>
-<p>给定二叉树 <code>[3,9,20,null,null,15,7]</code>,</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">  3</span><br><span class="line"> / \</span><br><span class="line">9  20</span><br><span class="line">  /  \</span><br><span class="line"> 15   7</span><br></pre></td></tr></table></figure>
-<p>返回它的最小深度  2。</p>
-<blockquote>
-<p>解法：递归</p>
-</blockquote>
-<p>这里面刚开始并没有理解题意，这道题与最大深度不同的情况在于，最大深度一定是叶子节点，而我们这道题要进行一下判断，只有当递归得到的 <code>root</code> 节点左右孩子都为 <code>null</code> 时才可以返回 <code>1</code> 。</p>
-<p>讨论情况有以下三种：</p>
-<ol>
-<li>当 <code>root</code> 节点左右孩子都为空时，返回 <code>1</code></li>
-<li>当 <code>root</code> 节点左右孩子有一个为空时，为空的那边相当于是一个陷阱，不满足题意，需要返回不为空的孩子节点的深度。</li>
-<li>当 <code>root</code> 节点左右孩子都不为空时，返回左右孩子较小深度的节点值。</li>
-</ol>
-<p>这里面一二两个条件可以合并为 <code>left + right + 1</code> 。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">int</span> mindepth =  INT_MAX;</span><br><span class="line">    <span class="keyword">int</span> curdepth = <span class="number">0</span>;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">minDepth</span><span class="params">(TreeNode* root)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!root) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> left = minDepth(root-&gt;left);</span><br><span class="line">        <span class="keyword">int</span> right = minDepth(root-&gt;right);</span><br><span class="line">        <span class="keyword">return</span> (!root-&gt;left || !root-&gt;right) ? left + right + <span class="number">1</span> : min(left, right) + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          111. Minimum Depth of Binary Tree/二叉树的最小深度
+题目：
 
-          
+给定一个二叉树，找出其最小深度。
+最小深度是从根节点到最近叶子节点的最短路径上的节点数量。
+说明: 叶子节点是指没有子节点的节点。
+示例:
+给定二叉树 [3,9,20,null,null,15,7],
+1
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/04/21/111. 二叉树的最小深度/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -874,25 +863,20 @@
       
         
           
-            <h1 id="109-Convert-Sorted-List-to-Binary-Search-Tree-有序链表转换二叉搜索树"><a href="#109-Convert-Sorted-List-to-Binary-Search-Tree-有序链表转换二叉搜索树" class="headerlink" title="109. Convert Sorted List to Binary Search Tree/有序链表转换二叉搜索树"></a>109. Convert Sorted List to Binary Search Tree/有序链表转换二叉搜索树</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>给定一个单链表，其中的元素按升序排序，将其转换为高度平衡的二叉搜索树。</p>
-<p>本题中，一个高度平衡二叉树是指一个二叉树<em>每个节点</em> 的左右两个子树的高度差的绝对值不超过 1。</p>
-<p><strong>示例:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">给定的有序链表： [-10, -3, 0, 5, 9],</span><br><span class="line"></span><br><span class="line">一个可能的答案是：[0, -3, 9, -10, null, 5], 它可以表示下面这个高度平衡二叉搜索树：</span><br><span class="line"></span><br><span class="line">      0</span><br><span class="line">     / \</span><br><span class="line">   -3   9</span><br><span class="line">   /   /</span><br><span class="line"> -10  5</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法一：递归+链表快慢指针</p>
-</blockquote>
-<p>这里面我是用快慢指针的方式来找到链表的中间节点作为 <code>new Treenode(root-&gt;val)</code> ，不过在快慢指针的边缘情况判断上我感觉写的比较麻烦，这里面我统一用的是向右靠拢的方式解决边缘情况。然后用一个 Listnode* leftend 来保存当前慢指针的上一个节点，用来断链然后调用递归函数。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">TreeNode* <span class="title">sortedListToBST</span><span class="params">(ListNode* head)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!head) <span class="keyword">return</span> <span class="literal">nullptr</span>;</span><br><span class="line">        <span class="keyword">if</span>(!head-&gt;next) <span class="keyword">return</span> <span class="keyword">new</span> TreeNode(head-&gt;val);</span><br><span class="line">        ListNode *fast = head, *slow = head;</span><br><span class="line">        ListNode *leftend = head;</span><br><span class="line">        <span class="keyword">while</span>(fast-&gt;next &amp;&amp; fast-&gt;next-&gt;next) &#123;</span><br><span class="line">            fast = fast-&gt;next-&gt;next;</span><br><span class="line">            <span class="keyword">if</span>(!fast-&gt;next) leftend = slow;</span><br><span class="line">            slow = slow-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(fast-&gt;next) &#123;</span><br><span class="line">            fast = fast-&gt;next;</span><br><span class="line">            leftend = slow;</span><br><span class="line">            slow = slow-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        ListNode *rightbegin = slow-&gt;next;</span><br><span class="line">        slow-&gt;next = <span class="literal">nullptr</span>;</span><br><span class="line">        leftend-&gt;next = <span class="literal">nullptr</span>;</span><br><span class="line">        TreeNode *root = <span class="keyword">new</span> TreeNode(slow-&gt;val);</span><br><span class="line">        root-&gt;left = sortedListToBST(head);</span><br><span class="line">        root-&gt;right = sortedListToBST(rightbegin);</span><br><span class="line">        <span class="keyword">return</span> root;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法二：递归+不用链表断链</p>
-</blockquote>
-<p>这种做法利用了一个新的递归函数来实现，函数的参数为链表的头节点和尾节点。这里面跟 <code>STL</code> 一样采用了 <code>左闭右开</code> 的方式。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">TreeNode* <span class="title">sortedListToBST</span><span class="params">(ListNode* head)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> buildTree(head, <span class="literal">nullptr</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function">TreeNode * <span class="title">buildTree</span><span class="params">(ListNode* head, ListNode * tail)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(head == tail) <span class="keyword">return</span> <span class="literal">nullptr</span>;</span><br><span class="line">        ListNode* slow = head, *fast = head;</span><br><span class="line">        <span class="keyword">while</span>(fast != tail &amp;&amp; fast-&gt;next != tail)&#123;</span><br><span class="line">            slow = slow-&gt;next;</span><br><span class="line">            fast = fast-&gt;next-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        TreeNode * root = <span class="keyword">new</span> TreeNode(slow-&gt;val);</span><br><span class="line">        root-&gt;left = buildTree(head, slow);</span><br><span class="line">        root-&gt;right = buildTree(slow-&gt;next, tail);</span><br><span class="line">        <span class="keyword">return</span> root;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          109. Convert Sorted List to Binary Search Tree/有序链表转换二叉搜索树
+题目：
 
-          
+给定一个单链表，其中的元素按升序排序，将其转换为高度平衡的二叉搜索树。
+本题中，一个高度平衡二叉树是指一个二叉树每个节点 的左右两个子树的高度差的绝对值不超过 1。
+示例:
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/04/21/109. 有序链表转换二叉搜索树/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1043,20 +1027,21 @@
       
         
           
-            <h1 id="108-Convert-Sorted-Array-to-Binary-Search-Tree-将有序数组转换为二叉搜索树"><a href="#108-Convert-Sorted-Array-to-Binary-Search-Tree-将有序数组转换为二叉搜索树" class="headerlink" title="108. Convert Sorted Array to Binary Search Tree/将有序数组转换为二叉搜索树"></a>108. Convert Sorted Array to Binary Search Tree/将有序数组转换为二叉搜索树</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>将一个按照升序排列的有序数组，转换为一棵高度平衡二叉搜索树。</p>
-<p>本题中，一个高度平衡二叉树是指一个二叉树<em>每个节点</em> 的左右两个子树的高度差的绝对值不超过 1。</p>
-<p><strong>示例:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">给定有序数组: [-10,-3,0,5,9],</span><br><span class="line"></span><br><span class="line">一个可能的答案是：[0,-3,9,-10,null,5]，它可以表示下面这个高度平衡二叉搜索树：</span><br><span class="line"></span><br><span class="line">      0</span><br><span class="line">     / \</span><br><span class="line">   -3   9</span><br><span class="line">   /   /</span><br><span class="line"> -10  5</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法：递归</p>
-</blockquote>
-<p>这里面需要注意的是可以通过定义 <code>vector&lt;int&gt;</code> 的方式来减少时间复杂度。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">TreeNode* <span class="title">sortedArrayToBST</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(nums.empty()) <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">        <span class="keyword">int</span> mid = nums.size() / <span class="number">2</span>;</span><br><span class="line">        TreeNode *root = <span class="keyword">new</span> TreeNode(nums[mid]);</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; left(nums.begin(), nums.begin() + mid);</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; right(nums.begin() + mid + <span class="number">1</span>, nums.end());</span><br><span class="line">        root-&gt;left = sortedArrayToBST(left);</span><br><span class="line">        root-&gt;right = sortedArrayToBST(right);</span><br><span class="line">        <span class="keyword">return</span> root;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          108. Convert Sorted Array to Binary Search Tree/将有序数组转换为二叉搜索树
+题目：
 
-          
+将一个按照升序排列的有序数组，转换为一棵高度平衡二叉搜索树。
+本题中，一个高度平衡二叉树是指一个二叉树每个节点 的左右两个子树的高度差的绝对值不超过 1。
+示例:
+1
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/04/21/108. 将有序数组转换为二叉搜索树/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1207,30 +1192,22 @@
       
         
           
-            <h1 id="1248-Count-Number-of-Nice-Subarrays-统计优美子数组"><a href="#1248-Count-Number-of-Nice-Subarrays-统计优美子数组" class="headerlink" title="1248. Count Number of Nice Subarrays/统计优美子数组"></a>1248. Count Number of Nice Subarrays/统计优美子数组</h1><blockquote>
-<p>题目:</p>
-</blockquote>
-<p>给你一个整数数组 <code>nums</code> 和一个整数 <code>k</code>。</p>
-<p>如果某个 <strong>连续</strong> 子数组中恰好有 <code>k</code> 个奇数数字，我们就认为这个子数组是「<strong>优美子数组</strong>」。</p>
-<p>请返回这个数组中「优美子数组」的数目。</p>
-<p><strong>示例 1：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：nums = [1,1,2,1,1], k = 3</span><br><span class="line">输出：2</span><br><span class="line">解释：包含 3 个奇数的子数组是 [1,1,2,1] 和 [1,2,1,1] 。</span><br></pre></td></tr></table></figure>
-<p><strong>示例 2：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：nums = [2,4,6], k = 1</span><br><span class="line">输出：0</span><br><span class="line">解释：数列中不包含任何奇数，所以不存在优美子数组。</span><br></pre></td></tr></table></figure>
-<p><strong>示例 3：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：nums = [2,2,2,1,2,2,1,2,2,2], k = 2</span><br><span class="line">输出：16</span><br></pre></td></tr></table></figure>
-<p><strong>提示：</strong></p>
-<ul>
-<li><code>1 &lt;= nums.length &lt;= 50000</code></li>
-<li><code>1 &lt;= nums[i] &lt;= 10^5</code></li>
-<li><code>1 &lt;= k &lt;= nums.length</code></li>
-</ul>
-<blockquote>
-<p>解法一：求奇数下标构成数组</p>
-</blockquote>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">numberOfSubarrays</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = nums.size();</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; odds(n + <span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line">        <span class="keyword">int</span> res = <span class="number">0</span>, j = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nums.size(); ++i) &#123;</span><br><span class="line">            <span class="keyword">if</span>(nums[i] % <span class="number">2</span> == <span class="number">1</span>) odds[j++] = i;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(j &lt; k) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= j - k; ++i) &#123;</span><br><span class="line">            <span class="keyword">int</span> leftcnt = i &gt; <span class="number">0</span> ? odds[i] - odds[i - <span class="number">1</span>] : odds[i] + <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">int</span> rightcnt = i + k &lt; j ? odds[i + k] - odds[i + k - <span class="number">1</span>] : n - odds[i + k - <span class="number">1</span>];</span><br><span class="line">            res += leftcnt * rightcnt;        </span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          1248. Count Number of Nice Subarrays/统计优美子数组
+题目:
 
-          
+给你一个整数数组 nums 和一个整数 k。
+如果某个 连续 子数组中恰好有 k 个奇数数字，我们就认为这个子数组是「优美子数组」。
+请返回这个数组中「优美子数组」的数目。
+示例 1：
+123输入：n
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/04/21/1248. 统计优美子数组/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1381,32 +1358,21 @@
       
         
           
-            <h1 id="106-Construct-Binary-Tree-from-Inorder-and-Postorder-Traversal-从中序与后序遍历序列构造二叉树"><a href="#106-Construct-Binary-Tree-from-Inorder-and-Postorder-Traversal-从中序与后序遍历序列构造二叉树" class="headerlink" title="106. Construct Binary Tree from Inorder and Postorder Traversal/从中序与后序遍历序列构造二叉树"></a>106. Construct Binary Tree from Inorder and Postorder Traversal/从中序与后序遍历序列构造二叉树</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>根据一棵树的中序遍历与后序遍历构造二叉树。</p>
-<p><strong>注意:</strong><br>你可以假设树中没有重复的元素。</p>
-<p>例如，给出</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">中序遍历 inorder = [9,3,15,20,7]</span><br><span class="line">后序遍历 postorder = [9,15,7,20,3]</span><br></pre></td></tr></table></figure>
-<p>返回如下的二叉树：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">  3</span><br><span class="line"> / \</span><br><span class="line">9  20</span><br><span class="line">  /  \</span><br><span class="line"> 15   7</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法一：递归+reverse</p>
-</blockquote>
-<p>递归的思想完全调用了上一题的思路，不过为了简便运算我把后序遍历的序列 <code>reverse</code> 了一下，相当于变成了遍历规则为 <code>右-&gt;左-&gt;根</code> 的前序遍历，然后再用跟上一题同样的划分子序列的方式就可以了，这里面只需要注意一下左子树和右子树别搞混了。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">TreeNode* <span class="title">buildTree</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; inorder, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; postorder)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!inorder.size() || !postorder.size()) <span class="keyword">return</span> <span class="literal">nullptr</span>;</span><br><span class="line">        reverse(postorder.begin(), postorder.end());</span><br><span class="line">        <span class="keyword">return</span> dfs(postorder, <span class="number">0</span>, postorder.size() - <span class="number">1</span>, inorder, <span class="number">0</span>, inorder.size() - <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function">TreeNode* <span class="title">dfs</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; postorder, <span class="keyword">int</span> ps, <span class="keyword">int</span> pe, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; inorder, <span class="keyword">int</span> is, <span class="keyword">int</span> ie)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> rootval = postorder[ps];</span><br><span class="line">        TreeNode* root = <span class="keyword">new</span> TreeNode(rootval);</span><br><span class="line">        root-&gt;left = <span class="literal">nullptr</span>;</span><br><span class="line">        root-&gt;right = <span class="literal">nullptr</span>;</span><br><span class="line">        <span class="keyword">int</span> i = is;</span><br><span class="line">        <span class="keyword">while</span>(i &lt;= ie &amp;&amp; inorder[i] != rootval) ++i;</span><br><span class="line">        <span class="keyword">int</span> leftlen = i - is;</span><br><span class="line">        <span class="keyword">int</span> rightlen = ie - i;</span><br><span class="line">        <span class="keyword">if</span>(leftlen &gt; <span class="number">0</span>)</span><br><span class="line">            root-&gt;left = dfs(postorder, ps + rightlen + <span class="number">1</span>, pe, inorder, is, is + leftlen - <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">if</span>(rightlen &gt; <span class="number">0</span>)</span><br><span class="line">            root-&gt;right = dfs(postorder, ps + <span class="number">1</span>, ps + rightlen, inorder, is + leftlen + <span class="number">1</span>, ie);</span><br><span class="line">        <span class="keyword">return</span> root;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法二：递归 不reverse</p>
-</blockquote>
-<p>回过头来一想其实后序遍历也不用 <code>reverse</code> ，一样很简单就可以做出来，节省了 <code>reverse</code> 的时间。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">TreeNode* <span class="title">buildTree</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; inorder, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; postorder)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!inorder.size() || !postorder.size()) <span class="keyword">return</span> <span class="literal">nullptr</span>;</span><br><span class="line">        <span class="keyword">return</span> dfs(postorder, <span class="number">0</span>, postorder.size() - <span class="number">1</span>, inorder, <span class="number">0</span>, inorder.size() - <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function">TreeNode* <span class="title">dfs</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; postorder, <span class="keyword">int</span> ps, <span class="keyword">int</span> pe, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; inorder, <span class="keyword">int</span> is, <span class="keyword">int</span> ie)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> rootval = postorder[pe];</span><br><span class="line">        TreeNode* root = <span class="keyword">new</span> TreeNode(rootval);</span><br><span class="line">        root-&gt;left = <span class="literal">nullptr</span>;</span><br><span class="line">        root-&gt;right = <span class="literal">nullptr</span>;</span><br><span class="line">        <span class="keyword">int</span> i = is;</span><br><span class="line">        <span class="keyword">while</span>(i &lt;= ie &amp;&amp; inorder[i] != rootval) ++i;</span><br><span class="line">        <span class="keyword">int</span> leftlen = i - is;</span><br><span class="line">        <span class="keyword">int</span> rightlen = ie - i;</span><br><span class="line">        <span class="keyword">if</span>(leftlen &gt; <span class="number">0</span>)</span><br><span class="line">            root-&gt;left = dfs(postorder, ps, ps + leftlen - <span class="number">1</span>, inorder, is, is + leftlen - <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">if</span>(rightlen &gt; <span class="number">0</span>)</span><br><span class="line">            root-&gt;right = dfs(postorder, ps + leftlen, pe - <span class="number">1</span>, inorder, is + leftlen + <span class="number">1</span>, ie);</span><br><span class="line">        <span class="keyword">return</span> root;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法三：⭐⭐⭐⭐⭐迭代+栈</p>
-</blockquote>
-<p>跟上一题的思路是一样的</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">TreeNode* <span class="title">buildTree</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; inorder, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; postorder)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (postorder.empty()) <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">        <span class="built_in">stack</span>&lt;TreeNode*&gt; S;</span><br><span class="line">        TreeNode* root = <span class="keyword">new</span> TreeNode(postorder.back());</span><br><span class="line">        S.push(root);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = postorder.size() - <span class="number">2</span>, j = inorder.size() - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) &#123;  <span class="comment">// i-前序序号，j-中序序号</span></span><br><span class="line">            TreeNode *back = <span class="literal">NULL</span>, *cur = <span class="keyword">new</span> TreeNode(postorder[i]);</span><br><span class="line">            <span class="keyword">while</span> (!S.empty() &amp;&amp; S.top()-&gt;val == inorder[j]) back = S.top(), S.pop(), j--;</span><br><span class="line">            <span class="keyword">if</span> (back)</span><br><span class="line">            back-&gt;left = cur;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            S.top()-&gt;right = cur;</span><br><span class="line">            S.push(cur);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> root;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          106. Construct Binary Tree from Inorder and Postorder Traversal/从中序与后序遍历序列构造二叉树
+题目：
 
-          
+根据一棵树的中序遍历与后序遍历构造二叉树。
+注意:你可以假设树中没有重复的元素。
+例如，给出
+12中序遍历 inorder = [
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/04/20/106. 从中序与后序遍历序列构造二叉树/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1557,29 +1523,21 @@
       
         
           
-            <h1 id="105-Construct-Binary-Tree-from-Preorder-and-Inorder-Traversal-从前序与中序遍历序列构造二叉树"><a href="#105-Construct-Binary-Tree-from-Preorder-and-Inorder-Traversal-从前序与中序遍历序列构造二叉树" class="headerlink" title="105. Construct Binary Tree from Preorder and Inorder Traversal/从前序与中序遍历序列构造二叉树"></a>105. Construct Binary Tree from Preorder and Inorder Traversal/从前序与中序遍历序列构造二叉树</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>根据一棵树的前序遍历与中序遍历构造二叉树。</p>
-<p><strong>注意:</strong><br>你可以假设树中没有重复的元素。</p>
-<p>例如，给出</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">前序遍历 preorder = [3,9,20,15,7]</span><br><span class="line">中序遍历 inorder = [9,3,15,20,7]</span><br></pre></td></tr></table></figure>
-<p>返回如下的二叉树：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">  3</span><br><span class="line"> / \</span><br><span class="line">9  20</span><br><span class="line">  /  \</span><br><span class="line"> 15   7</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法一：递归法</p>
-</blockquote>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">TreeNode* <span class="title">buildTree</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; preorder, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; inorder)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!preorder.size() || !inorder.size()) <span class="keyword">return</span> <span class="literal">nullptr</span>;</span><br><span class="line">        <span class="keyword">return</span> dfs(preorder, <span class="number">0</span>, preorder.size() - <span class="number">1</span>, inorder, <span class="number">0</span>, inorder.size() - <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function">TreeNode* <span class="title">dfs</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; preorder, <span class="keyword">int</span> ps, <span class="keyword">int</span> pe, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; inorder, <span class="keyword">int</span> is, <span class="keyword">int</span> ie)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> rootval = preorder[ps];</span><br><span class="line">        TreeNode* root = <span class="keyword">new</span> TreeNode(rootval);</span><br><span class="line">        root-&gt;left = <span class="literal">nullptr</span>;</span><br><span class="line">        root-&gt;right = <span class="literal">nullptr</span>;</span><br><span class="line">        <span class="keyword">int</span> i = is;</span><br><span class="line">        <span class="keyword">while</span>(i &lt;= ie &amp;&amp; inorder[i] != rootval) ++i;</span><br><span class="line">        <span class="keyword">int</span> leftlen = i - is;</span><br><span class="line">        <span class="keyword">int</span> rightlen = ie - i;</span><br><span class="line">        <span class="keyword">if</span>(leftlen &gt; <span class="number">0</span>) </span><br><span class="line">            root-&gt;left = dfs(preorder, ps + <span class="number">1</span>, ps + leftlen, inorder, is, is + leftlen - <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">if</span>(rightlen &gt; <span class="number">0</span>) </span><br><span class="line">            root-&gt;right = dfs(preorder, ps + leftlen + <span class="number">1</span>, pe, inorder, is + leftlen + <span class="number">1</span>, ie);</span><br><span class="line">        <span class="keyword">return</span> root;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法二：⭐⭐⭐⭐⭐迭代+栈</p>
-</blockquote>
-<p>我们用一个栈保存已经遍历过的节点，遍历前序遍历的数组，一直作为当前根节点的左子树，直到当前节点和中序遍历的数组的节点相等了，那么我们正序遍历中序遍历的数组，倒着遍历已经遍历过的根节点（用栈的 <code>pop</code> 实现），找到最后一次相等的位置，把它作为该节点的右子树。</p>
-<p>上边的分析就是迭代总体的思想，代码的话还有一些细节注意一下。用一个栈保存已经遍历的节点，用 <code>cur</code> 保存当前正在遍历的节点。如果当前的 <code>back</code> 不是 <code>nullptr</code> 的话，就说明在这一层的迭代之中，<code>cur</code> 已经遍历完了左子树，开始走到了第一个右子树的根节点，此时的 <code>back</code> 装的是 <code>root</code> 节点；如果 <code>back</code> 还是 <code>nullptr</code> 的话，说明还没有开始进入 <code>while</code> 循环遍历左子树，因此要把当前的节点入栈，同时这个节点是当前栈顶的节点的左子树。就像例子中的 <code>9</code> 和 <code>3</code> 一样</p>
-<p>要配合如下的二叉树来判断：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">  3</span><br><span class="line"> / \</span><br><span class="line">9  20</span><br><span class="line">  /  \</span><br><span class="line"> 15   7</span><br></pre></td></tr></table></figure>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">TreeNode* <span class="title">buildTree</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; preorder, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; inorder)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (preorder.empty()) <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">        <span class="built_in">stack</span>&lt;TreeNode*&gt; S;</span><br><span class="line">        TreeNode* root = <span class="keyword">new</span> TreeNode(preorder[<span class="number">0</span>]);</span><br><span class="line">        S.push(root);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>, j = <span class="number">0</span>; i &lt; preorder.size(); i++) &#123;  <span class="comment">// i-前序序号，j-中序序号</span></span><br><span class="line">            TreeNode *back = <span class="literal">NULL</span>, *cur = <span class="keyword">new</span> TreeNode(preorder[i]);</span><br><span class="line">            <span class="keyword">while</span> (!S.empty() &amp;&amp; S.top()-&gt;val == inorder[j]) back = S.top(), S.pop(), j++;</span><br><span class="line">            <span class="keyword">if</span> (back)</span><br><span class="line">            back-&gt;right = cur;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            S.top()-&gt;left = cur;</span><br><span class="line">            S.push(cur);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> root;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          105. Construct Binary Tree from Preorder and Inorder Traversal/从前序与中序遍历序列构造二叉树
+题目：
 
-          
+根据一棵树的前序遍历与中序遍历构造二叉树。
+注意:你可以假设树中没有重复的元素。
+例如，给出
+12前序遍历 preorder = [
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/04/20/105. 从前序与中序遍历序列构造二叉树/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1730,25 +1688,20 @@
       
         
           
-            <h1 id="107-Binary-Tree-Level-Order-Traversal-II-二叉树的层次遍历-II"><a href="#107-Binary-Tree-Level-Order-Traversal-II-二叉树的层次遍历-II" class="headerlink" title="107. Binary Tree Level Order Traversal II/二叉树的层次遍历 II"></a>107. Binary Tree Level Order Traversal II/二叉树的层次遍历 II</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>给定一个二叉树，返回其节点值自底向上的层次遍历。 （即按从叶子节点所在层到根节点所在的层，逐层从左向右遍历）</p>
-<p>例如：<br>给定二叉树 <code>[3,9,20,null,null,15,7]</code>,</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">  3</span><br><span class="line"> / \</span><br><span class="line">9  20</span><br><span class="line">  /  \</span><br><span class="line"> 15   7</span><br></pre></td></tr></table></figure>
-<p>返回其自底向上的层次遍历为：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">  [15,7],</span><br><span class="line">  [9,20],</span><br><span class="line">  [3]</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法一：队列层次遍历+栈</p>
-</blockquote>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; levelOrderBottom(TreeNode* root) &#123;</span><br><span class="line">        <span class="keyword">if</span>(!root) <span class="keyword">return</span> &#123;&#125;;</span><br><span class="line">        <span class="built_in">queue</span>&lt;TreeNode*&gt; q;</span><br><span class="line">        <span class="built_in">stack</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; s;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; res;</span><br><span class="line">        q.push(root);</span><br><span class="line">        <span class="keyword">while</span>(!q.empty()) &#123;</span><br><span class="line">            <span class="keyword">int</span> length = q.size();</span><br><span class="line">            <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; cur;</span><br><span class="line">            <span class="keyword">while</span>(length) &#123;</span><br><span class="line">                TreeNode* tmp = q.front();q.pop();</span><br><span class="line">                <span class="keyword">if</span>(tmp-&gt;left) q.push(tmp-&gt;left);</span><br><span class="line">                <span class="keyword">if</span>(tmp-&gt;right) q.push(tmp-&gt;right);</span><br><span class="line">                cur.push_back(tmp-&gt;val);</span><br><span class="line">                --length;</span><br><span class="line">            &#125;</span><br><span class="line">            s.push(cur);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span>(!s.empty()) &#123;</span><br><span class="line">            <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; a = s.top();</span><br><span class="line">            s.pop();</span><br><span class="line">            res.push_back(a);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法二：直接reverse</p>
-</blockquote>
-<p>后来一琢磨，用什么栈啊，直接 <code>reverse res</code> 就行-。-太蠢了</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; levelOrderBottom(TreeNode* root) &#123;</span><br><span class="line">        <span class="keyword">if</span>(!root) <span class="keyword">return</span> &#123;&#125;;</span><br><span class="line">        <span class="built_in">queue</span>&lt;TreeNode*&gt; q;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; res;</span><br><span class="line">        q.push(root);</span><br><span class="line">        <span class="keyword">while</span>(!q.empty()) &#123;</span><br><span class="line">            <span class="keyword">int</span> length = q.size();</span><br><span class="line">            <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; cur;</span><br><span class="line">            <span class="keyword">while</span>(length) &#123;</span><br><span class="line">                TreeNode* tmp = q.front();q.pop();</span><br><span class="line">                <span class="keyword">if</span>(tmp-&gt;left) q.push(tmp-&gt;left);</span><br><span class="line">                <span class="keyword">if</span>(tmp-&gt;right) q.push(tmp-&gt;right);</span><br><span class="line">                cur.push_back(tmp-&gt;val);</span><br><span class="line">                --length;</span><br><span class="line">            &#125;</span><br><span class="line">            res.push_back(cur);</span><br><span class="line">        &#125;</span><br><span class="line">        reverse(res.begin(), res.end());</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          107. Binary Tree Level Order Traversal II/二叉树的层次遍历 II
+题目：
 
-          
+给定一个二叉树，返回其节点值自底向上的层次遍历。 （即按从叶子节点所在层到根节点所在的层，逐层从左向右遍历）
+例如：给定二叉树 [3,9,20,null,null,15,7],
+12
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/04/20/107. 二叉树的层次遍历 II/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1899,21 +1852,19 @@
       
         
           
-            <h1 id="466-Count-The-Repetitions-统计重复个数"><a href="#466-Count-The-Repetitions-统计重复个数" class="headerlink" title="466. Count The Repetitions/统计重复个数"></a>466. Count The Repetitions/统计重复个数</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>由 n 个连接的字符串 s 组成字符串 S，记作 <code>S = [s,n]</code>。例如，<code>[&quot;abc&quot;,3]</code>=“abcabcabc”。</p>
-<p>如果我们可以从 s2 中删除某些字符使其变为 s1，则称字符串 s1 可以从字符串 s2 获得。例如，根据定义，”abc” 可以从 “abdbec” 获得，但不能从 “acbbe” 获得。</p>
-<p>现在给你两个非空字符串 s1 和 s2（每个最多 100 个字符长）和两个整数 0 ≤ n1 ≤ 106 和 1 ≤ n2 ≤ 106。现在考虑字符串 S1 和 S2，其中 <code>S1=[s1,n1]</code> 、<code>S2=[s2,n2]</code> 。</p>
-<p>请你找出一个可以满足使<code>[S2,M]</code> 从 <code>S1</code> 获得的最大整数 M 。</p>
-<p><strong>示例：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">输入：</span><br><span class="line">s1 =&quot;acb&quot;,n1 = 4</span><br><span class="line">s2 =&quot;ab&quot;,n2 = 2</span><br><span class="line"></span><br><span class="line">返回：</span><br><span class="line">2</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法：寻找循环节</p>
-</blockquote>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">getMaxRepetitions</span><span class="params">(<span class="built_in">string</span> s1, <span class="keyword">int</span> n1, <span class="built_in">string</span> s2, <span class="keyword">int</span> n2)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(n1 == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> s1cnt = <span class="number">0</span>, s2cnt = <span class="number">0</span>, index = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">unordered_map</span>&lt;<span class="keyword">int</span>, pair&lt;<span class="keyword">int</span>,<span class="keyword">int</span>&gt;&gt; recall;</span><br><span class="line">        pair&lt;<span class="keyword">int</span>,<span class="keyword">int</span>&gt; pre_loop, in_loop;</span><br><span class="line">        <span class="keyword">while</span>(<span class="literal">true</span>) &#123;</span><br><span class="line">            ++s1cnt;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">char</span> ch: s1) &#123;</span><br><span class="line">                <span class="keyword">if</span>(ch == s2[index]) &#123;</span><br><span class="line">                    index += <span class="number">1</span>;</span><br><span class="line">                    <span class="keyword">if</span>(index == s2.size()) &#123;</span><br><span class="line">                        ++s2cnt;</span><br><span class="line">                        index = <span class="number">0</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(s1cnt == n1) <span class="keyword">return</span> s2cnt / n2;</span><br><span class="line">            <span class="keyword">if</span>(recall.count(index)) &#123;</span><br><span class="line">                <span class="keyword">auto</span> [s1cnt_prime, s2cnt_prime] = recall[index];</span><br><span class="line">                pre_loop = &#123;s1cnt_prime, s2cnt_prime&#125;;</span><br><span class="line">                in_loop = &#123;s1cnt - s1cnt_prime, s2cnt - s2cnt_prime&#125;;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> recall[index] = &#123;s1cnt, s2cnt&#125;;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> ans = pre_loop.second + (n1 - pre_loop.first) / in_loop.first * in_loop.second;</span><br><span class="line">        <span class="keyword">int</span> rest = (n1 - pre_loop.first) % in_loop.first;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; rest; ++i) &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">char</span> ch : s1) &#123;</span><br><span class="line">                <span class="keyword">if</span>(ch == s2[index]) &#123;</span><br><span class="line">                    ++index;</span><br><span class="line">                    <span class="keyword">if</span>(index == s2.size()) &#123;</span><br><span class="line">                        ++ans;</span><br><span class="line">                        index = <span class="number">0</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans / n2;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          466. Count The Repetitions/统计重复个数
+题目：
 
-          
+由 n 个连接的字符串 s 组成字符串 S，记作 S = [s,n]。例如，[&quot;abc&quot;,3]=“abcabcabc”。
+如果我们可以从 s2 中删除某些字符使其变为 s1，则称字符串 s1 可以从字符
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/04/19/466. 统计重复个数/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>

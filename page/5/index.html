@@ -367,22 +367,20 @@
       
         
           
-            <h1 id="200-Number-of-Islands-岛屿数量"><a href="#200-Number-of-Islands-岛屿数量" class="headerlink" title="200. Number of Islands/岛屿数量"></a>200. Number of Islands/岛屿数量</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>给你一个由 <code>&#39;1&#39;</code>（陆地）和 <code>&#39;0&#39;</code>（水）组成的的二维网格，请你计算网格中岛屿的数量。</p>
-<p>岛屿总是被水包围，并且每座岛屿只能由水平方向和/或竖直方向上相邻的陆地连接形成。</p>
-<p>此外，你可以假设该网格的四条边均被水包围。</p>
-<p><strong>示例 1:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">输入:</span><br><span class="line">11110</span><br><span class="line">11010</span><br><span class="line">11000</span><br><span class="line">00000</span><br><span class="line">输出: 1</span><br></pre></td></tr></table></figure>
-<p><strong>示例 2:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">输入:</span><br><span class="line">11000</span><br><span class="line">11000</span><br><span class="line">00100</span><br><span class="line">00011</span><br><span class="line">输出: 3</span><br><span class="line">解释: 每座岛屿只能由水平和/或竖直方向上相邻的陆地连接而成。</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法一：DFS+改变岛屿状态</p>
-</blockquote>
-<p>每遍历到一个 <code>&#39;1&#39;</code> 的岛屿的时候，就调用 <code>DFS</code> 函数将这个岛屿的所有连通区域变为 <code>&#39;2&#39;</code> 。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">numIslands</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">char</span>&gt;&gt;&amp; grid)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; grid.size(); ++i) &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; grid[<span class="number">0</span>].size(); ++j) &#123;</span><br><span class="line">                <span class="keyword">if</span>(grid[i][j] == <span class="string">'1'</span>) &#123;</span><br><span class="line">                    res += <span class="number">1</span>;</span><br><span class="line">                    dfs(grid, i, j);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">dfs</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">char</span>&gt;&gt;&amp; grid, <span class="keyword">int</span> i, <span class="keyword">int</span> j)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(i &lt; <span class="number">0</span> || i == grid.size() || j &lt; <span class="number">0</span> || j == grid[<span class="number">0</span>].size() || grid[i][j] != <span class="string">'1'</span>) <span class="keyword">return</span>;</span><br><span class="line">        grid[i][j] = <span class="string">'2'</span>;</span><br><span class="line">        <span class="keyword">int</span> di[<span class="number">4</span>] = &#123;<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">-1</span>&#125;;</span><br><span class="line">        <span class="keyword">int</span> dj[<span class="number">4</span>] = &#123;<span class="number">1</span>, <span class="number">-1</span>, <span class="number">0</span>, <span class="number">0</span>&#125;;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> k = <span class="number">0</span>; k &lt; <span class="number">4</span>; ++k) &#123;</span><br><span class="line">            dfs(grid, i + di[k], j + dj[k]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-          
+          200. Number of Islands/岛屿数量
+题目：
+
+给你一个由 &#39;1&#39;（陆地）和 &#39;0&#39;（水）组成的的二维网格，请你计算网格中岛屿的数量。
+岛屿总是被水包围，并且每座岛屿只能由水平方向和/或竖直方向上相邻的陆地连接形成。
+此外，你可以假设该网格的四条边均
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/05/09/200. 岛屿数量/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -533,29 +531,19 @@
       
         
           
-            <h1 id="198-House-Robber-打家劫舍"><a href="#198-House-Robber-打家劫舍" class="headerlink" title="198. House Robber/打家劫舍"></a>198. House Robber/打家劫舍</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>你是一个专业的小偷，计划偷窃沿街的房屋。每间房内都藏有一定的现金，影响你偷窃的唯一制约因素就是相邻的房屋装有相互连通的防盗系统，<strong>如果两间相邻的房屋在同一晚上被小偷闯入，系统会自动报警</strong>。</p>
-<p>给定一个代表每个房屋存放金额的非负整数数组，计算你<strong>在不触动警报装置的情况下，</strong>能够偷窃到的最高金额。</p>
-<p><strong>示例 1:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输入: [1,2,3,1]</span><br><span class="line">输出: 4</span><br><span class="line">解释: 偷窃 1 号房屋 (金额 = 1) ，然后偷窃 3 号房屋 (金额 = 3)。</span><br><span class="line">     偷窃到的最高金额 = 1 + 3 = 4 。</span><br></pre></td></tr></table></figure>
-<p><strong>示例 2:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输入: [2,7,9,3,1]</span><br><span class="line">输出: 12</span><br><span class="line">解释: 偷窃 1 号房屋 (金额 = 2), 偷窃 3 号房屋 (金额 = 9)，接着偷窃 5 号房屋 (金额 = 1)。</span><br><span class="line">     偷窃到的最高金额 = 2 + 9 + 1 = 12 。</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法一：动态规划</p>
-</blockquote>
-<p>这里我最开始想到的是用两个一维动态数组的方法来做，<code>dp1</code> 用来表示下标 <code>i - 1</code> 这天<strong>不下手</strong>所能获得的最大收益，<code>dp2</code> 用来表示下标 <code>i - 1</code> 这天<strong>下手</strong>所能获得的最大收益，显然可以得到状态转移方程为：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dp1[i] = max(dp1[i - <span class="number">1</span>], dp2[i - <span class="number">1</span>]);<span class="comment">//不下手则最大利润为前一天下手或不下手的最大收益</span></span><br><span class="line">dp2[i] = dp1[i - <span class="number">1</span>] + nums[i - <span class="number">1</span>];<span class="comment">//下手则前一天不能下手，再加上这一趟的收益</span></span><br></pre></td></tr></table></figure>
-<p>得到的代码如下：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">rob</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(nums.empty()) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> n = nums.size();</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; dp1(n + <span class="number">1</span>, <span class="number">0</span>);<span class="comment">//dp[i]表示下标为i - 1天不下手.</span></span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; dp2(n + <span class="number">1</span>, <span class="number">0</span>);<span class="comment">//dp[i]表示下标为i - 1天下手.</span></span><br><span class="line">        dp1[<span class="number">0</span>] = <span class="number">0</span>;</span><br><span class="line">        dp2[<span class="number">0</span>] = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; ++i) &#123;</span><br><span class="line">            dp1[i] = max(dp1[i - <span class="number">1</span>], dp2[i - <span class="number">1</span>]);</span><br><span class="line">            dp2[i] = dp1[i - <span class="number">1</span>] + nums[i - <span class="number">1</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> max(dp1[n], dp2[n]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>那么显然这两个一维动态数组是可以用两个参数来代替，进行空间优化的，只需要注意一下用 <code>tmp</code> 保存上一个不下手的状态，防止被后面的语句写入。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">rob</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(nums.empty()) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> n = nums.size();</span><br><span class="line">        <span class="keyword">int</span> ns = <span class="number">0</span>;<span class="comment">//不偷</span></span><br><span class="line">        <span class="keyword">int</span> s = <span class="number">0</span>;<span class="comment">//偷</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; ++i) &#123;</span><br><span class="line">            <span class="keyword">int</span> tmp = ns;</span><br><span class="line">            ns = max(ns, s);</span><br><span class="line">            s = tmp + nums[i];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> max(s, ns);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>再回头看了看官方题解，好像我的动态规划想的有点复杂了😓</p>
-<p>只需要一个简单的转移方程 <code>dp[i]=max(dp[i-1], dp[i-2]+nums[i]);</code> 就可以了😓</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">rob</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(nums.size()==<span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span>(nums.size()==<span class="number">1</span>) <span class="keyword">return</span> nums[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">if</span>(nums.size()==<span class="number">2</span>) <span class="keyword">return</span> max(nums[<span class="number">0</span>],nums[<span class="number">1</span>]);</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; dp(nums.size(),<span class="number">0</span>);</span><br><span class="line">        dp[<span class="number">0</span>]=nums[<span class="number">0</span>];</span><br><span class="line">        dp[<span class="number">1</span>]=max(nums[<span class="number">0</span>],nums[<span class="number">1</span>]);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">2</span>;i&lt;nums.size();i++)&#123;</span><br><span class="line">            dp[i]=max(dp[i<span class="number">-1</span>], dp[i<span class="number">-2</span>]+nums[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[nums.size()<span class="number">-1</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          198. House Robber/打家劫舍
+题目：
 
-          
+你是一个专业的小偷，计划偷窃沿街的房屋。每间房内都藏有一定的现金，影响你偷窃的唯一制约因素就是相邻的房屋装有相互连通的防盗系统，如果两间相邻的房屋在同一晚上被小偷闯入，系统会自动报警。
+给定一个代表每个房屋存放金额的非负整数数组，计算你在不触动
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/05/09/198. 打家劫舍/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -706,36 +694,23 @@
       
         
           
-            <h1 id="192-Word-Frequency-统计词频"><a href="#192-Word-Frequency-统计词频" class="headerlink" title="192. Word Frequency/统计词频"></a>192. Word Frequency/统计词频</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>写一个 bash 脚本以统计一个文本文件 <code>words.txt</code> 中每个单词出现的频率。</p>
-<p>为了简单起见，你可以假设：</p>
-<ul>
-<li><code>words.txt</code>只包括小写字母和 <code>&#39; &#39;</code> 。</li>
-<li>每个单词只由小写字母组成。</li>
-<li>单词间由一个或多个空格字符分隔。</li>
-</ul>
-<p><strong>示例:</strong></p>
-<p>假设 <code>words.txt</code> 内容如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">the day is sunny the the</span><br><span class="line">the sunny is is</span><br></pre></td></tr></table></figure>
-<p>你的脚本应当输出（以词频降序排列）：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">the 4</span><br><span class="line">is 3</span><br><span class="line">sunny 2</span><br><span class="line">day 1</span><br></pre></td></tr></table></figure>
-<p><strong>说明:</strong></p>
-<ul>
-<li>不要担心词频相同的单词的排序问题，每个单词出现的频率都是唯一的。</li>
-<li>你可以使用一行 <a href="http://tldp.org/HOWTO/Bash-Prog-Intro-HOWTO-4.html" target="_blank" rel="noopener">Unix pipes</a> 实现吗？</li>
-</ul>
-<blockquote>
-<p>解法：</p>
-</blockquote>
-<p><code>xargs</code> 分割字符串 <code>-n 1</code> 表示每行输出一个，可以加 <code>-d</code> 指定分割符。</p>
-<p>要使用 <code>uniq</code> 统计词频需要被统计文本相同字符前后在一起，所以先排序 <code>uniq -c</code> 表示同时输出出现次数。</p>
-<p><code>sort -nr</code> 其中 <code>-n</code> 表示把数字当做真正的数字处理(当数字被当做字符串处理，会出现 <code>11</code> 比 <code>2</code> 小的情况)。</p>
-<p>再用 <code>awk</code> 对每一行进行区域划分并输出。默认按 <code>tab</code> 划分，也可用 <code>-F</code> 指定分隔符。<code>function</code> 以（第二列，第一列）即（单词，数目）打印。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat words.txt | xargs -n1 | sort | uniq -c | sort -rn | awk <span class="string">'&#123;print $2,$1&#125;'</span></span><br></pre></td></tr></table></figure>
+          192. Word Frequency/统计词频
+题目：
 
-          
+写一个 bash 脚本以统计一个文本文件 words.txt 中每个单词出现的频率。
+为了简单起见，你可以假设：
+
+words.txt只包括小写字母和 &#39; &#39; 。
+每个单词只由小写字母组成。
+单词间由一个或多个空格字符分隔。
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/05/09/192. 统计词频/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -886,30 +861,20 @@
       
         
           
-            <h1 id="190-Reverse-Bits-颠倒二进制位"><a href="#190-Reverse-Bits-颠倒二进制位" class="headerlink" title="190. Reverse Bits/颠倒二进制位"></a>190. Reverse Bits/颠倒二进制位</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>颠倒给定的 32 位无符号整数的二进制位。</p>
-<p> <strong>示例 1：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输入: 00000010100101000001111010011100</span><br><span class="line">输出: 00111001011110000010100101000000</span><br><span class="line">解释: 输入的二进制串 00000010100101000001111010011100 表示无符号整数 43261596，</span><br><span class="line">      因此返回 964176192，其二进制表示形式为 00111001011110000010100101000000。</span><br></pre></td></tr></table></figure>
-<p><strong>示例 2：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输入：11111111111111111111111111111101</span><br><span class="line">输出：10111111111111111111111111111111</span><br><span class="line">解释：输入的二进制串 11111111111111111111111111111101 表示无符号整数 4294967293，</span><br><span class="line">      因此返回 3221225471 其二进制表示形式为 10111111111111111111111111111111 。</span><br></pre></td></tr></table></figure>
-<p><strong>提示：</strong></p>
-<ul>
-<li>请注意，在某些语言（如 Java）中，没有无符号整数类型。在这种情况下，输入和输出都将被指定为有符号整数类型，并且不应影响您的实现，因为无论整数是有符号的还是无符号的，其内部的二进制表示形式都是相同的。</li>
-<li>在 Java 中，编译器使用<a href="https://baike.baidu.com/item/%E4%BA%8C%E8%BF%9B%E5%88%B6%E8%A1%A5%E7%A0%81/5295284" target="_blank" rel="noopener">二进制补码</a>记法来表示有符号整数。因此，在上面的 <strong>示例 2</strong> 中，输入表示有符号整数 <code>-3</code>，输出表示有符号整数 <code>-1073741825</code>。</li>
-</ul>
-<p><strong>进阶</strong>:<br>如果多次调用这个函数，你将如何优化你的算法？</p>
-<blockquote>
-<p>解法：位运算+双指针</p>
-</blockquote>
-<p>如果在传统的颠倒字符串问题中，我们可以从右至左反向遍历字符串的每一个位，再重新拼接成一个字符串。其实这种思路运用于颠倒某个数的二进制形式并生成一个新的数也同样适用。但由于正整数（uint 类型）并不可以通过下标去访问其于二进制上的每一位的比特值，所以可以通过按位操作符来取得相同的效果。</p>
-<p>这里面可以用到类似双指针的思想，我们定义一个左指针 <code>uint32_t mask = 1 &lt;&lt; 31</code> 指向最左侧，一个右指针 <code>uint32_t cur = 1</code> 指向最右侧，那么对于新构造的结果 <code>res</code> 我们只需要每次在从右向左数的第 <code>i</code> 位加上从左向右数第 <code>i</code> 位的 <code>bit</code> 即可。这样通过 <code>mask &gt;&gt;= 1</code> 和 <code>cur &lt;&lt;= 1</code> 即可反向遍历整个无符号整数。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    uint32_t reverseBits(uint32_t n) &#123;</span><br><span class="line">        uint32_t res = 0;</span><br><span class="line">        uint32_t mask = 1 &lt;&lt; 31;</span><br><span class="line">        uint32_t cur = 1;</span><br><span class="line">        for(int i = 0; i &lt; 32; ++i) &#123;</span><br><span class="line">            res += n &amp; mask ? cur : 0;</span><br><span class="line">            mask &gt;&gt;= 1;</span><br><span class="line">            cur &lt;&lt;= 1;</span><br><span class="line">        &#125;</span><br><span class="line">        return res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>还可以进一步优化，因为 <code>mask</code> 可以直接在循环中由 <code>1 &lt;&lt; 31 - i</code> 得到，<code>cur</code> 也可以在循环中由 <code>1 &lt;&lt; i</code> 得到。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">uint32_t</span> reverseBits(<span class="keyword">uint32_t</span> n) &#123;</span><br><span class="line">        <span class="keyword">uint32_t</span> result = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">32</span>;i++) &#123;</span><br><span class="line">            result += ((n &amp; (<span class="number">1</span> &lt;&lt; <span class="number">31</span> - i)) != <span class="number">0</span> ? <span class="number">1</span> &lt;&lt; i : <span class="number">0</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          190. Reverse Bits/颠倒二进制位
+题目：
 
-          
+颠倒给定的 32 位无符号整数的二进制位。
+ 示例 1：
+1234输入: 00000010100101000001111010011100输出: 00111001011110000010100101000000解释: 输入的二进制串 000
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/05/09/190. 颠倒二进制位/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1060,38 +1025,20 @@
       
         
           
-            <h1 id="189-Rotate-Array-旋转数组"><a href="#189-Rotate-Array-旋转数组" class="headerlink" title="189. Rotate Array/旋转数组"></a>189. Rotate Array/旋转数组</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>给定一个数组，将数组中的元素向右移动 <em>k</em> 个位置，其中 <em>k</em> 是非负数。</p>
-<p><strong>示例 1:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">输入: [1,2,3,4,5,6,7] 和 k = 3</span><br><span class="line">输出: [5,6,7,1,2,3,4]</span><br><span class="line">解释:</span><br><span class="line">向右旋转 1 步: [7,1,2,3,4,5,6]</span><br><span class="line">向右旋转 2 步: [6,7,1,2,3,4,5]</span><br><span class="line">向右旋转 3 步: [5,6,7,1,2,3,4]</span><br></pre></td></tr></table></figure>
-<p><strong>示例 2:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">输入: [-1,-100,3,99] 和 k = 2</span><br><span class="line">输出: [3,99,-1,-100]</span><br><span class="line">解释: </span><br><span class="line">向右旋转 1 步: [99,-1,-100,3]</span><br><span class="line">向右旋转 2 步: [3,99,-1,-100]</span><br></pre></td></tr></table></figure>
-<p><strong>说明:</strong></p>
-<ul>
-<li>尽可能想出更多的解决方案，至少有三种不同的方法可以解决这个问题。</li>
-<li>要求使用空间复杂度为 O(1) 的 <strong>原地</strong> 算法。</li>
-</ul>
-<blockquote>
-<p>解法一：</p>
-</blockquote>
-<p>环状替换。这个是我一开始想到的方法，不过第一次考虑忽略了 k 与 n 可能有最大公因数的情况，当<code>k&gt;nums.size()</code> 时，可以将 <code>k % s</code>，得到最小移动距离。</p>
-<h4 id="环状替换"><a href="#环状替换" class="headerlink" title="环状替换"></a>环状替换</h4><p>例如：<code>s = 6</code>，<code>k % s = 2</code> 时，<code>gcd(6,2) = 2</code> , 环状替换链就需要有两条 <code>(0-&gt;2-&gt;4-&gt;0)</code> 和 <code>(1-&gt;3-&gt;5-&gt;1)</code>。<br>那么在环状替换的外层需要另外的边界条件，来切换到另外的环状替换链上。</p>
-<p>而当 <code>s</code> 和 <code>k</code> 互质时，即 <code>gcd(s,k) = 1</code> 时，替换链只需一条，即可遍历到所有的元素。<br>例如：<code>s=6</code> ，<code>k % s = 5</code> 时，环状替换链为 <code>(0-&gt;5-&gt;4-&gt;3-&gt;2-&gt;1-&gt;0)</code> 。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    void rotate(vector&lt;int&gt;&amp; nums, int k) &#123;</span><br><span class="line">        int n = nums.size();</span><br><span class="line">        k = k % n;</span><br><span class="line">        int count = gcd(n, k);</span><br><span class="line">        for(int i = 0; i &lt; count; ++i) &#123;</span><br><span class="line">            int tmp = nums[i];</span><br><span class="line">            int j = i + k;</span><br><span class="line">            while(j % n != i) &#123;</span><br><span class="line">                int cur = nums[j % n];</span><br><span class="line">                nums[j % n] = tmp;</span><br><span class="line">                tmp = cur;</span><br><span class="line">                j += k;</span><br><span class="line">            &#125;</span><br><span class="line">            nums[i] = tmp;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    int gcd(int a, int b) &#123;</span><br><span class="line">        if(a &lt; b) swap(a, b);</span><br><span class="line">        return b == 0 ? a : gcd(b, a % b);</span><br><span class="line">    &#125; </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法二：环状替换+不使用gcd函数</p>
-</blockquote>
-<p>这个比较巧妙地用一个外层循环 <code>count &lt; n</code> 来判断是否完成了环状替换。第一个同学离开座位去第 <code>k + 1</code> 个座位，第 <code>k + 1</code>个座位的同学被挤出去了，他就去坐他后 <code>k</code> 个座位，如此反复。但是会出现一种情况，就是其中一个同学被挤开之后，坐到了第一个同学的位置（空位置，没人被挤出来）也就是 <code>j == cur &amp;&amp; cnt != n</code> 的情况，但是此时还有人没有调换位置，这样就顺着让第二个同学换位置。 那么什么时候就可以保证每个同学都换完了呢？<code>n</code> 个同学，换 <code>n</code> 次，所以用一个<code>count</code> 来计数即可。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">rotate</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums, <span class="keyword">int</span> k)</span></span>&#123;</span><br><span class="line">        <span class="keyword">int</span> cnt = <span class="number">0</span>, n = nums.size();</span><br><span class="line">        <span class="keyword">int</span> tmp = <span class="number">0</span>, pre = nums[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">int</span> cur = <span class="number">0</span>, j = <span class="number">0</span>;        </span><br><span class="line">        <span class="keyword">while</span>(cnt &lt; n)&#123;	</span><br><span class="line">            j = (j + k &lt;= n - <span class="number">1</span> ? (j + k) : ((j + k) % n)); <span class="comment">//目的地</span></span><br><span class="line">            tmp = nums[j];        <span class="comment">//tmp存储现在离开座位的元素</span></span><br><span class="line">            nums[j] = pre;        <span class="comment">//pre是上一次离开座位的元素</span></span><br><span class="line">            cnt++;           </span><br><span class="line">            pre = tmp; 		  </span><br><span class="line">            <span class="keyword">if</span>(j == cur &amp;&amp; cnt != n)&#123;</span><br><span class="line">                cur++;</span><br><span class="line">                j = cur;</span><br><span class="line">                pre = nums[j];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法三：三次reverse</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">原始数组                  : 1 2 3 4 5 6 7</span><br><span class="line">反转所有数字后             : 7 6 5 4 3 2 1</span><br><span class="line">反转前 k 个数字后          : 5 6 7 4 3 2 1</span><br><span class="line">反转后 n-k 个数字后        : 5 6 7 1 2 3 4 --&gt; 结果</span><br></pre></td></tr></table></figure>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">rotate</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//采用反转</span></span><br><span class="line">        <span class="keyword">int</span> n = nums.size();</span><br><span class="line">        k %= n;</span><br><span class="line">        reverse(&amp;nums[<span class="number">0</span>],&amp;nums[n]);</span><br><span class="line">        reverse(&amp;nums[<span class="number">0</span>],&amp;nums[k]);</span><br><span class="line">        reverse(&amp;nums[k],&amp;nums[n]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          189. Rotate Array/旋转数组
+题目：
 
-          
+给定一个数组，将数组中的元素向右移动 k 个位置，其中 k 是非负数。
+示例 1:
+123456输入: [1,2,3,4,5,6,7] 和 k = 3输出: [5,6,7,1,2,3,4]解释:向右旋转 1 步: [7,1,2,3,4,5,6]
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/05/09/189. 旋转数组/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1242,66 +1189,20 @@
       
         
           
-            <h1 id="188-Best-Time-to-Buy-and-Sell-Stock-IV-买卖股票的最佳时机-IV"><a href="#188-Best-Time-to-Buy-and-Sell-Stock-IV-买卖股票的最佳时机-IV" class="headerlink" title="188. Best Time to Buy and Sell Stock IV/买卖股票的最佳时机 IV"></a>188. Best Time to Buy and Sell Stock IV/买卖股票的最佳时机 IV</h1><blockquote>
-<p>题目:</p>
-</blockquote>
-<p>给定一个数组，它的第 <em>i</em> 个元素是一支给定的股票在第 <em>i</em> 天的价格。</p>
-<p>设计一个算法来计算你所能获取的最大利润。你最多可以完成 <strong>k</strong> 笔交易。</p>
-<p><strong>注意:</strong> 你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。</p>
-<p><strong>示例 1:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入: [2,4,1], k = 2</span><br><span class="line">输出: 2</span><br><span class="line">解释: 在第 1 天 (股票价格 = 2) 的时候买入，在第 2 天 (股票价格 = 4) 的时候卖出，这笔交易所能获得利润 = 4-2 = 2 。</span><br></pre></td></tr></table></figure>
-<p><strong>示例 2:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输入: [3,2,6,5,0,3], k = 2</span><br><span class="line">输出: 7</span><br><span class="line">解释: 在第 2 天 (股票价格 = 2) 的时候买入，在第 3 天 (股票价格 = 6) 的时候卖出, 这笔交易所能获得利润 = 6-2 = 4 。</span><br><span class="line">     随后，在第 5 天 (股票价格 = 0) 的时候买入，在第 6 天 (股票价格 = 3) 的时候卖出, 这笔交易所能获得利润 = 3-0 = 3 。</span><br></pre></td></tr></table></figure>
-<p>⭐⭐⭐⭐⭐</p>
-<p><strong>这道题跟前面的 <code>Leetcode 123 买卖股票的最佳时机 III</code>  基本上一模一样，只需要把循环次数改成 k 即可，但是代码需要做一点点更改：</strong></p>
-<p><strong>因为测试样例里面有一个 k = 1e9 的样例，一次交易至少需要 2 天，一天买，一天卖。因此如果 k 很大，大到大于等于 prices.size() / 2，那么相当于购买次数没有了限制，这道题退化成了 <code>Leetcode 122 买卖股票的最佳时机II</code>，使用贪心算法去做就可以了。这是一个特例。</strong></p>
-<blockquote>
-<p>解法一：⭐⭐⭐动态规划</p>
-</blockquote>
-<p>这道题的思路跟前面的股票问题很相近，不过难点在于对于购买股票的次数进行了限制，这里面把购买股票的次数归纳为 K ，这样便可以用来解决下面的问题 <code>Leetcode 188. 买卖股票的最佳时机 IV</code> 。</p>
-<p><code>动态规划分析</code>：</p>
-<p>用 <code>dp[i][k]</code> 表示前<code>i</code>天最多交易<code>k</code>次的最高收益，那么 <code>dp[i][k]</code> 怎么通过之前的解求出来呢？</p>
-<ol>
-<li>首先第 <code>i</code> 天可以什么都不操作，今天的最高收益就等于昨天的最高收益</li>
-</ol>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dp[i][k] = dp[i<span class="number">-1</span>][k]</span><br></pre></td></tr></table></figure>
-<ol>
-<li><strong>此外，为了获得更大收益我们第 <code>i</code> 天也可以选择卖出，既然选择卖出，那么在 <code>0</code> 到 <code>i - 1</code>  天就要选择一天买入。多选择了一次买入，那在买入之前已经进行了 <code>k - 1</code> 次买卖。</strong></li>
-</ol>
-<blockquote>
-<p>在第 <code>0</code> 天买入，收益就是 <code>prices[i] - prices[0]</code></p>
-<p>在第 <code>1</code> 天买入，收益就是 <code>prices[i] - prices[1] + dp[0][k-1]</code> ，多加了前一天的最大收益</p>
-<p>在第 <code>2</code> 天买入，收益就是 <code>prices[i] - prices[2] + dp[1][k-1]</code> ，多加了前一天的最大收益</p>
-<p>…</p>
-<p>在第 <code>j</code> 天买入，收益就是 <code>prices[i] - prices[j] + dp[j-1][k-1]</code>，多加了前一天的最大收益</p>
-</blockquote>
-<p>上边的每一种可能选择一个最大的，然后与第 <code>i</code> 天 什么都不操作进行比较，就是 <code>dp[i][k]</code> 的值了。</p>
-<p>同时，我们可以考虑简化状态转移方程，因为如果第 <code>j</code> 天是最终的买入点的话，它的价格一定是小于第 <code>j - 1</code> 天的，所以第 j 天为了得到最高收益一定是不需要再进行卖出操作的，也就是说是情况 <code>1</code> ，<code>dp[i][k - 1] == dp[i - 1][k - 1]</code>。所以我们可以更改状态转移方程为：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">dp[i][k] = max(dp[i<span class="number">-1</span>][k],</span><br><span class="line">               (prices[i] - prices[<span class="number">0</span>] + dp[<span class="number">0</span>][k<span class="number">-1</span>]),</span><br><span class="line">               (prices[i] - prices[<span class="number">1</span>] + dp[<span class="number">1</span>][k<span class="number">-1</span>]),</span><br><span class="line">               ...</span><br><span class="line">               (prices[i] - prices[i] + dp[i][k<span class="number">-1</span>]))</span><br></pre></td></tr></table></figure>
-<p>这里面为了取  <code>prices[i] - prices[j] + dp[j][k-1]</code> 的最大值，我们可以通过取 <code>prices[j] - dp[j][k-1]</code> 的最小值来实现，可以在每次循环中遍历更新 <code>curmin[k]</code> 最小值。同时遍历更新 <code>dp[i][k]</code> 的最大值。</p>
-<p>这里面我们用到了二维的 dp 数组 <code>dp[i][k]</code>，其中i表示从前到后循环到的天数，k表示前 i 天交易的次数。 <code>dp[i][k]</code> 表示前<code>i</code>天最多交易<code>k</code>次的最高收益，最终返回的解应该是 <code>dp[price.size() - 1][K]</code> 。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">maxProfit</span><span class="params">(<span class="keyword">int</span> k, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; prices)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = prices.size();</span><br><span class="line">        <span class="keyword">if</span>(n == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span>(k &gt;= n / <span class="number">2</span>)&#123;</span><br><span class="line">            <span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; n; ++i)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span>(prices[i] &gt; prices[i - <span class="number">1</span>])</span><br><span class="line">                    res += prices[i] - prices[i - <span class="number">1</span>];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> res;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; dp(prices.size(), <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; (k + <span class="number">1</span>, <span class="number">0</span>));</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; curmin (k + <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= k; ++i) </span><br><span class="line">            curmin[i] = prices[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; prices.size(); ++i) &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= k; ++j) &#123;</span><br><span class="line">                curmin[j] = min(prices[i] - dp[i][j - <span class="number">1</span>], curmin[j]);</span><br><span class="line">                dp[i][j] = max(dp[i - <span class="number">1</span>][j], prices[i] - curmin[j]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[prices.size() - <span class="number">1</span>][k];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法二：解法一换成一维DP</p>
-</blockquote>
-<p>简单优化一下空间。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">maxProfit</span><span class="params">(<span class="keyword">int</span> k, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; prices)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = prices.size();</span><br><span class="line">        <span class="keyword">if</span>(n == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span>(k &gt;= n / <span class="number">2</span>)&#123;</span><br><span class="line">            <span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; n; ++i)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span>(prices[i] &gt; prices[i - <span class="number">1</span>])</span><br><span class="line">                    res += prices[i] - prices[i - <span class="number">1</span>];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> res;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; dp(k + <span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v(k + <span class="number">1</span>, prices[<span class="number">0</span>]);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; prices.size(); i++) &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> t = <span class="number">1</span>; t &lt;= k; ++t) &#123;</span><br><span class="line">                v[t] = min(v[t], prices[i] - dp[t - <span class="number">1</span>]);</span><br><span class="line">                dp[t] = max(dp[t], prices[i] - v[t]);  </span><br><span class="line">            &#125;</span><br><span class="line">        &#125; </span><br><span class="line">        <span class="keyword">return</span> dp[k];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法三：⭐⭐⭐⭐⭐另一种动态规划思想</p>
-</blockquote>
-<p>当然分析了一下上面的动态规划方法之后我们可以发现，在 <code>k</code> 次循环中是可以优化动态数组的空间的。这里面 dp[] 数组也有了不一样的含义：</p>
-<blockquote>
-<p>第一个 <code>for</code> 循环中，<code>dp[i]</code> 代表 <strong>第</strong>  <code>i</code> 天完成 <code>k</code> 次交易所能获得的最大价值。</p>
-<p>第二个 <code>for</code> 循环中，<code>dp[i]</code> 代表 <strong>前</strong>  <code>i</code>天 完成 <code>k</code>次交易所能获得的最大价值。</p>
-</blockquote>
-<p>在第一个 <code>for</code> 循环更新 <code>dp</code> 的过程中，<code>dp[i]</code> 的值有两种可能：</p>
-<ol>
-<li>第 <code>i</code> 天完成第 <code>k</code> 笔买和卖，第 <code>k</code> 笔收益为 <code>0</code> 。</li>
-<li>第 <code>i</code> 天完成第 <code>k</code> 笔的卖出，之前的一些天完成其他 <code>k - 1</code> 笔交易。满足这种要求的所有情况，都能和第 <code>i-1</code> 天完成第 <code>k</code> 笔交易的情况建立一对一的关系，只是第 <code>k</code> 笔交易的卖出价格由 <code>prices[i - 1]</code> 变为了<code>prices[i]</code> 。所以 <code>dp[i] = dp[i - 1] - prices[i - 1] + prices[i]</code> 。</li>
-</ol>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">maxProfit</span><span class="params">(<span class="keyword">int</span> k, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; prices)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> N = prices.size();</span><br><span class="line">        <span class="keyword">if</span>(N == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span>(k &gt;= N / <span class="number">2</span>) &#123;</span><br><span class="line">            <span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; N; ++i) &#123;</span><br><span class="line">                <span class="keyword">if</span>(prices[i] &gt; prices[i - <span class="number">1</span>])</span><br><span class="line">                    res += prices[i] - prices[i - <span class="number">1</span>];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> res;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; dp(N, <span class="number">0</span>);</span><br><span class="line">        <span class="keyword">while</span>(k &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; N; ++i)</span><br><span class="line">                dp[i] = max(dp[i - <span class="number">1</span>] - prices[i - <span class="number">1</span>] + prices[i], dp[i]);</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; N; ++i)</span><br><span class="line">                dp[i] = max(dp[i], dp[i - <span class="number">1</span>]);</span><br><span class="line">            --k;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[N - <span class="number">1</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          188. Best Time to Buy and Sell Stock IV/买卖股票的最佳时机 IV
+题目:
 
-          
+给定一个数组，它的第 i 个元素是一支给定的股票在第 i 天的价格。
+设计一个算法来计算你所能获取的最大利润。你最多可以完成 k 笔交易。
+注意: 你不能同时参与多笔交易（你必须在再次
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/05/08/188. 买卖股票的最佳时机IV/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1452,29 +1353,19 @@
       
         
           
-            <h1 id="187-Repeated-DNA-Sequences-重复的DNA序列"><a href="#187-Repeated-DNA-Sequences-重复的DNA序列" class="headerlink" title="187. Repeated DNA Sequences/重复的DNA序列"></a>187. Repeated DNA Sequences/重复的DNA序列</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>所有 DNA 都由一系列缩写为 A，C，G 和 T 的核苷酸组成，例如：“ACGAATTCCG”。在研究 DNA 时，识别 DNA 中的重复序列有时会对研究非常有帮助。</p>
-<p>编写一个函数来查找 DNA 分子中所有出现超过一次的 10 个字母长的序列（子串）。</p>
-<p><strong>示例：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：s = &quot;AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT&quot;</span><br><span class="line">输出：[&quot;AAAAACCCCC&quot;, &quot;CCCCCAAAAA&quot;]</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法一：朴素哈希表</p>
-</blockquote>
-<p>说实话刚开始写这个朴素的循环我以为肯定会超时，没想到居然没有！</p>
-<p>因为题目说是出现超过一次的10个字母长的序列(子串)，因此我们只需要在 <code>map[s.substr(i, 10)] == 1</code> 的时候进行 <code>res.push_back(s.substr(i, 10));</code> 的操作。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; findRepeatedDnaSequences(<span class="built_in">string</span> s) &#123;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; res;</span><br><span class="line">        <span class="built_in">unordered_map</span>&lt;<span class="built_in">string</span>,<span class="keyword">int</span>&gt; <span class="built_in">map</span>;</span><br><span class="line">        <span class="keyword">if</span>(s.size() &lt;= <span class="number">10</span>) <span class="keyword">return</span> &#123;&#125;;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= s.size() - <span class="number">10</span>; ++i) &#123;</span><br><span class="line">            <span class="keyword">if</span>(<span class="built_in">map</span>[s.substr(i, <span class="number">10</span>)] == <span class="number">1</span>) &#123;</span><br><span class="line">                res.push_back(s.substr(i, <span class="number">10</span>));</span><br><span class="line">            &#125;</span><br><span class="line">            ++<span class="built_in">map</span>[s.substr(i, <span class="number">10</span>)];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法二：位运算</p>
-</blockquote>
-<p>参考了评论区大佬的思想，这里面可以将 <code>A</code> <code>C</code> <code>G</code> <code>T</code> 依次转换为对应的二进制 <code>00</code> , <code>01</code> , <code>10</code> , <code>11</code> 。这样如果是 <code>10</code> 个连续的碱基就可以对应为一个 <code>20</code> 位的数字。</p>
-<h4 id="Bitset"><a href="#Bitset" class="headerlink" title="Bitset"></a>Bitset</h4><p>这里面注意 <code>bitset</code> 是一种类似数组的结构，每一个元素只能是 <code>0</code> 或者是 <code>1</code> 。每个元素仅占用 <code>1 bit</code> 的空间。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">bitset</span>&lt;8&gt; foo (<span class="string">"10011011"</span>);</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; foo.flip(<span class="number">2</span>) &lt;&lt; <span class="built_in">endl</span>;　　<span class="comment">//10011111　　</span></span><br><span class="line">（flip函数传参数时，用于将参数位取反，本行代码将foo下标２处<span class="string">"反转"</span>，即０变１，１变０</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; foo.flip() &lt;&lt; <span class="built_in">endl</span>;　　 <span class="comment">//01100000　　（flip函数不指定参数时，将bitset每一位全部取反</span></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; foo.<span class="built_in">set</span>() &lt;&lt; <span class="built_in">endl</span>;　　　　<span class="comment">//11111111　　（set函数不指定参数时，将bitset的每一位全部置为１</span></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; foo.<span class="built_in">set</span>(<span class="number">3</span>,<span class="number">0</span>) &lt;&lt; <span class="built_in">endl</span>;　　<span class="comment">//11110111　　（set函数指定两位参数时，将第一参数位的元素置为第二参数的值，本行对foo的操作相当于foo[3]=0</span></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; foo.<span class="built_in">set</span>(<span class="number">3</span>) &lt;&lt; <span class="built_in">endl</span>;　　  <span class="comment">//11111111　　（set函数只有一个参数时，将参数下标处置为１</span></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; foo.reset(<span class="number">4</span>) &lt;&lt; <span class="built_in">endl</span>;　　<span class="comment">//11101111　　（reset函数传一个参数时将参数下标处置为０</span></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; foo.reset() &lt;&lt; <span class="built_in">endl</span>;　　 <span class="comment">//00000000　　（reset函数不传参数时将bitset的每一位全部置为０</span></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; foo.count() &lt;&lt; <span class="built_in">endl</span>;　　<span class="comment">//5　　（count函数用来求bitset中1的位数，foo中共有５个１</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; foo.size() &lt;&lt; <span class="built_in">endl</span>;　　 <span class="comment">//8　　（size函数用来求bitset的大小，一共有８位</span></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; foo.test(<span class="number">0</span>) &lt;&lt; <span class="built_in">endl</span>;　　<span class="comment">//true　　（test函数用来查下标处的元素是０还是１，并返回false或true，此处foo[0]为１，返回true</span></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; foo.test(<span class="number">2</span>) &lt;&lt; <span class="built_in">endl</span>;　　<span class="comment">//false　　（同理，foo[2]为０，返回false</span></span><br></pre></td></tr></table></figure>
-<p>解法如下：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; findRepeatedDnaSequences(<span class="built_in">string</span> s) &#123;</span><br><span class="line">        <span class="comment">//对应二进制00, 01, 10, 11.那么10个组合只要20位就够了。</span></span><br><span class="line">        <span class="built_in">unordered_map</span>&lt;<span class="keyword">char</span>, <span class="keyword">int</span>&gt; m&#123;&#123;<span class="string">'A'</span>, <span class="number">0</span>&#125;, &#123;<span class="string">'C'</span>, <span class="number">1</span>&#125;, &#123;<span class="string">'G'</span>, <span class="number">2</span>&#125;, &#123;<span class="string">'T'</span>, <span class="number">3</span>&#125;&#125;;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; res;</span><br><span class="line">        <span class="built_in">bitset</span>&lt;1 &lt;&lt; 20&gt; s1, s2; <span class="comment">//那么所有组合的值将在0到(1 &lt;&lt; 20 - 1)之间</span></span><br><span class="line">        <span class="keyword">int</span> val = <span class="number">0</span>, mask = (<span class="number">1</span> &lt;&lt; <span class="number">20</span>) - <span class="number">1</span>; <span class="comment">//mask等于二进制的20个1</span></span><br><span class="line">        <span class="comment">//类似与滑动窗口先把前10个字母组合</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; ++i) val = (val &lt;&lt; <span class="number">2</span>) | m[s[i]];</span><br><span class="line">        s1.<span class="built_in">set</span>(val); <span class="comment">//置位</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">10</span>; i &lt; s.size(); ++i) &#123;</span><br><span class="line">            val = ((val &lt;&lt; <span class="number">2</span>) &amp; mask) | m[s[i]]; <span class="comment">//去掉左移的一个字符再加上一个新字符</span></span><br><span class="line">            <span class="keyword">if</span> (s2.test(val)) <span class="keyword">continue</span>; <span class="comment">//出现过两次跳过</span></span><br><span class="line">            <span class="keyword">if</span> (s1.test(val)) &#123;</span><br><span class="line">                res.push_back(s.substr(i - <span class="number">9</span>, <span class="number">10</span>));</span><br><span class="line">                s2.<span class="built_in">set</span>(val);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> s1.<span class="built_in">set</span>(val);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          187. Repeated DNA Sequences/重复的DNA序列
+题目：
 
-          
+所有 DNA 都由一系列缩写为 A，C，G 和 T 的核苷酸组成，例如：“ACGAATTCCG”。在研究 DNA 时，识别 DNA 中的重复序列有时会对研究非常有帮助。
+编写一个函数来查找 DNA 分子中所有出现超过
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/05/08/187. 重复的DNA序列/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1625,24 +1516,18 @@
       
         
           
-            <h1 id="175-Combine-Two-Tables-组合两个表"><a href="#175-Combine-Two-Tables-组合两个表" class="headerlink" title="175. Combine Two Tables/组合两个表"></a>175. Combine Two Tables/组合两个表</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<h4 id="SQL架构"><a href="#SQL架构" class="headerlink" title="SQL架构"></a>SQL架构</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Create table Person (PersonId int, FirstName varchar(255), LastName varchar(255))</span><br><span class="line">Create table Address (AddressId int, PersonId int, City varchar(255), State varchar(255))</span><br><span class="line">Truncate table Person</span><br><span class="line">insert into Person (PersonId, LastName, FirstName) values (&apos;1&apos;, &apos;Wang&apos;, &apos;Allen&apos;)</span><br><span class="line">Truncate table Address</span><br><span class="line">insert into Address (AddressId, PersonId, City, State) values (&apos;1&apos;, &apos;2&apos;, &apos;New York City&apos;, &apos;New York&apos;)</span><br></pre></td></tr></table></figure>
-<p>表1: <code>Person</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">+-------------+---------+</span><br><span class="line">| 列名         | 类型     |</span><br><span class="line">+-------------+---------+</span><br><span class="line">| PersonId    | int     |</span><br><span class="line">| FirstName   | varchar |</span><br><span class="line">| LastName    | varchar |</span><br><span class="line">+-------------+---------+</span><br><span class="line">PersonId 是上表主键</span><br></pre></td></tr></table></figure>
-<p>表2: <code>Address</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">+-------------+---------+</span><br><span class="line">| 列名         | 类型    |</span><br><span class="line">+-------------+---------+</span><br><span class="line">| AddressId   | int     |</span><br><span class="line">| PersonId    | int     |</span><br><span class="line">| City        | varchar |</span><br><span class="line">| State       | varchar |</span><br><span class="line">+-------------+---------+</span><br><span class="line">AddressId 是上表主键</span><br></pre></td></tr></table></figure>
-<p>编写一个 SQL 查询，满足条件：无论 person 是否有地址信息，都需要基于上述两表提供 person 的以下信息：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FirstName, LastName, City, State</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法：</p>
-</blockquote>
-<p>按题意要求，使用 <code>outer join</code> 时可以保证指定表的每条记录都出现</p>
-<p>—-即使没有匹配, <code>outer join</code> 又可以分为 <code>left join</code> , <code>right join</code> , <code>full join</code> 。<br>我们想让 <code>Address</code> 表中即使没有 <code>Person</code> ，也让 <code>Person</code> 有 <code>Address</code> 属性, 所以 <code>Address</code> 为必须出现表，那么我们可以用 <code>Person</code> 表 <code>left join Address</code> ，或者反过来用 <code>right join</code> 。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">select FirstName, LastName, City, State</span><br><span class="line">from Person left join Address</span><br><span class="line">on Person.PersonId = Address.PersonId;</span><br></pre></td></tr></table></figure>
+          175. Combine Two Tables/组合两个表
+题目：
 
-          
+SQL架构123456Create table Person (PersonId int, FirstName varchar(255), LastName varchar(255))Create table Address (A
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/05/08/175. 组合两个表/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1793,55 +1678,19 @@
       
         
           
-            <h1 id="174-Dungeon-Game-地下城游戏"><a href="#174-Dungeon-Game-地下城游戏" class="headerlink" title="174*. Dungeon Game/地下城游戏"></a>174*. Dungeon Game/地下城游戏</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>一些恶魔抓住了公主（<strong>P</strong>）并将她关在了地下城的右下角。地下城是由 M x N 个房间组成的二维网格。我们英勇的骑士（<strong>K</strong>）最初被安置在左上角的房间里，他必须穿过地下城并通过对抗恶魔来拯救公主。</p>
-<p>骑士的初始健康点数为一个正整数。如果他的健康点数在某一时刻降至 0 或以下，他会立即死亡。</p>
-<p>有些房间由恶魔守卫，因此骑士在进入这些房间时会失去健康点数（若房间里的值为<em>负整数</em>，则表示骑士将损失健康点数）；其他房间要么是空的（房间里的值为 <em>0</em>），要么包含增加骑士健康点数的魔法球（若房间里的值为<em>正整数</em>，则表示骑士将增加健康点数）。</p>
-<p>为了尽快到达公主，骑士决定每次只向右或向下移动一步。</p>
-<p><strong>编写一个函数来计算确保骑士能够拯救到公主所需的最低初始健康点数。</strong></p>
-<p>例如，考虑到如下布局的地下城，如果骑士遵循最佳路径 <code>右 -&gt; 右 -&gt; 下 -&gt; 下</code>，则骑士的初始健康点数至少为 <strong>7</strong>。</p>
-<table>
-<thead>
-<tr>
-<th>-2 (K)</th>
-<th>-3</th>
-<th>3</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>-5</td>
-<td>-10</td>
-<td>1</td>
-</tr>
-<tr>
-<td>10</td>
-<td>30</td>
-<td>-5 (P)</td>
-</tr>
-</tbody>
-</table>
-<p><strong>说明:</strong></p>
-<ul>
-<li>骑士的健康点数没有上限。</li>
-<li>任何房间都可能对骑士的健康点数造成威胁，也可能增加骑士的健康点数，包括骑士进入的左上角房间以及公主被监禁的右下角房间。</li>
-</ul>
-<blockquote>
-<p>解法：动态规划+自底向上</p>
-</blockquote>
-<p>这道题一开始确实是想到了动态规划的思想，也写出来了一版代码，不过在最开始想的是自顶向下的动态规划做法，然而这个思路尝试了一下发现是错误的，无法完成状态转移，具体分析如下：</p>
-<p>对于 <code>(i, j)</code> 这个格子来说，它有两个选择，可以从 <code>(i−1, j)</code>  或者 <code>(i, j-1)</code> 过来。</p>
-<p>我们令 <code>dp[i][j]</code> 表示从左上角走到 <code>(i, j)</code> 这个格子所需要的最小生命值，那么我们选择 <code>min{dp[i−1][j],dp[i][j−1]}</code> ，也就是两个来向中较小的那个走过来。但是考虑了当前格子的数值之后，路线上所需生命的最小值是可能增大的，而这时候可能选择两个来向中较大的那个反而更好（因为那个来向数值之和比较大），所以这里就产生了矛盾，无法求解。</p>
-<h4 id="自底向上"><a href="#自底向上" class="headerlink" title="自底向上"></a>自底向上</h4><p>既然从左上到右下没法动态规划，我们不妨从右下到左上动态规划看看。</p>
-<p>我们令 <code>dp[i][j]</code> 表示从 <code>(i, j)</code> 这个格子走到右下角所需要的最小生命值，同样我们选择两个去向中的较小值 <code>min{dp[i+1][j],dp[i][j+1]}</code>  。然后考虑了格子 <code>(i, j)</code> 之后， <code>dp[i][j]</code> 就更新为：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dp[i][j]=max&#123;<span class="number">1</span>,min&#123;dp[i+<span class="number">1</span>][j],dp[i][j+<span class="number">1</span>]&#125;−dungeon[i][j]&#125;</span><br></pre></td></tr></table></figure>
-<p>这样做就可以充分考虑到加上了当前的 <code>(i, j)</code> 点之后对路径选择的影响。</p>
-<p>同样，我们可以对动态数组 <code>dp[i][j]</code> 进行一个空间上的优化，优化为一维 <code>dp</code> 数组。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">calculateMinimumHP</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; dungeon)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> m = dungeon.size(), n = dungeon[<span class="number">0</span>].size();</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; dp(n + <span class="number">1</span>, INT_MAX);</span><br><span class="line">        dp[n - <span class="number">1</span>] = <span class="number">1</span> - min(dungeon[m - <span class="number">1</span>][n - <span class="number">1</span>], <span class="number">0</span>);</span><br><span class="line">        <span class="comment">//最下面一行</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j = n - <span class="number">2</span>; j &gt;= <span class="number">0</span>; --j) &#123;</span><br><span class="line">            dp[j] = max(<span class="number">1</span>, min(dp[j], dp[j + <span class="number">1</span>]) - dungeon[m - <span class="number">1</span>][j]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = m - <span class="number">2</span>; i &gt;= <span class="number">0</span>; --i) &#123;</span><br><span class="line">            <span class="comment">//最右边一列</span></span><br><span class="line">            dp[n - <span class="number">1</span>] = max(<span class="number">1</span>, dp[n - <span class="number">1</span>] - dungeon[i][n - <span class="number">1</span>]);</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = n - <span class="number">2</span>; j &gt;= <span class="number">0</span>; --j) &#123;</span><br><span class="line">                dp[j] = max(<span class="number">1</span>, min(dp[j], dp[j + <span class="number">1</span>]) - dungeon[i][j]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[<span class="number">0</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          174*. Dungeon Game/地下城游戏
+题目：
 
-          
+一些恶魔抓住了公主（P）并将她关在了地下城的右下角。地下城是由 M x N 个房间组成的二维网格。我们英勇的骑士（K）最初被安置在左上角的房间里，他必须穿过地下城并通过对抗恶魔来拯救公主。
+骑士的初始健康点数为一个正整数。如果他的健康点数在
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/05/07/174. 地下城游戏/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1992,31 +1841,21 @@
       
         
           
-            <h1 id="173-Binary-Search-Tree-Iterator-二叉搜索树迭代器"><a href="#173-Binary-Search-Tree-Iterator-二叉搜索树迭代器" class="headerlink" title="173. Binary Search Tree Iterator/二叉搜索树迭代器"></a>173. Binary Search Tree Iterator/二叉搜索树迭代器</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>实现一个二叉搜索树迭代器。你将使用二叉搜索树的根节点初始化迭代器。</p>
-<p>调用 <code>next()</code> 将返回二叉搜索树中的下一个最小的数。</p>
-<p><strong>示例：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">	7</span><br><span class="line">  /   \</span><br><span class="line">3      15</span><br><span class="line">     /   \</span><br><span class="line">    9    20</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">BSTIterator iterator = new BSTIterator(root);</span><br><span class="line">iterator.next();    // 返回 3</span><br><span class="line">iterator.next();    // 返回 7</span><br><span class="line">iterator.hasNext(); // 返回 true</span><br><span class="line">iterator.next();    // 返回 9</span><br><span class="line">iterator.hasNext(); // 返回 true</span><br><span class="line">iterator.next();    // 返回 15</span><br><span class="line">iterator.hasNext(); // 返回 true</span><br><span class="line">iterator.next();    // 返回 20</span><br><span class="line">iterator.hasNext(); // 返回 false</span><br></pre></td></tr></table></figure>
-<p><strong>提示：</strong></p>
-<ul>
-<li><code>next()</code> 和 <code>hasNext()</code> 操作的时间复杂度是 O(1)，并使用 O(<em>h</em>) 内存，其中 <em>h</em> 是树的高度。</li>
-<li>你可以假设 <code>next()</code> 调用总是有效的，也就是说，当调用 <code>next()</code> 时，BST 中至少存在一个下一个最小的数。</li>
-</ul>
-<blockquote>
-<p>解法：栈实现中序遍历</p>
-</blockquote>
-<p>思路比较简单，不过我自己一开始并没有做出来-。-这里面是利用栈来实现中序遍历，获得一个从小到大的底层序列。</p>
-<ol>
-<li><strong>BSTIterator构造方法功能：保存最左边的一条路径，找最小节点</strong>。具体：迭代循环遍历左子树，依次保存到数组中。最终存放整棵树最左边的节点，即最小值。</li>
-<li><strong>next方法功能（中序遍历）：找出当前最小值，准备好下一个最小值。</strong>具体：先取出最小值。然后以最小值为起点，中序遍历，对于存在右子树的情况，在右子树中迭代循环遍历左子树，依次保存到数组中，直到最左边的节点。返回最先取出的最小值。<code>next</code> 方法在取最小值的时候是 <code>O(1)</code> 的时间复杂度。虽然在入栈的过程中可能单个来看并不是 <code>O(1)</code> 时间复杂度的，但是整体平均来看是 <code>O(1)</code> 的。具体可以看算法导论第十七章《摊还分析》</li>
-<li><strong>hasNext</strong>就直接判断栈是否为空就可以了。</li>
-</ol>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * struct TreeNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     TreeNode *left;</span></span><br><span class="line"><span class="comment"> *     TreeNode *right;</span></span><br><span class="line"><span class="comment"> *     TreeNode(int x) : val(x), left(NULL), right(NULL) &#123;&#125;</span></span><br><span class="line"><span class="comment"> * &#125;;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BSTIterator</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    BSTIterator(TreeNode* root) &#123;</span><br><span class="line">        <span class="keyword">while</span>(root) &#123;</span><br><span class="line">            st.push(root);</span><br><span class="line">            root = root-&gt;left;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/** @return the next smallest number */</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">next</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        TreeNode* tmp = st.top();st.pop();</span><br><span class="line">        <span class="keyword">int</span> curNum = tmp-&gt;val;</span><br><span class="line">        tmp = tmp-&gt;right;</span><br><span class="line">        <span class="keyword">while</span>(tmp) &#123;</span><br><span class="line">            st.push(tmp);</span><br><span class="line">            tmp = tmp-&gt;left;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> curNum;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/** @return whether we have a next smallest number */</span></span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">hasNext</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> !st.empty();</span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="built_in">stack</span>&lt;TreeNode*&gt; st;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Your BSTIterator object will be instantiated and called as such:</span></span><br><span class="line"><span class="comment"> * BSTIterator* obj = new BSTIterator(root);</span></span><br><span class="line"><span class="comment"> * int param_1 = obj-&gt;next();</span></span><br><span class="line"><span class="comment"> * bool param_2 = obj-&gt;hasNext();</span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure>
+          173. Binary Search Tree Iterator/二叉搜索树迭代器
+题目：
 
-          
+实现一个二叉搜索树迭代器。你将使用二叉搜索树的根节点初始化迭代器。
+调用 next() 将返回二叉搜索树中的下一个最小的数。
+示例：
+12345	7  /   \3      15     /   \   
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/05/07/173. 二叉搜索树迭代器/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>

@@ -367,48 +367,20 @@
       
         
           
-            <h1 id="122-Best-Time-to-Buy-and-Sell-Stock-II-买卖股票的最佳时机II"><a href="#122-Best-Time-to-Buy-and-Sell-Stock-II-买卖股票的最佳时机II" class="headerlink" title="122. Best Time to Buy and Sell Stock II/买卖股票的最佳时机II"></a>122. Best Time to Buy and Sell Stock II/买卖股票的最佳时机II</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>给定一个数组，它的第 <em>i</em> 个元素是一支给定股票第 <em>i</em> 天的价格。</p>
-<p>设计一个算法来计算你所能获取的最大利润。你可以尽可能地完成更多的交易（多次买卖一支股票）。</p>
-<p><strong>注意：</strong>你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。</p>
-<p><strong>示例 1:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输入: [7,1,5,3,6,4]</span><br><span class="line">输出: 7</span><br><span class="line">解释: 在第 2 天（股票价格 = 1）的时候买入，在第 3 天（股票价格 = 5）的时候卖出, 这笔交易所能获得利润 = 5-1 = 4 。</span><br><span class="line">     随后，在第 4 天（股票价格 = 3）的时候买入，在第 5 天（股票价格 = 6）的时候卖出, 这笔交易所能获得利润 = 6-3 = 3 。</span><br></pre></td></tr></table></figure>
-<p><strong>示例 2:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">输入: [1,2,3,4,5]</span><br><span class="line">输出: 4</span><br><span class="line">解释: 在第 1 天（股票价格 = 1）的时候买入，在第 5 天 （股票价格 = 5）的时候卖出, 这笔交易所能获得利润 = 5-1 = 4 。</span><br><span class="line">     注意你不能在第 1 天和第 2 天接连购买股票，之后再将它们卖出。</span><br><span class="line">     因为这样属于同时参与了多笔交易，你必须在再次购买前出售掉之前的股票。</span><br></pre></td></tr></table></figure>
-<p><strong>示例 3:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入: [7,6,4,3,1]</span><br><span class="line">输出: 0</span><br><span class="line">解释: 在这种情况下, 没有交易完成, 所以最大利润为 0。</span><br></pre></td></tr></table></figure>
-<p><strong>提示：</strong></p>
-<ul>
-<li><code>1 &lt;= prices.length &lt;= 3 * 10 ^ 4</code></li>
-<li><code>0 &lt;= prices[i] &lt;= 10 ^ 4</code></li>
-</ul>
-<blockquote>
-<p>解法一：判断递增子序列法</p>
-</blockquote>
-<p>看了官方题解才发现这个方法有个名字叫 <code>峰谷法</code> ，我们要寻找的就是紧跟着每一个谷的最大峰值。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">maxProfit</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; prices)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> profit = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; prices.size(); ++i) &#123;</span><br><span class="line">            <span class="keyword">int</span> curmin = INT_MAX, curmax = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">while</span>(i &gt; <span class="number">0</span> &amp;&amp; prices[i] &gt; prices[i - <span class="number">1</span>]) &#123;</span><br><span class="line">                curmin = min(curmin, prices[i - <span class="number">1</span>]);</span><br><span class="line">                curmax = prices[i];</span><br><span class="line">                <span class="keyword">if</span>(i == prices.size() - <span class="number">1</span>) </span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                    ++i;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(curmax &gt; curmin)</span><br><span class="line">                profit += (curmax - curmin);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> profit;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法二：⭐⭐⭐动态规划</p>
-</blockquote>
-<p>因为交易次数不受限制， 所以该问题就受到两个因素影响，时间和操作，因变量是利润.因此需要用两个变量来定义定义问题。</p>
-<p>状态数组 <code>DP[i][j]</code>表示 第 <code>i</code> 天状态为 <code>j</code> ( <code>0</code> 持有, <code>1</code> 不持有)的情况下最大利润。</p>
-<p>状态转移方程为:</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">DP[i][<span class="number">0</span>] = max(DP[i<span class="number">-1</span>][<span class="number">0</span>], DP[i<span class="number">-1</span>][<span class="number">1</span>] + a[i])</span><br><span class="line">DP[i][<span class="number">1</span>] = max(DP[i<span class="number">-1</span>][<span class="number">1</span>], DP[i<span class="number">-1</span>][<span class="number">1</span>] - a[i])</span><br></pre></td></tr></table></figure>
-<p>分别表示:</p>
-<p>第 <code>i</code> 天不持有，是前一天不持有，当天保持不变；或者是前一天持有，卖出去。<br>第 <code>i</code> 天持有，是前一天持有，当天保持不变；或者是前一天不持有，买进来。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">maxProfit</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; prices)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (prices.size() == <span class="number">0</span> ) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> DP[prices.size()][<span class="number">2</span>];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span> ; i &lt; prices.size(); i++ )&#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; <span class="number">2</span>; j++)&#123;</span><br><span class="line">                DP[i][j] = <span class="number">0</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        DP[<span class="number">0</span>][<span class="number">0</span>] = <span class="number">0</span>;</span><br><span class="line">        DP[<span class="number">0</span>][<span class="number">1</span>] = -prices[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span> ; i &lt; prices.size(); i++ )&#123;</span><br><span class="line">            DP[i][<span class="number">0</span>] = max(DP[i<span class="number">-1</span>][<span class="number">0</span>], DP[i<span class="number">-1</span>][<span class="number">1</span>] + prices[i]);</span><br><span class="line">            DP[i][<span class="number">1</span>] = max(DP[i<span class="number">-1</span>][<span class="number">1</span>], DP[i<span class="number">-1</span>][<span class="number">0</span>] - prices[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> DP[prices.size()<span class="number">-1</span>][<span class="number">0</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法三：粗暴。</p>
-</blockquote>
-<ul>
-<li>每次买完股票，第二天就出售掉</li>
-<li>只要明天股票价格比今天高，今天就买入</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">maxProfit</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; prices)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> profit = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i + <span class="number">1</span> &lt; prices.size(); ++i) </span><br><span class="line">            profit += max(prices[i + <span class="number">1</span>] - prices[i], <span class="number">0</span>);</span><br><span class="line">        <span class="keyword">return</span> profit;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          122. Best Time to Buy and Sell Stock II/买卖股票的最佳时机II
+题目：
 
-          
+给定一个数组，它的第 i 个元素是一支给定股票第 i 天的价格。
+设计一个算法来计算你所能获取的最大利润。你可以尽可能地完成更多的交易（多次买卖一支股票）。
+注意：你不能同时参与多笔交易
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/04/25/122. 买卖股票的最佳时机 II/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -559,31 +531,21 @@
       
         
           
-            <h1 id="120-Triangle-三角形最小路径和"><a href="#120-Triangle-三角形最小路径和" class="headerlink" title="120. Triangle/三角形最小路径和"></a>120. Triangle/三角形最小路径和</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>给定一个三角形，找出自顶向下的最小路径和。每一步只能移动到下一行中相邻的结点上。</p>
-<p>例如，给定三角形：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">     [2],</span><br><span class="line">    [3,4],</span><br><span class="line">   [6,5,7],</span><br><span class="line">  [4,1,8,3]</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
-<p>自顶向下的最小路径和为 <code>11</code>（即，<strong>2</strong> + <strong>3</strong> + <strong>5</strong> + <strong>1</strong> = 11）。</p>
-<p><strong>说明：</strong></p>
-<p>如果你可以只使用 <em>O</em>(<em>n</em>) 的额外空间（<em>n</em> 为三角形的总行数）来解决这个问题，那么你的算法会很加分。</p>
-<blockquote>
-<p>解法一：一维动态规划+自顶向下</p>
-</blockquote>
-<p>跟前面 <code>Leetcode 119 杨辉三角II</code> 的思路很像，通过循环遍历更新一维 dp 数组的方式来得到最小的路径和，这里面还是要注意因为转移方程为：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dp[j] = min(dp[j], dp[j - <span class="number">1</span>]) + triangle[i][j];</span><br></pre></td></tr></table></figure>
-<p>因此我们不能在内层循环中使用从小到大的遍历，只能从大到小进行遍历。</p>
-<p>另外这个题里面还有一些边界条件如每一行的最左边和最右边的 dp 值需要特殊讨论一下；同时在循环求 <code>curmin</code> 的时候一定要注意在 <code>i = m - 1</code> 这一层循环才能够使用。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">minimumTotal</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; triangle)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> m = triangle.size(), n = triangle[m - <span class="number">1</span>].size();</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; dp(m, <span class="number">0</span>);</span><br><span class="line">        <span class="keyword">int</span> curmin = INT_MAX;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; m; ++i) &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = i; j &gt;= <span class="number">1</span>; --j) &#123;</span><br><span class="line">                dp[j] = j == i ? dp[j - <span class="number">1</span>] + triangle[i][j] : min(dp[j], dp[j - <span class="number">1</span>]) + triangle[i][j];</span><br><span class="line">                curmin = i == m - <span class="number">1</span> ? min(curmin, dp[j]) : INT_MAX;</span><br><span class="line">            &#125;</span><br><span class="line">            dp[<span class="number">0</span>] += triangle[i][<span class="number">0</span>];</span><br><span class="line">            curmin = i == m - <span class="number">1</span> ? min(curmin, dp[<span class="number">0</span>]) : INT_MAX;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> curmin;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法二：动态规划+自底向上</p>
-</blockquote>
-<p>看了别人的做法发现自底向上更加简洁一些，也没有复杂的边界条件判断。</p>
-<p>递推式 <code>dp[i][j] = min(dp[i + 1][j], dp[i + 1[j + 1]) + triangle[i][j];</code></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">minimumTotal</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; triangle)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> rowSize = triangle.size();</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; dp(triangle[rowSize - <span class="number">1</span>]);    </span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = rowSize - <span class="number">2</span>;i &gt;= <span class="number">0</span>;i--) &#123;        </span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; triangle[i].size(); j++) </span><br><span class="line">                dp[j] = min(dp[j], dp[j + <span class="number">1</span>]) + triangle[i][j];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[<span class="number">0</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          120. Triangle/三角形最小路径和
+题目：
 
-          
+给定一个三角形，找出自顶向下的最小路径和。每一步只能移动到下一行中相邻的结点上。
+例如，给定三角形：
+123456[     [2],    [3,4],   [6,5,7],  [4,1,8,3]]
+自顶向下的最小路径和为 11（即，2 + 
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/04/24/120. 三角形最小路径和/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -734,24 +696,23 @@
       
         
           
-            <h1 id="119-Pascal’s-Triangle-II-杨辉三角-II"><a href="#119-Pascal’s-Triangle-II-杨辉三角-II" class="headerlink" title="119. Pascal’s Triangle II/杨辉三角 II"></a>119. Pascal’s Triangle II/杨辉三角 II</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>给定一个非负索引 <em>k</em>，其中 <em>k</em> ≤ 33，返回杨辉三角的第 <em>k</em> 行。</p>
-<p>在杨辉三角中，每个数是它左上方和右上方的数的和。</p>
-<p><strong>示例:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: 3</span><br><span class="line">输出: [1,3,3,1]</span><br></pre></td></tr></table></figure>
-<p><strong>进阶：</strong></p>
-<p>你可以优化你的算法到 <em>O</em>(<em>k</em>) 空间复杂度吗？</p>
-<blockquote>
-<p>解法：动态规划+原地更新</p>
-</blockquote>
-<p>这里面可以想到类似动态规划的思想，因为不需要用到所有行的元素值，所以只需要维护一个 <code>rowIndex + 1</code> 维的数组就可以了。这里面比较坑的是虽然题目说的是 <code>给定一个非负索引 k，其中 k ≤ 33，返回杨辉三角的第 k 行。</code> 但是根据题目的例子可以看出这个 <code>rowIndex</code> 是行数的下标。显然动态规划的状态转移方程是：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">res[j] += res[j - <span class="number">1</span>];</span><br></pre></td></tr></table></figure>
-<p>但是如果 <code>j</code> 从 <code>1</code> 开始遍历的话会出现遍历更改滚雪球的情况，因此首先想到的是可以让 <code>j</code> 从右向左遍历，果然可行。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; getRow(<span class="keyword">int</span> rowIndex) &#123;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; res(rowIndex + <span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line">        res[<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= rowIndex; ++i) &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = i; j &gt; <span class="number">0</span>; --j) &#123;</span><br><span class="line">                res[j] += res[j - <span class="number">1</span>];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          119. Pascal’s Triangle II/杨辉三角 II
+题目：
 
-          
+给定一个非负索引 k，其中 k ≤ 33，返回杨辉三角的第 k 行。
+在杨辉三角中，每个数是它左上方和右上方的数的和。
+示例:
+12输入: 3输出: [1,3,3,1]
+进阶：
+你可以优化你的算法到 O(k) 空间复杂度吗
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/04/24/119. 杨辉三角 II/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -902,19 +863,21 @@
       
         
           
-            <h1 id="118-Pascal’s-Triangle-杨辉三角"><a href="#118-Pascal’s-Triangle-杨辉三角" class="headerlink" title="118. Pascal’s Triangle/杨辉三角"></a>118. Pascal’s Triangle/杨辉三角</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>给定一个非负整数 <em>numRows，</em>生成杨辉三角的前 <em>numRows</em> 行。</p>
-<p>在杨辉三角中，每个数是它左上方和右上方的数的和。</p>
-<p><strong>示例:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">输入: 5</span><br><span class="line">输出:</span><br><span class="line">[</span><br><span class="line">     [1],</span><br><span class="line">    [1,1],</span><br><span class="line">   [1,2,1],</span><br><span class="line">  [1,3,3,1],</span><br><span class="line"> [1,4,6,4,1]</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法：动态规划思想</p>
-</blockquote>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; generate(<span class="keyword">int</span> numRows) &#123;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; res;</span><br><span class="line">        <span class="keyword">if</span>(numRows == <span class="number">0</span>) <span class="keyword">return</span> &#123;&#125;;</span><br><span class="line">        <span class="keyword">if</span>(numRows == <span class="number">1</span>) <span class="keyword">return</span> &#123;&#123;<span class="number">1</span>&#125;&#125;;</span><br><span class="line">        res.push_back(&#123;<span class="number">1</span>&#125;);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; numRows; ++i) &#123;</span><br><span class="line">            <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; tmp(i + <span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line">            tmp[<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">            tmp[i] = <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">1</span>; j &lt; i; ++j) &#123;</span><br><span class="line">                tmp[j] = res[i - <span class="number">1</span>][j - <span class="number">1</span>] + res[i - <span class="number">1</span>][j];</span><br><span class="line">            &#125;</span><br><span class="line">            res.push_back(tmp);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          118. Pascal’s Triangle/杨辉三角
+题目：
 
-          
+给定一个非负整数 numRows，生成杨辉三角的前 numRows 行。
+在杨辉三角中，每个数是它左上方和右上方的数的和。
+示例:
+123456789输入: 5输出:[     [1],    [1,1],   [1,2,1],  [
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/04/24/118. 杨辉三角/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1065,42 +1028,19 @@
       
         
           
-            <h1 id="117-Populating-Next-Right-Pointers-in-Each-Node-II-填充每个节点的下一个右侧节点指针-II"><a href="#117-Populating-Next-Right-Pointers-in-Each-Node-II-填充每个节点的下一个右侧节点指针-II" class="headerlink" title="117. Populating Next Right Pointers in Each Node II/填充每个节点的下一个右侧节点指针 II"></a>117. Populating Next Right Pointers in Each Node II/填充每个节点的下一个右侧节点指针 II</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>给定一个二叉树</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">struct Node &#123;</span><br><span class="line">  int val;</span><br><span class="line">  Node *left;</span><br><span class="line">  Node *right;</span><br><span class="line">  Node *next;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>填充它的每个 next 指针，让这个指针指向其下一个右侧节点。如果找不到下一个右侧节点，则将 next 指针设置为 <code>NULL</code>。</p>
-<p>初始状态下，所有 next 指针都被设置为 <code>NULL</code>。</p>
-<p><strong>进阶：</strong></p>
-<ul>
-<li>你只能使用常量级额外空间。</li>
-<li>使用递归解题也符合要求，本题中递归程序占用的栈空间不算做额外的空间复杂度。</li>
-</ul>
-<p><strong>示例：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：root = [1,2,3,4,5,null,7]</span><br><span class="line">输出：[1,#,2,3,#,4,5,7,#]</span><br><span class="line">解释：给定二叉树如图 A 所示，你的函数应该填充它的每个 next 指针，以指向其下一个右侧节点，如图 B 所示。</span><br></pre></td></tr></table></figure>
-<p><strong>提示：</strong></p>
-<ul>
-<li>树中的节点数小于 <code>6000</code></li>
-<li><code>-100 &lt;= node.val &lt;= 100</code></li>
-</ul>
-<blockquote>
-<p>解法一：迭代+队列</p>
-</blockquote>
-<p>这道题跟上一道题最大的不同是，上一道题的二叉树是<strong>完美二叉树</strong>，也就是每一个非叶子节点都必有两个子节点。而这道题只是普通的二叉树，在迭代法不会有什么区别，因为我们是用的队列的层序遍历；但是在递归法的时候会出现子树与子树之间连接不上的情况。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">Node* <span class="title">connect</span><span class="params">(Node* root)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!root) <span class="keyword">return</span> root;</span><br><span class="line">        <span class="built_in">queue</span>&lt;Node*&gt; q;</span><br><span class="line">        q.push(root);</span><br><span class="line">        <span class="keyword">while</span>(!q.empty()) &#123;</span><br><span class="line">            <span class="keyword">int</span> length = q.size();</span><br><span class="line">            <span class="keyword">while</span>(length) &#123;</span><br><span class="line">                Node* cur = q.front();q.pop();</span><br><span class="line">                Node* curnext = length == <span class="number">1</span> ? <span class="literal">nullptr</span> : q.front();</span><br><span class="line">                cur-&gt;next = curnext;</span><br><span class="line">                <span class="keyword">if</span>(cur-&gt;left) q.push(cur-&gt;left);</span><br><span class="line">                <span class="keyword">if</span>(cur-&gt;right) q.push(cur-&gt;right);</span><br><span class="line">                --length;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> root;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法二：递归</p>
-</blockquote>
-<p>上一题 <code>Leetcode 116</code> 的代码逻辑类似，但是递归顺序没有从右到左，所以提交一直错误。想了想，所以其实每次递归有个前提条件是 <code>root-&gt;next</code> 链表必须是完整的，从右到左递归可以保证这个前提，而从左到右递归不能。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">Node* <span class="title">connect</span><span class="params">(Node* root)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(root &amp;&amp; (root-&gt;left || root-&gt;right))&#123;</span><br><span class="line">            <span class="comment">//有两个子节点，需要先把左的next指到右</span></span><br><span class="line">            <span class="keyword">if</span>(root-&gt;left &amp;&amp; root-&gt;right) root-&gt;left-&gt;next = root-&gt;right;</span><br><span class="line">            Node *node = root-&gt;right ? root-&gt;right : root-&gt;left;</span><br><span class="line">            Node *head = root-&gt;next;</span><br><span class="line">            <span class="comment">//相当于层序遍历中当前层遍历到的head节点没有子节点，故head=head-&gt;next;</span></span><br><span class="line">            <span class="keyword">while</span> (head &amp;&amp; !head-&gt;left &amp;&amp; !head-&gt;right)/</span><br><span class="line">                head = head-&gt;next;</span><br><span class="line">            <span class="comment">//node是root最右的子节点，要连到head最左的子节点</span></span><br><span class="line">            node-&gt;next = head ? (head-&gt;left ? head-&gt;left : head-&gt;right) : <span class="literal">nullptr</span>;       </span><br><span class="line">            connect(root-&gt;right);</span><br><span class="line">            connect(root-&gt;left);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> root;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法三：⭐⭐⭐⭐⭐迭代 不借助队列</p>
-</blockquote>
-<p>与递归方式不同的地方是，队列是为了维护先后关系的，但是二叉树同一层的先后关系本来就存在了 <code>next</code> 里，所以可以不使用队列，用 <code>next</code> 来代替。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">Node* <span class="title">connect</span><span class="params">(Node* root)</span> </span>&#123;</span><br><span class="line">        Node *last = root;</span><br><span class="line">        <span class="keyword">while</span>(last != <span class="literal">NULL</span>)&#123;</span><br><span class="line">            <span class="comment">// 获得队首元素</span></span><br><span class="line">            <span class="keyword">while</span>(last &amp;&amp; last-&gt;left == <span class="literal">NULL</span> &amp;&amp; last-&gt;right == <span class="literal">NULL</span>)last = last-&gt;next;</span><br><span class="line">            <span class="keyword">if</span>(last == <span class="literal">NULL</span>)<span class="keyword">break</span>;</span><br><span class="line">            Node *cur = <span class="literal">NULL</span>;</span><br><span class="line">            <span class="comment">// 遍历队列</span></span><br><span class="line">            <span class="keyword">for</span>(Node *i = last;i != <span class="literal">NULL</span>;i = i-&gt;next)&#123;</span><br><span class="line">                <span class="comment">// 进行push和pop操作</span></span><br><span class="line">                <span class="keyword">if</span>(i -&gt; left)&#123;</span><br><span class="line">                    <span class="keyword">if</span>(cur != <span class="literal">NULL</span>)</span><br><span class="line">                        cur-&gt;next = i-&gt;left;</span><br><span class="line">                    cur = i-&gt;left;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span>(i -&gt; right)&#123;</span><br><span class="line">                    <span class="keyword">if</span>(cur != <span class="literal">NULL</span>)</span><br><span class="line">                        cur-&gt;next = i-&gt;right;</span><br><span class="line">                    cur = i-&gt;right;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 更新队首</span></span><br><span class="line">            last = last-&gt;left ? last-&gt;left : last-&gt;right;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> root;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          117. Populating Next Right Pointers in Each Node II/填充每个节点的下一个右侧节点指针 II
+题目：
 
-          
+给定一个二叉树
+123456struct Node &#123;  int val;  Node *left;  Node *right;  No
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/04/23/117. 填充每个节点的下一个右侧节点指针II/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1251,35 +1191,19 @@
       
         
           
-            <h1 id="116-Populating-Next-Right-Pointers-in-Each-Node-填充每个节点的下一个右侧节点指针"><a href="#116-Populating-Next-Right-Pointers-in-Each-Node-填充每个节点的下一个右侧节点指针" class="headerlink" title="116. Populating Next Right Pointers in Each Node/填充每个节点的下一个右侧节点指针"></a>116. Populating Next Right Pointers in Each Node/填充每个节点的下一个右侧节点指针</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>给定一个<strong>完美二叉树</strong>，其所有叶子节点都在同一层，每个父节点都有两个子节点。二叉树定义如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">struct Node &#123;</span><br><span class="line">  int val;</span><br><span class="line">  Node *left;</span><br><span class="line">  Node *right;</span><br><span class="line">  Node *next;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>填充它的每个 next 指针，让这个指针指向其下一个右侧节点。如果找不到下一个右侧节点，则将 next 指针设置为 <code>NULL</code>。</p>
-<p>初始状态下，所有 next 指针都被设置为 <code>NULL</code>。</p>
-<p><strong>示例：</strong></p>
-<p><img src="../images/116_1.png" alt="116_1"></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">输入：&#123;&quot;$id&quot;:&quot;1&quot;,&quot;left&quot;:&#123;&quot;$id&quot;:&quot;2&quot;,&quot;left&quot;:&#123;&quot;$id&quot;:&quot;3&quot;,&quot;left&quot;:null,&quot;next&quot;:null,&quot;right&quot;:null,&quot;val&quot;:4&#125;,&quot;next&quot;:null,&quot;right&quot;:&#123;&quot;$id&quot;:&quot;4&quot;,&quot;left&quot;:null,&quot;next&quot;:null,&quot;right&quot;:null,&quot;val&quot;:5&#125;,&quot;val&quot;:2&#125;,&quot;next&quot;:null,&quot;right&quot;:&#123;&quot;$id&quot;:&quot;5&quot;,&quot;left&quot;:&#123;&quot;$id&quot;:&quot;6&quot;,&quot;left&quot;:null,&quot;next&quot;:null,&quot;right&quot;:null,&quot;val&quot;:6&#125;,&quot;next&quot;:null,&quot;right&quot;:&#123;&quot;$id&quot;:&quot;7&quot;,&quot;left&quot;:null,&quot;next&quot;:null,&quot;right&quot;:null,&quot;val&quot;:7&#125;,&quot;val&quot;:3&#125;,&quot;val&quot;:1&#125;</span><br><span class="line"></span><br><span class="line">输出：&#123;&quot;$id&quot;:&quot;1&quot;,&quot;left&quot;:&#123;&quot;$id&quot;:&quot;2&quot;,&quot;left&quot;:&#123;&quot;$id&quot;:&quot;3&quot;,&quot;left&quot;:null,&quot;next&quot;:&#123;&quot;$id&quot;:&quot;4&quot;,&quot;left&quot;:null,&quot;next&quot;:&#123;&quot;$id&quot;:&quot;5&quot;,&quot;left&quot;:null,&quot;next&quot;:&#123;&quot;$id&quot;:&quot;6&quot;,&quot;left&quot;:null,&quot;next&quot;:null,&quot;right&quot;:null,&quot;val&quot;:7&#125;,&quot;right&quot;:null,&quot;val&quot;:6&#125;,&quot;right&quot;:null,&quot;val&quot;:5&#125;,&quot;right&quot;:null,&quot;val&quot;:4&#125;,&quot;next&quot;:&#123;&quot;$id&quot;:&quot;7&quot;,&quot;left&quot;:&#123;&quot;$ref&quot;:&quot;5&quot;&#125;,&quot;next&quot;:null,&quot;right&quot;:&#123;&quot;$ref&quot;:&quot;6&quot;&#125;,&quot;val&quot;:3&#125;,&quot;right&quot;:&#123;&quot;$ref&quot;:&quot;4&quot;&#125;,&quot;val&quot;:2&#125;,&quot;next&quot;:null,&quot;right&quot;:&#123;&quot;$ref&quot;:&quot;7&quot;&#125;,&quot;val&quot;:1&#125;</span><br><span class="line"></span><br><span class="line">解释：给定二叉树如图 A 所示，你的函数应该填充它的每个 next 指针，以指向其下一个右侧节点，如图 B 所示。</span><br></pre></td></tr></table></figure>
-<p><strong>提示：</strong></p>
-<ul>
-<li>你只能使用常量级额外空间。</li>
-<li>使用递归解题也符合要求，本题中递归程序占用的栈空间不算做额外的空间复杂度。</li>
-</ul>
-<blockquote>
-<p>解法一：⭐⭐⭐迭代</p>
-</blockquote>
-<p>这道题很简单的层序遍历问题，五分钟一遍通过还是很开心的。我最开始写的答案是迭代+队列实现的，主要是要判断一下如果 <code>cur</code> 是这一层最后一个 <code>Node</code> 那么需要把 <code>curnext</code> 设为 <code>nullptr</code> 。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">Node* <span class="title">connect</span><span class="params">(Node* root)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!root) <span class="keyword">return</span> root;</span><br><span class="line">        <span class="built_in">queue</span>&lt;Node*&gt; q;</span><br><span class="line">        q.push(root);</span><br><span class="line">        <span class="keyword">while</span>(!q.empty()) &#123;</span><br><span class="line">            <span class="keyword">int</span> length = q.size();</span><br><span class="line">            <span class="keyword">while</span>(length) &#123;</span><br><span class="line">                Node* cur = q.front();q.pop();</span><br><span class="line">                Node* curnext = length == <span class="number">1</span> ? <span class="literal">nullptr</span> : q.front();</span><br><span class="line">                cur-&gt;next = curnext;</span><br><span class="line">                <span class="keyword">if</span>(cur-&gt;left) q.push(cur-&gt;left);</span><br><span class="line">                <span class="keyword">if</span>(cur-&gt;right) q.push(cur-&gt;right);</span><br><span class="line">                --length;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> root;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法二：⭐⭐⭐递归</p>
-</blockquote>
-<p>很牛逼的解法，通过递归来实现类似先序遍历的遍历方式，对于递归到的每一个节点，首先将它的左节点-&gt;next指到右节点，然后通过</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(root-&gt;next != <span class="literal">NULL</span>)<span class="comment">//说明是子树</span></span><br><span class="line">            root-&gt;right-&gt;next = root-&gt;next-&gt;left;<span class="comment">//完成同一层跨子树相邻节点的链接，如5-&gt;6</span></span><br></pre></td></tr></table></figure>
-<p>来实现跨子树的相邻节点的连接。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">Node* <span class="title">connect</span><span class="params">(Node* root)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(root == <span class="literal">NULL</span> <span class="keyword">or</span> root-&gt;left == <span class="literal">NULL</span>)</span><br><span class="line">            <span class="keyword">return</span> root;</span><br><span class="line">        root-&gt;left-&gt;next = root-&gt;right;</span><br><span class="line">        <span class="keyword">if</span>(root-&gt;next != <span class="literal">NULL</span>)<span class="comment">//说明是子树</span></span><br><span class="line">            root-&gt;right-&gt;next = root-&gt;next-&gt;left;</span><br><span class="line">        	<span class="comment">//完成同一层跨子树相邻节点的链接，如5-&gt;6</span></span><br><span class="line">        connect(root-&gt;left);</span><br><span class="line">        connect(root-&gt;right);</span><br><span class="line">        <span class="keyword">return</span> root;        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          116. Populating Next Right Pointers in Each Node/填充每个节点的下一个右侧节点指针
+题目：
 
-          
+给定一个完美二叉树，其所有叶子节点都在同一层，每个父节点都有两个子节点。二叉树定义如下：
+123456struct Node &#123;  int val;
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/04/23/116. 填充每个节点的下一个右侧节点指针/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1430,32 +1354,19 @@
       
         
           
-            <h1 id="115-Distinct-Subsequences-不同的子序列"><a href="#115-Distinct-Subsequences-不同的子序列" class="headerlink" title="115*. Distinct Subsequences/不同的子序列"></a>115*. Distinct Subsequences/不同的子序列</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>给定一个字符串 <strong>S</strong> 和一个字符串 <strong>T</strong>，计算在 <strong>S</strong> 的子序列中 <strong>T</strong> 出现的个数。</p>
-<p>一个字符串的一个子序列是指，通过删除一些（也可以不删除）字符且不干扰剩余字符相对位置所组成的新字符串。（例如，<code>&quot;ACE&quot;</code> 是 <code>&quot;ABCDE&quot;</code> 的一个子序列，而 <code>&quot;AEC&quot;</code> 不是）</p>
-<p>题目数据保证答案符合 32 位带符号整数范围。</p>
-<p><strong>示例 1：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">输入：S = &quot;rabbbit&quot;, T = &quot;rabbit&quot;</span><br><span class="line">输出：3</span><br><span class="line">解释：</span><br><span class="line"></span><br><span class="line">如下图所示, 有 3 种可以从 S 中得到 &quot;rabbit&quot; 的方案。</span><br><span class="line">(上箭头符号 ^ 表示选取的字母)</span><br><span class="line"></span><br><span class="line">rabbbit</span><br><span class="line">^^^^ ^^</span><br><span class="line">rabbbit</span><br><span class="line">^^ ^^^^</span><br><span class="line">rabbbit</span><br><span class="line">^^^ ^^^</span><br></pre></td></tr></table></figure>
-<p><strong>示例 2：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">输入：S = &quot;babgbag&quot;, T = &quot;bag&quot;</span><br><span class="line">输出：5</span><br><span class="line">解释：</span><br><span class="line"></span><br><span class="line">如下图所示, 有 5 种可以从 S 中得到 &quot;bag&quot; 的方案。 </span><br><span class="line">(上箭头符号 ^ 表示选取的字母)</span><br><span class="line"></span><br><span class="line">babgbag</span><br><span class="line">^^ ^</span><br><span class="line">babgbag</span><br><span class="line">^^    ^</span><br><span class="line">babgbag</span><br><span class="line">^    ^^</span><br><span class="line">babgbag</span><br><span class="line">  ^  ^^</span><br><span class="line">babgbag</span><br><span class="line">    ^^^</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法一：动态规划</p>
-</blockquote>
-<p>动态规划思路</p>
-<p><code>dp[i][j]</code>代表的是 <code>S</code> 的前 <code>i</code>个字符中有多少方法能包含 <code>T</code> 的前 <code>j</code> 个字符；那么在状态转移方程的讨论中，我们要对 <code>s[i - 1]</code> 和 <code>t[j - 1]</code>进行讨论：</p>
-<ol>
-<li>如果 <code>s[i - 1] == t[j - 1]</code> ，说明当前 <code>dp[i][j]</code> 可以用到 <code>dp[i - 1][j - 1]</code>的方法数；确定 <code>s</code>的 第 <code>i</code> 个字符与 <code>t</code> 的第 <code>j</code> 个字符对应后，<code>s</code> 的前 <code>i - 1</code> 个字符有多少种方法变为 <code>t</code> 的前 <code>j - 1</code> 个字符。</li>
-<li>否则说明 <code>dp[i][j]</code> 无法依靠 <code>j - 1</code> 的状态，只能直接等于 <code>dp[i - 1][j]</code> 。不使用 <code>s</code> 的第 <code>i</code> 个字符，<code>s</code> 的前 <code>i - 1</code> 个字符有多少种方法变为 <code>t</code> 的前 <code>j</code> 个字符。</li>
-<li>边缘初始化条件应该将 <code>dp[i][0]</code> 全部置为 <code>1</code>，因为这里面可以通过把所有 <code>s</code> 串都删除得到空子串，是一种方法。</li>
-</ol>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">numDistinct</span><span class="params">(<span class="built_in">string</span> s, <span class="built_in">string</span> t)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> m = s.size(), n = t.size();</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">long</span>&gt;&gt; dp(m + <span class="number">1</span>, <span class="built_in">vector</span>&lt;<span class="keyword">long</span>&gt; (n + <span class="number">1</span>, <span class="number">0</span>));</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; m;++i) &#123;</span><br><span class="line">            dp[i][<span class="number">0</span>] = <span class="number">1</span>;<span class="comment">//默认空匹配为一种匹配方法</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= m; ++i) &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= n; ++j) &#123;</span><br><span class="line">                <span class="keyword">if</span>(s[i - <span class="number">1</span>] == t[j - <span class="number">1</span>]) </span><br><span class="line">                    dp[i][j] = dp[i - <span class="number">1</span>][j - <span class="number">1</span>] + dp[i - <span class="number">1</span>][j];</span><br><span class="line">                    <span class="comment">//dp[i-1][j-1]表示前i-1个s元素能包含前j-1个t元素的个数，这里面表示用到了s[i-1]和t[j-1]的匹配</span></span><br><span class="line">                    <span class="comment">//dp[i-1][j]是前i-1个s元素包含前j个t元素的的个数，这里没用到s[i-1]和t[j-1]的匹配</span></span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                    dp[i][j] = dp[i - <span class="number">1</span>][j];</span><br><span class="line">            &#125;   </span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[m][n];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>可以进一步空间优化，可以看出，<code>dp[i][j]</code> 只与 <code>dp[i-1][j-1]</code> 和 <code>dp[i-1][j]</code> 有关。在进行二重循环求解时( <code>i</code> 从小到大)，<code>dp[i][j]</code> 在外层循环的上一轮是 <code>dp[i-1][j]</code> ，<code>dp[i][j-1]</code> 在外层循环的上一轮是 <code>dp[i-1][j-1]</code> 。因此可以通过循环遍历得到一维 <code>dp</code> 数组。</p>
-<p>这里面一开始写错了🤦‍要注意的是<strong>由于在 <code>s[i-1] == t[j-1]</code> 时，内层更新 <code>dp[j]</code> 会用到上一轮的 <code>dp[j-1]</code> ，所以我们不能从小到大更新 <code>j</code> （否则在更新 <code>dp[j]</code> 的时候 <code>dp[j-1]</code> 已经被更新，表示<code>dp[i][j-1]</code>，而我们需要的是 <code>dp[i-1][j-1]</code> ）。内层循环的 <code>j</code>从大到小即可解决这个问题。</strong></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">numDistinct</span><span class="params">(<span class="built_in">string</span> s, <span class="built_in">string</span> t)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = t.size();</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">long</span>&gt; dp(n + <span class="number">1</span>,<span class="number">0</span>);</span><br><span class="line">        dp[<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; s.size(); i++) &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = n; j &gt; <span class="number">0</span>; j--) &#123;</span><br><span class="line">                <span class="keyword">if</span>(s[i] == t[j - <span class="number">1</span>]) &#123;</span><br><span class="line">                    dp[j] += dp[j - <span class="number">1</span>];<span class="comment">//这里面更新的是这一层的 dp[j - 1]</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[n];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          115*. Distinct Subsequences/不同的子序列
+题目：
 
-          
+给定一个字符串 S 和一个字符串 T，计算在 S 的子序列中 T 出现的个数。
+一个字符串的一个子序列是指，通过删除一些（也可以不删除）字符且不干扰剩余字符相对位置所组成的新字符串。（例如，&quot;ACE&quot;
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/04/23/115. 不同的子序列/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1606,38 +1517,20 @@
       
         
           
-            <h1 id="J70-Coin-LCCI-硬币"><a href="#J70-Coin-LCCI-硬币" class="headerlink" title="J70. Coin LCCI/硬币"></a>J70. Coin LCCI/硬币</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>硬币。给定数量不限的硬币，币值为25分、10分、5分和1分，编写代码计算n分有几种表示法。(结果可能会很大，你需要将结果模上1000000007)</p>
-<p><strong>示例1:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> 输入: n = 5</span><br><span class="line"> 输出：2</span><br><span class="line"> 解释: 有两种方式可以凑成总金额:</span><br><span class="line">5=5</span><br><span class="line">5=1+1+1+1+1</span><br></pre></td></tr></table></figure>
-<p><strong>示例2:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"> 输入: n = 10</span><br><span class="line"> 输出：4</span><br><span class="line"> 解释: 有四种方式可以凑成总金额:</span><br><span class="line">10=10</span><br><span class="line">10=5+5</span><br><span class="line">10=5+1+1+1+1+1</span><br><span class="line">10=1+1+1+1+1+1+1+1+1+1</span><br></pre></td></tr></table></figure>
-<p><strong>说明：</strong></p>
-<p>注意:</p>
-<p>你可以假设：</p>
-<ul>
-<li>0 &lt;= n (总金额) &lt;= 1000000</li>
-</ul>
-<blockquote>
-<p>解法：动态规划</p>
-</blockquote>
-<ol>
-<li>令 <code>dp[i][j]</code>为遍历到当下这个硬币时，组成金额 <code>j</code> 的方法数，<code>v[i]</code> 为对应的硬币面值。</li>
-<li>有两种可能性<ol>
-<li>当前这个硬币没有取，<code>dp[i][j]=dp[i - 1][j]</code>；</li>
-<li>当前这个硬币取了，<code>dp[i][j]=dp[i][j - v[i]]</code>。最后的结果是两者的和</li>
-</ol>
-</li>
-<li>将状态转移方程翻译成代码，并处理边界条件</li>
-</ol>
-<p>所以整理得到的状态转移方程为：<code>dp[i][j]=dp[i - 1][j]+dp[i][j - v[i]]</code></p>
-<p>同时由于<code>dp[i][j]</code> 只跟前一个状态有关，因此可以通过滚动一维 <code>dp</code> 数组的方式来实现如下：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dp[j] = (dp[j] + dp[j - v[i]])</span><br></pre></td></tr></table></figure>
-<p>最终得到代码如下：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">waysToChange</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">const</span> <span class="keyword">int</span> mod = <span class="number">1e9</span> + <span class="number">7</span>;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; dp(n + <span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line">        dp[<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> v[<span class="number">4</span>] = &#123;<span class="number">1</span>, <span class="number">5</span>, <span class="number">10</span>, <span class="number">25</span>&#125;;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">4</span>; ++ i) &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = v[i]; j &lt;= n; ++ j) &#123;</span><br><span class="line">                dp[j] = (dp[j] + dp[j - v[i]]) % mod;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[n];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-          
+          J70. Coin LCCI/硬币
+题目：
+
+硬币。给定数量不限的硬币，币值为25分、10分、5分和1分，编写代码计算n分有几种表示法。(结果可能会很大，你需要将结果模上1000000007)
+示例1:
+12345 输入: n = 5 输出：2 解释: 有两种方式可以凑成总金额:5=55=1+1+1
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/04/23/J70. 硬币/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1788,33 +1681,22 @@
       
         
           
-            <h1 id="114-Flatten-Binary-Tree-to-Linked-List-二叉树展开为链表"><a href="#114-Flatten-Binary-Tree-to-Linked-List-二叉树展开为链表" class="headerlink" title="114. Flatten Binary Tree to Linked List/二叉树展开为链表"></a>114. Flatten Binary Tree to Linked List/二叉树展开为链表</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>给定一个二叉树，<a href="https://baike.baidu.com/item/%E5%8E%9F%E5%9C%B0%E7%AE%97%E6%B3%95/8010757" target="_blank" rel="noopener">原地</a>将它展开为链表。</p>
-<p>例如，给定二叉树</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">    1</span><br><span class="line">   / \</span><br><span class="line">  2   5</span><br><span class="line"> / \   \</span><br><span class="line">3   4   6</span><br></pre></td></tr></table></figure>
-<p>将其展开为：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">1</span><br><span class="line"> \</span><br><span class="line">  2</span><br><span class="line">   \</span><br><span class="line">    3</span><br><span class="line">     \</span><br><span class="line">      4</span><br><span class="line">       \</span><br><span class="line">        5</span><br><span class="line">         \</span><br><span class="line">          6</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法一：迭代</p>
-</blockquote>
-<p>这道题刚开始想错了，后来参考了别人的迭代思想。这里面的迭代不需要借助栈或者是队列的数据结构，而且让 <code>root</code> 不断指向右子树直到指向空为止，这里面每次 <code>while</code> 的过程中其实采用的是以下三步：</p>
-<ol>
-<li>如果 <code>root</code> 有左子树，那么找到左子树的最右的子节点，然后把这个节点指向当前 <code>root</code> 的右子树</li>
-<li>将当前 <code>root</code> 的左子树放到右子树的位置上</li>
-<li>然后把左子树清空 <code>root-&gt;left = nullptr</code></li>
-</ol>
-<p>通过这样的循环迭代实现将左子树挤压到右子树的位置上。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">flatten</span><span class="params">(TreeNode* root)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">while</span> (root != <span class="literal">nullptr</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (root-&gt;left != <span class="literal">nullptr</span>) &#123;</span><br><span class="line">                TreeNode* most_right = root-&gt;left; </span><br><span class="line">                <span class="comment">// 如果左子树不为空, 那么就先找到左子树的最右节点</span></span><br><span class="line">                <span class="keyword">while</span> (most_right-&gt;right != <span class="literal">nullptr</span>) most_right = most_right-&gt;right;</span><br><span class="line">                <span class="comment">// 找最右节点</span></span><br><span class="line">                most_right-&gt;right = root-&gt;right; </span><br><span class="line">                <span class="comment">// 然后将跟的右孩子放到最右节点的右子树上</span></span><br><span class="line">                root-&gt;right = root-&gt;left; </span><br><span class="line">                <span class="comment">// 这时候跟的右孩子可以释放, 因此我令左孩子放到右孩子上</span></span><br><span class="line">                root-&gt;left = <span class="literal">nullptr</span>;</span><br><span class="line">                <span class="comment">// 将左孩子置为空</span></span><br><span class="line">            &#125;</span><br><span class="line">            root = root-&gt;right; <span class="comment">// 继续下一个节点</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法二：递归</p>
-</blockquote>
-<p>❗ 注意其实递归是运用了栈的，不能完全说是原地算法。</p>
-<p>递归的思想是跟迭代的差不多的思想，主要还是在于不停循环将左子树靠在右子树的位置上。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">TreeNode* last = <span class="literal">nullptr</span>;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">flatten</span><span class="params">(TreeNode* root)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (root == <span class="literal">nullptr</span>) <span class="keyword">return</span>;</span><br><span class="line">        flatten(root-&gt;left);</span><br><span class="line">        flatten(root-&gt;right);</span><br><span class="line">        <span class="keyword">if</span> (root-&gt;left != <span class="literal">nullptr</span>) &#123;</span><br><span class="line">            Treenode* pre = root-&gt;left;</span><br><span class="line">            <span class="keyword">while</span> (pre-&gt;right != <span class="literal">nullptr</span>) pre = pre-&gt;right;</span><br><span class="line">            pre-&gt;right = root-&gt;right;</span><br><span class="line">            root-&gt;right = root-&gt;left;</span><br><span class="line">            root-&gt;left = <span class="literal">nullptr</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        root = root-&gt;right;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          114. Flatten Binary Tree to Linked List/二叉树展开为链表
+题目：
 
-          
+给定一个二叉树，原地将它展开为链表。
+例如，给定二叉树
+12345    1   / \  2   5 / \   \3   4   6
+将其展开为：
+12345678910111 \  2 
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/04/22/114. 二叉树展开为链表/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1965,21 +1847,21 @@
       
         
           
-            <h1 id="113-Path-Sum-II-路径总和-II"><a href="#113-Path-Sum-II-路径总和-II" class="headerlink" title="113. Path Sum II/路径总和 II"></a>113. Path Sum II/路径总和 II</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>给定一个二叉树和一个目标和，找到所有从根节点到叶子节点路径总和等于给定目标和的路径。</p>
-<p><strong>说明:</strong> 叶子节点是指没有子节点的节点。</p>
-<p><strong>示例:</strong><br>给定如下二叉树，以及目标和 <code>sum = 22</code>，</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">      5</span><br><span class="line">     / \</span><br><span class="line">    4   8</span><br><span class="line">   /   / \</span><br><span class="line">  11  13  4</span><br><span class="line"> /  \    / \</span><br><span class="line">7    2  5   1</span><br></pre></td></tr></table></figure>
-<p>返回:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">   [5,4,11,2],</span><br><span class="line">   [5,8,4,5]</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法一：递归+回溯</p>
-</blockquote>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; pathSum(TreeNode* root, <span class="keyword">int</span> sum) &#123;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; res;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; path;</span><br><span class="line">        dfs(root, sum, res, path);</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">dfs</span><span class="params">(TreeNode* root, <span class="keyword">int</span> num, <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; res, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; path)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!root) <span class="keyword">return</span>;</span><br><span class="line">        path.push_back(root-&gt;val);</span><br><span class="line">        <span class="keyword">if</span>(!root-&gt;left &amp;&amp; !root-&gt;right &amp;&amp; num == root-&gt;val) res.push_back(path);</span><br><span class="line">        <span class="keyword">if</span>(root-&gt;left) dfs(root-&gt;left, num - root-&gt;val, res, path);</span><br><span class="line">        <span class="keyword">if</span>(root-&gt;right) dfs(root-&gt;right, num - root-&gt;val, res, path);</span><br><span class="line">        path.pop_back();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          113. Path Sum II/路径总和 II
+题目：
 
-          
+给定一个二叉树和一个目标和，找到所有从根节点到叶子节点路径总和等于给定目标和的路径。
+说明: 叶子节点是指没有子节点的节点。
+示例:给定如下二叉树，以及目标和 sum = 22，
+1234567      5     / \    4   
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/04/22/113. 路径总和 II/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>

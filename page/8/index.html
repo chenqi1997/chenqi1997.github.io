@@ -367,41 +367,19 @@
       
         
           
-            <h1 id="142-Linked-List-Cycle-II-环形链表II"><a href="#142-Linked-List-Cycle-II-环形链表II" class="headerlink" title="142. Linked List Cycle II/环形链表II"></a>142. Linked List Cycle II/环形链表II</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>给定一个链表，返回链表开始入环的第一个节点。 如果链表无环，则返回 <code>null</code>。</p>
-<p>为了表示给定链表中的环，我们使用整数 <code>pos</code> 来表示链表尾连接到链表中的位置（索引从 0 开始）。 如果 <code>pos</code> 是 <code>-1</code>，则在该链表中没有环。</p>
-<p><strong>说明：</strong>不允许修改给定的链表。</p>
-<p><strong>示例 1：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：head = [3,2,0,-4], pos = 1</span><br><span class="line">输出：tail connects to node index 1</span><br><span class="line">解释：链表中有一个环，其尾部连接到第二个节点。</span><br></pre></td></tr></table></figure>
-<p><strong>示例 2：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：head = [1,2], pos = 0</span><br><span class="line">输出：tail connects to node index 0</span><br><span class="line">解释：链表中有一个环，其尾部连接到第一个节点。</span><br></pre></td></tr></table></figure>
-<p><strong>示例 3：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：head = [1], pos = -1</span><br><span class="line">输出：no cycle</span><br><span class="line">解释：链表中没有环。</span><br></pre></td></tr></table></figure>
-<p><strong>进阶：</strong><br>你是否可以不用额外空间解决此题？</p>
-<blockquote>
-<p>解法：⭐⭐⭐双指针</p>
-</blockquote>
-<p>这道题跟上一道题一样是很经典的快慢指针问题，不过这道题需要对如何判断环的入口进行一个计算和判断：</p>
-<ol>
-<li><p>双指针第一次相遇： 设两指针 <code>fast</code>，<code>slow</code> 指向链表头部 <code>head</code>，<code>fast</code> 每轮走 <code>2</code> 步，<code>slow</code> 每轮走 <code>1</code> 步；</p>
-<ol>
-<li>第一种结果： <code>fast</code> 指针走过链表末端，说明链表无环，直接返回 <code>null</code>；</li>
-<li>若有环，两指针一定会相遇。因为每走 <code>1</code> 轮，<code>fast</code> 与 <code>slow</code> 的间距 <code>+1</code>，<code>fast</code> 终会追上 <code>slow</code>；<br>第二种结果： 当 <code>fast == slow</code> 时， 两指针在环中第一次相遇 。下面分析此时 <code>fast</code>  与 <code>slow</code> 走过的 步数关系 ：</li>
-</ol>
-</li>
-<li><p>设链表共有 <code>a+b</code> 个节点，其中链表头部到链表入口有 <code>a</code> 个节点（不计链表入口节点，链表环有 <code>b</code> 个节点；设快慢指针分别走了 <code>f</code>，<code>s</code> 步，则有：<br><code>fast</code> 走的步数是 <code>slow</code> 步数的 <code>2</code> 倍，即 <code>f = 2s</code>；<br><code>fast</code> 比 <code>slow</code> 多走了 <code>n</code> 个环的长度，即 <code>f = s + nb</code>；<br>以上两式相减得：<code>f = 2nb</code>，<code>s = nb</code>，即 <code>fast</code> 和 <code>slow</code> 指针分别走了 <code>2n</code>，<code>n</code> 个 环的周长 （注意： <code>n</code> 是未知数，不同链表的情况不同）。</p>
-</li>
-<li><p>如果让指针从链表头部一直向前走并统计步数 <code>k</code>， 那么所有 走到链表入口节点时的步数 是：<code>k=a+nb</code>。<br>而目前，<code>slow</code> 指针走过的步数为 <code>nb</code> 步。因此，我们只要想办法让 <code>slow</code> 再走 <code>a</code> 步停下来，就可以到环的入口。依然是使用双指针法。我们构建一个指针，此指针需要有以下性质：此指针和 <code>slow</code>  一起向前走 <code>a</code> 步后，两者在入口节点重合。那么从哪里走到入口节点需要 <code>a</code> 步？答案是链表头部 <code>head</code> 。</p>
-</li>
-<li><p><code>slow</code> 指针 位置不变 ，将 <code>fast</code> 指针重新指向链表头部节点；<code>slow</code> 和 <code>fast</code> 同时每轮向前走 <code>1</code> 步；此时 <code>f = 0</code>，<code>s = nb</code> ；当 <code>fast</code> 指针走到 <code>f = a</code> 步时，<code>slow</code> 指针走到步 <code>s = a+nb</code> ，此时 两指针重合，并同时指向链表环入口 。返回 <code>slow</code> 指针指向的节点。</p>
-</li>
-</ol>
-<p>❗ 注意，这里面的 <code>fast</code> 比 <code>slow</code> 多走了 <code>n</code> 个环的长度并不是说在环里的长度，而是两者走过的总长度相差了 <code>n</code> 个环的长度，想象一下环前面的直路很长而环很短的情况。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">ListNode *<span class="title">detectCycle</span><span class="params">(ListNode *head)</span> </span>&#123;</span><br><span class="line">        ListNode *fast = head, *slow = head;</span><br><span class="line">        <span class="keyword">while</span>(fast &amp;&amp; fast-&gt;next) &#123;</span><br><span class="line">            slow = slow-&gt;next;</span><br><span class="line">            fast = fast-&gt;next-&gt;next;</span><br><span class="line">            <span class="keyword">if</span>(slow == fast) &#123;</span><br><span class="line">                slow = head;</span><br><span class="line">                <span class="keyword">while</span>(slow != fast) &#123;</span><br><span class="line">                    slow = slow-&gt;next;</span><br><span class="line">                    fast = fast-&gt;next;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">return</span> fast;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; </span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nullptr</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          142. Linked List Cycle II/环形链表II
+题目：
 
-          
+给定一个链表，返回链表开始入环的第一个节点。 如果链表无环，则返回 null。
+为了表示给定链表中的环，我们使用整数 pos 来表示链表尾连接到链表中的位置（索引从 0 开始）。 如果 pos 是 -1，则在该链表中没有环。
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/05/02/142. 环形链表II/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -552,30 +530,21 @@
       
         
           
-            <h1 id="141-Linked-List-Cycle-环形链表"><a href="#141-Linked-List-Cycle-环形链表" class="headerlink" title="141. Linked List Cycle/环形链表"></a>141. Linked List Cycle/环形链表</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>给定一个链表，判断链表中是否有环。</p>
-<p>为了表示给定链表中的环，我们使用整数 <code>pos</code> 来表示链表尾连接到链表中的位置（索引从 0 开始）。 如果 <code>pos</code> 是 <code>-1</code>，则在该链表中没有环。</p>
-<p><strong>示例 1：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：head = [3,2,0,-4], pos = 1</span><br><span class="line">输出：true</span><br><span class="line">解释：链表中有一个环，其尾部连接到第二个节点。</span><br></pre></td></tr></table></figure>
-<p><strong>示例 2：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：head = [1,2], pos = 0</span><br><span class="line">输出：true</span><br><span class="line">解释：链表中有一个环，其尾部连接到第一个节点。</span><br></pre></td></tr></table></figure>
-<p><strong>示例 3：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：head = [1], pos = -1</span><br><span class="line">输出：false</span><br><span class="line">解释：链表中没有环。</span><br></pre></td></tr></table></figure>
-<p><strong>进阶：</strong></p>
-<p>你能用 <em>O(1)</em>（即，常量）内存解决此问题吗？</p>
-<blockquote>
-<p>解法一：双指针</p>
-</blockquote>
-<p>不多说，看到成环直接使用快慢指针。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">hasCycle</span><span class="params">(ListNode *head)</span> </span>&#123;</span><br><span class="line">        ListNode *fast = head, *slow = head;</span><br><span class="line">        <span class="keyword">if</span>(!head) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">while</span>(fast &amp;&amp; fast-&gt;next) &#123;</span><br><span class="line">            fast = fast-&gt;next-&gt;next;</span><br><span class="line">            slow = slow-&gt;next;</span><br><span class="line">            <span class="keyword">if</span>(fast == slow) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法二：哈希表</p>
-</blockquote>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">hasCycle</span><span class="params">(ListNode *head)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">unordered_map</span> &lt;ListNode *,<span class="keyword">int</span>&gt; m;</span><br><span class="line">        <span class="keyword">while</span>(head)</span><br><span class="line">        &#123;</span><br><span class="line">            m[head]++;</span><br><span class="line">            <span class="keyword">if</span>(m[head] &gt; <span class="number">1</span>) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">            head = head-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          141. Linked List Cycle/环形链表
+题目：
 
-          
+给定一个链表，判断链表中是否有环。
+为了表示给定链表中的环，我们使用整数 pos 来表示链表尾连接到链表中的位置（索引从 0 开始）。 如果 pos 是 -1，则在该链表中没有环。
+示例 1：
+123输入：head = [3,2,0,
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/05/01/141. 环形链表/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -726,35 +695,22 @@
       
         
           
-            <h1 id="140-Word-Break-II-单词拆分II"><a href="#140-Word-Break-II-单词拆分II" class="headerlink" title="140*. Word Break II/单词拆分II"></a>140*. Word Break II/单词拆分II</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>给定一个<strong>非空</strong>字符串 <em>s</em> 和一个包含<strong>非空</strong>单词列表的字典 <em>wordDict</em>，在字符串中增加空格来构建一个句子，使得句子中所有的单词都在词典中。返回所有这些可能的句子。</p>
-<p><strong>说明：</strong></p>
-<ul>
-<li>分隔时可以重复使用字典中的单词。</li>
-<li>你可以假设字典中没有重复的单词。</li>
-</ul>
-<p><strong>示例 1：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">输入:</span><br><span class="line">s = &quot;catsanddog&quot;</span><br><span class="line">wordDict = [&quot;cat&quot;, &quot;cats&quot;, &quot;and&quot;, &quot;sand&quot;, &quot;dog&quot;]</span><br><span class="line">输出:</span><br><span class="line">[</span><br><span class="line">  &quot;cats and dog&quot;,</span><br><span class="line">  &quot;cat sand dog&quot;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
-<p><strong>示例 2：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">输入:</span><br><span class="line">s = &quot;pineapplepenapple&quot;</span><br><span class="line">wordDict = [&quot;apple&quot;, &quot;pen&quot;, &quot;applepen&quot;, &quot;pine&quot;, &quot;pineapple&quot;]</span><br><span class="line">输出:</span><br><span class="line">[</span><br><span class="line">  &quot;pine apple pen apple&quot;,</span><br><span class="line">  &quot;pineapple pen apple&quot;,</span><br><span class="line">  &quot;pine applepen apple&quot;</span><br><span class="line">]</span><br><span class="line">解释: 注意你可以重复使用字典中的单词。</span><br></pre></td></tr></table></figure>
-<p><strong>示例 3：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">输入:</span><br><span class="line">s = &quot;catsandog&quot;</span><br><span class="line">wordDict = [&quot;cats&quot;, &quot;dog&quot;, &quot;sand&quot;, &quot;and&quot;, &quot;cat&quot;]</span><br><span class="line">输出:</span><br><span class="line">[]</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法一：⭐⭐⭐⭐⭐记忆化回溯</p>
-</blockquote>
-<p>这道题一上来的想法肯定是可以用回溯的方法来实现，不过在试验了一下回溯之后发现，在以下测试样例会超时：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&quot;aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&quot;</span><br><span class="line">[&quot;a&quot;,&quot;aa&quot;,&quot;aaa&quot;,&quot;aaaa&quot;,&quot;aaaaa&quot;,&quot;aaaaaa&quot;,&quot;aaaaaaa&quot;,&quot;aaaaaaaa&quot;,&quot;aaaaaaaaa&quot;,&quot;aaaaaaaaaa&quot;]</span><br></pre></td></tr></table></figure>
-<p>因此可以考虑使用哈希表记录下已经遍历过的字符串对应的结果，这样在每一次递归中如果发现已经存在了之前的字符串结果，就可以直接使用这个结果了。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; wordBreak(<span class="built_in">string</span> s, <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&amp; wordDict) &#123;</span><br><span class="line">        <span class="built_in">unordered_map</span>&lt;<span class="built_in">string</span>, <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&gt; m;</span><br><span class="line">        <span class="keyword">return</span> backTrack(s, wordDict, m);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; backTrack(<span class="built_in">string</span> s, <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&amp; wordDict, <span class="built_in">unordered_map</span>&lt;<span class="built_in">string</span>, <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&gt;&amp; m) &#123;</span><br><span class="line">        <span class="keyword">if</span>(m.count(s)) <span class="keyword">return</span> m[s];</span><br><span class="line">        <span class="keyword">if</span>(s.empty()) <span class="keyword">return</span> &#123;<span class="string">""</span>&#125;;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; res;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> word : wordDict) &#123;</span><br><span class="line">            <span class="keyword">if</span>(s.substr(<span class="number">0</span>, word.size()) != word) <span class="keyword">continue</span>;</span><br><span class="line">            <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; tmp = backTrack(s.substr(word.size()), wordDict, m);</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">auto</span> itm : tmp) &#123;</span><br><span class="line">                res.push_back(word + (itm.empty() ? <span class="string">""</span> : <span class="string">" "</span> + itm));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        m[s] = res;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法二：动态规划</p>
-</blockquote>
-<p>利用了 <code>Leetcode 139 单词拆分</code>  的函数。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; wordBreak(<span class="built_in">string</span> s, <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&amp; wordDict)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (!wordBreak_139(s, wordDict)) <span class="keyword">return</span> &#123;&#125;;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">size_t</span> validEnd = <span class="number">0</span>;</span><br><span class="line">		<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&gt; dp(s.size() + <span class="number">1</span>, <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;());</span><br><span class="line"></span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt; s.size(); i++)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">if</span> (i == validEnd + <span class="number">1</span>) <span class="keyword">return</span> &#123;&#125;;</span><br><span class="line">			<span class="keyword">if</span> (i != <span class="number">0</span> &amp;&amp; dp[i].empty()) <span class="keyword">continue</span>;</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">auto</span>&amp; word : wordDict)</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="keyword">size_t</span> newEnd = i + word.size();</span><br><span class="line">				<span class="keyword">if</span> (newEnd &gt; s.size()) <span class="keyword">continue</span>;</span><br><span class="line">				<span class="keyword">if</span> (<span class="built_in">memcmp</span>(&amp;s[i], &amp;word[<span class="number">0</span>], word.size()) != <span class="number">0</span>) <span class="keyword">continue</span>;</span><br><span class="line">				validEnd = max(validEnd, newEnd);</span><br><span class="line">				<span class="keyword">if</span> (i == <span class="number">0</span>)</span><br><span class="line">				&#123;</span><br><span class="line">					dp[newEnd].push_back(word);</span><br><span class="line">					<span class="keyword">continue</span>;</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">for</span> (<span class="keyword">auto</span>&amp; d : dp[i])</span><br><span class="line">				&#123;</span><br><span class="line">					dp[newEnd].push_back(d + <span class="string">" "</span> + word);</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">return</span> dp.back();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">bool</span> <span class="title">wordBreak_139</span><span class="params">(<span class="built_in">string</span>&amp; s, <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&amp; wordDict)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">size_t</span> validEnd = <span class="number">0</span>;</span><br><span class="line">		<span class="built_in">vector</span>&lt;<span class="keyword">bool</span>&gt; dp(s.size() + <span class="number">1</span>, <span class="literal">false</span>);</span><br><span class="line">		dp[<span class="number">0</span>] = <span class="literal">true</span>;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt; s.size(); i++)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">if</span> (i == validEnd + <span class="number">1</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">			<span class="keyword">if</span> (!dp[i]) <span class="keyword">continue</span>;</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">auto</span>&amp; word : wordDict)</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="keyword">size_t</span> newEnd = i + word.size();</span><br><span class="line">				<span class="keyword">if</span> (newEnd &gt; s.size()) <span class="keyword">continue</span>;</span><br><span class="line">				<span class="keyword">if</span> (<span class="built_in">memcmp</span>(&amp;s[i], &amp;word[<span class="number">0</span>], word.size()) == <span class="number">0</span>)</span><br><span class="line">				&#123;</span><br><span class="line">					dp[newEnd] = <span class="literal">true</span>;</span><br><span class="line">					validEnd = max(validEnd, newEnd);</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> dp.back();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          140*. Word Break II/单词拆分II
+题目：
 
-          
+给定一个非空字符串 s 和一个包含非空单词列表的字典 wordDict，在字符串中增加空格来构建一个句子，使得句子中所有的单词都在词典中。返回所有这些可能的句子。
+说明：
+
+分隔时可以重复使用字典中的单词。
+你可以假设字典中没有重复的单
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/05/01/140. 单词拆分II/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -905,57 +861,25 @@
       
         
           
-            <h1 id="139-Word-Break-单词拆分"><a href="#139-Word-Break-单词拆分" class="headerlink" title="139. Word Break/单词拆分"></a>139. Word Break/单词拆分</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>给定一个<strong>非空</strong>字符串 <em>s</em> 和一个包含<strong>非空</strong>单词列表的字典 <em>wordDict</em>，判定 <em>s</em> 是否可以被空格拆分为一个或多个在字典中出现的单词。</p>
-<p><strong>说明：</strong></p>
-<ul>
-<li>拆分时可以重复使用字典中的单词。</li>
-<li>你可以假设字典中没有重复的单词。</li>
-</ul>
-<p><strong>示例 1：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入: s = &quot;leetcode&quot;, wordDict = [&quot;leet&quot;, &quot;code&quot;]</span><br><span class="line">输出: true</span><br><span class="line">解释: 返回 true 因为 &quot;leetcode&quot; 可以被拆分成 &quot;leet code&quot;。</span><br></pre></td></tr></table></figure>
-<p><strong>示例 2：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输入: s = &quot;applepenapple&quot;, wordDict = [&quot;apple&quot;, &quot;pen&quot;]</span><br><span class="line">输出: true</span><br><span class="line">解释: 返回 true 因为 &quot;applepenapple&quot; 可以被拆分成 &quot;apple pen apple&quot;。</span><br><span class="line">     注意你可以重复使用字典中的单词。</span><br></pre></td></tr></table></figure>
-<p><strong>示例 3：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: s = &quot;catsandog&quot;, wordDict = [&quot;cats&quot;, &quot;dog&quot;, &quot;sand&quot;, &quot;and&quot;, &quot;cat&quot;]</span><br><span class="line">输出: false</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法一：循环+回溯（部分样例超时）</p>
-</blockquote>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">wordBreak</span><span class="params">(<span class="built_in">string</span> s, <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&amp; wordDict)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">bool</span> flag = <span class="literal">false</span>;</span><br><span class="line">        backTrack(s, wordDict, <span class="number">0</span>, flag);</span><br><span class="line">        <span class="keyword">return</span> flag;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">backTrack</span><span class="params">(<span class="keyword">const</span> <span class="built_in">string</span>&amp; s, <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&amp; wordDict, <span class="keyword">int</span> start, <span class="keyword">bool</span>&amp; flag)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(start == s.size()) &#123;</span><br><span class="line">            flag = <span class="literal">true</span>;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> word : wordDict) &#123;</span><br><span class="line">            <span class="keyword">int</span> i = start, j = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">if</span>(word[<span class="number">0</span>] != s[i]) <span class="keyword">continue</span>;</span><br><span class="line">            <span class="keyword">while</span>(j &lt; word.size()) &#123;</span><br><span class="line">                <span class="keyword">if</span>(word[j] == s[i]) &#123;</span><br><span class="line">                    ++i;</span><br><span class="line">                    ++j;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">break</span>;</span><br><span class="line">                <span class="keyword">if</span>(j == word.size()) &#123;</span><br><span class="line">                    backTrack(s, wordDict, i, flag);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法二：⭐⭐⭐记忆化回溯</p>
-</blockquote>
-<p>拿 <code>[aaaab]</code> 来举例，它可分为 <code>[&quot;a&quot;,&quot;a&quot;,&quot;aab&quot;]</code> , <code>[&quot;aa&quot;,&quot;aab&quot;]</code> , 两个都包含了 <code>&quot;aab&quot;</code> ,所以就产生了重复的递归。这时，就可以用一个哈希表记录 <code>&quot;aab&quot;</code> 这种情况。当再次递归时，先判断一下，如果是 <code>&quot;aab&quot;</code> ,就直接返回。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">unordered_map</span>&lt;<span class="built_in">string</span>,<span class="keyword">bool</span>&gt;<span class="built_in">map</span>;</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">wordBreak</span><span class="params">(<span class="built_in">string</span> s, <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&amp; wordDict )</span> </span>&#123;</span><br><span class="line">        <span class="built_in">unordered_set</span>&lt;<span class="built_in">string</span>&gt; m(wordDict.begin(), wordDict.end());</span><br><span class="line">        <span class="keyword">return</span> dfs(s, wordDict,m);</span><br><span class="line">    &#125;</span><br><span class="line">     <span class="function"><span class="keyword">bool</span> <span class="title">dfs</span><span class="params">(<span class="built_in">string</span> s,<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&amp;wordDict ,<span class="built_in">unordered_set</span>&lt;<span class="built_in">string</span>&gt; m)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(s.empty()) </span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">map</span>[s])</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>;i &lt;= s.size();i++) &#123;</span><br><span class="line">            <span class="built_in">string</span> temp = s.substr(<span class="number">0</span>, i);</span><br><span class="line">            <span class="keyword">if</span>(m.find(temp) != m.end()) &#123;</span><br><span class="line">                <span class="comment">//substr(i)表示从i到end</span></span><br><span class="line">                <span class="keyword">if</span>(!dfs(s.substr(i), wordDict, m))</span><br><span class="line">                    <span class="built_in">map</span>[s.substr(i)] = <span class="literal">true</span>;</span><br><span class="line">                <span class="keyword">else</span> </span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;  </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法三：⭐⭐⭐⭐动态规划+贪心思想</p>
-</blockquote>
-<ol>
-<li>定义 <code>vector&lt;bool&gt; dp(s.size() + 1, false)</code></li>
-<li><code>dp[i]</code> 表示第 <code>i</code> 个字符前，所有的字符是否可以按字典拆分成单词；其中第 <code>i - 1</code> 个字符是上一个词的结尾字母，第 <code>i</code> 个字符是一个新词的开头字母。</li>
-<li>初始值 <code>dp[0] = true</code> ，表示第 <code>0</code> 个字符是一个新词的开头字母；所求的答案为 <code>dp[s.size()]</code> ，表示这个字符串是否可以拆分成字典中的单词。</li>
-<li>从前往后遍历字符串，我们只对新词的开头字母进行字典匹配，将每一个匹配成功的词后面的字母更新为新词开头字母。</li>
-<li>设置一个变量记录所有最大的新词开头字母，如果当前字符已经超过了所有新词开头字母，可以剪枝返回 <code>false</code> 了。</li>
-</ol>
-<p>这个解法里面用到了 <code>C++</code> 的 <code>memcmp</code> 库函数：</p>
-<blockquote>
-<p>库函数 <strong>int memcmp(const void *str1, const void *str2, size_t n))</strong> 把存储区 <strong>str1</strong> 和存储区 <strong>str2</strong> 的前 <strong>n</strong> 个字节进行比较。</p>
-<ul>
-<li><strong>str1</strong> – 指向内存块的指针。</li>
-<li><strong>str2</strong> – 指向内存块的指针。</li>
-<li><strong>n</strong> – 要被比较的字节数。</li>
-<li>如果返回值 &lt; 0，则表示 str1 小于 str2。</li>
-<li>如果返回值 &gt; 0，则表示 str2 小于 str1。</li>
-<li>如果返回值 = 0，则表示 str1 等于 str2。</li>
-</ul>
-</blockquote>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">wordBreak</span><span class="params">(<span class="built_in">string</span> s, <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&amp; wordDict)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> cur = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">bool</span>&gt; dp(s.size() + <span class="number">1</span>, <span class="literal">false</span>);</span><br><span class="line">        dp[<span class="number">0</span>] = <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; s.size(); i++) &#123;</span><br><span class="line">            <span class="comment">//i == cur + 1说明这一轮并没有单词能够匹配</span></span><br><span class="line">            <span class="keyword">if</span> (i == cur + <span class="number">1</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            <span class="keyword">if</span> (!dp[i]) <span class="keyword">continue</span>;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">auto</span>&amp; word : wordDict) &#123;</span><br><span class="line">                <span class="keyword">int</span> newEnd = i + word.size();</span><br><span class="line">                <span class="keyword">if</span> (newEnd &gt; s.size()) <span class="keyword">continue</span>;</span><br><span class="line">                <span class="keyword">if</span> (<span class="built_in">memcmp</span>(&amp;s[i], &amp;word[<span class="number">0</span>], word.size()) == <span class="number">0</span>) &#123;</span><br><span class="line">                    dp[newEnd] = <span class="literal">true</span>;</span><br><span class="line">                    cur = max(cur, newEnd);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[s.size()];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>当然也可以不用库函数，直接用一个 <code>while</code> 循环来实现：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">wordBreak</span><span class="params">(<span class="built_in">string</span> s, <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&amp; wordDict)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> cur = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">bool</span>&gt; dp(s.size() + <span class="number">1</span>, <span class="literal">false</span>);</span><br><span class="line">        dp[<span class="number">0</span>] = <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; s.size(); i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (i == cur + <span class="number">1</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            <span class="keyword">if</span> (!dp[i]) <span class="keyword">continue</span>;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">auto</span>&amp; word : wordDict) &#123;</span><br><span class="line">                <span class="keyword">int</span> newEnd = i + word.size();</span><br><span class="line">                <span class="keyword">if</span> (newEnd &gt; s.size()) <span class="keyword">continue</span>;</span><br><span class="line">                <span class="keyword">int</span> j = <span class="number">0</span>, l = i;</span><br><span class="line">                <span class="keyword">while</span>(j &lt; word.size()) &#123;</span><br><span class="line">                    <span class="keyword">if</span>(s[l] == word[j]) &#123;</span><br><span class="line">                        ++l;</span><br><span class="line">                        ++j;</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="keyword">else</span> <span class="keyword">break</span>;</span><br><span class="line">                    <span class="keyword">if</span>(j == word.size()) &#123;</span><br><span class="line">                        dp[newEnd] = <span class="literal">true</span>;</span><br><span class="line">                        cur = max(cur, newEnd);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[s.size()];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          139. Word Break/单词拆分
+题目：
 
-          
+给定一个非空字符串 s 和一个包含非空单词列表的字典 wordDict，判定 s 是否可以被空格拆分为一个或多个在字典中出现的单词。
+说明：
+
+拆分时可以重复使用字典中的单词。
+你可以假设字典中没有重复的单词。
+
+示例 1：
+123输入: s = 
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/05/01/139. 单词拆分/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1106,23 +1030,22 @@
       
         
           
-            <h1 id="137-Single-Number-II-只出现一次的数字-II"><a href="#137-Single-Number-II-只出现一次的数字-II" class="headerlink" title="137. Single Number II/只出现一次的数字 II"></a>137. Single Number II/只出现一次的数字 II</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>给定一个<strong>非空</strong>整数数组，除了某个元素只出现一次以外，其余每个元素均出现了三次。找出那个只出现了一次的元素。</p>
-<p><strong>说明：</strong></p>
-<p>你的算法应该具有线性时间复杂度。 你可以不使用额外空间来实现吗？</p>
-<p><strong>示例 1:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: [2,2,3,2]</span><br><span class="line">输出: 3</span><br></pre></td></tr></table></figure>
-<p><strong>示例 2:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: [0,1,0,1,0,1,99]</span><br><span class="line">输出: 99</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法：⭐⭐⭐⭐位运算</p>
-</blockquote>
-<p>统计所有数字中每个位中 <code>1</code> 出现的总数，那么对于某个位， <code>1</code> 出现的次数一定是 <code>3</code> 的倍数 <code>+1</code> 或 <code>0</code> ，那么对这个数 <code>%3</code> 得到的结果就是目的数字在该位上的值。这里面在遍历某一位 <code>i</code> 的时候，要先把 <code>nums[j]</code> 右移位到最右边，然后 <code>&amp;1</code> 来判断这个值是不是 <code>1</code> 。然后将当前位所有值加起来 <code>%3</code> 的值左移 <code>i</code> 位到 <code>res</code> 上。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">singleNumber</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; <span class="number">32</span>;++i)&#123;</span><br><span class="line">            <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>;j &lt; nums.size();++j)&#123;</span><br><span class="line">                sum += (nums[j] &gt;&gt; i) &amp; <span class="number">1</span>;<span class="comment">//取最后一位</span></span><br><span class="line">            &#125;</span><br><span class="line">            res ^= (sum % <span class="number">3</span>) &lt;&lt; i;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          137. Single Number II/只出现一次的数字 II
+题目：
 
-          
+给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现了三次。找出那个只出现了一次的元素。
+说明：
+你的算法应该具有线性时间复杂度。 你可以不使用额外空间来实现吗？
+示例 1:
+12输入: [2,2,3,2]
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/04/30/137. 只出现一次的数字II/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1273,23 +1196,24 @@
       
         
           
-            <h1 id="136-只出现一次的数字"><a href="#136-只出现一次的数字" class="headerlink" title="136. 只出现一次的数字"></a>136. 只出现一次的数字</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>给定一个<strong>非空</strong>整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。</p>
-<p><strong>说明：</strong></p>
-<p>你的算法应该具有线性时间复杂度。 你可以不使用额外空间来实现吗？</p>
-<p><strong>示例 1:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: [2,2,1]</span><br><span class="line">输出: 1</span><br></pre></td></tr></table></figure>
-<p><strong>示例 2:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: [4,1,2,1,2]</span><br><span class="line">输出: 4</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法：位运算</p>
-</blockquote>
-<p>这道题是很经典的用位 <code>异或</code> 运算的题目， 位异或的特点是，两个相同的数异或完会变成零，这样异或遍历一圈下来，最终得到的结果就是只出现了一次的那个数字。这道题跟 <code>剑指offer56</code> 和 <code>Leetcode 260</code> 都是一个思想。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">singleNumber</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> num : nums) &#123;</span><br><span class="line">            res ^= num;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          136. 只出现一次的数字
+题目：
 
-          
+给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。
+说明：
+你的算法应该具有线性时间复杂度。 你可以不使用额外空间来实现吗？
+示例 1:
+12输入: [2,2,1]输出: 1
+示例 2:
+12输入: [4,1,
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/04/30/136. 只出现一次的数字/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1440,32 +1364,24 @@
       
         
           
-            <h1 id="135-Candy-分发糖果"><a href="#135-Candy-分发糖果" class="headerlink" title="135. Candy/分发糖果"></a>135. Candy/分发糖果</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>老师想给孩子们分发糖果，有 <em>N</em> 个孩子站成了一条直线，老师会根据每个孩子的表现，预先给他们评分。</p>
-<p>你需要按照以下要求，帮助老师给这些孩子分发糖果：</p>
-<ul>
-<li>每个孩子至少分配到 1 个糖果。</li>
-<li>相邻的孩子中，评分高的孩子必须获得更多的糖果。</li>
-</ul>
-<p>那么这样下来，老师至少需要准备多少颗糖果呢？</p>
-<p><strong>示例 1:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入: [1,0,2]</span><br><span class="line">输出: 5</span><br><span class="line">解释: 你可以分别给这三个孩子分发 2、1、2 颗糖果。</span><br></pre></td></tr></table></figure>
-<p><strong>示例 2:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输入: [1,2,2]</span><br><span class="line">输出: 4</span><br><span class="line">解释: 你可以分别给这三个孩子分发 1、2、1 颗糖果。</span><br><span class="line">     第三个孩子只得到 1 颗糖果，这已满足上述两个条件。</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法一：两遍DP</p>
-</blockquote>
-<p>如果动态规划中，一个点的值由左右两侧的值来决定，很简单就想到可以 <code>左-&gt;右</code> 和 <code>右-&gt;左</code> 两遍DP实现。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">candy</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; ratings)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = ratings.size(), res = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; dp(n, <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; ++i) &#123;</span><br><span class="line">            <span class="keyword">if</span>(i &gt; <span class="number">0</span> &amp;&amp; ratings[i] &gt; ratings[i - <span class="number">1</span>]) &#123;</span><br><span class="line">                dp[i] = dp[i - <span class="number">1</span>] + <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = n - <span class="number">1</span>; i &gt;= <span class="number">0</span>; --i) &#123;</span><br><span class="line">            <span class="keyword">if</span>(i &lt; n - <span class="number">1</span> &amp;&amp; ratings[i] &gt; ratings[i + <span class="number">1</span>]) &#123;</span><br><span class="line">                <span class="comment">//这里需要判断一下，如果dp[i] &gt; dp[i + 1]就没必要换了</span></span><br><span class="line">                dp[i] = dp[i] &gt; dp[i + <span class="number">1</span>] ? dp[i] : dp[i + <span class="number">1</span>] + <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            res += dp[i];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法二：单调栈</p>
-</blockquote>
-<p>维护一个单调递减栈，如果新遍历到的 <code>ratings[i] &lt;= rating[s.top()]</code> ，可以直接跳出循环并把这个位置 <code>i</code>   <code>push</code> 进栈；相反，如果当前遍历到的 <code>ratings[i] &gt; rating[s.top()]</code>  ，说明这个位置可以进行累加，弹出这个索引 <code>index</code> , 只要当前 <code>ratings[index]</code> 是波峰，就可以将这个<code>nums[index]</code> 的值替换为两侧小于它的值的糖果数 <code>+1</code> ，当 <code>index</code> 是波谷是可以直接结算到 <code>res</code> 里面。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">candy</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; ratings)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> size = ratings.size() + <span class="number">1</span>;</span><br><span class="line">        <span class="comment">// 加入一个无穷大来弹出所有元素</span></span><br><span class="line">        ratings.push_back(INT_MAX);</span><br><span class="line">        <span class="comment">// 初始化所有位置的糖果数为1</span></span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; nums(size, <span class="number">1</span>);</span><br><span class="line">        <span class="comment">// 单调递减栈</span></span><br><span class="line">        <span class="built_in">stack</span>&lt;<span class="keyword">int</span>&gt; s;</span><br><span class="line">        s.push(<span class="number">0</span>);</span><br><span class="line">        <span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; size; ++i) &#123;</span><br><span class="line">            <span class="keyword">while</span> (!s.empty()) &#123;</span><br><span class="line">                <span class="keyword">if</span> (ratings[i] &lt;= ratings[s.top()]) &#123;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="keyword">int</span> index = s.top();</span><br><span class="line">                    s.pop();</span><br><span class="line">                    <span class="keyword">if</span> (index &lt; size - <span class="number">1</span> &amp;&amp; ratings[index] &gt; ratings[index + <span class="number">1</span>]) &#123;</span><br><span class="line">                        nums[index] = max(nums[index], nums[index + <span class="number">1</span>] + <span class="number">1</span>);</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="keyword">if</span> (index &gt; <span class="number">0</span> &amp;&amp; ratings[index] &gt; ratings[index - <span class="number">1</span>]) &#123;</span><br><span class="line">                        nums[index] = max(nums[index], nums[index - <span class="number">1</span>] + <span class="number">1</span>);</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="comment">// 处于波谷的位置，可以结算，如果他比相邻的孩子表现好，可以加糖果；</span></span><br><span class="line">                    res += nums[index];</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            s.push(i);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          135. Candy/分发糖果
+题目：
 
-          
+老师想给孩子们分发糖果，有 N 个孩子站成了一条直线，老师会根据每个孩子的表现，预先给他们评分。
+你需要按照以下要求，帮助老师给这些孩子分发糖果：
+
+每个孩子至少分配到 1 个糖果。
+相邻的孩子中，评分高的孩子必须获得更多的糖果。
+
+那么这样下来，老师至少需
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/04/29/135. 分发糖果/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1616,39 +1532,20 @@
       
         
           
-            <h1 id="134-Gas-Station-加油站"><a href="#134-Gas-Station-加油站" class="headerlink" title="134. Gas Station/加油站"></a>134. Gas Station/加油站</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>在一条环路上有 <em>N</em> 个加油站，其中第 <em>i</em> 个加油站有汽油 <code>gas[i]</code> 升。</p>
-<p>你有一辆油箱容量无限的的汽车，从第 <em>i</em> 个加油站开往第 <em>i+1</em> 个加油站需要消耗汽油 <code>cost[i]</code> 升。你从其中的一个加油站出发，开始时油箱为空。</p>
-<p>如果你可以绕环路行驶一周，则返回出发时加油站的编号，否则返回 -1。</p>
-<p><strong>说明:</strong> </p>
-<ul>
-<li>如果题目有解，该答案即为唯一答案。</li>
-<li>输入数组均为非空数组，且长度相同。</li>
-<li>输入数组中的元素均为非负数。</li>
-</ul>
-<p><strong>示例 1:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">输入: </span><br><span class="line">gas  = [1,2,3,4,5]</span><br><span class="line">cost = [3,4,5,1,2]</span><br><span class="line"></span><br><span class="line">输出: 3</span><br><span class="line"></span><br><span class="line">解释:</span><br><span class="line">从 3 号加油站(索引为 3 处)出发，可获得 4 升汽油。此时油箱有 = 0 + 4 = 4 升汽油</span><br><span class="line">开往 4 号加油站，此时油箱有 4 - 1 + 5 = 8 升汽油</span><br><span class="line">开往 0 号加油站，此时油箱有 8 - 2 + 1 = 7 升汽油</span><br><span class="line">开往 1 号加油站，此时油箱有 7 - 3 + 2 = 6 升汽油</span><br><span class="line">开往 2 号加油站，此时油箱有 6 - 4 + 3 = 5 升汽油</span><br><span class="line">开往 3 号加油站，你需要消耗 5 升汽油，正好足够你返回到 3 号加油站。</span><br><span class="line">因此，3 可为起始索引。</span><br></pre></td></tr></table></figure>
-<p><strong>示例 2:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">输入: </span><br><span class="line">gas  = [2,3,4]</span><br><span class="line">cost = [3,4,3]</span><br><span class="line"></span><br><span class="line">输出: -1</span><br><span class="line"></span><br><span class="line">解释:</span><br><span class="line">你不能从 0 号或 1 号加油站出发，因为没有足够的汽油可以让你行驶到下一个加油站。</span><br><span class="line">我们从 2 号加油站出发，可以获得 4 升汽油。 此时油箱有 = 0 + 4 = 4 升汽油</span><br><span class="line">开往 0 号加油站，此时油箱有 4 - 3 + 2 = 3 升汽油</span><br><span class="line">开往 1 号加油站，此时油箱有 3 - 3 + 3 = 3 升汽油</span><br><span class="line">你无法返回 2 号加油站，因为返程需要消耗 4 升汽油，但是你的油箱只有 3 升汽油。</span><br><span class="line">因此，无论怎样，你都不可能绕环路行驶一周。</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法一：最笨的方法</p>
-</blockquote>
-<p>本来以为这个肯定超时或者overflow，没想到居然过了❓</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">canCompleteCircuit</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; gas, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; cost)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">bool</span> flag = <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; gas.size(); ++i) &#123;</span><br><span class="line">            <span class="keyword">if</span>(gas[i] &lt; cost[i]) &#123;</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> &#123;</span><br><span class="line">                flag = canCompleteCircuit(gas, cost, i);</span><br><span class="line">                <span class="keyword">if</span> (flag) &#123;</span><br><span class="line">                    <span class="keyword">return</span> i;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">canCompleteCircuit</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; gas, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; cost, <span class="keyword">int</span> start)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> curgas = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = start; i &lt; gas.size(); ++i) &#123;</span><br><span class="line">            curgas += gas[i] - cost[i];</span><br><span class="line">            <span class="keyword">if</span>(curgas &lt; <span class="number">0</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; start; ++i) &#123;</span><br><span class="line">            curgas += gas[i] - cost[i];</span><br><span class="line">            <span class="keyword">if</span>(curgas &lt; <span class="number">0</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法二：官方贪心算法</p>
-</blockquote>
-<p>官方的答案不说人话，简单翻译一下就是，这道题的贪心算法在于：</p>
-<blockquote>
-<p><strong>如果A站不能到B站，那么A，B之间到任何一个站都不能到B站，（B站是A站第一个不能到的站）</strong></p>
-</blockquote>
-<p>因为在从 <code>A</code> 站遍历到 <code>B</code> 站的过程中，反证假如 <code>A</code> , <code>B</code> 中间某个 <code>C</code> 站可以到达 <code>B</code> 站，那么 <code>A</code> 能走到 <code>C</code> 说明 <code>A - C</code> 的 <code>curr_tank &gt; 0</code> ， <code>C</code> 能走到 <code>B</code> 说明 <code>C - B</code> 的 <code>curr_tank &gt; 0</code> ，与 <code>A - B</code>  的 <code>curr_tank &lt; 0</code> 矛盾。</p>
-<p>因此基于这个假设，我们可以直接在 <code>curr_tank &lt; 0</code> 的时候果断把开始的加油站换为 <code>i + 1</code>。如果最终遍历下来 <code>total_tank</code> 是大于 <code>0</code> 的，并且在 <code>i</code> 到结尾这段路中间全都有 <code>curr_tank &gt;= 0</code>，可以证明<strong>总油量大于总路程的情况下，必有解。</strong></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line">  <span class="keyword">public</span>:</span><br><span class="line">  <span class="function"><span class="keyword">int</span> <span class="title">canCompleteCircuit</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; gas, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; cost)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n = gas.size();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> total_tank = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> curr_tank = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> starting_station = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; ++i) &#123;</span><br><span class="line">      total_tank += gas[i] - cost[i];</span><br><span class="line">      curr_tank += gas[i] - cost[i];</span><br><span class="line">      <span class="comment">// If one couldn't get here,</span></span><br><span class="line">      <span class="keyword">if</span> (curr_tank &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="comment">// Pick up the next station as the starting one.</span></span><br><span class="line">        starting_station = i + <span class="number">1</span>;</span><br><span class="line">        <span class="comment">// Start with an empty tank.</span></span><br><span class="line">        curr_tank = <span class="number">0</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> total_tank &gt;= <span class="number">0</span> ? starting_station : <span class="number">-1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          134. Gas Station/加油站
+题目：
 
-          
+在一条环路上有 N 个加油站，其中第 i 个加油站有汽油 gas[i] 升。
+你有一辆油箱容量无限的的汽车，从第 i 个加油站开往第 i+1 个加油站需要消耗汽油 cost[i] 升。你从其中的一个加油站出发，开始时油箱为空。
+如果你可以绕环路行驶
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/04/29/134. 加油站/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1799,48 +1696,20 @@
       
         
           
-            <h1 id="133-Clone-Graph-克隆图"><a href="#133-Clone-Graph-克隆图" class="headerlink" title="133. Clone Graph/克隆图"></a>133. Clone Graph/克隆图</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>给你无向 <strong>连通</strong> 图中一个节点的引用，请你返回该图的 <a href="https://baike.baidu.com/item/%E6%B7%B1%E6%8B%B7%E8%B4%9D/22785317?fr=aladdin" target="_blank" rel="noopener"><strong>深拷贝</strong></a>（克隆）。</p>
-<p>图中的每个节点都包含它的值 <code>val</code>（<code>int</code>） 和其邻居的列表（<code>list[Node]</code>）。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">class Node &#123;</span><br><span class="line">    public int val;</span><br><span class="line">    public List&lt;Node&gt; neighbors;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>测试用例格式：</strong></p>
-<p>简单起见，每个节点的值都和它的索引相同。例如，第一个节点值为 1（<code>val = 1</code>），第二个节点值为 2（<code>val = 2</code>），以此类推。该图在测试用例中使用邻接列表表示。</p>
-<p><strong>邻接列表</strong> 是用于表示有限图的无序列表的集合。每个列表都描述了图中节点的邻居集。</p>
-<p>给定节点将始终是图中的第一个节点（值为 1）。你必须将 <strong>给定节点的拷贝</strong> 作为对克隆图的引用返回。</p>
-<p><strong>示例 1：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">输入：adjList = [[2,4],[1,3],[2,4],[1,3]]</span><br><span class="line">输出：[[2,4],[1,3],[2,4],[1,3]]</span><br><span class="line">解释：</span><br><span class="line">图中有 4 个节点。</span><br><span class="line">节点 1 的值是 1，它有两个邻居：节点 2 和 4 。</span><br><span class="line">节点 2 的值是 2，它有两个邻居：节点 1 和 3 。</span><br><span class="line">节点 3 的值是 3，它有两个邻居：节点 2 和 4 。</span><br><span class="line">节点 4 的值是 4，它有两个邻居：节点 1 和 3 。</span><br></pre></td></tr></table></figure>
-<p><strong>示例 2：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：adjList = [[]]</span><br><span class="line">输出：[[]]</span><br><span class="line">解释：输入包含一个空列表。该图仅仅只有一个值为 1 的节点，它没有任何邻居。</span><br></pre></td></tr></table></figure>
-<p><strong>示例 3：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：adjList = []</span><br><span class="line">输出：[]</span><br><span class="line">解释：这个图是空的，它不含任何节点。</span><br></pre></td></tr></table></figure>
-<p><strong>示例 4：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：adjList = [[2],[1]]</span><br><span class="line">输出：[[2],[1]]</span><br></pre></td></tr></table></figure>
-<p><strong>提示：</strong></p>
-<ol>
-<li>节点数不超过 100 。</li>
-<li>每个节点值 <code>Node.val</code> 都是唯一的，<code>1 &lt;= Node.val &lt;= 100</code>。</li>
-<li>无向图是一个<a href="https://baike.baidu.com/item/%E7%AE%80%E5%8D%95%E5%9B%BE/1680528?fr=aladdin" target="_blank" rel="noopener">简单图</a>，这意味着图中没有重复的边，也没有自环。</li>
-<li>由于图是无向的，如果节点 <em>p</em> 是节点 <em>q</em> 的邻居，那么节点 <em>q</em> 也必须是节点 <em>p</em> 的邻居。</li>
-<li>图是连通图，你可以从给定节点访问到所有节点。</li>
-</ol>
-<blockquote>
-<p>解法一：递归+DFS+哈希表</p>
-</blockquote>
-<p>这道题刚开始没搞懂什么意思，后来琢磨了一下应该就是要深拷贝这个无向图中的所有节点，需要对每一个节点 <code>new</code> 一个新的拷贝节点出来，然后再按照图的优先遍历算法来对邻接图中的每个节点进行遍历。</p>
-<p>先考虑实现一下 <code>递归</code> + <code>DFS</code> 的实现，由于邻接表的邻居关系是互相的，因此肯定会出现遍历重复的情况，首先想到的就是用一个哈希表来保存遍历的情况，如果再在递归中遍历到相同的节点，就可以直接 <code>return used[node]</code> 。这里面要注意的是不要搞混了新建的克隆图和原来的图。这里面的 <code>node</code> 是原始的图中的节点，<code>root</code> 是克隆出来的节点。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">// Definition for a Node.</span></span><br><span class="line"><span class="comment">class Node &#123;</span></span><br><span class="line"><span class="comment">public:</span></span><br><span class="line"><span class="comment">    int val;</span></span><br><span class="line"><span class="comment">    vector&lt;Node*&gt; neighbors;</span></span><br><span class="line"><span class="comment">    </span></span><br><span class="line"><span class="comment">    Node() &#123;</span></span><br><span class="line"><span class="comment">        val = 0;</span></span><br><span class="line"><span class="comment">        neighbors = vector&lt;Node*&gt;();</span></span><br><span class="line"><span class="comment">    &#125;</span></span><br><span class="line"><span class="comment">    </span></span><br><span class="line"><span class="comment">    Node(int _val) &#123;</span></span><br><span class="line"><span class="comment">        val = _val;</span></span><br><span class="line"><span class="comment">        neighbors = vector&lt;Node*&gt;();</span></span><br><span class="line"><span class="comment">    &#125;</span></span><br><span class="line"><span class="comment">    </span></span><br><span class="line"><span class="comment">    Node(int _val, vector&lt;Node*&gt; _neighbors) &#123;</span></span><br><span class="line"><span class="comment">        val = _val;</span></span><br><span class="line"><span class="comment">        neighbors = _neighbors;</span></span><br><span class="line"><span class="comment">    &#125;</span></span><br><span class="line"><span class="comment">&#125;;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">unordered_map</span>&lt;Node*, Node*&gt; used;</span><br><span class="line">    <span class="function">Node* <span class="title">cloneGraph</span><span class="params">(Node* node)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!node) <span class="keyword">return</span> <span class="literal">nullptr</span>;</span><br><span class="line">        <span class="keyword">if</span>(used.count(node)) <span class="keyword">return</span> used[node];</span><br><span class="line">        Node* root = <span class="keyword">new</span> Node(node-&gt;val);</span><br><span class="line">        used[node] = root;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">const</span> <span class="keyword">auto</span>&amp; s : node-&gt;neighbors) &#123;</span><br><span class="line">           	<span class="comment">//相当于前面已经拷贝构造了新节点</span></span><br><span class="line">            <span class="comment">//但是新节点与旧节点的联系还不能断</span></span><br><span class="line">            <span class="comment">//还需要把新节点root的neighbors挂上</span></span><br><span class="line">            used[node]-&gt;neighbors.push_back(cloneGraph(s));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> used[node];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法二：DFS+栈+哈希表实现</p>
-</blockquote>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">Node* <span class="title">cloneGraph</span><span class="params">(Node* node)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!node) <span class="keyword">return</span> <span class="literal">nullptr</span>;</span><br><span class="line">        <span class="built_in">unordered_map</span>&lt;Node*, Node*&gt; used;</span><br><span class="line">        <span class="built_in">stack</span>&lt;Node*&gt; st;</span><br><span class="line">        st.push(node);</span><br><span class="line">        <span class="keyword">const</span> <span class="keyword">auto</span> root = <span class="keyword">new</span> Node(node-&gt;val);</span><br><span class="line">        used[node] = root;</span><br><span class="line">        <span class="keyword">while</span>(!st.empty()) &#123;</span><br><span class="line">            <span class="keyword">const</span> <span class="keyword">auto</span> tmp = st.top();</span><br><span class="line">            st.pop();</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">const</span> <span class="keyword">auto</span>&amp; e : tmp-&gt;neighbors) &#123;</span><br><span class="line">                <span class="keyword">if</span>(!used.count(e)) &#123;</span><br><span class="line">                    st.push(e);</span><br><span class="line">                    used[e] = <span class="keyword">new</span> Node(e-&gt;val);</span><br><span class="line">                &#125;</span><br><span class="line">                used[tmp]-&gt;neighbors.push_back(used[e]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> used[node];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法三：BFS+队列+哈希表</p>
-</blockquote>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">Node* <span class="title">cloneGraph</span><span class="params">(Node* node)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (!node) <span class="keyword">return</span> <span class="literal">nullptr</span>;</span><br><span class="line">		<span class="built_in">unordered_map</span>&lt;Node*, Node*&gt; used;</span><br><span class="line">		<span class="built_in">queue</span>&lt;Node*&gt; que;</span><br><span class="line">        que.push(node);</span><br><span class="line">		<span class="keyword">const</span> <span class="keyword">auto</span> root = <span class="keyword">new</span> Node(node-&gt;val);</span><br><span class="line">		used[node] = root;</span><br><span class="line">		<span class="keyword">while</span> (!que.empty()) &#123;</span><br><span class="line">			<span class="keyword">auto</span> tmp = que.front();</span><br><span class="line">			que.pop();</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp;e : tmp-&gt;neighbors) &#123;</span><br><span class="line">				<span class="keyword">if</span> (!used.count(e)) &#123;</span><br><span class="line">					que.push(e);</span><br><span class="line">					used[e] = <span class="keyword">new</span> Node(e-&gt;val);</span><br><span class="line">				&#125;</span><br><span class="line">				used[tmp]-&gt;neighbors.push_back(used[e]);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> used[node];</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          133. Clone Graph/克隆图
+题目：
 
-          
+给你无向 连通 图中一个节点的引用，请你返回该图的 深拷贝（克隆）。
+图中的每个节点都包含它的值 val（int） 和其邻居的列表（list[Node]）。
+1234class Node &#123;    public int val;    p
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/04/29/133. 克隆图/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1991,44 +1860,20 @@
       
         
           
-            <h1 id="1095-Find-in-Mountain-Array-山脉数组中查找目标值"><a href="#1095-Find-in-Mountain-Array-山脉数组中查找目标值" class="headerlink" title="1095. Find in Mountain Array/山脉数组中查找目标值"></a>1095. Find in Mountain Array/山脉数组中查找目标值</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>（这是一个 <strong>交互式问题</strong> ）</p>
-<p>给你一个 <strong>山脉数组</strong> <code>mountainArr</code>，请你返回能够使得 <code>mountainArr.get(index)</code> <strong>等于</strong> <code>target</code> <strong>最小</strong> 的下标 <code>index</code> 值。</p>
-<p>如果不存在这样的下标 <code>index</code>，就请返回 <code>-1</code>。</p>
-<p>何为山脉数组？如果数组 <code>A</code> 是一个山脉数组的话，那它满足如下条件：</p>
-<p><strong>首先</strong>，<code>A.length &gt;= 3</code></p>
-<p><strong>其次</strong>，在 <code>0 &lt; i &lt; A.length - 1</code> 条件下，存在 <code>i</code> 使得：</p>
-<ul>
-<li><code>A[0] &lt; A[1] &lt; ... A[i-1] &lt; A[i]</code></li>
-<li><code>A[i] &gt; A[i+1] &gt; ... &gt; A[A.length - 1]</code></li>
-</ul>
-<p>你将 <strong>不能直接访问该山脉数组</strong>，必须通过 <code>MountainArray</code> 接口来获取数据：</p>
-<ul>
-<li><code>MountainArray.get(k)</code> - 会返回数组中索引为<code>k</code> 的元素（下标从 0 开始）</li>
-<li><code>MountainArray.length()</code> - 会返回该数组的长度</li>
-</ul>
-<p><strong>注意：</strong></p>
-<p>对 <code>MountainArray.get</code> 发起超过 <code>100</code> 次调用的提交将被视为错误答案。此外，任何试图规避判题系统的解决方案都将会导致比赛资格被取消。</p>
-<p>为了帮助大家更好地理解交互式问题，我们准备了一个样例 “<strong>答案</strong>”：<a href="https://leetcode-cn.com/playground/RKhe3ave" target="_blank" rel="noopener">https://leetcode-cn.com/playground/RKhe3ave</a>，请注意这 <strong>不是一个正确答案</strong>。</p>
-<p><strong>示例 1：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：array = [1,2,3,4,5,3,1], target = 3</span><br><span class="line">输出：2</span><br><span class="line">解释：3 在数组中出现了两次，下标分别为 2 和 5，我们返回最小的下标 2。</span><br></pre></td></tr></table></figure>
-<p><strong>示例 2：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：array = [0,1,2,4,2,1], target = 3</span><br><span class="line">输出：-1</span><br><span class="line">解释：3 在数组中没有出现，返回 -1。</span><br></pre></td></tr></table></figure>
-<p><strong>提示：</strong></p>
-<ul>
-<li><code>3 &lt;= mountain_arr.length() &lt;= 10000</code></li>
-<li><code>0 &lt;= target &lt;= 10^9</code></li>
-<li><code>0 &lt;= mountain_arr.get(index) &lt;= 10^9</code></li>
-</ul>
-<blockquote>
-<p>解法：⭐三次二分查找</p>
-</blockquote>
-<p>这道题上来就想到，肯定可以首先二分查找找到这个山脉数组的 <code>peek</code> ，按照总长度 <code>10000</code> 的数组来算不超过 <code>14</code> 次调用接口就可以找到这个 <code>peek</code> ，然后我们就可以通过在 <code>peek</code> 左边二分的递增数列查找找到对应的  <code>index</code> 。如果左边没有就在右边找。这里面可以复用二分查找的函数，在函数中传递一个 <code>flag</code> 作为左边递增和右边递减的标志符，如果是右边的话 <code>flag = 1</code> ，我们可以将右边的递减序列转换为递增序列。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">findInMountainArray</span><span class="params">(<span class="keyword">int</span> target, MountainArray &amp;mountainArr)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = mountainArr.length(), left = <span class="number">0</span>, right = n - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span> (left &lt; right) &#123;</span><br><span class="line">            <span class="keyword">int</span> mid = left + (right - left) / <span class="number">2</span>;</span><br><span class="line">            <span class="keyword">if</span> (mountainArr.get(mid) &lt; mountainArr.get(mid + <span class="number">1</span>))</span><br><span class="line">                left = mid + <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">else</span> </span><br><span class="line">                right = mid;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> index = binarySearch(target, mountainArr, <span class="number">0</span>, left, <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">if</span> (index != <span class="number">-1</span>) </span><br><span class="line">            <span class="keyword">return</span> index;</span><br><span class="line">        <span class="keyword">else</span> </span><br><span class="line">            <span class="keyword">return</span> binarySearch(target, mountainArr, left + <span class="number">1</span>, n - <span class="number">1</span>, <span class="number">-1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">binarySearch</span><span class="params">(<span class="keyword">int</span> target, MountainArray &amp;mountainArr, <span class="keyword">int</span> left, <span class="keyword">int</span> right, <span class="keyword">int</span> flag)</span> </span>&#123;</span><br><span class="line">        target *= flag;</span><br><span class="line">        <span class="keyword">while</span> (left &lt;= right) &#123;</span><br><span class="line">            <span class="keyword">int</span> mid = left + (right - left) / <span class="number">2</span>;</span><br><span class="line">            <span class="keyword">int</span> res = flag * mountainArr.get(mid);</span><br><span class="line">            <span class="keyword">if</span>(left == right &amp;&amp; res != target) <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">            <span class="keyword">if</span> (res == target)</span><br><span class="line">                <span class="keyword">return</span> mid;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (res &lt; target) </span><br><span class="line">                left = mid + <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">else</span> </span><br><span class="line">                right = mid;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          1095. Find in Mountain Array/山脉数组中查找目标值
+题目：
 
-          
+（这是一个 交互式问题 ）
+给你一个 山脉数组 mountainArr，请你返回能够使得 mountainArr.get(index) 等于 target 最小 的下标 index 值。
+如果不存在这样的下标 
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/04/29/1095. 山脉数组中查找目标值/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>

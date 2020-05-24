@@ -367,48 +367,26 @@
       
         
           
-            <h1 id="72-Edit-Distance-编辑距离"><a href="#72-Edit-Distance-编辑距离" class="headerlink" title="72*. Edit Distance/编辑距离"></a>72*. Edit Distance/编辑距离</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>给你两个单词 <em>word1</em> 和 <em>word2</em>，请你计算出将 <em>word1</em> 转换成 <em>word2</em> 所使用的最少操作数 。</p>
-<p>你可以对一个单词进行如下三种操作：</p>
-<ol>
-<li>插入一个字符</li>
-<li>删除一个字符</li>
-<li>替换一个字符</li>
-</ol>
-<p><strong>示例 1：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">输入：word1 = &quot;horse&quot;, word2 = &quot;ros&quot;</span><br><span class="line">输出：3</span><br><span class="line">解释：</span><br><span class="line">horse -&gt; rorse (将 &apos;h&apos; 替换为 &apos;r&apos;)</span><br><span class="line">rorse -&gt; rose (删除 &apos;r&apos;)</span><br><span class="line">rose -&gt; ros (删除 &apos;e&apos;)</span><br></pre></td></tr></table></figure>
-<p><strong>示例 2：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">输入：word1 = &quot;intention&quot;, word2 = &quot;execution&quot;</span><br><span class="line">输出：5</span><br><span class="line">解释：</span><br><span class="line">intention -&gt; inention (删除 &apos;t&apos;)</span><br><span class="line">inention -&gt; enention (将 &apos;i&apos; 替换为 &apos;e&apos;)</span><br><span class="line">enention -&gt; exention (将 &apos;n&apos; 替换为 &apos;x&apos;)</span><br><span class="line">exention -&gt; exection (将 &apos;n&apos; 替换为 &apos;c&apos;)</span><br><span class="line">exection -&gt; execution (插入 &apos;u&apos;)</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法：⭐⭐⭐⭐⭐动态规划</p>
-</blockquote>
-<p>这道题第一遍自己没做出来，不过一定要己住这个题目的思路。总体来说可以将题目中的三种操作进行分析</p>
-<ol>
-<li><p>当 <code>word1[i]==word2[j]</code> 时,由于遍历到了 <code>i</code> 和 <code>j</code> ,说明 <code>word1</code> 的 <code>0~i-1</code> 和 <code>word2</code> 的 <code>0~j-1</code> 的匹配结果已经生成,<br>由于当前两个字符相同,因此无需做任何操作, <code>dp[i][j]=dp[i-1][j-1]</code> </p>
-</li>
-<li><p>当 <code>word1[i]!=word2[j]</code> 时,可以进行的操作有3个:</p>
-<pre><code>① 替换操作:可能 `word1` 的 `0~i-1` 位置与 `word2` 的 `0~j-1` 位置的字符都相同,
-     只是当前位置的字符不匹配,进行替换操作后两者变得相同,
-     所以此时 `dp[i][j]=dp[i-1][j-1]+1` (这个加1代表执行替换操作)
-②删除操作:若此时 `word1` 的 `0~i-1` 位置与 `word2` 的 `0~j` 位置已经匹配了,
-   此时多出了 `word1` 的 `i` 位置字符,应把它删除掉,才能使此时 `word1` 的 `0~i ` (这个i是执行了删除操作后新的i)
-   和 `word2` 的 `0~j` 位置匹配,因此此时 `dp[i] [j]=dp[i-1] [j]+1` (这个加1代表执行删除操作)
-③插入操作:若此时 `word1` 的 `0~i` 位置只是和 `word2` 的 `0~j-1` 位置匹配,
-    此时只需要在原来的 `i `位置后面插入一个和 `word2` 的 `j` 位置相同的字符使得
-    此时的 `word1` 的 `0~i` (这个i是执行了插入操作后新的i) 和 `word2` 的 `0~j` 匹配得上,
-    所以此时 `dp[i][j]=dp[i][j-1]+1`  (这个加1代表执行插入操作)
-④由于题目所要求的是要最少的操作数:所以当 `word1[i] != word2[j]`  时,
-    需要在这三个操作中选取一个最小的值赋给当前的 `dp[i][j]` 
-</code></pre></li>
-<li><p>总结:状态方程为:</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(word1[i] == word2[j]):</span><br><span class="line">      dp[i][j] = dp[i<span class="number">-1</span>][j<span class="number">-1</span>]</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">       min(dp[i<span class="number">-1</span>][j<span class="number">-1</span>],dp[i<span class="number">-1</span>][j],dp[i][j<span class="number">-1</span>])+<span class="number">1</span></span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p><img src="../images/72_1.png" alt="72_1"></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">minDistance</span><span class="params">(<span class="built_in">string</span> word1, <span class="built_in">string</span> word2)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = word1.length(), m = word2.length();</span><br><span class="line">        <span class="keyword">if</span>(n * m == <span class="number">0</span>) <span class="keyword">return</span> n + m;</span><br><span class="line">        <span class="keyword">int</span> D[n + <span class="number">1</span>][m + <span class="number">1</span>];</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= n; ++i) &#123;</span><br><span class="line">            D[i][<span class="number">0</span>] = i;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt;= m; ++j) &#123;</span><br><span class="line">            D[<span class="number">0</span>][j] = j;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; ++i) &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= m; ++j) &#123;</span><br><span class="line">                <span class="keyword">int</span> left = D[i - <span class="number">1</span>][j] + <span class="number">1</span>;</span><br><span class="line">                <span class="keyword">int</span> down = D[i][j - <span class="number">1</span>] + <span class="number">1</span>;</span><br><span class="line">                <span class="keyword">int</span> left_down = word1[i - <span class="number">1</span>] == word2[j - <span class="number">1</span>] ? D[i - <span class="number">1</span>][j - <span class="number">1</span>] : D[i - <span class="number">1</span>][j - <span class="number">1</span>] + <span class="number">1</span>;</span><br><span class="line">                D[i][j] = min(left, min(down, left_down));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">return</span> D[n][m];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-          
+          72*. Edit Distance/编辑距离
+题目：
+
+给你两个单词 word1 和 word2，请你计算出将 word1 转换成 word2 所使用的最少操作数 。
+你可以对一个单词进行如下三种操作：
+
+插入一个字符
+删除一个字符
+替换一个字符
+
+示例 1：
+123456输入：word1 = &
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/04/06/72. 编辑距离/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -559,19 +537,20 @@
       
         
           
-            <h1 id="49-字母异位词分组"><a href="#49-字母异位词分组" class="headerlink" title="49. 字母异位词分组"></a>49. 字母异位词分组</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>给定一个字符串数组，将字母异位词组合在一起。字母异位词指字母相同，但排列不同的字符串。</p>
-<p><strong>示例:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">输入: [&quot;eat&quot;, &quot;tea&quot;, &quot;tan&quot;, &quot;ate&quot;, &quot;nat&quot;, &quot;bat&quot;],</span><br><span class="line">输出:</span><br><span class="line">[</span><br><span class="line">  [&quot;ate&quot;,&quot;eat&quot;,&quot;tea&quot;],</span><br><span class="line">  [&quot;nat&quot;,&quot;tan&quot;],</span><br><span class="line">  [&quot;bat&quot;]</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法：哈希表</p>
-</blockquote>
-<p>这道题一看就是需要使用哈希表，我们可以先对每一个读取到的字符串排序，相同的字母组合成的字符串的排序一定是相同的，因此我们每次在哈希表中需要比对的就是同样的字符串了。如果遇到有排序后跟模板字符串相同的，就把排序前的字符串 <code>push_back()</code> 到对应的那一堆当中，这里面用了一个比较巧妙的方法，采用一个 <code>cnt</code> 参数来作为 <code>res</code> 的第一个下标，如果碰到不同的字典就 <code>cnt++</code> ，然后把这个字符串 <code>push</code> 到 <code>res</code> 里面，后面的如果再在哈希表里面遇到就可以直接找到小组 <code>res[m[tmp]].push_back()</code> ;</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&gt; groupAnagrams(<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&amp; strs) &#123;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&gt; res;</span><br><span class="line">        <span class="built_in">string</span> tmp;</span><br><span class="line">        <span class="built_in">unordered_map</span>&lt;<span class="built_in">string</span>,<span class="keyword">int</span>&gt; m;</span><br><span class="line">        <span class="keyword">int</span> cnt = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> str : strs) &#123;</span><br><span class="line">            tmp = str;</span><br><span class="line">            sort(tmp.begin(), tmp.end());</span><br><span class="line">            <span class="keyword">if</span>(m.count(tmp)) res[m[tmp]].push_back(str);</span><br><span class="line">            <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; cur(<span class="number">1</span>, str);</span><br><span class="line">                res.push_back(cur);</span><br><span class="line">                m[tmp] = cnt++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          49. 字母异位词分组
+题目：
 
-          
+给定一个字符串数组，将字母异位词组合在一起。字母异位词指字母相同，但排列不同的字符串。
+示例:
+1234567输入: [&quot;eat&quot;, &quot;tea&quot;, &quot;tan&quot;, &quot;ate&quot;, &quot
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/04/05/49. 字母异位词分组/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -722,26 +701,23 @@
       
         
           
-            <h1 id="48-Rotate-Image-旋转图像"><a href="#48-Rotate-Image-旋转图像" class="headerlink" title="48. Rotate Image/旋转图像"></a>48. Rotate Image/旋转图像</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>给定一个 <em>n</em> × <em>n</em> 的二维矩阵表示一个图像。</p>
-<p>将图像顺时针旋转 90 度。</p>
-<p><strong>说明：</strong></p>
-<p>你必须在<strong>原地</strong>旋转图像，这意味着你需要直接修改输入的二维矩阵。<strong>请不要</strong>使用另一个矩阵来旋转图像。</p>
-<p><strong>示例 1:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">给定 matrix = </span><br><span class="line">[</span><br><span class="line">  [1,2,3],</span><br><span class="line">  [4,5,6],</span><br><span class="line">  [7,8,9]</span><br><span class="line">],</span><br><span class="line"></span><br><span class="line">原地旋转输入矩阵，使其变为:</span><br><span class="line">[</span><br><span class="line">  [7,4,1],</span><br><span class="line">  [8,5,2],</span><br><span class="line">  [9,6,3]</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
-<p><strong>示例 2:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">给定 matrix =</span><br><span class="line">[</span><br><span class="line">  [ 5, 1, 9,11],</span><br><span class="line">  [ 2, 4, 8,10],</span><br><span class="line">  [13, 3, 6, 7],</span><br><span class="line">  [15,14,12,16]</span><br><span class="line">], </span><br><span class="line"></span><br><span class="line">原地旋转输入矩阵，使其变为:</span><br><span class="line">[</span><br><span class="line">  [15,13, 2, 5],</span><br><span class="line">  [14, 3, 4, 1],</span><br><span class="line">  [12, 6, 8, 9],</span><br><span class="line">  [16, 7,10,11]</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法一：⭐⭐⭐从外到内依次旋转法</p>
-</blockquote>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">rotate</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; matrix)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> end = matrix.size() - <span class="number">1</span>, begin = <span class="number">0</span>, tmp = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span>(end - begin &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; end - begin; ++i) &#123;</span><br><span class="line">                tmp = matrix[begin][begin + i];</span><br><span class="line">                matrix[begin][begin + i] = matrix[end - i][begin];</span><br><span class="line">                matrix[end - i][begin] = matrix[end][end - i];</span><br><span class="line">                matrix[end][end - i] = matrix[begin + i][end];</span><br><span class="line">                matrix[begin + i][end] = tmp;</span><br><span class="line">            &#125;</span><br><span class="line">            --end;</span><br><span class="line">            ++begin;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法二：先转置矩阵，再依次 <code>reverse</code> 每一条边</p>
-</blockquote>
+          48. Rotate Image/旋转图像
+题目：
 
-          
+给定一个 n × n 的二维矩阵表示一个图像。
+将图像顺时针旋转 90 度。
+说明：
+你必须在原地旋转图像，这意味着你需要直接修改输入的二维矩阵。请不要使用另一个矩阵来旋转图像。
+示例 1:
+12345678910111213给定 matrix 
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/04/05/48. 旋转图像/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -892,22 +868,19 @@
       
         
           
-            <h1 id="460-LFU-Cache-LFU缓存"><a href="#460-LFU-Cache-LFU缓存" class="headerlink" title="460*. LFU Cache/LFU缓存"></a>460*. LFU Cache/LFU缓存</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>设计并实现<a href="https://baike.baidu.com/item/%E7%BC%93%E5%AD%98%E7%AE%97%E6%B3%95" target="_blank" rel="noopener">最不经常使用（LFU）</a>缓存的数据结构。它应该支持以下操作：<code>get</code> 和 <code>put</code>。</p>
-<p><code>get(key)</code> - 如果键存在于缓存中，则获取键的值（总是正数），否则返回 -1。<br><code>put(key, value)</code> - 如果键不存在，请设置或插入值。当缓存达到其容量时，它应该在插入新项目之前，使最不经常使用的项目无效。在此问题中，当存在平局（即两个或更多个键具有相同使用频率）时，<strong>最近</strong>最少使用的键将被去除。</p>
-<p><strong>进阶：</strong><br>你是否可以在 <strong>O(1)</strong> 时间复杂度内执行两项操作？</p>
-<p><strong>示例：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">LFUCache cache = new LFUCache( 2 /* capacity (缓存容量) */ );</span><br><span class="line"></span><br><span class="line">cache.put(1, 1);</span><br><span class="line">cache.put(2, 2);</span><br><span class="line">cache.get(1);       // 返回 1</span><br><span class="line">cache.put(3, 3);    // 去除 key 2</span><br><span class="line">cache.get(2);       // 返回 -1 (未找到key 2)</span><br><span class="line">cache.get(3);       // 返回 3</span><br><span class="line">cache.put(4, 4);    // 去除 key 1</span><br><span class="line">cache.get(1);       // 返回 -1 (未找到 key 1)</span><br><span class="line">cache.get(3);       // 返回 3</span><br><span class="line">cache.get(4);       // 返回 4</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法：⭐⭐⭐⭐⭐双哈希表实现</p>
-</blockquote>
-<p>这道题属实有点太难了…碰到这种 <code>get</code> <code>put</code> 的问题很自然的想到了哈希表，也想到也许需要两层的结构来保存 <code>freq</code> 和 <code>key</code> 。但是属实做不出来，只能尽量看看官方的实现方法😭。</p>
-<p><img src="../images/460_1.png" alt="460_1"></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Node</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> key, val, freq;</span><br><span class="line">    Node(<span class="keyword">int</span> _key, <span class="keyword">int</span> _val, <span class="keyword">int</span> _freq):key(_key), val(_val), freq(_freq)&#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LFUCache</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">int</span> minfreq, capacity;</span><br><span class="line">    <span class="built_in">unordered_map</span>&lt;<span class="keyword">int</span>, <span class="built_in">list</span>&lt;Node&gt;::iterator&gt; key_table;</span><br><span class="line">    <span class="built_in">unordered_map</span>&lt;<span class="keyword">int</span>, <span class="built_in">list</span>&lt;Node&gt;&gt; freq_table;</span><br><span class="line">    LFUCache(<span class="keyword">int</span> _capacity) &#123;</span><br><span class="line">        minfreq = <span class="number">0</span>;</span><br><span class="line">        capacity = _capacity;</span><br><span class="line">        key_table.clear();</span><br><span class="line">        freq_table.clear();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">get</span><span class="params">(<span class="keyword">int</span> key)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(capacity == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">auto</span> it = key_table.find(key);</span><br><span class="line">        <span class="keyword">if</span>(it == key_table.end()) <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        <span class="built_in">list</span>&lt;Node&gt;::iterator node = it-&gt;second;<span class="comment">//第一个哈希表中的链表值</span></span><br><span class="line">        <span class="keyword">int</span> val = node-&gt;val, freq = node-&gt;freq;</span><br><span class="line">        freq_table[freq].erase(node);</span><br><span class="line">        <span class="comment">//如果freq对应的链表为空，需要在哈希表中删除对应的链表同时将minfreq += 1。</span></span><br><span class="line">        <span class="keyword">if</span>(freq_table[freq].size() == <span class="number">0</span>) &#123;</span><br><span class="line">            freq_table.erase(freq);</span><br><span class="line">            <span class="keyword">if</span>(minfreq == freq) minfreq += <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        freq_table[freq + <span class="number">1</span>].push_front(Node(key, val, freq + <span class="number">1</span>));</span><br><span class="line">        key_table[key] = freq_table[freq + <span class="number">1</span>].begin();</span><br><span class="line">        <span class="keyword">return</span> val;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">put</span><span class="params">(<span class="keyword">int</span> key, <span class="keyword">int</span> value)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(capacity == <span class="number">0</span>) <span class="keyword">return</span>;</span><br><span class="line">        <span class="keyword">auto</span> it = key_table.find(key);</span><br><span class="line">        <span class="keyword">if</span>(it == key_table.end()) &#123;</span><br><span class="line">        <span class="comment">//如果缓存已经满了</span></span><br><span class="line">            <span class="keyword">if</span>(key_table.size() == capacity) &#123;</span><br><span class="line">                <span class="keyword">auto</span> it2 = freq_table[minfreq].back();<span class="comment">//freq_table[minFreq]链表末尾节点</span></span><br><span class="line">                key_table.erase(it2.key);</span><br><span class="line">                freq_table[minfreq].pop_back();</span><br><span class="line">                <span class="keyword">if</span>(freq_table[minfreq].size() == <span class="number">0</span>) freq_table.erase(minfreq);</span><br><span class="line">            &#125;</span><br><span class="line">            freq_table[<span class="number">1</span>].push_front(Node(key, value, <span class="number">1</span>));</span><br><span class="line">            key_table[key] = freq_table[<span class="number">1</span>].begin();</span><br><span class="line">            minfreq = <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// 与 get 操作基本一致，除了需要更新缓存的值</span></span><br><span class="line">            <span class="built_in">list</span>&lt;Node&gt;::iterator node = it -&gt; second;</span><br><span class="line">            <span class="keyword">int</span> freq = node -&gt; freq;</span><br><span class="line">            freq_table[freq].erase(node);</span><br><span class="line">            <span class="keyword">if</span> (freq_table[freq].size() == <span class="number">0</span>) &#123;</span><br><span class="line">                freq_table.erase(freq);</span><br><span class="line">                <span class="keyword">if</span> (minfreq == freq) minfreq += <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            freq_table[freq + <span class="number">1</span>].push_front(Node(key, value, freq + <span class="number">1</span>));</span><br><span class="line">            key_table[key] = freq_table[freq + <span class="number">1</span>].begin();        </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;  </span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Your LFUCache object will be instantiated and called as such:</span></span><br><span class="line"><span class="comment"> * LFUCache* obj = new LFUCache(capacity);</span></span><br><span class="line"><span class="comment"> * int param_1 = obj-&gt;get(key);</span></span><br><span class="line"><span class="comment"> * obj-&gt;put(key,value);</span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure>
+          460*. LFU Cache/LFU缓存
+题目：
 
-          
+设计并实现最不经常使用（LFU）缓存的数据结构。它应该支持以下操作：get 和 put。
+get(key) - 如果键存在于缓存中，则获取键的值（总是正数），否则返回 -1。put(key, value) - 如果键不存在，请设置或插入值。当缓存
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/04/05/460. LFU缓存/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1058,19 +1031,24 @@
       
         
           
-            <h1 id="47-全排列-II"><a href="#47-全排列-II" class="headerlink" title="47. 全排列 II"></a>47. 全排列 II</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>给定一个可包含重复数字的序列，返回所有不重复的全排列。</p>
-<p><strong>示例:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">输入: [1,1,2]</span><br><span class="line">输出:</span><br><span class="line">[</span><br><span class="line">  [1,1,2],</span><br><span class="line">  [1,2,1],</span><br><span class="line">  [2,1,1]</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法：⭐⭐⭐哈希表+回溯算法</p>
-</blockquote>
-<p>利用哈希表的 <code>iteration</code> 迭代代替正常回溯算法中的 <code>for</code> 循环，这样可以有效地避免重复数字两次分别当头节点导致重复的问题，用哈希表的 <code>iteration</code> 就很公平，每个元素的地位在迭代中是相同的，如果元素的计数为0则要 <code>continue</code> 。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; permuteUnique(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums) &#123;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; res;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; tmp;</span><br><span class="line">        <span class="built_in">unordered_map</span>&lt;<span class="keyword">int</span>,<span class="keyword">int</span>&gt; m;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> n : nums) ++m[n];</span><br><span class="line">        backTrack(nums, res, tmp, m);</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">backTrack</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums, <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; res, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; tmp, <span class="built_in">unordered_map</span>&lt;<span class="keyword">int</span>,<span class="keyword">int</span>&gt;&amp; m)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(tmp.size() == nums.size()) &#123;</span><br><span class="line">            res.push_back(tmp);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span>&amp; it : m) &#123;</span><br><span class="line">            <span class="keyword">if</span>(it.second == <span class="number">0</span>) <span class="keyword">continue</span>;</span><br><span class="line">            --it.second;</span><br><span class="line">            tmp.push_back(it.first);</span><br><span class="line">            backTrack(nums, res, tmp, m);</span><br><span class="line">            ++it.second;</span><br><span class="line">            tmp.pop_back();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          47. 全排列 II
+题目：
 
-          
+给定一个可包含重复数字的序列，返回所有不重复的全排列。
+示例:
+1234567输入: [1,1,2]输出:[  [1,1,2],  [1,2,1],  [2,1,1]]
+
+解法：⭐⭐⭐哈希表+回溯算法
+
+利用哈希表的 iteration 迭代代替正常回溯算法中的 fo
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/04/05/47. 全排列 II/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1221,18 +1199,22 @@
       
         
           
-            <h1 id="46-Permutations-全排列"><a href="#46-Permutations-全排列" class="headerlink" title="46. Permutations/全排列"></a>46. Permutations/全排列</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>给定一个 <strong>没有重复</strong> 数字的序列，返回其所有可能的全排列。</p>
-<p><strong>示例:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">输入: [1,2,3]</span><br><span class="line">输出:</span><br><span class="line">[</span><br><span class="line">  [1,2,3],</span><br><span class="line">  [1,3,2],</span><br><span class="line">  [2,1,3],</span><br><span class="line">  [2,3,1],</span><br><span class="line">  [3,1,2],</span><br><span class="line">  [3,2,1]</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法：⭐⭐DFS+回溯算法</p>
-</blockquote>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; permute(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums) &#123;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; res;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">bool</span>&gt; used(nums.size(), <span class="literal">false</span>);</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; tmp;</span><br><span class="line">        backTrack(nums, res, tmp, used);</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">backTrack</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums, <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; res, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; tmp, <span class="built_in">vector</span>&lt;<span class="keyword">bool</span>&gt;&amp; used)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(tmp.size() == nums.size()) &#123;</span><br><span class="line">            res.push_back(tmp);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nums.size(); ++i) &#123;</span><br><span class="line">            <span class="keyword">if</span>(!used[i]) &#123;</span><br><span class="line">                used[i] = <span class="literal">true</span>;</span><br><span class="line">                tmp.push_back(nums[i]);</span><br><span class="line">                backTrack(nums, res, tmp, used);</span><br><span class="line">                tmp.pop_back();</span><br><span class="line">                used[i] = <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          46. Permutations/全排列
+题目：
 
-          
+给定一个 没有重复 数字的序列，返回其所有可能的全排列。
+示例:
+12345678910输入: [1,2,3]输出:[  [1,2,3],  [1,3,2],  [2,1,3],  [2,3,1],  [3,1,2],  [3,2,1]]
+
+解法：
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/04/04/46. 全排列/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1383,28 +1365,22 @@
       
         
           
-            <h1 id="45-Jump-Game-II-跳跃游戏-II"><a href="#45-Jump-Game-II-跳跃游戏-II" class="headerlink" title="45. Jump Game II/跳跃游戏 II"></a>45. Jump Game II/跳跃游戏 II</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>给定一个非负整数数组，你最初位于数组的第一个位置。</p>
-<p>数组中的每个元素代表你在该位置可以跳跃的最大长度。</p>
-<p>你的目标是使用最少的跳跃次数到达数组的最后一个位置。</p>
-<p><strong>示例:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输入: [2,3,1,1,4]</span><br><span class="line">输出: 2</span><br><span class="line">解释: 跳到最后一个位置的最小跳跃数是 2。</span><br><span class="line">     从下标为 0 跳到下标为 1 的位置，跳 1 步，然后跳 3 步到达数组的最后一个位置。</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法一：动态规划</p>
-</blockquote>
-<p>一上来想到的是动态规划的思想，在每次遍历到一个新元素的时候就更新一遍后面位置的元素所需要的最少跳跃次数。可惜 <code>O(N^2)</code> 的时间复杂度，有一个测试样例超时了-。-</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">jump</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = nums.size();</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; dp(n + <span class="number">1</span>, <span class="number">0</span>);<span class="comment">//dp[i]表示到达nums[i]这个位置最少需要的跳跃次数</span></span><br><span class="line">        dp[<span class="number">0</span>] = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span>(n == <span class="number">1</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= nums[<span class="number">0</span>]; ++i) &#123;</span><br><span class="line">            <span class="keyword">if</span>(nums[<span class="number">0</span>] &gt;= n) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">            dp[i] = <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; n;++i) &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= nums[i]; ++j) &#123;</span><br><span class="line">                <span class="keyword">if</span>(i + j &gt;= n) <span class="keyword">break</span>;</span><br><span class="line">                dp[i + j] = dp[i + j] == <span class="number">0</span>? dp[i] + <span class="number">1</span> : min(dp[i + j], dp[i] + <span class="number">1</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">return</span> dp[n - <span class="number">1</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法二：⭐⭐⭐⭐⭐贪心算法</p>
-</blockquote>
-<p>不得不说我的动态规划还是略显笨拙，里面有很多的步骤其实是重复的加和过程。这里面参考了别人的双100%解法，利用贪心算法来记录下来每一次跳跃所能跳到的最远距离，同时将这个距离作为这一层跳跃的 <code>end</code> 。当这一层跳跃结束遍历的时候，把当前记录的所能跳到的最远距离记录下来作为下一层跳跃的end。以此向下以O(N)的时间复杂度遍历。</p>
-<p>这种做法是在确定了必定可以跳到最后时，尽管可能有多种方法都以最小跳跃次数到达终点，只在乎目前每一步可以跳到的最远位置。</p>
-<p>这种贪心法巧妙地得到了这个最小跳跃次数。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">jump</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> end = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> maxPos = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> n = nums.size();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n - <span class="number">1</span>; i++) &#123;</span><br><span class="line">            maxPos = max(nums[i] + i, maxPos);</span><br><span class="line">            <span class="keyword">if</span>(maxPos &gt;= n - <span class="number">1</span>) <span class="keyword">return</span> ans + <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">if</span> (i == end)</span><br><span class="line">            &#123;</span><br><span class="line">                end = maxPos;</span><br><span class="line">                ans++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          45. Jump Game II/跳跃游戏 II
+题目：
 
-          
+给定一个非负整数数组，你最初位于数组的第一个位置。
+数组中的每个元素代表你在该位置可以跳跃的最大长度。
+你的目标是使用最少的跳跃次数到达数组的最后一个位置。
+示例:
+1234输入: [2,3,1,1,4]输出: 2解释: 跳到最后一个位置的
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/04/04/45. 跳跃游戏 II/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1555,38 +1531,19 @@
       
         
           
-            <h1 id="44-Wildcard-Matching-通配符匹配"><a href="#44-Wildcard-Matching-通配符匹配" class="headerlink" title="44. Wildcard Matching/通配符匹配"></a>44. Wildcard Matching/通配符匹配</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>给定一个字符串 (<code>s</code>) 和一个字符模式 (<code>p</code>) ，实现一个支持 <code>&#39;?&#39;</code> 和 <code>&#39;*&#39;</code> 的通配符匹配。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&apos;?&apos; 可以匹配任何单个字符。</span><br><span class="line">&apos;*&apos; 可以匹配任意字符串（包括空字符串）。</span><br></pre></td></tr></table></figure>
-<p>两个字符串<strong>完全匹配</strong>才算匹配成功。</p>
-<p><strong>说明:</strong></p>
-<ul>
-<li><code>s</code> 可能为空，且只包含从 <code>a-z</code> 的小写字母。</li>
-<li><code>p</code> 可能为空，且只包含从 <code>a-z</code> 的小写字母，以及字符 <code>?</code> 和 <code>*</code>。</li>
-</ul>
-<p><strong>示例 1:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">输入:</span><br><span class="line">s = &quot;aa&quot;</span><br><span class="line">p = &quot;a&quot;</span><br><span class="line">输出: false</span><br><span class="line">解释: &quot;a&quot; 无法匹配 &quot;aa&quot; 整个字符串。</span><br></pre></td></tr></table></figure>
-<p><strong>示例 2:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">输入:</span><br><span class="line">s = &quot;aa&quot;</span><br><span class="line">p = &quot;*&quot;</span><br><span class="line">输出: true</span><br><span class="line">解释: &apos;*&apos; 可以匹配任意字符串。</span><br></pre></td></tr></table></figure>
-<p><strong>示例 3:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">输入:</span><br><span class="line">s = &quot;cb&quot;</span><br><span class="line">p = &quot;?a&quot;</span><br><span class="line">输出: false</span><br><span class="line">解释: &apos;?&apos; 可以匹配 &apos;c&apos;, 但第二个 &apos;a&apos; 无法匹配 &apos;b&apos;。</span><br></pre></td></tr></table></figure>
-<p><strong>示例 4:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">输入:</span><br><span class="line">s = &quot;adceb&quot;</span><br><span class="line">p = &quot;*a*b&quot;</span><br><span class="line">输出: true</span><br><span class="line">解释: 第一个 &apos;*&apos; 可以匹配空字符串, 第二个 &apos;*&apos; 可以匹配字符串 &quot;dce&quot;.</span><br></pre></td></tr></table></figure>
-<p><strong>示例 5:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输入:</span><br><span class="line">s = &quot;acdcb&quot;</span><br><span class="line">p = &quot;a*c?b&quot;</span><br><span class="line">输入: false</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法一：⭐动态规划</p>
-</blockquote>
-<p>这道题跟前面的 <code>Leetcode 10</code> 正则表达式匹配很像，都是可以用动态规划来做。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isMatch</span><span class="params">(<span class="built_in">string</span> s, <span class="built_in">string</span> p)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> m = s.size(), n = p.size();</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">bool</span>&gt;&gt; dp(m + <span class="number">1</span>, <span class="built_in">vector</span>&lt;<span class="keyword">bool</span>&gt;(n + <span class="number">1</span>, <span class="literal">false</span>));</span><br><span class="line">        dp[<span class="number">0</span>][<span class="number">0</span>] = <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= n; ++j) &#123;</span><br><span class="line">            <span class="keyword">if</span>(p[j - <span class="number">1</span>] == <span class="string">'*'</span> &amp;&amp; dp[<span class="number">0</span>][j - <span class="number">1</span>]) dp[<span class="number">0</span>][j] = dp[<span class="number">0</span>][j - <span class="number">1</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= m; ++i) &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= n; ++j) &#123;</span><br><span class="line">                <span class="keyword">if</span>(p[j - <span class="number">1</span>] == <span class="string">'?'</span> || s[i - <span class="number">1</span>] == p[j - <span class="number">1</span>]) dp[i][j] = dp[i - <span class="number">1</span>][j - <span class="number">1</span>];</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span>(p[j - <span class="number">1</span>] == <span class="string">'*'</span> &amp;&amp; (dp[i][j - <span class="number">1</span>] || dp[i - <span class="number">1</span>][j])) dp[i][j] = <span class="literal">true</span>;<span class="comment">//前面的相当于*不计算，后面的相当于*算连续的字符串，因为只要dp[i-1][j]能匹配上，dp[i][j]就一定能匹配上。</span></span><br><span class="line">                <span class="keyword">else</span> dp[i][j] = <span class="literal">false</span>; </span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">return</span> dp[m][n];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法二：⭐⭐⭐双指针+贪心算法+回溯法</p>
-</blockquote>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isMatch</span><span class="params">(<span class="built_in">string</span> s, <span class="built_in">string</span> p)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">0</span>, j = <span class="number">0</span>, iStar = <span class="number">-1</span>, jStar = <span class="number">-1</span>, m = s.size(), n = p.size();</span><br><span class="line">        <span class="keyword">while</span> (i &lt; m) &#123;</span><br><span class="line">            <span class="keyword">if</span> (j &lt; n &amp;&amp; (s[i] == p[j] || p[j] == <span class="string">'?'</span>)) &#123;</span><br><span class="line">                ++i, ++j;<span class="comment">//i，j向后顺移</span></span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (j &lt; n &amp;&amp; p[j] == <span class="string">'*'</span>) &#123;<span class="comment">//记录如果之后序列匹配不成功时， i和j需要回溯到的位置</span></span><br><span class="line">                iStar = i;<span class="comment">//记录星号</span></span><br><span class="line">                jStar = j++;<span class="comment">//记录星号 并且j移到下一位 准备下个循环s[i]和p[j]的匹配</span></span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (iStar &gt;= <span class="number">0</span>) &#123;<span class="comment">//发现字符不匹配且没有星号出现 但是istar&gt;0 说明可能是*匹配的字符数量不对 这时回溯</span></span><br><span class="line">                i = ++iStar;<span class="comment">//i回溯到istar+1 因为上次从s串istar开始对*的尝试匹配已经被证明是不成功的（不然不会落入此分支） 所以需要从istar+1再开始试 同时inc istar 更新回溯位置</span></span><br><span class="line">                j = jStar + <span class="number">1</span>;<span class="comment">//j回溯到jstar+1 重新使用p串*后的部分开始对s串istar（这个istar在上一行已经inc过了）位置及之后字符的匹配 </span></span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span> (j &lt; n &amp;&amp; p[j] == <span class="string">'*'</span>) ++j;<span class="comment">//去除多余星号</span></span><br><span class="line">        <span class="keyword">return</span> j == n;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          44. Wildcard Matching/通配符匹配
+题目：
 
-          
+给定一个字符串 (s) 和一个字符模式 (p) ，实现一个支持 &#39;?&#39; 和 &#39;*&#39; 的通配符匹配。
+12&apos;?&apos; 可以匹配任何单个字符。&apos;*&apos; 可以匹配任意字符串（
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/04/03/44. 通配符匹配/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1737,34 +1694,20 @@
       
         
           
-            <h1 id="43-Multiply-Strings-字符串相乘"><a href="#43-Multiply-Strings-字符串相乘" class="headerlink" title="43. Multiply Strings/字符串相乘"></a>43. Multiply Strings/字符串相乘</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>给定两个以字符串形式表示的非负整数 <code>num1</code> 和 <code>num2</code>，返回 <code>num1</code> 和 <code>num2</code> 的乘积，它们的乘积也表示为字符串形式。</p>
-<p><strong>示例 1:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: num1 = &quot;2&quot;, num2 = &quot;3&quot;</span><br><span class="line">输出: &quot;6&quot;</span><br></pre></td></tr></table></figure>
-<p><strong>示例 2:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: num1 = &quot;123&quot;, num2 = &quot;456&quot;</span><br><span class="line">输出: &quot;56088&quot;</span><br></pre></td></tr></table></figure>
-<p><strong>说明：</strong></p>
-<ol>
-<li><code>num1</code> 和 <code>num2</code> 的长度小于110。</li>
-<li><code>num1</code> 和 <code>num2</code> 只包含数字 <code>0-9</code>。</li>
-<li><code>num1</code> 和 <code>num2</code> 均不以零开头，除非是数字 0 本身。</li>
-<li><strong>不能使用任何标准库的大数类型（比如 BigInteger）</strong>或<strong>直接将输入转换为整数来处理</strong>。</li>
-</ol>
-<blockquote>
-<p>解法：⭐⭐⭐模拟按位乘法</p>
-</blockquote>
-<p>这里面对于两个字符串，分三步进行乘法运算：</p>
-<ol>
-<li>分别对每个 i , j 进行单个位置的乘法并且循环累加不同 rec[i + j + 1]位置的数字</li>
-<li>取模运算+进位运算</li>
-<li>从头到尾保存为字符串res。</li>
-</ol>
-<p><img src="../images/43_1.jpg" alt="43_1"></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="built_in">string</span> <span class="title">multiply</span><span class="params">(<span class="built_in">string</span> num1, <span class="built_in">string</span> num2)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n1 = num1.size(), n2 = num2.size();</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; rec(n1 + n2, <span class="number">0</span>);</span><br><span class="line">        <span class="built_in">string</span> res = <span class="string">""</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n1; ++i) &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; n2; ++j) &#123;</span><br><span class="line">                rec[i + j + <span class="number">1</span>] += (num1[i] - <span class="string">'0'</span>) * (num2[j] - <span class="string">'0'</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = n1 + n2 - <span class="number">1</span>; i &gt; <span class="number">0</span>; --i) &#123;</span><br><span class="line">            rec[i - <span class="number">1</span>] += rec[i] / <span class="number">10</span>;</span><br><span class="line">            rec[i] = rec[i] % <span class="number">10</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> t = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span>(rec[t] == <span class="number">0</span>) ++t;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = t; i &lt; n1 + n2; ++i) &#123;</span><br><span class="line">            res.push_back(<span class="string">'0'</span> + rec[t]);</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">return</span> res;        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          43. Multiply Strings/字符串相乘
+题目：
 
-          
+给定两个以字符串形式表示的非负整数 num1 和 num2，返回 num1 和 num2 的乘积，它们的乘积也表示为字符串形式。
+示例 1:
+12输入: num1 = &quot;2&quot;, num2 = &quot;3&quot
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/04/03/43. 字符串相乘/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1915,48 +1858,24 @@
       
         
           
-            <h1 id="42-Trapping-Rain-Water-接雨水"><a href="#42-Trapping-Rain-Water-接雨水" class="headerlink" title="42. Trapping Rain Water/接雨水"></a>42. Trapping Rain Water/接雨水</h1><blockquote>
-<p>题目：</p>
-</blockquote>
-<p>给定 <em>n</em> 个非负整数表示每个宽度为 1 的柱子的高度图，计算按此排列的柱子，下雨之后能接多少雨水。</p>
-<p><strong>示例:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: [0,1,0,2,1,0,1,3,2,1,2,1]</span><br><span class="line">输出: 6</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法一：⭐⭐⭐动态规划</p>
-</blockquote>
-<p>刚开始自己没做出来，想用的是暴力解法，从左到右进行 <code>O(n^2)</code> 的遍历，但是实现的时候发现自己本来的想法有点问题。这里面其实相当于对这道题的本质进行了一个剖析，也就是：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">任何一个点的最大蓄水量 = min(左侧的最大高度， 右侧的最大高度) - 该点的高度</span><br></pre></td></tr></table></figure>
-<p>这一点是这道问题的核心，那么对于左侧最大高度和右侧最大高度可以使用两个动态数组来确定，这样最终的时间复杂度为 <code>O(N)</code> 。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    int trap(vector&lt;int&gt;&amp; height)</span><br><span class="line">    &#123;</span><br><span class="line">        if(height.size() == 0) return 0;</span><br><span class="line">        int ans = 0;</span><br><span class="line">        int size = height.size();</span><br><span class="line">        vector&lt;int&gt; left_max(size), right_max(size);</span><br><span class="line">        left_max[0] = height[0];</span><br><span class="line">        for (int i = 1; i &lt; size; i++) &#123;</span><br><span class="line">            left_max[i] = max(height[i], left_max[i - 1]);</span><br><span class="line">        &#125;</span><br><span class="line">        right_max[size - 1] = height[size - 1];</span><br><span class="line">        for (int i = size - 2; i &gt;= 0; i--) &#123;</span><br><span class="line">            right_max[i] = max(height[i], right_max[i + 1]);</span><br><span class="line">        &#125;</span><br><span class="line">        for (int i = 1; i &lt; size - 1; i++) &#123;</span><br><span class="line">            ans += min(left_max[i], right_max[i]) - height[i];</span><br><span class="line">        &#125;</span><br><span class="line">        return ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法二：⭐⭐⭐⭐⭐栈</p>
-</blockquote>
-<p>思路是：</p>
-<p>我们在遍历数组时维护一个栈。如果当前的条形块小于或等于栈顶的条形块，我们将条形块的索引入栈，意思是当前的条形块被栈中的前一个条形块界定。如果我们发现一个条形块长于栈顶，我们可以确定栈顶的条形块被当前条形块和栈的前一个条形块界定，因此我们可以弹出栈顶元素并且累加答案到 <code>ans</code> 。</p>
-<blockquote>
-<p>算法</p>
-</blockquote>
-<p>使用栈来存储条形块的索引下标。<br>遍历数组：</p>
-<ol>
-<li>当栈非空且 <code>height[current] &gt; height[st.top()]</code><br>意味着栈中元素可以被弹出。弹出栈顶元素 <code>top</code> 。<br>计算当前元素和栈顶元素的距离，准备进行填充操作<br><code>distance=current − st.top() − 1</code><br>找出界定高度<br><code>bounded_height = min(height[current],height[st.top()]) − height[top]</code><br>往答案中累加积水量 <code>ans+=distance × bounded_height</code></li>
-<li>将当前索引下标入栈</li>
-<li>将 <code>current</code> 移动到下个位置</li>
-</ol>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">trap</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; height)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> ans = <span class="number">0</span>, current = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">stack</span>&lt;<span class="keyword">int</span>&gt; st;</span><br><span class="line">        <span class="keyword">while</span> (current &lt; height.size()) &#123;</span><br><span class="line">            <span class="keyword">while</span> (!st.empty() &amp;&amp; height[current] &gt; height[st.top()]) &#123;</span><br><span class="line">                <span class="keyword">int</span> top = st.top();</span><br><span class="line">                st.pop();</span><br><span class="line">                <span class="keyword">if</span> (st.empty())</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                <span class="keyword">int</span> distance = current - st.top() - <span class="number">1</span>;</span><br><span class="line">                <span class="keyword">int</span> bounded_height = min(height[current], height[st.top()]) - height[top];</span><br><span class="line">                ans += distance * bounded_height;</span><br><span class="line">            &#125;</span><br><span class="line">            st.push(current++);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>解法三：⭐⭐⭐⭐⭐双指针法</p>
-</blockquote>
-<p>双指针的思想相当于是对于解法一的一个剪枝过程，数组必有一个 ”山顶“（若有多个高度相同山顶，任取一个即可）。根据”木桶原理“，山顶左侧的元素的盛水量 ，由左侧最大值决定；山顶右侧元素的盛水量，由右侧最大值决定。双指针法的两个指针最终会停在 “山顶” 处。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">             top</span><br><span class="line">              __</span><br><span class="line">            _/  \       __</span><br><span class="line">     __    /     \     /  \</span><br><span class="line">_   /  \__/       \___/    \     __</span><br><span class="line"> \_/                        \___/</span><br></pre></td></tr></table></figure>
-<p><img src="../images/42_1.png" alt="42_1"></p>
-<p>从上面图片可以看出，在动态规划的算法中，如果 <code>right_max[i] &gt;= left_max[i]</code> ，也就是上面的粉色块，积水的高度与当前遍历的<code>left_max</code> 决定，同时我们要不断遍历动态更新当前的 <code>left_max[i]</code> ；如果 <code>right_max[i] &lt; left_max[i]</code> ，也就是上面的蓝色块，积水的高度由当前遍历的 <code>right_max</code> 决定，同时我们要不断遍历动态更新当前的 <code>right_max[i]</code> 。如果当前我们的left == right了，说明遍历结束，而此时指向的一定是峰值。</p>
-<p>算法</p>
-<p>初始化 <code>left</code> 指针为 <code>0</code> 并且 <code>right</code> 指针为 <code>size - 1</code></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">While (left &lt; right), <span class="keyword">do</span>:</span><br><span class="line">If height[left] &lt; height[right]</span><br><span class="line">If height[left]≥left_max, 更新 left_max</span><br><span class="line">Else 累加 left_max−height[left] 到 ans</span><br><span class="line">left = left + <span class="number">1.</span></span><br><span class="line">Else</span><br><span class="line">If height[right]≥right_max, 更新 right_max</span><br><span class="line">Else 累加 right_max−height[right] 到 ans</span><br><span class="line">right = right - <span class="number">1.</span></span><br></pre></td></tr></table></figure>
-<p>具体实现如下：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">trap</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; height)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> left = <span class="number">0</span>, right = height.size() - <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> left_max = <span class="number">0</span>, right_max = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (left &lt; right) &#123;</span><br><span class="line">        <span class="keyword">if</span> (height[left] &lt; height[right]) &#123;</span><br><span class="line">            height[left] &gt;= left_max ? (left_max = height[left]) : ans += (left_max - height[left]);</span><br><span class="line">            ++left;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            height[right] &gt;= right_max ? (right_max = height[right]) : ans += (right_max - height[right]);</span><br><span class="line">            --right;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          42. Trapping Rain Water/接雨水
+题目：
 
-          
+给定 n 个非负整数表示每个宽度为 1 的柱子的高度图，计算按此排列的柱子，下雨之后能接多少雨水。
+示例:
+12输入: [0,1,0,2,1,0,1,3,2,1,2,1]输出: 6
+
+解法一：⭐⭐⭐动态规划
+
+刚开始自己没做出来，想用
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/04/03/42. 接雨水/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
