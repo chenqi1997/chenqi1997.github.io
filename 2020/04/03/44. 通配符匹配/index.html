@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Cq的Blog">
 <meta property="og:description" content="44. Wildcard Matching/通配符匹配 题目：  给定一个字符串 (s) 和一个字符模式 (p) ，实现一个支持 &amp;#39;?&amp;#39; 和 &amp;#39;*&amp;#39; 的通配符匹配。 12&amp;apos;?&amp;apos; 可以匹配任何单个字符。&amp;apos;*&amp;apos; 可以匹配任意字符串（包括空字符串）。 两个字符串完全匹配才算匹配成功。 说明:  s 可能为空，且只包含从 a-z 的小">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-04-03T11:02:57.193Z">
+<meta property="og:updated_time" content="2020-05-27T10:22:44.468Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Leetcode_44 通配符匹配">
 <meta name="twitter:description" content="44. Wildcard Matching/通配符匹配 题目：  给定一个字符串 (s) 和一个字符模式 (p) ，实现一个支持 &amp;#39;?&amp;#39; 和 &amp;#39;*&amp;#39; 的通配符匹配。 12&amp;apos;?&amp;apos; 可以匹配任何单个字符。&amp;apos;*&amp;apos; 可以匹配任意字符串（包括空字符串）。 两个字符串完全匹配才算匹配成功。 说明:  s 可能为空，且只包含从 a-z 的小">
@@ -388,6 +388,15 @@
 <p>解法一：⭐动态规划</p>
 </blockquote>
 <p>这道题跟前面的 <code>Leetcode 10</code> 正则表达式匹配很像，都是可以用动态规划来做。</p>
+<h4 id="dp数组定义"><a href="#dp数组定义" class="headerlink" title="dp数组定义"></a>dp数组定义</h4><p><code>dp[i][j]</code> 的含义是，字符串 <code>s</code> 的前 <code>i</code> 个字符和字符串 <code>p</code> 的前 <code>j</code> 个字符的匹配情况。</p>
+<h4 id="状态转移方程"><a href="#状态转移方程" class="headerlink" title="状态转移方程"></a>状态转移方程</h4><ol>
+<li><code>p[j - 1] == &#39;?&#39; || s[i - 1] == p[j - 1]</code> 的时候，<code>dp[i][j] = dp[i - 1][j - 1]</code> 。</li>
+<li><code>p[j - 1] == &#39;*&#39;</code> 还需要分情况讨论：<ol>
+<li><code>*</code> 用做空字符串，相当于这个 <code>∗</code> 没有了，直接看 <code>dp[i][j - 1]</code> 是否能匹配。</li>
+<li><code>*</code> 用来匹配任意多个字符，那么只需要判断 <code>dp[i-1][j]</code> 是否匹配，因为<code>*</code> 能匹配一切，因此只要<code>*</code>在时<strong>前面的匹配上了</strong>，现在已经还是可以匹配的，因为相当于用 <code>*</code> 去匹配了 <code>s[j - 1]</code> 。</li>
+</ol>
+</li>
+</ol>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isMatch</span><span class="params">(<span class="built_in">string</span> s, <span class="built_in">string</span> p)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> m = s.size(), n = p.size();</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">bool</span>&gt;&gt; dp(m + <span class="number">1</span>, <span class="built_in">vector</span>&lt;<span class="keyword">bool</span>&gt;(n + <span class="number">1</span>, <span class="literal">false</span>));</span><br><span class="line">        dp[<span class="number">0</span>][<span class="number">0</span>] = <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= n; ++j) &#123;</span><br><span class="line">            <span class="keyword">if</span>(p[j - <span class="number">1</span>] == <span class="string">'*'</span> &amp;&amp; dp[<span class="number">0</span>][j - <span class="number">1</span>]) dp[<span class="number">0</span>][j] = dp[<span class="number">0</span>][j - <span class="number">1</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= m; ++i) &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= n; ++j) &#123;</span><br><span class="line">                <span class="keyword">if</span>(p[j - <span class="number">1</span>] == <span class="string">'?'</span> || s[i - <span class="number">1</span>] == p[j - <span class="number">1</span>]) dp[i][j] = dp[i - <span class="number">1</span>][j - <span class="number">1</span>];</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span>(p[j - <span class="number">1</span>] == <span class="string">'*'</span> &amp;&amp; (dp[i][j - <span class="number">1</span>] || dp[i - <span class="number">1</span>][j])) dp[i][j] = <span class="literal">true</span>;<span class="comment">//前面的相当于*不计算，后面的相当于*算连续的字符串，因为只要dp[i-1][j]能匹配上，dp[i][j]就一定能匹配上。</span></span><br><span class="line">                <span class="keyword">else</span> dp[i][j] = <span class="literal">false</span>; </span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">return</span> dp[m][n];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>解法二：⭐⭐⭐双指针+贪心算法+回溯法</p>
@@ -520,7 +529,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">300</span>
+                  <span class="site-state-item-count">301</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -531,7 +540,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-count">16</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -542,7 +551,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">75</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -597,7 +606,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#44-Wildcard-Matching-通配符匹配"><span class="nav-number">1.</span> <span class="nav-text">44. Wildcard Matching/通配符匹配</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#44-Wildcard-Matching-通配符匹配"><span class="nav-number">1.</span> <span class="nav-text">44. Wildcard Matching/通配符匹配</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#dp数组定义"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">dp数组定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#状态转移方程"><span class="nav-number">1.0.0.2.</span> <span class="nav-text">状态转移方程</span></a></li></ol></li></ol></div>
             
 
           </div>

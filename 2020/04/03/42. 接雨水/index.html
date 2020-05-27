@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="双指针,栈,动态规划,">
+  <meta name="keywords" content="动态规划,双指针,单调栈,">
 
 
 
@@ -80,19 +80,20 @@
 
 
 <meta name="description" content="42. Trapping Rain Water/接雨水 题目：  给定 n 个非负整数表示每个宽度为 1 的柱子的高度图，计算按此排列的柱子，下雨之后能接多少雨水。 示例: 12输入: [0,1,0,2,1,0,1,3,2,1,2,1]输出: 6  解法一：⭐⭐⭐动态规划  刚开始自己没做出来，想用的是暴力解法，从左到右进行 O(n^2) 的遍历，但是实现的时候发现自己本来的想法有点问题。这里面其">
-<meta name="keywords" content="双指针,栈,动态规划">
+<meta name="keywords" content="动态规划,双指针,单调栈">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Leetcode_42 接雨水">
 <meta property="og:url" content="http://yoursite.com/2020/04/03/42. 接雨水/index.html">
 <meta property="og:site_name" content="Cq的Blog">
 <meta property="og:description" content="42. Trapping Rain Water/接雨水 题目：  给定 n 个非负整数表示每个宽度为 1 的柱子的高度图，计算按此排列的柱子，下雨之后能接多少雨水。 示例: 12输入: [0,1,0,2,1,0,1,3,2,1,2,1]输出: 6  解法一：⭐⭐⭐动态规划  刚开始自己没做出来，想用的是暴力解法，从左到右进行 O(n^2) 的遍历，但是实现的时候发现自己本来的想法有点问题。这里面其">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2020/04/03/images/42_2.png">
 <meta property="og:image" content="http://yoursite.com/2020/04/03/images/42_1.png">
-<meta property="og:updated_time" content="2020-04-03T07:35:27.807Z">
+<meta property="og:updated_time" content="2020-05-27T07:26:55.027Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Leetcode_42 接雨水">
 <meta name="twitter:description" content="42. Trapping Rain Water/接雨水 题目：  给定 n 个非负整数表示每个宽度为 1 的柱子的高度图，计算按此排列的柱子，下雨之后能接多少雨水。 示例: 12输入: [0,1,0,2,1,0,1,3,2,1,2,1]输出: 6  解法一：⭐⭐⭐动态规划  刚开始自己没做出来，想用的是暴力解法，从左到右进行 O(n^2) 的遍历，但是实现的时候发现自己本来的想法有点问题。这里面其">
-<meta name="twitter:image" content="http://yoursite.com/2020/04/03/images/42_1.png">
+<meta name="twitter:image" content="http://yoursite.com/2020/04/03/images/42_2.png">
 
 
 
@@ -379,7 +380,7 @@
 <p>这一点是这道问题的核心，那么对于左侧最大高度和右侧最大高度可以使用两个动态数组来确定，这样最终的时间复杂度为 <code>O(N)</code> 。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    int trap(vector&lt;int&gt;&amp; height)</span><br><span class="line">    &#123;</span><br><span class="line">        if(height.size() == 0) return 0;</span><br><span class="line">        int ans = 0;</span><br><span class="line">        int size = height.size();</span><br><span class="line">        vector&lt;int&gt; left_max(size), right_max(size);</span><br><span class="line">        left_max[0] = height[0];</span><br><span class="line">        for (int i = 1; i &lt; size; i++) &#123;</span><br><span class="line">            left_max[i] = max(height[i], left_max[i - 1]);</span><br><span class="line">        &#125;</span><br><span class="line">        right_max[size - 1] = height[size - 1];</span><br><span class="line">        for (int i = size - 2; i &gt;= 0; i--) &#123;</span><br><span class="line">            right_max[i] = max(height[i], right_max[i + 1]);</span><br><span class="line">        &#125;</span><br><span class="line">        for (int i = 1; i &lt; size - 1; i++) &#123;</span><br><span class="line">            ans += min(left_max[i], right_max[i]) - height[i];</span><br><span class="line">        &#125;</span><br><span class="line">        return ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <blockquote>
-<p>解法二：⭐⭐⭐⭐⭐栈</p>
+<p>解法二：⭐⭐⭐⭐⭐单调栈</p>
 </blockquote>
 <p>思路是：</p>
 <p>我们在遍历数组时维护一个栈。如果当前的条形块小于或等于栈顶的条形块，我们将条形块的索引入栈，意思是当前的条形块被栈中的前一个条形块界定。如果我们发现一个条形块长于栈顶，我们可以确定栈顶的条形块被当前条形块和栈的前一个条形块界定，因此我们可以弹出栈顶元素并且累加答案到 <code>ans</code> 。</p>
@@ -392,6 +393,7 @@
 <li>将当前索引下标入栈</li>
 <li>将 <code>current</code> 移动到下个位置</li>
 </ol>
+<h3 id="其实思想上很类似括号匹配"><a href="#其实思想上很类似括号匹配" class="headerlink" title="其实思想上很类似括号匹配"></a>其实思想上很类似括号匹配</h3><p><img src="../images/42_2.png" alt="42_2"></p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">trap</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; height)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> ans = <span class="number">0</span>, current = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">stack</span>&lt;<span class="keyword">int</span>&gt; st;</span><br><span class="line">        <span class="keyword">while</span> (current &lt; height.size()) &#123;</span><br><span class="line">            <span class="keyword">while</span> (!st.empty() &amp;&amp; height[current] &gt; height[st.top()]) &#123;</span><br><span class="line">                <span class="keyword">int</span> top = st.top();</span><br><span class="line">                st.pop();</span><br><span class="line">                <span class="keyword">if</span> (st.empty())</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                <span class="keyword">int</span> distance = current - st.top() - <span class="number">1</span>;</span><br><span class="line">                <span class="keyword">int</span> bounded_height = min(height[current], height[st.top()]) - height[top];</span><br><span class="line">                ans += distance * bounded_height;</span><br><span class="line">            &#125;</span><br><span class="line">            st.push(current++);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>解法三：⭐⭐⭐⭐⭐双指针法</p>
@@ -422,11 +424,11 @@
       
         <div class="post-tags">
           
+            <a href="/tags/动态规划/" rel="tag"># 动态规划</a>
+          
             <a href="/tags/双指针/" rel="tag"># 双指针</a>
           
-            <a href="/tags/栈/" rel="tag"># 栈</a>
-          
-            <a href="/tags/动态规划/" rel="tag"># 动态规划</a>
+            <a href="/tags/单调栈/" rel="tag"># 单调栈</a>
           
         </div>
       
@@ -530,7 +532,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">300</span>
+                  <span class="site-state-item-count">301</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -541,7 +543,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-count">16</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -552,7 +554,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">75</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -607,7 +609,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#42-Trapping-Rain-Water-接雨水"><span class="nav-number">1.</span> <span class="nav-text">42. Trapping Rain Water/接雨水</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#42-Trapping-Rain-Water-接雨水"><span class="nav-number">1.</span> <span class="nav-text">42. Trapping Rain Water/接雨水</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#其实思想上很类似括号匹配"><span class="nav-number">1.0.1.</span> <span class="nav-text">其实思想上很类似括号匹配</span></a></li></ol></li></ol></div>
             
 
           </div>

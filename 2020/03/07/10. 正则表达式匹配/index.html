@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="递归,字符串,动态规划,">
+  <meta name="keywords" content="字符串,动态规划,递归,">
 
 
 
@@ -80,14 +80,14 @@
 
 
 <meta name="description" content="10. Regular Expression Matching/正则表达式匹配 题目：  给你一个字符串 s 和一个字符规律 p，请你来实现一个支持 ‘.’ 和 ‘*’ 的正则表达式匹配。 ‘.’ 匹配任意单个字符‘*’ 匹配零个或多个前面的那一个元素所谓匹配，是要涵盖 整个 字符串 s 的，而不是部分字符串。  说明:  s 可能为空，且只包含从 a-z 的小写字母。p 可能为空，且只包含从 a">
-<meta name="keywords" content="递归,字符串,动态规划">
+<meta name="keywords" content="字符串,动态规划,递归">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Leetcode_10 正则表达式匹配">
 <meta property="og:url" content="http://yoursite.com/2020/03/07/10. 正则表达式匹配/index.html">
 <meta property="og:site_name" content="Cq的Blog">
 <meta property="og:description" content="10. Regular Expression Matching/正则表达式匹配 题目：  给你一个字符串 s 和一个字符规律 p，请你来实现一个支持 ‘.’ 和 ‘*’ 的正则表达式匹配。 ‘.’ 匹配任意单个字符‘*’ 匹配零个或多个前面的那一个元素所谓匹配，是要涵盖 整个 字符串 s 的，而不是部分字符串。  说明:  s 可能为空，且只包含从 a-z 的小写字母。p 可能为空，且只包含从 a">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-05-23T04:08:57.128Z">
+<meta property="og:updated_time" content="2020-05-27T10:30:08.577Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Leetcode_10 正则表达式匹配">
 <meta name="twitter:description" content="10. Regular Expression Matching/正则表达式匹配 题目：  给你一个字符串 s 和一个字符规律 p，请你来实现一个支持 ‘.’ 和 ‘*’ 的正则表达式匹配。 ‘.’ 匹配任意单个字符‘*’ 匹配零个或多个前面的那一个元素所谓匹配，是要涵盖 整个 字符串 s 的，而不是部分字符串。  说明:  s 可能为空，且只包含从 a-z 的小写字母。p 可能为空，且只包含从 a">
@@ -412,7 +412,7 @@
 <li>P[i] [j] = P[i] [j - 2], if p[j - 1] == ‘*‘ and the pattern repeats for 0 times;</li>
 <li>P[i] [j] = P[i - 1] [j] &amp;&amp; (s[i - 1] == p[j - 2] || p[j - 2] == ‘.’), if p[j - 1] == ‘*’ and the pattern repeats for at least 1 times.</li>
 </ol>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isMatch</span><span class="params">(<span class="built_in">string</span> s, <span class="built_in">string</span> p)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> m = s.size(), n = p.size();</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">bool</span>&gt;&gt; dp(m + <span class="number">1</span>, <span class="built_in">vector</span>&lt;<span class="keyword">bool</span>&gt;(n + <span class="number">1</span>, <span class="literal">false</span>));</span><br><span class="line">        dp[<span class="number">0</span>][<span class="number">0</span>] = <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= m; ++i) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= n; ++j) &#123;</span><br><span class="line">                <span class="keyword">if</span> (j &gt; <span class="number">1</span> &amp;&amp; p[j - <span class="number">1</span>] == <span class="string">'*'</span>) &#123;</span><br><span class="line">                    dp[i][j] = dp[i][j - <span class="number">2</span>] || (i &gt; <span class="number">0</span> &amp;&amp; (s[i - <span class="number">1</span>] == p[j - <span class="number">2</span>] || p[j - <span class="number">2</span>] == <span class="string">'.'</span>) &amp;&amp; dp[i - <span class="number">1</span>][j]);</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    dp[i][j] = i &gt; <span class="number">0</span> &amp;&amp; dp[i - <span class="number">1</span>][j - <span class="number">1</span>] &amp;&amp; (s[i - <span class="number">1</span>] == p[j - <span class="number">1</span>] || p[j - <span class="number">1</span>] == <span class="string">'.'</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[m][n];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isMatch</span><span class="params">(<span class="built_in">string</span> s, <span class="built_in">string</span> p)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> m = s.size(), n = p.size();</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">bool</span>&gt;&gt; dp(m + <span class="number">1</span>, <span class="built_in">vector</span>&lt;<span class="keyword">bool</span>&gt;(n + <span class="number">1</span>, <span class="literal">false</span>));</span><br><span class="line">        <span class="comment">//dp[m][n]表示s的前m个字符0-m-1和p的前n个字符0-n-1匹配</span></span><br><span class="line">        dp[<span class="number">0</span>][<span class="number">0</span>] = <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= m; ++i) &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= n; ++j) &#123;</span><br><span class="line">                <span class="keyword">if</span>(j &gt; <span class="number">1</span> &amp;&amp; p[j - <span class="number">1</span>] == <span class="string">'*'</span>)</span><br><span class="line">                    dp[i][j] = dp[i][j - <span class="number">2</span>] <span class="comment">//p[j - 1]是*而且作用是让前一个出现0次</span></span><br><span class="line">                    || (i &gt; <span class="number">0</span> &amp;&amp; (s[i - <span class="number">1</span>] == p[j - <span class="number">2</span>] || p[j - <span class="number">2</span>] == <span class="string">'.'</span>) &amp;&amp; dp[i - <span class="number">1</span>][j]);</span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                    dp[i][j] = i &gt; <span class="number">0</span> &amp;&amp; dp[i - <span class="number">1</span>][j - <span class="number">1</span>] &amp;&amp; (s[i - <span class="number">1</span>] == p[j - <span class="number">1</span>] || p[j - <span class="number">1</span>] == <span class="string">'.'</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[m][n];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -430,11 +430,11 @@
       
         <div class="post-tags">
           
-            <a href="/tags/递归/" rel="tag"># 递归</a>
-          
             <a href="/tags/字符串/" rel="tag"># 字符串</a>
           
             <a href="/tags/动态规划/" rel="tag"># 动态规划</a>
+          
+            <a href="/tags/递归/" rel="tag"># 递归</a>
           
         </div>
       
@@ -538,7 +538,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">300</span>
+                  <span class="site-state-item-count">301</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -549,7 +549,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-count">16</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -560,7 +560,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">75</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

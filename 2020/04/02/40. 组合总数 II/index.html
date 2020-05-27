@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="DFS,回溯法,">
+  <meta name="keywords" content="回溯法,DFS,">
 
 
 
@@ -80,14 +80,14 @@
 
 
 <meta name="description" content="40. Combination Sum II/组合总和 II 题目：  给定一个数组 candidates 和一个目标数 target ，找出 candidates 中所有可以使数字和为 target 的组合。 candidates 中的每个数字在每个组合中只能使用一次。 说明：  所有数字（包括目标数）都是正整数。 解集不能包含重复的组合。   示例 1: 12345678输入: candida">
-<meta name="keywords" content="DFS,回溯法">
+<meta name="keywords" content="回溯法,DFS">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Leetcode_40 组合总数 II">
 <meta property="og:url" content="http://yoursite.com/2020/04/02/40. 组合总数 II/index.html">
 <meta property="og:site_name" content="Cq的Blog">
 <meta property="og:description" content="40. Combination Sum II/组合总和 II 题目：  给定一个数组 candidates 和一个目标数 target ，找出 candidates 中所有可以使数字和为 target 的组合。 candidates 中的每个数字在每个组合中只能使用一次。 说明：  所有数字（包括目标数）都是正整数。 解集不能包含重复的组合。   示例 1: 12345678输入: candida">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-04-02T07:24:17.890Z">
+<meta property="og:updated_time" content="2020-05-27T05:39:58.749Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Leetcode_40 组合总数 II">
 <meta name="twitter:description" content="40. Combination Sum II/组合总和 II 题目：  给定一个数组 candidates 和一个目标数 target ，找出 candidates 中所有可以使数字和为 target 的组合。 candidates 中的每个数字在每个组合中只能使用一次。 说明：  所有数字（包括目标数）都是正整数。 解集不能包含重复的组合。   示例 1: 12345678输入: candida">
@@ -381,7 +381,7 @@
 <p>解法一：⭐⭐⭐⭐排序 </p>
 </blockquote>
 <p>跟我上一道题的思路很像，注意这两道题目的区别。为了防止连续的相同数字各自作为头元素带领的数组重复的问题，这里面在每个 i 结束的时候加一条判断语句：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(i + <span class="number">1</span> &lt; candidates.size() &amp;&amp; candidates[i + <span class="number">1</span>] == candidates[i]) ++i;</span><br><span class="line"><span class="comment">//nums[i + 1]可以作为添加的元素，但是不能再作为头来计算了。</span></span><br></pre></td></tr></table></figure>
+<h4 id="也就是只能在深层的递归中调用，不能再作为起始元素调用递归了"><a href="#也就是只能在深层的递归中调用，不能再作为起始元素调用递归了" class="headerlink" title="也就是只能在深层的递归中调用，不能再作为起始元素调用递归了"></a>也就是只能在深层的递归中调用，不能再作为起始元素调用递归了</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(i + <span class="number">1</span> &lt; candidates.size() &amp;&amp; candidates[i + <span class="number">1</span>] == candidates[i]) ++i;</span><br><span class="line"><span class="comment">//nums[i + 1]可以作为添加的元素，但是不能再作为头来计算了。</span></span><br></pre></td></tr></table></figure>
 <p>解法如下：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; combinationSum2(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; candidates, <span class="keyword">int</span> target) &#123;</span><br><span class="line">        sort(candidates.begin(), candidates.end());</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; res;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; cur;</span><br><span class="line">        backTrack(candidates, target, cur, res, <span class="number">0</span>);</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">backTrack</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; candidates, <span class="keyword">int</span> target, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; cur, <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; res, <span class="keyword">int</span> num)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(target == <span class="number">0</span>) res.push_back(cur);</span><br><span class="line">        <span class="keyword">if</span>(target &lt; <span class="number">0</span> || num &gt;= candidates.size()) <span class="keyword">return</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = num; i &lt; candidates.size(); ++i) &#123;</span><br><span class="line">            cur.push_back(candidates[i]);</span><br><span class="line">            backTrack(candidates, target - candidates[i], cur, res, i + <span class="number">1</span>);</span><br><span class="line">            cur.pop_back();</span><br><span class="line">            <span class="keyword">while</span>(i + <span class="number">1</span> &lt; candidates.size() &amp;&amp; candidates[i + <span class="number">1</span>] == candidates[i]) ++i;<span class="comment">//nums[i + 1]可以作为添加的元素，但是不能再作为头来计算了。</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
@@ -401,9 +401,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/DFS/" rel="tag"># DFS</a>
-          
             <a href="/tags/回溯法/" rel="tag"># 回溯法</a>
+          
+            <a href="/tags/DFS/" rel="tag"># DFS</a>
           
         </div>
       
@@ -507,7 +507,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">300</span>
+                  <span class="site-state-item-count">301</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -518,7 +518,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-count">16</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -529,7 +529,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">75</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -584,7 +584,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#40-Combination-Sum-II-组合总和-II"><span class="nav-number">1.</span> <span class="nav-text">40. Combination Sum II/组合总和 II</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#40-Combination-Sum-II-组合总和-II"><span class="nav-number">1.</span> <span class="nav-text">40. Combination Sum II/组合总和 II</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#也就是只能在深层的递归中调用，不能再作为起始元素调用递归了"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">也就是只能在深层的递归中调用，不能再作为起始元素调用递归了</span></a></li></ol></li></ol></div>
             
 
           </div>
