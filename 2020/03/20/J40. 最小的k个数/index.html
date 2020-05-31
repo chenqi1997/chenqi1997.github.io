@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="分治法,堆,">
+  <meta name="keywords" content="TopK,分治法,堆,">
 
 
 
@@ -80,14 +80,14 @@
 
 
 <meta name="description" content="J40*. 最小的k个数 题目：  输入整数数组 arr ，找出其中最小的 k 个数。例如，输入4、5、1、6、2、7、3、8这8个数字，则最小的4个数字是1、2、3、4。  示例 1：  12输入：arr = [3,2,1], k = 2输出：[1,2] 或者 [2,1]  示例 2：  12输入：arr = [0,1,2,1], k = 1输出：[0]  限制：   0 &amp;lt;= k &amp;lt">
-<meta name="keywords" content="分治法,堆">
+<meta name="keywords" content="TopK,分治法,堆">
 <meta property="og:type" content="article">
 <meta property="og:title" content="剑指offer_40 最小的k个数">
 <meta property="og:url" content="http://yoursite.com/2020/03/20/J40. 最小的k个数/index.html">
 <meta property="og:site_name" content="Cq的Blog">
 <meta property="og:description" content="J40*. 最小的k个数 题目：  输入整数数组 arr ，找出其中最小的 k 个数。例如，输入4、5、1、6、2、7、3、8这8个数字，则最小的4个数字是1、2、3、4。  示例 1：  12输入：arr = [3,2,1], k = 2输出：[1,2] 或者 [2,1]  示例 2：  12输入：arr = [0,1,2,1], k = 1输出：[0]  限制：   0 &amp;lt;= k &amp;lt">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-03-21T08:01:23.268Z">
+<meta property="og:updated_time" content="2020-05-31T06:17:16.193Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="剑指offer_40 最小的k个数">
 <meta name="twitter:description" content="J40*. 最小的k个数 题目：  输入整数数组 arr ，找出其中最小的 k 个数。例如，输入4、5、1、6、2、7、3、8这8个数字，则最小的4个数字是1、2、3、4。  示例 1：  12输入：arr = [3,2,1], k = 2输出：[1,2] 或者 [2,1]  示例 2：  12输入：arr = [0,1,2,1], k = 1输出：[0]  限制：   0 &amp;lt;= k &amp;lt">
@@ -394,7 +394,7 @@
 <p><strong>堆的概念</strong></p>
 <p>堆是将一组数据按照完全二叉树的存储顺序，将数据存储在一个一维数组中的结构。<br>堆有两种结构，一种称为大顶堆，一种称为小顶堆：<br>小顶堆：任意结点的值均小于等于它的左右孩子，并且<strong>最小的值位于堆顶</strong>，即根节点处。<br>大顶堆：任意结点的值均大于等于它的左右孩子，并且<strong>最大的值位于堆顶</strong>，即根节点处。</p>
 <p>在C++的标准库中，提供了优先级队列这个容器，其实底层就是一个堆的结构，只不过将堆封装了一层而已。其实名字叫个优先级队列，但总觉得和队列是不沾边的。<code>priority_queue</code>  是容器适配器，它提供常数时间的（默认）最大元素查找，对数代价的插入与释出。用 <code>priority_queue</code> 工作类似管理某些随机访问容器中的堆，好处是不可能突然把堆非法化。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; getLeastNumbers(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; arr, <span class="keyword">int</span> k) &#123;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;vec(k, <span class="number">0</span>);</span><br><span class="line">        <span class="keyword">if</span> (k == <span class="number">0</span>) <span class="keyword">return</span> vec; <span class="comment">// 排除 0 的情况</span></span><br><span class="line">        priority_queue&lt;<span class="keyword">int</span>&gt;Q;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; k; ++i) Q.push(arr[i]);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = k; i &lt; (<span class="keyword">int</span>)arr.size(); ++i) &#123;</span><br><span class="line">            <span class="keyword">if</span> (Q.top() &gt; arr[i]) &#123;</span><br><span class="line">                Q.pop();</span><br><span class="line">                Q.push(arr[i]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; k; ++i) &#123;</span><br><span class="line">            vec[i] = Q.top();</span><br><span class="line">            Q.pop();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> vec;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; getLeastNumbers(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; arr, <span class="keyword">int</span> k) &#123;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; res(k, <span class="number">0</span>);</span><br><span class="line">        priority_queue&lt;<span class="keyword">int</span>&gt; Q;</span><br><span class="line">        <span class="keyword">int</span> n = arr.size();</span><br><span class="line">        <span class="keyword">if</span>(k == <span class="number">0</span>) <span class="keyword">return</span> res;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; ++i) &#123;</span><br><span class="line">            <span class="keyword">if</span>(i &lt; k) &#123;</span><br><span class="line">                Q.push(arr[i]);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span>(arr[i] &lt; Q.top()) &#123;</span><br><span class="line">                Q.pop();</span><br><span class="line">                Q.push(arr[i]);<span class="comment">//实时维护前k小</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; k; ++i) &#123;</span><br><span class="line">            res[i] = Q.top();</span><br><span class="line">            Q.pop();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <p>大根堆实时维护的是一个前k小的值，因此插入删除时间复杂度均为 <code>O(logk)</code>，最坏情况下需要插入 <code>n</code> 个数，因此时间复杂度为 <code>O(nlogk)</code> 。空间复杂度为 <code>O(k)</code> 。</p>
 <blockquote>
 <p>解法三：⭐⭐⭐快排</p>
@@ -402,8 +402,8 @@
 <p>我们可以借鉴快速排序的思想。我们知道快排的划分函数每次执行完后都能将数组分成两个部分，小于等于分界值 <code>pivot</code> 的元素的都会被放到数组的左边，大于的都会被放到数组的右边，然后返回分界值的下标。与快速排序不同的是，快速排序会根据分界值的下标递归处理划分的两侧，而这里我们只处理划分的一边。</p>
 <p>我们定义函数 <code>randomized_selected(arr, l, r, k)</code> 表示划分数组 <code>arr</code> 的 <code>[l,r]</code> 部分，使前 <code>k</code> 小的数在数组的左侧，在函数里我们调用快排的划分函数，假设划分函数返回的下标是 <code>pos</code>（表示分界值 <code>pivot</code> 最终在数组中的位置），即 <code>pivot</code> 是数组中第 <code>pos - l + 1</code> 小的数，那么一共会有三种情况：</p>
 <ul>
-<li>如果 <code>pos - l + 1 == k</code>，表示 <code>pivot</code> 就是第 k<em>k</em> 小的数，直接返回即可；</li>
-<li>如果 <code>pos - l + 1 &lt; k</code>，表示第 k<em>k</em> 小的数在 <code>pivot</code> 的右侧，因此递归调用 <code>randomized_selected(arr, pos + 1, r, k - (pos - l + 1))</code>；</li>
+<li>如果 <code>pos - l + 1 == k</code>，表示 <code>pivot</code> 就是第 <code>k</code> 小的数，直接返回即可；</li>
+<li>如果 <code>pos - l + 1 &lt; k</code>，表示第 <code>k</code> 小的数在 <code>pivot</code> 的右侧，因此递归调用 <code>randomized_selected(arr, pos + 1, r, k - (pos - l + 1))</code>；</li>
 <li>如果 <code>pos - l + 1 &gt; k</code>，表示第 k<em>k</em> 小的数在 <code>pivot</code> 的左侧，递归调用 <code>randomized_selected(arr, l, pos - 1, k)</code>。</li>
 </ul>
 <p>函数递归入口为 <code>randomized_selected(arr, 0, arr.length - 1, k)</code>。在函数返回后，将前 <code>k</code> 个数放入答案数组返回即可。</p>
@@ -424,6 +424,8 @@
     <footer class="post-footer">
       
         <div class="post-tags">
+          
+            <a href="/tags/TopK/" rel="tag"># TopK</a>
           
             <a href="/tags/分治法/" rel="tag"># 分治法</a>
           
@@ -553,7 +555,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">76</span>
+                  <span class="site-state-item-count">77</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
