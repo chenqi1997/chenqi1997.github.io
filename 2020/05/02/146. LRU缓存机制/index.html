@@ -365,7 +365,7 @@
       
 
       
-        <h1 id="146-LRU-Cache-LRU缓存机制"><a href="#146-LRU-Cache-LRU缓存机制" class="headerlink" title="146. LRU Cache/LRU缓存机制"></a>146. LRU Cache/LRU缓存机制</h1><blockquote>
+        <h1><span id="146-lru-cachelru缓存机制">146. LRU Cache/LRU缓存机制</span></h1><blockquote>
 <p>题目：</p>
 </blockquote>
 <p>运用你所掌握的数据结构，设计和实现一个  <a href="https://baike.baidu.com/item/LRU" target="_blank" rel="noopener">LRU (最近最少使用) 缓存机制</a>。它应该支持以下操作： 获取数据 <code>get</code> 和 写入数据 <code>put</code> 。</p>
@@ -382,13 +382,13 @@
 <p><code>list</code> 是一个线性双向链表结构，它的数据由若干个节点构成，每一个节点都包括一个信息块（即实际存储的数据）、一个前驱指针和一个后驱指针。它无需分配指定的内存大小且可以任意伸缩，这是因为它存储在非连续的内存空间中，并且由指针将有序的元素链接起来。</p>
 </blockquote>
 <p><code>list</code> 可以使用 <code>list&lt;T&gt; :: iterator testiterator;</code> 的形式来构造一个迭代器指针。对于迭代器指针指向的数值可以用 <code>*testiterator</code> 来求得。</p>
-<h4 id="整体思路"><a href="#整体思路" class="headerlink" title="整体思路"></a>整体思路</h4><p>分析上面的操作过程，要让 <code>put</code> 和 <code>get</code> 方法的时间复杂度为 <code>O(1)</code> ，我们可以总结出 <code>cache</code> 这个数据结构必要的条件：查找快，插入快，删除快，有顺序之分。</p>
+<h4><span id="整体思路">整体思路</span></h4><p>分析上面的操作过程，要让 <code>put</code> 和 <code>get</code> 方法的时间复杂度为 <code>O(1)</code> ，我们可以总结出 <code>cache</code> 这个数据结构必要的条件：查找快，插入快，删除快，有顺序之分。</p>
 <p>显然 <code>cache</code> 必须有顺序之分，以区分最近使用的和久未使用的数据；而且我们要在 <code>cache</code> 中查找键是否已存在；如果容量满了要删除最后一个数据；每次访问还要把数据插入到队头。</p>
 <p>哈希表的特点是查找快，但是数据无固定顺序；链表有顺序之分，插入删除快，但是查找慢。所以结合一下，形成一种新的数据结构：<strong>哈希链表</strong>。</p>
 <p><img src="../images/146_1.jpg" alt="146_1"></p>
-<h4 id="为什么要双向链表呢？"><a href="#为什么要双向链表呢？" class="headerlink" title="为什么要双向链表呢？"></a>为什么要双向链表呢？</h4><p>因为我们需要删除操作。删除一个节点不光要得到该节点本身的指针，也需要操作其前驱节点的指针，而双向链表才能支持直接查找前驱，保证操作的时间复杂度 <code>O(1)</code> 。</p>
-<h4 id="为什么要在链表中同时存储-key-和-val，而不是只存储-val？"><a href="#为什么要在链表中同时存储-key-和-val，而不是只存储-val？" class="headerlink" title="为什么要在链表中同时存储 key 和 val，而不是只存储 val？"></a>为什么要在链表中同时存储 key 和 val，而不是只存储 val？</h4><p>因为当缓存容量已满，我们不仅仅要删除最后一个 <code>Node</code> 节点，还要把 <code>map</code> 中映射到该节点的 <code>key</code> 同时删除，而这个 <code>key</code> 只能由 <code>Node</code> 得到。如果 <code>Node</code> 结构中只存储 <code>val</code> ，那么我们就无法得知 <code>key</code> 是什么，就无法删除 <code>map</code> 中的键，造成错误。</p>
-<h4 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h4><p><code>LRU</code> 类调用如下：</p>
+<h4><span id="为什么要双向链表呢">为什么要双向链表呢？</span></h4><p>因为我们需要删除操作。删除一个节点不光要得到该节点本身的指针，也需要操作其前驱节点的指针，而双向链表才能支持直接查找前驱，保证操作的时间复杂度 <code>O(1)</code> 。</p>
+<h4><span id="为什么要在链表中同时存储-key-和-val而不是只存储-val">为什么要在链表中同时存储 key 和 val，而不是只存储 val？</span></h4><p>因为当缓存容量已满，我们不仅仅要删除最后一个 <code>Node</code> 节点，还要把 <code>map</code> 中映射到该节点的 <code>key</code> 同时删除，而这个 <code>key</code> 只能由 <code>Node</code> 得到。如果 <code>Node</code> 结构中只存储 <code>val</code> ，那么我们就无法得知 <code>key</code> 是什么，就无法删除 <code>map</code> 中的键，造成错误。</p>
+<h4><span id="具体实现">具体实现</span></h4><p><code>LRU</code> 类调用如下：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Your LRUCache object will be instantiated and called as such:</span></span><br><span class="line"><span class="comment"> * LRUCache* obj = new LRUCache(capacity);</span></span><br><span class="line"><span class="comment"> * int param_1 = obj-&gt;get(key);</span></span><br><span class="line"><span class="comment"> * obj-&gt;put(key,value);</span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure>
 <p>具体实现的过程中:</p>
 <p>对于每次 <code>get</code> 操作，很简单，只需要判断一下 <code>get</code> 的这个 <code>key</code> 是不是存在在哈希链表中：如果不存在直接返回 <code>-1</code> ；如果存在的话，<code>map[key]</code> 是一个 <code>list</code> 迭代器指针的数据，可以通过 <code>*map[key]</code> 来取到对应的 <code>(key, value)</code> 键值对，然后用 cache.erase() 清除掉当前的迭代器指针，再把这个 <code>(key, value)</code> 键值对 <code>push_front()</code> 放到双向哈希链表的前端。记得放了后要把 <code>map[key]</code> 也相应更新，最后返回 <code>value</code> 。</p>
@@ -607,7 +607,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#146-LRU-Cache-LRU缓存机制"><span class="nav-number">1.</span> <span class="nav-text">146. LRU Cache/LRU缓存机制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#整体思路"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">整体思路</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#为什么要双向链表呢？"><span class="nav-number">1.0.0.2.</span> <span class="nav-text">为什么要双向链表呢？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#为什么要在链表中同时存储-key-和-val，而不是只存储-val？"><span class="nav-number">1.0.0.3.</span> <span class="nav-text">为什么要在链表中同时存储 key 和 val，而不是只存储 val？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#具体实现"><span class="nav-number">1.0.0.4.</span> <span class="nav-text">具体实现</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">1.</span> <span class="nav-text">146. LRU Cache/LRU缓存机制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">整体思路</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.0.0.2.</span> <span class="nav-text">为什么要双向链表呢？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.0.0.3.</span> <span class="nav-text">为什么要在链表中同时存储 key 和 val，而不是只存储 val？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.0.0.4.</span> <span class="nav-text">具体实现</span></a></li></ol></li></ol></div>
             
 
           </div>
