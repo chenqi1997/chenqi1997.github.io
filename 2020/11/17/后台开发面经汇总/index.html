@@ -79,21 +79,21 @@
 
 
 
-<meta name="description" content="后台开发面经汇总 C++基础 C++线程中的几种锁 C++多态如何实现？ C++的四种cast static_cast const_cast reinterpret_cast dynamic_cast 哪种cast更加接近C的强制类型转换？   C++智能指针 auto_ptr(弃用) unique_ptr(替换auto_ptr) shared_ptr weak_ptr   为什么析构函数必须">
+<meta name="description" content="[TOC]   后台开发面经汇总 C++基础 C++线程中的几种锁 互斥锁(Mutex) 条件锁(condition_variable) 自旋锁(spinlock_mutex) 读写锁(shared_mutex)/共享锁 递归锁(recursive_lock)   C++中thread操作 join() detach()   C++多态如何实现？ C++的四种cast static_cast co">
 <meta name="keywords" content="面经,基础知识,C++">
 <meta property="og:type" content="article">
 <meta property="og:title" content="后台开发面经汇总">
 <meta property="og:url" content="http://chenqi1997.github.io/2020/11/17/后台开发面经汇总/index.html">
 <meta property="og:site_name" content="Cq的Blog">
-<meta property="og:description" content="后台开发面经汇总 C++基础 C++线程中的几种锁 C++多态如何实现？ C++的四种cast static_cast const_cast reinterpret_cast dynamic_cast 哪种cast更加接近C的强制类型转换？   C++智能指针 auto_ptr(弃用) unique_ptr(替换auto_ptr) shared_ptr weak_ptr   为什么析构函数必须">
+<meta property="og:description" content="[TOC]   后台开发面经汇总 C++基础 C++线程中的几种锁 互斥锁(Mutex) 条件锁(condition_variable) 自旋锁(spinlock_mutex) 读写锁(shared_mutex)/共享锁 递归锁(recursive_lock)   C++中thread操作 join() detach()   C++多态如何实现？ C++的四种cast static_cast co">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://5b0988e595225.cdn.sohucs.com/images/20180622/6765e36cc4604fba897976638af03524.jpeg">
 <meta property="og:image" content="https://krahets.gitee.io/assets/img/1568551356084.394e4465.png">
 <meta property="og:image" content="https://img-blog.csdn.net/20171123102431734">
-<meta property="og:updated_time" content="2020-12-02T09:31:06.178Z">
+<meta property="og:updated_time" content="2020-12-02T10:50:26.796Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="后台开发面经汇总">
-<meta name="twitter:description" content="后台开发面经汇总 C++基础 C++线程中的几种锁 C++多态如何实现？ C++的四种cast static_cast const_cast reinterpret_cast dynamic_cast 哪种cast更加接近C的强制类型转换？   C++智能指针 auto_ptr(弃用) unique_ptr(替换auto_ptr) shared_ptr weak_ptr   为什么析构函数必须">
+<meta name="twitter:description" content="[TOC]   后台开发面经汇总 C++基础 C++线程中的几种锁 互斥锁(Mutex) 条件锁(condition_variable) 自旋锁(spinlock_mutex) 读写锁(shared_mutex)/共享锁 递归锁(recursive_lock)   C++中thread操作 join() detach()   C++多态如何实现？ C++的四种cast static_cast co">
 <meta name="twitter:image" content="http://5b0988e595225.cdn.sohucs.com/images/20180622/6765e36cc4604fba897976638af03524.jpeg">
 
 
@@ -356,11 +356,24 @@
       
 
       
-        <!-- toc -->
+        <p>[TOC]</p>
+<!-- toc -->
 <ul>
 <li><a href="#后台开发面经汇总">后台开发面经汇总</a><ul>
 <li><a href="#c基础">C++基础</a><ul>
-<li><a href="#c线程中的几种锁">C++线程中的几种锁</a></li>
+<li><a href="#c线程中的几种锁">C++线程中的几种锁</a><ul>
+<li><a href="#互斥锁mutex">互斥锁(Mutex)</a></li>
+<li><a href="#条件锁condition_variable">条件锁(condition_variable)</a></li>
+<li><a href="#自旋锁spinlock_mutex">自旋锁(spinlock_mutex)</a></li>
+<li><a href="#读写锁shared_mutex共享锁">读写锁(shared_mutex)/共享锁</a></li>
+<li><a href="#递归锁recursive_lock">递归锁(recursive_lock)</a></li>
+</ul>
+</li>
+<li><a href="#c中thread操作">C++中thread操作</a><ul>
+<li><a href="#join">join()</a></li>
+<li><a href="#detach">detach()</a></li>
+</ul>
+</li>
 <li><a href="#c多态如何实现">C++多态如何实现？</a></li>
 <li><a href="#c的四种cast">C++的四种cast</a><ul>
 <li><a href="#static_cast">static_cast</a></li>
@@ -414,8 +427,41 @@
 </li>
 </ul>
 <!-- tocstop -->
-<p>[TOC]</p>
-<h1><span id="后台开发面经汇总">后台开发面经汇总</span></h1><h2><span id="c基础">C++基础</span></h2><h3><span id="c线程中的几种锁">C++线程中的几种锁</span></h3><hr>
+<h1><span id="后台开发面经汇总">后台开发面经汇总</span></h1><h2><span id="c基础">C++基础</span></h2><h3><span id="c线程中的几种锁">C++线程中的几种锁</span></h3><p>C++线程之间的锁有：<strong>互斥锁、条件锁、自旋锁、读写锁、递归锁</strong> 这几种</p>
+<h4><span id="互斥锁mutex">互斥锁(Mutex)</span></h4><p>互斥锁用于<strong>控制多个线程对他们之间共享资源互斥访问的一个信号量</strong>。也就是说是为了避免多个线程在某一时刻同时操作一个共享资源。例如线程池中的有多个空闲线程和一个任务队列。任何一个线程都要使用互斥锁互斥访问任务队列，以避免多个线程同时访问任务队列以发生错乱。</p>
+<p>在某一时刻，只有一个线程可以获取互斥锁，在释放互斥锁之前其他线程都不能获取该互斥锁。如果其他线程想要获取这个互斥锁，那么这个线程只能以<strong>阻塞方式</strong>进行等待。</p>
+<p><strong>互斥锁是是一种sleep-waiting的锁</strong>。假设线程 <code>T1</code> 获取互斥锁并且正在 <code>core1</code> 上运行时，此时线程 <code>T2</code> 也想要获取互斥锁 (pthread_mutex_lock)，但是由于 <code>T1</code> 正在使用互斥锁使得 <code>T2</code> 被阻塞。当 <code>T2</code> 处于阻塞状态时，<code>T2</code>被放入到等待队列中去，处理器 <code>core2</code> 会去处理其他任务而不必一直等待（忙等）。也就是说处理器不会因为线程阻塞而空闲着，它去处理其他事务去了。</p>
+<p><strong>用法：</strong>在C++中，通过构造 <code>std::mutex</code> 的实例创建互斥元，调用成员函数 <code>lock()</code> 来锁定它，调用 <code>unlock()</code> 来解锁，不过一般不推荐这种做法，标准C++库提供了std::lock_guard类模板，实现了互斥元的 <code>RAII</code> 惯用语法。<code>std::mutex</code> 和 <code>std::lock_guard</code> 。都声明在 <code>&lt;mutex&gt;</code> 头文件中。</p>
+<p><code>lock_guard</code> 对象通常用于管理某个锁(Lock)对象，因此与 <code>Mutex RAII</code> 相关，方便线程对互斥量上锁，即在某个 <code>lock_guard</code> 对象的声明周期内，它所管理的锁对象会一直保持上锁状态；而 <code>lock_guard</code> 的生命周期结束之后，它所管理的锁对象会被解锁(注：类似 <code>shared_ptr</code> 等智能指针管理动态分配的内存资源)。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//用互斥元保护列表</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;list&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;mutex&gt;</span></span></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">list</span>&lt;<span class="keyword">int</span>&gt; some_list;</span><br><span class="line"><span class="built_in">std</span>::mutex some_mutex;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">add_to_list</span><span class="params">(<span class="keyword">int</span> new_value)</span> </span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::lock_guard&lt;<span class="built_in">std</span>::mutex&gt; guard(some_mutex);</span><br><span class="line">    some_list.push_back(new_value);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h4><span id="条件锁condition_variable">条件锁(condition_variable)</span></h4><p>条件锁就是所谓的条件变量，某一个线程因为某个条件<strong>未满足</strong>时可以使用 <code>条件锁</code> 使该程序处于 <code>阻塞状态</code> 。</p>
+<p>一旦条件满足，可以以 <code>信号量</code> 的方式唤醒一个因为该条件而被阻塞的线程。</p>
+<p>最为常见就是在线程池中，起初没有任务时任务队列为空，此时线程池中的线程因为 <code>任务队列为空</code> 这个条件处于阻塞状态。一旦有任务进来，就会以信号量的方式唤醒一个线程来处理这个任务。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//使用std::condition_variable等待数据</span></span><br><span class="line"><span class="built_in">std</span>::mutex mut;</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">queue</span>&lt;data_chunk&gt; data_queue;</span><br><span class="line"><span class="built_in">std</span>::condition_variable data_cond;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">data_preparation_thread</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">while</span>(more_data_to_prepare()) &#123;</span><br><span class="line">        data_chunk <span class="keyword">const</span> data=prepare_data();</span><br><span class="line">        <span class="built_in">std</span>::lock_guard&lt;<span class="built_in">std</span>::mutex&gt; lk(mut);</span><br><span class="line">        data_queue.push(data);</span><br><span class="line">        data_cond.notify_one();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">data_processing_thread</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">while</span>(<span class="literal">true</span>) &#123;</span><br><span class="line">        <span class="built_in">std</span>::unique_lock&lt;<span class="built_in">std</span>::mutex&gt; lk(mut);   <span class="comment">//这里使用unique_lock是为了后面方便解锁</span></span><br><span class="line">        data_cond.wait(lk,&#123;[]<span class="keyword">return</span> !data_queue.empty();&#125;);</span><br><span class="line">        data_chunk data=data_queue.front();</span><br><span class="line">        data_queue.pop();</span><br><span class="line">        lk.unlock();</span><br><span class="line">        process(data);</span><br><span class="line">        <span class="keyword">if</span>(is_last_chunk(data))</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里面，<code>wait()</code> 的实现接下来检查条件，并在满足时返回。如果条件不满足，wait()解锁互斥元，并将该线程置于阻塞或等待状态。当来自数据准备线程中对notify_one()的调用通知条件变量时，线程从睡眠状态中苏醒（解除其阻塞），重新获得互斥元上的锁，并再次检查条件，如果条件已经满足，就从wait()返回值，互斥元仍被锁定。如果条件不满足，该线程解锁互斥元，并恢复等待。</p>
+<hr>
+<h4><span id="自旋锁spinlock_mutex">自旋锁(spinlock_mutex)</span></h4><p><em>自旋锁需要与互斥锁一起来比较理解。</em></p>
+<p><strong>自旋锁是一种busy-waiting的锁</strong>。也就是说，如果 <code>T1</code> 正在使用自旋锁，而 <code>T2</code> 也去申请这个自旋锁，此时 <code>T2</code> 肯定得不到这个自旋锁。与互斥锁相反的是，此时运行 <code>T2</code> 的处理器 <code>core2</code> 会一直不断地循环检查锁是否可用（自旋锁请求），直到获取到这个自旋锁为止。</p>
+<p>从 <code>自旋锁</code> 的名字也可以看出来，如果一个线程想要获取一个被使用的自旋锁，那么它会一直占用 <code>CPU</code> 请求这个自旋锁使得 <code>CPU</code> 不能去做其他的事情，直到获取这个锁为止，这就是 <code>自旋</code> 的含义。</p>
+<p>当发生阻塞时，互斥锁可以让 <code>CPU</code> 去处理其他的任务；而自旋锁让 <code>CPU</code> 一直不断循环请求获取这个锁。通过两个含义的对比可以我们知道 <code>自旋锁</code> 是比较耗费 <code>CPU</code> 的。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">spin_lock_init(<span class="keyword">spinlock_t</span> *x);<span class="comment">//初始化</span></span><br><span class="line">spin_lock(x);   			  <span class="comment">//只有在获得锁的情况下才返回，否则一直“自旋”</span></span><br><span class="line">spin_trylock(x);  			  <span class="comment">//如立即获得锁则返回真，否则立即返回假</span></span><br><span class="line">spin_unlock(x);				  <span class="comment">//释放锁</span></span><br><span class="line">spin_is_locked(x)			  <span class="comment">//该宏用于判断自旋锁x是否已经被某执行单元保持（即被锁），如果是，   返回真，否则返回假。</span></span><br></pre></td></tr></table></figure>
+<hr>
+<h4><span id="读写锁shared_mutex共享锁">读写锁(shared_mutex)/共享锁</span></h4><p><code>std::shared_mutex</code>有两种访问级别：</p>
+<ul>
+<li><strong>共享：</strong>多个线程可以共享这个锁的拥有权。一般用于数据的<strong>读操作</strong>，防止数据被写修改。</li>
+<li><p><strong>互斥：</strong>仅仅一个线程可以拥有这个锁。一般用于<strong>写操作</strong>。</p>
+</li>
+<li><p>如果一个线程已经获取了 <code>互斥锁</code> ，则其他线程都无法获取该锁。</p>
+</li>
+<li>如果一个线程已经获取了 <code>共享锁</code> ，则其他任何线程都无法获取 <code>互斥锁</code> ，但是可以获取 <code>共享锁</code> 。</li>
+</ul>
+<hr>
+<h4><span id="递归锁recursive_lock">递归锁(recursive_lock)</span></h4><p>Todo</p>
+<hr>
+<h3><span id="c中thread操作">C++中thread操作</span></h3><h4><span id="join">join()</span></h4><p>阻塞当前线程，直至 <code>this</code> 所标识的线程完成其执行。<code>this</code> 所标识的线程的完成同步于从 <strong>join()</strong> 的成功返回。</p>
+<p>该方法简单暴力，主线程等待子进程期间什么都不能做。<code>thread::join()</code> 会清理子线程相关的内存空间，此后<code>thread object</code> 将不再和这个子线程相关了，即 <code>thread object</code> 不再 <code>joinable</code> 了，所以 <code>join</code> 对于一个子线程来说只可以被调用一次，为了实现更精细的线程等待机制，可以使用条件变量等机制。</p>
+<h4><span id="detach">detach()</span></h4><hr>
 <h3><span id="c多态如何实现">C++多态如何实现？</span></h3><hr>
 <h3><span id="c的四种cast">C++的四种cast</span></h3><h4><span id="static_cast">static_cast</span></h4><p>在C++语言中 <code>static_cast</code> 用于数据类型的强制转换，强制将一种数据类型转换为另一种数据类型。例如将整型数据转换为浮点型数据。</p>
 <p>主要用法有如下几种：</p>
@@ -522,6 +568,16 @@
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pa-&gt;pb_-&gt;print()</span><br></pre></td></tr></table></figure>
 <p><code>pb_</code> 是一个 <code>weak_ptr</code> ，应该先调用 <code>lock()</code> 函数把它转化为 <code>shared_ptr</code> ，如：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">shared_ptr</span> p = pa-&gt;pb_.lock();</span><br><span class="line">p-&gt;print();</span><br></pre></td></tr></table></figure>
+<hr>
+<p><strong>如何判断weak_ptr的对象是否失效？</strong></p>
+<ol>
+<li><code>expired()</code> ：检查被引用的对象是否已删除。</li>
+<li><code>lock()</code> 会返回 <code>shared_ptr</code> 指针，判断该指针是否为空。</li>
+<li><code>use_count()</code> 也可以得到 <code>shared_ptr</code> 引用的个数，但速度较慢。</li>
+</ol>
+<hr>
+<p><strong>shared_ptr 和 unique_ptr 区别</strong></p>
+<p><code>unique_ptr</code> 具有唯一性，对指向的对象值存在唯一的 <code>unique_ptr</code> 。<code>unique_ptr</code> 不可复制，赋值，但是<code>std::move()</code> 可以转换对象的所有权，局部变量的返回值除外。与 <code>shared_ptr</code> 相比，若自定义删除器，<code>unique_ptr</code>需要在声明处指定删除器类型，而 <code>shared_ptr</code> 不需要，<code>shared_ptr</code> 自定义删除器只需要指定删除器对象即可；在赋值时，<code>shared_ptr</code> 可以随意赋值，删除器对象也会被赋值给新的对象。因为在 <code>unique_ptr</code> 的实现中，删除器对象是作为 <code>unique_ptr</code> 的一部分，而 <code>shared_ptr</code> 的删除器对象保存在<code>control_block</code> 中。</p>
 <hr>
 <h3><span id="为什么析构函数必须是虚函数为什么c默认的析构函数不是虚函数">为什么析构函数必须是虚函数？为什么C++默认的析构函数不是虚函数？</span></h3><p>将<strong>可能会被继承的父类</strong>的析构函数设置为虚函数，可以保证当我们 <code>new</code> 一个子类，然后使用基类指针指向该子类对象，释放基类指针时可以释放掉子类的空间，防止内存泄漏。</p>
 <p>C++默认的析构函数不是虚函数是因为虚函数<strong>需要额外的虚函数表和虚表指针</strong>，占用额外的内存。而对于不会被继承的类来说，其析构函数如果是虚函数，就会浪费内存。因此C++默认的析构函数不是虚函数，而是<strong>只有当需要当作父类时，设置为虚函数。</strong></p>
@@ -631,19 +687,19 @@
 <h3><span id="从浏览器输入网址到出现页面经过了哪些阶段">从浏览器输入网址到出现页面经过了哪些阶段</span></h3><ol>
 <li><p><strong>输入网址</strong>：</p>
 <p>URL的形式： schema://host:port/path?query#fragment</p>
-<p>　　-schema: 协议，例如http , https,  ftp等</p>
-<p>　　-host: 域名或者ip地址</p>
-<p>　　-port： 端口，http默认端口80，可以省略</p>
-<p>　　-path： 路径，例如/abc /a/b/c</p>
-<p>　　-query: 查询参数，例如 token=sdfs2223fds2&amp;name=sdffaf</p>
-<p>　　-fragment: 锚点（哈希Hash），用于定位页面的某个位置。</p>
+<p>　　<code>-schema</code> : 协议，例如http , https,  ftp等</p>
+<p>　　<code>-host</code> : 域名或者ip地址</p>
+<p>　　<code>-port</code> ： 端口，http默认端口80，可以省略</p>
+<p>　　<code>-path</code> ： 路径，例如/abc /a/b/c</p>
+<p>　　<code>-query</code> : 查询参数，例如 token=sdfs2223fds2&amp;name=sdffaf</p>
+<p>　　<code>-fragment</code> : 锚点（哈希Hash），用于定位页面的某个位置。</p>
 <p>符合规则的URL</p>
 <p>　　<a href="http://www.baidu.com/java/web?flag=1#function" target="_blank" rel="noopener">http://www.baidu.com/java/web?flag=1#function</a></p>
 </li>
-<li><p>缓存解析</p>
+<li><p><strong>缓存解析</strong></p>
 <p>浏览器获取了这个url，它先去缓存当中看看有没有，依次从浏览器缓存-&gt;系统缓存-&gt;路由器缓存当中查看，如果有从缓存当中显示页面，这样是不需要发送http请求的。如果没有那就进行步骤3。<br>缓存就是把之前访问的web资源，比如一些js，css，图片什么的保存在本机的内存或者磁盘当中。</p>
 </li>
-<li><p>域名解析</p>
+<li><p><strong>域名解析</strong></p>
 <p>当缓存中没有这个url的时候，就需要发送http请求了，那么在发送http请求之前，需要先进行<strong>DNS解析</strong>将域名解析成 ip 地址。<strong>DNS解析</strong>存在着多级缓存：</p>
 <ul>
 <li>浏览器的DNS缓存</li>
@@ -652,6 +708,7 @@
 <li>网络运营商的DNS缓存（中国移动，中国电信）</li>
 <li>上述都没有找到，则会采取递归的方式，向<strong>根服务器</strong>进行查询，根服务器告诉本地DNS服务器域服务器的地址，本地DNS向<strong>域服务器</strong>发出请求，域服务器告诉本地服务器<strong>域名解构服务器</strong>的地址，本地服务器向域名解构服务器发出请求，收到域名和IP的关系，本地服务器再返回给浏览器并将对应关系保存在缓存中以便下一次使用。</li>
 </ul>
+<hr>
 <p><strong>DNS优化</strong></p>
 <ul>
 <li><strong>DNS缓存</strong><br>DNS存在着多级缓存，从离浏览器的距离排序的话，有以下几种: 浏览器缓存，系统缓存，路由器缓存，IPS服务器缓存，根域名服务器缓存，顶级域名服务器缓存，主域名服务器缓存。</li>
@@ -685,21 +742,17 @@
 <hr>
 <h3><span id="边缘触发和水平触发区别">边缘触发和水平触发区别</span></h3><p>边缘触发的IO应该怎么写？</p>
 <hr>
-<h2><span id="数据库">数据库</span></h2><h3><span id="mysql相关">Mysql相关</span></h3><ul>
-<li><p><strong>索引是个什么样的数据结构呢?</strong></p>
-<p>索引的数据结构和具体存储引擎的实现有关, 在MySQL中使用较多的索引有Hash索引,B+树索引等,而我们经常使用的InnoDB存储引擎的默认索引实现为:B+树索引。</p>
-</li>
-<li><p>hash索引底层就是hash表,进行查找时,调用一次hash函数就可以获取到相应的键值,之后进行回表查询获得实际数据.B+树底层实现是多路平衡查找树.对于每一次的查询都是从根节点出发,查找到叶子节点方可以获得所查键值,然后根据查询判断是否需要回表查询数据。</p>
-</li>
-<li><p>hash索引进行等值查询更快(一般情况下),但是却无法进行范围查询。因为在hash索引中经过hash函数建立索引之后,索引的顺序与原顺序无法保持一致,不能支持范围查询；而B+树的的所有节点皆遵循(左节点小于父节点,右节点大于父节点,多叉树也类似),天然支持范围。</p>
-</li>
-<li><p>hash索引任何时候都避免不了回表查询数据,而B+树在符合某些条件(聚簇索引,覆盖索引等)的时候可以只通过索引完成查询。</p>
-</li>
-<li><p><strong>上面提到了B+树在满足聚簇索引和覆盖索引的时候不需要回表查询数据,什么是聚簇索引?</strong></p>
-<p>在B+树的索引中,叶子节点可能存储了当前的key值,也可能存储了当前的key值以及整行的数据,这就是聚簇索引和非聚簇索引. 在InnoDB中,只有主键索引是聚簇索引,如果没有主键,则挑选一个唯一键建立聚簇索引.如果没有唯一键,则隐式的生成一个键来建立聚簇索引.</p>
-<p>当查询使用聚簇索引时,在对应的叶子节点,可以获取到整行数据,因此不用再次进行回表查询。</p>
-</li>
+<h2><span id="数据库">数据库</span></h2><h3><span id="mysql相关">Mysql相关</span></h3><p><strong>索引是个什么样的数据结构呢?</strong></p>
+<p>索引的数据结构和具体存储引擎的实现有关, 在 <code>MySQL</code> 中使用较多的索引有 <code>Hash索引</code> ，<code>B+</code> 树索引等,而我们经常使用的 <code>InnoDB</code> 存储引擎的默认索引实现为：<code>B+</code> 树索引。</p>
+<ul>
+<li><code>hash索引</code> 底层就是 <code>hash表</code> ，进行查找时，调用一次 <code>hash</code> 函数就可以获取到相应的键值，之后进行回表查询获得实际数据。<code>B+</code> 树底层实现是多路平衡查找树.对于每一次的查询都是从根节点出发,查找到叶子节点方可以获得所查键值，然后根据查询判断是否需要回表查询数据。</li>
+<li><code>hash索引</code> 进行等值查询更快(一般情况下)，但是却<strong>无法进行范围查询</strong>。因为在 <code>hash索引</code> 中经过 <code>hash函数</code> 建立索引之后，索引的顺序与原顺序无法保持一致，不能支持范围查询；而 <code>B+树</code> 的所有节点皆遵循(左节点小于父节点,右节点大于父节点,多叉树也类似)，天然支持范围。</li>
+<li><code>hash索引</code> 任何时候都避免不了<strong>回表查询数据</strong>，而 <code>B+树</code> 在符合某些条件(<strong>聚簇索引</strong>，<strong>覆盖索引</strong>等)的时候可以只通过索引完成查询。</li>
 </ul>
+<hr>
+<p><strong>上面提到了B+树在满足聚簇索引和覆盖索引的时候不需要回表查询数据,什么是聚簇索引?</strong></p>
+<p>在 <code>B+树</code> 的索引中，叶子节点可能存储了当前的 <code>key</code> 值，也可能存储了当前的 <code>key</code> 值以及整行的数据，这就是<strong>聚簇索引</strong>和<strong>非聚簇索引</strong>。在 <code>InnoDB</code> 中，只有<strong>主键索引</strong>是<strong>聚簇索引</strong>，如果没有主键，则挑选一个唯一键建立聚簇索引.如果没有唯一键，则隐式的生成一个键来建立聚簇索引。</p>
+<p>当查询使用聚簇索引时，在对应的叶子节点，可以获取到整行数据，因此不用再次进行回表查询。</p>
 <p> 编译型语言和解释型语言的区别 </p>
 <p> socket通信为什么不用网络，而用本地 </p>
 <p> 进程间通信的方式（你用这个的时候，你是怎么考虑的，为什么要用这个方式） </p>
@@ -933,7 +986,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">1.</span> <span class="nav-text">后台开发面经汇总</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.</span> <span class="nav-text">C++基础</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.1.</span> <span class="nav-text">C++线程中的几种锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.2.</span> <span class="nav-text">C++多态如何实现？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.3.</span> <span class="nav-text">C++的四种cast</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">static_cast</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.3.2.</span> <span class="nav-text">const_cast</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.3.3.</span> <span class="nav-text">reinterpret_cast</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.3.4.</span> <span class="nav-text">dynamic_cast</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.3.5.</span> <span class="nav-text">哪种cast更加接近C的强制类型转换？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.4.</span> <span class="nav-text">C++智能指针</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.4.1.</span> <span class="nav-text">auto_ptr(弃用)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.4.2.</span> <span class="nav-text">unique_ptr(替换auto_ptr)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.4.3.</span> <span class="nav-text">shared_ptr</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.4.4.</span> <span class="nav-text">weak_ptr</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.5.</span> <span class="nav-text">为什么析构函数必须是虚函数？为什么C++默认的析构函数不是虚函数？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.6.</span> <span class="nav-text">类模板和模板类的区别？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.7.</span> <span class="nav-text">右值引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.8.</span> <span class="nav-text">Volitale关键字</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.9.</span> <span class="nav-text">move语义</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">1.2.</span> <span class="nav-text">操作系统</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.2.1.</span> <span class="nav-text">Linux的内存不足时会发生什么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.2.2.</span> <span class="nav-text">⭐进程和线程的区别和联系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.2.3.</span> <span class="nav-text">⭐协程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">libco库</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.2.4.</span> <span class="nav-text">⭐Select/Poll/Epoll的区别</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">1.3.</span> <span class="nav-text">计算机网络</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.3.1.</span> <span class="nav-text">⭐UDP和TCP的差别。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.3.2.</span> <span class="nav-text">计算机网络是如何根据IP地址定位到一台主机的</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">地址解析协议 ARP</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.3.3.</span> <span class="nav-text">⭐HTTPS的通信过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.3.4.</span> <span class="nav-text">从浏览器输入网址到出现页面经过了哪些阶段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.3.5.</span> <span class="nav-text">Cache的结构与工作原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.3.6.</span> <span class="nav-text">边缘触发和水平触发区别</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">1.4.</span> <span class="nav-text">数据库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.4.1.</span> <span class="nav-text">Mysql相关</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">1.</span> <span class="nav-text">后台开发面经汇总</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.</span> <span class="nav-text">C++基础</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.1.</span> <span class="nav-text">C++线程中的几种锁</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">互斥锁(Mutex)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">条件锁(condition_variable)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.1.3.</span> <span class="nav-text">自旋锁(spinlock_mutex)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.1.4.</span> <span class="nav-text">读写锁(shared_mutex)/共享锁</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.1.5.</span> <span class="nav-text">递归锁(recursive_lock)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.2.</span> <span class="nav-text">C++中thread操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">join()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.2.2.</span> <span class="nav-text">detach()</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.3.</span> <span class="nav-text">C++多态如何实现？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.4.</span> <span class="nav-text">C++的四种cast</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.4.1.</span> <span class="nav-text">static_cast</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.4.2.</span> <span class="nav-text">const_cast</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.4.3.</span> <span class="nav-text">reinterpret_cast</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.4.4.</span> <span class="nav-text">dynamic_cast</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.4.5.</span> <span class="nav-text">哪种cast更加接近C的强制类型转换？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.5.</span> <span class="nav-text">C++智能指针</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.5.1.</span> <span class="nav-text">auto_ptr(弃用)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.5.2.</span> <span class="nav-text">unique_ptr(替换auto_ptr)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.5.3.</span> <span class="nav-text">shared_ptr</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.5.4.</span> <span class="nav-text">weak_ptr</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.6.</span> <span class="nav-text">为什么析构函数必须是虚函数？为什么C++默认的析构函数不是虚函数？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.7.</span> <span class="nav-text">类模板和模板类的区别？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.8.</span> <span class="nav-text">右值引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.9.</span> <span class="nav-text">Volitale关键字</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.10.</span> <span class="nav-text">move语义</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">1.2.</span> <span class="nav-text">操作系统</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.2.1.</span> <span class="nav-text">Linux的内存不足时会发生什么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.2.2.</span> <span class="nav-text">⭐进程和线程的区别和联系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.2.3.</span> <span class="nav-text">⭐协程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">libco库</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.2.4.</span> <span class="nav-text">⭐Select/Poll/Epoll的区别</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">1.3.</span> <span class="nav-text">计算机网络</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.3.1.</span> <span class="nav-text">⭐UDP和TCP的差别。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.3.2.</span> <span class="nav-text">计算机网络是如何根据IP地址定位到一台主机的</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">地址解析协议 ARP</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.3.3.</span> <span class="nav-text">⭐HTTPS的通信过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.3.4.</span> <span class="nav-text">从浏览器输入网址到出现页面经过了哪些阶段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.3.5.</span> <span class="nav-text">Cache的结构与工作原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.3.6.</span> <span class="nav-text">边缘触发和水平触发区别</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">1.4.</span> <span class="nav-text">数据库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.4.1.</span> <span class="nav-text">Mysql相关</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
