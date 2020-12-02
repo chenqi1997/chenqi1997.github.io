@@ -83,11 +83,11 @@
 <meta name="keywords" content="单调栈">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Leetcode_402 移掉K位数字">
-<meta property="og:url" content="http://chenqi1997.github.io/2020/11/13/402. 移掉K位数字/index.html">
+<meta property="og:url" content="http://chenqi1997.github.io/2020/12/02/402. 移掉K位数字/index.html">
 <meta property="og:site_name" content="Cq的Blog">
 <meta property="og:description" content="402. 移掉K位数字 题目：  给定一个以字符串表示的非负整数 num，移除这个数中的 k 位数字，使得剩下的数字最小。 注意:  num 的长度小于 10002 且 ≥ k。 num 不会包含任何前导零。  示例 1 : 123输入: num = &amp;quot;1432219&amp;quot;, k = 3输出: &amp;quot;1219&amp;quot;解释: 移除掉三个数字 4, 3, 和 2 形成一个新的">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-11-13T09:38:50.216Z">
+<meta property="og:updated_time" content="2020-12-02T03:50:42.582Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Leetcode_402 移掉K位数字">
 <meta name="twitter:description" content="402. 移掉K位数字 题目：  给定一个以字符串表示的非负整数 num，移除这个数中的 k 位数字，使得剩下的数字最小。 注意:  num 的长度小于 10002 且 ≥ k。 num 不会包含任何前导零。  示例 1 : 123输入: num = &amp;quot;1432219&amp;quot;, k = 3输出: &amp;quot;1219&amp;quot;解释: 移除掉三个数字 4, 3, 和 2 形成一个新的">
@@ -120,7 +120,7 @@
 
 
 
-  <link rel="canonical" href="http://chenqi1997.github.io/2020/11/13/402. 移掉K位数字/">
+  <link rel="canonical" href="http://chenqi1997.github.io/2020/12/02/402. 移掉K位数字/">
 
 
 
@@ -263,7 +263,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://chenqi1997.github.io/2020/11/13/402. 移掉K位数字/">
+    <link itemprop="mainEntityOfPage" href="http://chenqi1997.github.io/2020/12/02/402. 移掉K位数字/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="陈琦">
@@ -292,8 +292,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-11-13T13:46:00+08:00">
-                2020-11-13
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-12-02T11:46:00+08:00">
+                2020-12-02
               </time>
             
 
@@ -387,6 +387,7 @@
 <p>我们可以先从左往右遍历 <code>num</code> 字符串，并用一个栈保存遍历过的单调不减的元素。当栈顶元素大于当前元素<code>num[i]</code> 时,即形成了一个逆序对，将栈顶元素出栈即可。</p>
 <p>每次出栈后，还需要判断新的栈顶元素与当前元素的关系，所以不能 <code>++i</code> 。同时，由于移除了一个元素，需要将 <code>k - 1</code> .</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="built_in">string</span> <span class="title">removeKdigits</span><span class="params">(<span class="built_in">string</span> num, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">stack</span>&lt;<span class="keyword">char</span>&gt; s;<span class="comment">//单调递增栈</span></span><br><span class="line">        <span class="built_in">string</span> res;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; num.size(); ++i)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">while</span> (!s.empty() &amp;&amp; s.top() &gt; num[i] &amp;&amp; k &gt; <span class="number">0</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                s.pop();</span><br><span class="line">                --k;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//对于10200这种情况</span></span><br><span class="line">            <span class="keyword">if</span> (s.empty() &amp;&amp; num[i] == <span class="string">'0'</span>)</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            s.push(num[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span> (!s.empty())</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (k &gt; <span class="number">0</span>)<span class="comment">//当还要再移除数字的时候：从此时单调递增栈的top部删去数字</span></span><br><span class="line">                k--;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (k == <span class="number">0</span>)<span class="comment">//当不用再移除数字的时候：把字符串取出来到res</span></span><br><span class="line">                res += s.top();</span><br><span class="line"></span><br><span class="line">            s.pop();	</span><br><span class="line">        &#125;</span><br><span class="line">        reverse(res.begin(), res.end());</span><br><span class="line">        <span class="keyword">return</span> res == <span class="string">""</span> ? <span class="string">"0"</span> : res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>当然，为了避免最后 <code>reverse</code> 这一手，也是可以使用双端队列 <code>deque</code> 来实现的，不过需要注意一下就是最后在清空队列的时候，如果 <code>k &gt; 0</code> 需要 <code>pop_back()</code> ，如果 <code>k == 0</code> 说明不需要删除了，将 <code>pop_front()</code> 的结果写入 <code>res</code> 字符串。</p>
 
       
     </div>
@@ -417,8 +418,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/11/12/922. 按奇偶排序数组II/" rel="next" title="Leetcode_922 按奇偶排序数组II">
-                <i class="fa fa-chevron-left"></i> Leetcode_922 按奇偶排序数组II
+              <a href="/2020/12/02/321. 拼接最大数/" rel="next" title="Leetcode_321 拼接最大数">
+                <i class="fa fa-chevron-left"></i> Leetcode_321 拼接最大数
               </a>
             
           </div>
@@ -426,10 +427,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2020/11/13/316. 去除重复字母/" rel="prev" title="Leetcode_316 去除重复字母">
-                Leetcode_316 去除重复字母 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -508,7 +505,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">333</span>
+                  <span class="site-state-item-count">334</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -530,7 +527,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">85</span>
+                  <span class="site-state-item-count">86</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
