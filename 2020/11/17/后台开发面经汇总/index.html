@@ -79,22 +79,24 @@
 
 
 
-<meta name="description" content="[TOC]   后台开发面经汇总 C++基础 C++线程中的几种锁 互斥锁(Mutex) 条件锁(condition_variable) 自旋锁(spinlock_mutex) 读写锁(shared_mutex)/共享锁 递归锁(recursive_lock)   C++中thread操作 join() detach()   C++多态如何实现？ C++的四种cast static_cast co">
+<meta name="description" content="后台开发面经汇总 C++基础 C++线程中的几种锁 互斥锁(Mutex) 条件锁(condition_variable) 自旋锁(spinlock_mutex) 读写锁(shared_mutex)/共享锁 递归锁(recursive_mutex)/可重入锁   C++中thread操作 join() detach()   C++多态 多态有哪几种？ 虚函数的实现 动态绑定 为什么析构函数必须是">
 <meta name="keywords" content="面经,基础知识,C++">
 <meta property="og:type" content="article">
 <meta property="og:title" content="后台开发面经汇总">
 <meta property="og:url" content="http://chenqi1997.github.io/2020/11/17/后台开发面经汇总/index.html">
 <meta property="og:site_name" content="Cq的Blog">
-<meta property="og:description" content="[TOC]   后台开发面经汇总 C++基础 C++线程中的几种锁 互斥锁(Mutex) 条件锁(condition_variable) 自旋锁(spinlock_mutex) 读写锁(shared_mutex)/共享锁 递归锁(recursive_lock)   C++中thread操作 join() detach()   C++多态如何实现？ C++的四种cast static_cast co">
+<meta property="og:description" content="后台开发面经汇总 C++基础 C++线程中的几种锁 互斥锁(Mutex) 条件锁(condition_variable) 自旋锁(spinlock_mutex) 读写锁(shared_mutex)/共享锁 递归锁(recursive_mutex)/可重入锁   C++中thread操作 join() detach()   C++多态 多态有哪几种？ 虚函数的实现 动态绑定 为什么析构函数必须是">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://pic2.zhimg.com/80/v2-0fceb07713e411d48b4c361452129585_720w.jpg">
+<meta property="og:image" content="https://pic3.zhimg.com/80/v2-dfe4aefdee7e06cf3151b57492ed42a2_720w.jpg">
 <meta property="og:image" content="http://5b0988e595225.cdn.sohucs.com/images/20180622/6765e36cc4604fba897976638af03524.jpeg">
 <meta property="og:image" content="https://krahets.gitee.io/assets/img/1568551356084.394e4465.png">
 <meta property="og:image" content="https://img-blog.csdn.net/20171123102431734">
-<meta property="og:updated_time" content="2020-12-02T10:50:26.796Z">
+<meta property="og:updated_time" content="2020-12-02T14:17:15.592Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="后台开发面经汇总">
-<meta name="twitter:description" content="[TOC]   后台开发面经汇总 C++基础 C++线程中的几种锁 互斥锁(Mutex) 条件锁(condition_variable) 自旋锁(spinlock_mutex) 读写锁(shared_mutex)/共享锁 递归锁(recursive_lock)   C++中thread操作 join() detach()   C++多态如何实现？ C++的四种cast static_cast co">
-<meta name="twitter:image" content="http://5b0988e595225.cdn.sohucs.com/images/20180622/6765e36cc4604fba897976638af03524.jpeg">
+<meta name="twitter:description" content="后台开发面经汇总 C++基础 C++线程中的几种锁 互斥锁(Mutex) 条件锁(condition_variable) 自旋锁(spinlock_mutex) 读写锁(shared_mutex)/共享锁 递归锁(recursive_mutex)/可重入锁   C++中thread操作 join() detach()   C++多态 多态有哪几种？ 虚函数的实现 动态绑定 为什么析构函数必须是">
+<meta name="twitter:image" content="https://pic2.zhimg.com/80/v2-0fceb07713e411d48b4c361452129585_720w.jpg">
 
 
 
@@ -356,8 +358,7 @@
       
 
       
-        <p>[TOC]</p>
-<!-- toc -->
+        <!-- toc -->
 <ul>
 <li><a href="#后台开发面经汇总">后台开发面经汇总</a><ul>
 <li><a href="#c基础">C++基础</a><ul>
@@ -366,7 +367,7 @@
 <li><a href="#条件锁condition_variable">条件锁(condition_variable)</a></li>
 <li><a href="#自旋锁spinlock_mutex">自旋锁(spinlock_mutex)</a></li>
 <li><a href="#读写锁shared_mutex共享锁">读写锁(shared_mutex)/共享锁</a></li>
-<li><a href="#递归锁recursive_lock">递归锁(recursive_lock)</a></li>
+<li><a href="#递归锁recursive_mutex可重入锁">递归锁(recursive_mutex)/可重入锁</a></li>
 </ul>
 </li>
 <li><a href="#c中thread操作">C++中thread操作</a><ul>
@@ -374,7 +375,20 @@
 <li><a href="#detach">detach()</a></li>
 </ul>
 </li>
-<li><a href="#c多态如何实现">C++多态如何实现？</a></li>
+<li><a href="#c多态">C++多态</a><ul>
+<li><a href="#多态有哪几种">多态有哪几种？</a></li>
+<li><a href="#虚函数的实现">虚函数的实现</a></li>
+<li><a href="#动态绑定">动态绑定</a></li>
+<li><a href="#为什么析构函数必须是虚函数">为什么析构函数必须是虚函数？</a></li>
+<li><a href="#为什么c默认的析构函数不是虚函数">为什么C++默认的析构函数不是虚函数？</a></li>
+<li><a href="#为什么构造函数不能是虚函数">为什么构造函数不能是虚函数？</a></li>
+<li><a href="#静态成员及静态成员函数能不能被继承">静态成员及静态成员函数能不能被继承？</a></li>
+<li><a href="#友元可以继承吗">友元可以继承吗？</a></li>
+<li><a href="#多态中构造函数析构函数调用顺序">多态中构造函数/析构函数调用顺序</a></li>
+<li><a href="#类成员函数中重载重写隐藏的区别">类成员函数中重载/重写/隐藏的区别？</a></li>
+<li><a href="#钻石继承问题">钻石继承问题</a></li>
+</ul>
+</li>
 <li><a href="#c的四种cast">C++的四种cast</a><ul>
 <li><a href="#static_cast">static_cast</a></li>
 <li><a href="#const_cast">const_cast</a></li>
@@ -390,7 +404,6 @@
 <li><a href="#weak_ptr">weak_ptr</a></li>
 </ul>
 </li>
-<li><a href="#为什么析构函数必须是虚函数为什么c默认的析构函数不是虚函数">为什么析构函数必须是虚函数？为什么C++默认的析构函数不是虚函数？</a></li>
 <li><a href="#类模板和模板类的区别">类模板和模板类的区别？</a></li>
 <li><a href="#右值引用">右值引用</a></li>
 <li><a href="#volitale关键字">Volitale关键字</a></li>
@@ -400,6 +413,7 @@
 <li><a href="#操作系统">操作系统</a><ul>
 <li><a href="#linux的内存不足时会发生什么">Linux的内存不足时会发生什么？</a></li>
 <li><a href="#进程和线程的区别和联系">⭐进程和线程的区别和联系</a></li>
+<li><a href="#进程间如何通信">进程间如何通信？</a></li>
 <li><a href="#协程">⭐协程</a><ul>
 <li><a href="#libco库">libco库</a></li>
 </ul>
@@ -408,7 +422,10 @@
 </ul>
 </li>
 <li><a href="#计算机网络">计算机网络</a><ul>
-<li><a href="#udp和tcp的差别">⭐UDP和TCP的差别。</a></li>
+<li><a href="#udp和tcp的差别">⭐UDP和TCP的差别</a></li>
+<li><a href="#三次握手四次挥手">三次握手四次挥手</a></li>
+<li><a href="#get和post的区别">get和post的区别</a></li>
+<li><a href="#http状态码">HTTP状态码</a></li>
 <li><a href="#计算机网络是如何根据ip地址定位到一台主机的">计算机网络是如何根据IP地址定位到一台主机的</a><ul>
 <li><a href="#地址解析协议-arp">地址解析协议 ARP</a></li>
 </ul>
@@ -427,6 +444,7 @@
 </li>
 </ul>
 <!-- tocstop -->
+<p>[TOC]</p>
 <h1><span id="后台开发面经汇总">后台开发面经汇总</span></h1><h2><span id="c基础">C++基础</span></h2><h3><span id="c线程中的几种锁">C++线程中的几种锁</span></h3><p>C++线程之间的锁有：<strong>互斥锁、条件锁、自旋锁、读写锁、递归锁</strong> 这几种</p>
 <h4><span id="互斥锁mutex">互斥锁(Mutex)</span></h4><p>互斥锁用于<strong>控制多个线程对他们之间共享资源互斥访问的一个信号量</strong>。也就是说是为了避免多个线程在某一时刻同时操作一个共享资源。例如线程池中的有多个空闲线程和一个任务队列。任何一个线程都要使用互斥锁互斥访问任务队列，以避免多个线程同时访问任务队列以发生错乱。</p>
 <p>在某一时刻，只有一个线程可以获取互斥锁，在释放互斥锁之前其他线程都不能获取该互斥锁。如果其他线程想要获取这个互斥锁，那么这个线程只能以<strong>阻塞方式</strong>进行等待。</p>
@@ -457,12 +475,108 @@
 <li>如果一个线程已经获取了 <code>共享锁</code> ，则其他任何线程都无法获取 <code>互斥锁</code> ，但是可以获取 <code>共享锁</code> 。</li>
 </ul>
 <hr>
-<h4><span id="递归锁recursive_lock">递归锁(recursive_lock)</span></h4><p>Todo</p>
+<h4><span id="递归锁recursive_mutex可重入锁">递归锁(recursive_mutex)/可重入锁</span></h4><p>我们都知道，一般的互斥量对于同一个线程只能同时加锁一次（调用 <code>lock</code> ），如果连续调用两次以上便会出现死锁。但设想这样一个场景，如果在一个函数内给互斥量上了锁还没有解开，然后又调用了另一个函数，这个被调用的函数也去给互斥量上锁，这种情境下就会出现死锁。</p>
+<p>对于互斥锁，分为递归锁和非递归锁。在不同的线程中调用已锁定的互斥锁，必然会导致死锁。但是在<strong>同一个线程中，如果想要多次获得一个锁，只能使用递归锁</strong>。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">MutexLock mutex;  </span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">    mutex.lock();  </span><br><span class="line">    <span class="comment">// do something  </span></span><br><span class="line">    mutex.unlock();  </span><br><span class="line">&#125;  </span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">bar</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">    mutex.lock();  </span><br><span class="line">    <span class="comment">// do something  </span></span><br><span class="line">    foo();  </span><br><span class="line">    mutex.unlock();   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>为了解决这个问题，引入了递归锁的概念。</p>
+<p><strong>递归锁</strong>，顾名思义，<strong>如果因为多次函数调用而导致出现多次上锁的情况，只有第一次会去真正加锁，后面的加锁操作会被自动忽略。</strong></p>
+<p><strong>recursive_mutex 允许同一个线程对互斥量多次上锁（即递归上锁）</strong>，来获得对互斥量对象的<strong>多层所有权</strong>，<code>recursive_mutex</code> 释放互斥量时需要调用与该锁层次深度相同次数的 <code>unlock()</code>，可理解为 <code>lock()</code> 次数和 <code>unlock()</code> 次数相同，除此之外，<code>recursive_mutex</code> 的特性和<code>mutex</code> 大致相同。</p>
 <hr>
 <h3><span id="c中thread操作">C++中thread操作</span></h3><h4><span id="join">join()</span></h4><p>阻塞当前线程，直至 <code>this</code> 所标识的线程完成其执行。<code>this</code> 所标识的线程的完成同步于从 <strong>join()</strong> 的成功返回。</p>
 <p>该方法简单暴力，主线程等待子进程期间什么都不能做。<code>thread::join()</code> 会清理子线程相关的内存空间，此后<code>thread object</code> 将不再和这个子线程相关了，即 <code>thread object</code> 不再 <code>joinable</code> 了，所以 <code>join</code> 对于一个子线程来说只可以被调用一次，为了实现更精细的线程等待机制，可以使用条件变量等机制。</p>
 <h4><span id="detach">detach()</span></h4><hr>
-<h3><span id="c多态如何实现">C++多态如何实现？</span></h3><hr>
+<h3><span id="c多态">C++多态</span></h3><p><strong>封装，继承，多态是面向对象设计的三个特征</strong>，而多态可以说是面向对象设计的关键。C++通过虚函数表，实现了虚函数与对象的动态绑定，从而构建了C++面向对象程序设计的基石。</p>
+<h4><span id="多态有哪几种">多态有哪几种？</span></h4><p>多态是面向对象的重要特性之一，它是一种行为的封装，是同一种事物所表现出的多种形态，简单地说是”一个接口多种实现“。多态的实现主要分为<strong>静态多态</strong>和<strong>动态多态</strong>：</p>
+<ul>
+<li><p>静态多态主要是<strong>重载</strong>，在编译的时候就已经确定。</p>
+<ul>
+<li><strong>函数重载</strong></li>
+<li><strong>运算符重载</strong></li>
+<li><strong>模板</strong></li>
+</ul>
+</li>
+<li><p>动态多态是用<strong>虚函数机制</strong>实现的，在运行期间动态绑定。</p>
+</li>
+</ul>
+<p>举个例子：一个父类类型的指针指向一个子类对象时候，使用父类的指针去调用子类中重写了的父类中的虚函数的时候，会调用子类重写过后的函数，<strong>在父类中声明为加了virtual关键字的函数，在子类中重写时候不需要加virtual也是虚函数</strong>。在子类中重新定义父类中定义的虚函数时，会告诉编译器不要静态链接到该函数。</p>
+<hr>
+<h4><span id="虚函数的实现">虚函数的实现</span></h4><p>在有虚函数的类中，<strong>类的最开始部分是一个虚函数表的指针</strong>，这个指针指向一个虚函数表，表中放了虚函数的地址，实际的虚函数在 <code>代码段(.text)</code> 中。当子类继承了父类的时候也会继承其虚函数表，当子类重写父类中虚函数时候，会将其继承到的虚函数表中的地址替换为重新写的函数地址。使用了虚函数，会增加访问内存开销，降低效率。</p>
+<p>虚表是一个<strong>指针数组</strong>，其元素是<strong>虚函数的指针</strong>，每个元素对应一个<strong>虚函数的函数指针</strong>。需要指出的是，普通的函数即非虚函数，其调用并不需要经过虚表，所以虚表的元素并不包括普通函数的函数指针。虚表内的条目，即<strong>虚函数指针的赋值发生在编译器的编译阶段</strong>，也就是说在代码的编译阶段，虚表就可以构造出来了。</p>
+<p>虚表是<strong>属于类</strong>的，而不是属于某个具体的对象，<strong>一个类只需要一个虚表</strong>即可。<strong>同一个类的所有对象都使用同一个虚表。</strong></p>
+<p>⭐<code>Linux</code> 下虚表存储位置在<strong>只读数据段中(rodata)</strong>，<code>windows</code> 是在存储位置应该是<strong>常量区域。</strong> </p>
+<p>为了指定对象的虚表，对象内部包含一个<strong>虚表的指针</strong>，来指向自己所使用的虚表。为了让每个包含虚表的类的对象都拥有一个虚表指针，编译器在类中添加了一个指针，<code>void** __vfptr</code>，用来指向虚表。这样，当类的对象在创建时便拥有了这个指针，且这个指针的值会自动被设置为指向类的虚表。</p>
+<p><img src="https://pic2.zhimg.com/80/v2-0fceb07713e411d48b4c361452129585_720w.jpg" alt="img"></p>
+<hr>
+<h4><span id="动态绑定">动态绑定</span></h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">vfunc1</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">vfunc2</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">func1</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">func2</span><span class="params">()</span></span>;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> m_data1, m_data2;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span> :</span> <span class="keyword">public</span> A &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">vfunc1</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">func1</span><span class="params">()</span></span>;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> m_data3;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">C</span>:</span> <span class="keyword">public</span> B &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">vfunc2</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">func2</span><span class="params">()</span></span>;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> m_data1, m_data4;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>类 <code>A</code> 是基类，类 <code>B</code> 继承类 <code>A</code> ，类 <code>C</code> 又继承类 <code>B</code> 。类 <code>A</code> ，类 <code>B</code> ，类 <code>C</code> ，其对象模型如下图所示。由于这三个类都有虚函数，故编译器为每个类都创建了一个虚表，即类A的虚表（<code>A vtbl</code>），类B的虚表（<code>B vtbl</code>），类C的虚表（<code>C vtbl</code>）。类 <code>A</code> ，类 <code>B</code> ，类 <code>C</code> 对象都拥有一个虚表指针<code>*__vptr</code>，用来指向自己所属类的虚表。</p>
+<p><strong>对象的虚表指针用来指向自己所属类的虚表，虚表中的指针会指向其继承的最近的一个类的虚函数</strong>。</p>
+<p><strong>生成子类虚表的过程：</strong></p>
+<ol>
+<li>将父类虚表内容拷贝到子类虚表上。</li>
+<li>将子类重写的虚函数覆盖掉表中父类的虚函数。</li>
+<li>如果子类有新增加的虚函数,按声明次序加到最后。</li>
+</ol>
+<p><img src="https://pic3.zhimg.com/80/v2-dfe4aefdee7e06cf3151b57492ed42a2_720w.jpg" alt="img"></p>
+<p>我们把经过虚表调用虚函数的过程称为<strong>动态绑定</strong>，其表现出来的现象称为<strong>运行时多态</strong>。动态绑定区别于传统的函数调用，传统的函数调用我们称之为<strong>静态绑定</strong>，即函数的调用在编译阶段就可以确定下来了。</p>
+<p>那么，什么时候会执行函数的动态绑定？这需要符合以下三个条件。</p>
+<ol>
+<li>通过<strong>指针或引用</strong>来调用函数</li>
+<li>指针<strong>upcast</strong>向上转型（继承类向基类的转换称为 <code>upcast</code> ）</li>
+<li>调用的是虚函数</li>
+</ol>
+<p>如果一个函数调用符合以上三个条件，编译器就会把该函数调用编译成动态绑定，其函数的调用过程走的是上述通过虚表的机制。</p>
+<hr>
+<h4><span id="为什么析构函数必须是虚函数">为什么析构函数必须是虚函数？</span></h4><p>将<strong>可能会被继承的父类</strong>的析构函数设置为虚函数，可以保证当我们 <code>new</code> 一个子类，然后使用基类指针指向该子类对象，释放基类指针时可以释放掉子类的空间，防止内存泄漏。</p>
+<hr>
+<h4><span id="为什么c默认的析构函数不是虚函数">为什么C++默认的析构函数不是虚函数？</span></h4><p>C++默认的析构函数不是虚函数是因为虚函数<strong>需要额外的虚函数表和虚表指针</strong>，占用额外的内存。而对于不会被继承的类来说，其析构函数如果是虚函数，就会浪费内存。因此C++默认的析构函数不是虚函数，而是<strong>只有当需要当作父类时，设置为虚函数。</strong></p>
+<hr>
+<h4><span id="为什么构造函数不能是虚函数">为什么构造函数不能是虚函数？</span></h4><p>1.<strong>从存储空间角度：</strong> 虚函数对应一个 <code>vtable</code> ，这个 <code>vtable</code> 其实是存储在<strong>对象的内存空间</strong>的。问题出来了，如果构造函数是虚的，就需要通过 <code>vtable</code> 来调用，可是对象还没有实例化，也就是内存空间还没有，无法找到<code>vtable</code> ，所以构造函数不能是虚函数。<br><strong>2，从使用角度：</strong> 构造函数本身就是要<strong>初始化实例</strong>，那使用虚函数也没有实际意义呀。所以构造函数没有必要是虚函数。<strong>虚函数的作用在于通过父类的指针或者引用来调用它的时候能够变成调用子类的那个成员函数</strong>。而构造函数是在创建对象时自动调用的，不可能通过父类的指针或者引用去调用，因此也就规定构造函数不能是虚函数。<br><strong>3、构造函数不需要是虚函数，也不允许是虚函数：</strong>因为创建一个对象时我们总是要明确指定对象的类型，尽管我们可能通过基类的指针或引用去访问它。<br><strong>4、从实现上看，</strong><code>vtable</code> 在构造函数调用后才建立，因而构造函数不可能成为虚函数。</p>
+<hr>
+<h4><span id="静态成员及静态成员函数能不能被继承">静态成员及静态成员函数能不能被继承？</span></h4><p>⭐<strong>静态数据成员和静态成员函数可以被继承！</strong>具体如下：</p>
+<ol>
+<li>父类的 <code>static</code> 变量和函数在派生类中依然可用，但是<strong>受访问性控制</strong>（比如，父类的 <code>private</code> 域中的就不可访问），而且对 <code>static</code> 变量来说，派生类和父类中的 <code>static</code> 变量是<strong>共用空间</strong>的，这点在利用 <code>static</code> 变量进行引用计数的时候要特别注意。</li>
+<li><code>static</code> 函数没有“虚函数”一说。因为 <code>static</code> 函数实际上是<strong>加上了访问控制的全局函数</strong>，全局函数哪来的什么虚函数的概念？</li>
+<li>派生类的 <code>friend</code> 函数可以访问派生类本身的一切变量，包括从父类继承下来的 <code>protected</code> 域中的变量。但是对父类来说，他并不是 <code>friend</code> 的。继承可以使得子类具有父类的各种属性和方法，而不需要再次编写相同的代码。所以 <code>static</code> 成员的这种应该算是继承。</li>
+</ol>
+<hr>
+<h4><span id="友元可以继承吗">友元可以继承吗？</span></h4><p>⭐<strong>不能！</strong></p>
+<p>友元只是能访问<strong>指定类的私有和保护成员的自定义函数</strong>，<strong>不是被指定类的成员</strong>，自然不能继承。 使用友元类时注意：</p>
+<ol>
+<li>友元关系不能被继承。</li>
+<li>友元关系是单向的，不具有交换性。若类 <code>B</code> 是类 <code>A</code> 的友元，类 <code>A</code> 不一定是类 <code>B</code> 的友元，要看在类中是否有相应的声明。</li>
+<li>友元关系不具有传递性。若类 <code>B</code> 是类 <code>A</code> 的友元，类 <code>C</code> 是 <code>B</code> 的友元，类 <code>C</code> 不一定是类 <code>A</code> 的友元，同样要看类中是否有相应的声明。</li>
+</ol>
+<hr>
+<h4><span id="多态中构造函数析构函数调用顺序">多态中构造函数/析构函数调用顺序</span></h4><ol>
+<li>基类对象首先被创建。</li>
+<li>派生类构造函数应通过<strong>成员初始化列表</strong>（<strong>调用顺序和继承顺序相关</strong>）将基类信息传递给基类构造函数 ，可以使用初始化列表句法指明要使用的基类构造函数，否则将使用默认的基类构造函数。</li>
+<li>派生类构造函数<strong>应初始化派生类新增的数据成员</strong>。派生类对象析构时，程序<strong>首先调用派生类析构函数，再调用基类析构函数。</strong></li>
+</ol>
+<hr>
+<h4><span id="类成员函数中重载重写隐藏的区别">类成员函数中重载/重写/隐藏的区别？</span></h4><ul>
+<li><strong>函数重载：重载函数通常用来命名一组 <code>功能相似</code> 的函数</strong><ul>
+<li>函数要在 <code>相同的类域</code></li>
+<li>函数的 <code>名字要相同</code> </li>
+<li>函数的 <code>参数列表或返回值不同</code> </li>
+</ul>
+</li>
+<li><strong>函数重写/覆盖：覆盖是指 <code>派生类函数覆盖基类函数</code> </strong><ul>
+<li>函数是要在 <code>不同的类域</code> </li>
+<li>两个函数的 <code>名称相同</code> </li>
+<li>基类函数 <code>必须是虚函数</code></li>
+<li>两个函数的 <code>参数相同</code> </li>
+</ul>
+</li>
+<li><strong>函数重定义/隐藏：指派生类的函数屏蔽了与其同名的基类函数</strong><ul>
+<li>两个函数在 <code>不同的类域</code> </li>
+<li>两个函数的 <code>名称相同</code> </li>
+<li>两个函数的 <code>参数不同</code> </li>
+<li><strong>如果派生类函数与基类函数参数相同，但是在基类函数中没有virtual关键字，发生函数隐藏</strong></li>
+</ul>
+</li>
+</ul>
+<hr>
+<h4><span id="钻石继承问题">钻石继承问题</span></h4><hr>
 <h3><span id="c的四种cast">C++的四种cast</span></h3><h4><span id="static_cast">static_cast</span></h4><p>在C++语言中 <code>static_cast</code> 用于数据类型的强制转换，强制将一种数据类型转换为另一种数据类型。例如将整型数据转换为浮点型数据。</p>
 <p>主要用法有如下几种：</p>
 <ol>
@@ -579,9 +693,6 @@
 <p><strong>shared_ptr 和 unique_ptr 区别</strong></p>
 <p><code>unique_ptr</code> 具有唯一性，对指向的对象值存在唯一的 <code>unique_ptr</code> 。<code>unique_ptr</code> 不可复制，赋值，但是<code>std::move()</code> 可以转换对象的所有权，局部变量的返回值除外。与 <code>shared_ptr</code> 相比，若自定义删除器，<code>unique_ptr</code>需要在声明处指定删除器类型，而 <code>shared_ptr</code> 不需要，<code>shared_ptr</code> 自定义删除器只需要指定删除器对象即可；在赋值时，<code>shared_ptr</code> 可以随意赋值，删除器对象也会被赋值给新的对象。因为在 <code>unique_ptr</code> 的实现中，删除器对象是作为 <code>unique_ptr</code> 的一部分，而 <code>shared_ptr</code> 的删除器对象保存在<code>control_block</code> 中。</p>
 <hr>
-<h3><span id="为什么析构函数必须是虚函数为什么c默认的析构函数不是虚函数">为什么析构函数必须是虚函数？为什么C++默认的析构函数不是虚函数？</span></h3><p>将<strong>可能会被继承的父类</strong>的析构函数设置为虚函数，可以保证当我们 <code>new</code> 一个子类，然后使用基类指针指向该子类对象，释放基类指针时可以释放掉子类的空间，防止内存泄漏。</p>
-<p>C++默认的析构函数不是虚函数是因为虚函数<strong>需要额外的虚函数表和虚表指针</strong>，占用额外的内存。而对于不会被继承的类来说，其析构函数如果是虚函数，就会浪费内存。因此C++默认的析构函数不是虚函数，而是<strong>只有当需要当作父类时，设置为虚函数。</strong></p>
-<hr>
 <h3><span id="类模板和模板类的区别">类模板和模板类的区别？</span></h3><hr>
 <h3><span id="右值引用">右值引用</span></h3><hr>
 <h3><span id="volitale关键字">Volitale关键字</span></h3><p>volatile可理解为编译器警告指示字；volatile用于告诉编译器必须每次去内存中取变量值；volatile主要修饰可能被多个线程访问的变量；volatile也可以修饰可能被未知因数更改的变量</p>
@@ -602,6 +713,7 @@
 <li>线程中执行时一般都要进行同步和互斥，因为他们共享同一进程的所有资源。</li>
 </ul>
 <hr>
+<h3><span id="进程间如何通信">进程间如何通信？</span></h3><hr>
 <h3><span id="协程">⭐协程</span></h3><p><strong>什么是协程</strong></p>
 <p><strong>协程，英文Coroutines，是一种比线程更加轻量级的存在。</strong>正如一个进程可以拥有多个线程一样，一个线程也可以拥有多个协程。在C++20中出现了<strong>coroutine</strong>的库。协程的作用是在同一个线程中通过保存代码执行段状态，进行代码段的分次执行，以及多个代码段的交织执行。每个代码段可以成为一个协程。协程的好处是<strong>避免了线程之间的频换切换</strong>、<strong>以及线程安全的优化</strong>（对于同一个变量的访问无需做同步控制）。</p>
 <p><strong>协程是非抢占式的，线程是抢占式的。</strong></p>
@@ -641,7 +753,7 @@
 </ul>
 <hr>
 <h3><span id="selectpollepoll的区别">⭐Select/Poll/Epoll的区别</span></h3><hr>
-<h2><span id="计算机网络">计算机网络</span></h2><h3><span id="udp和tcp的差别">⭐UDP和TCP的差别。</span></h3><p><strong>UDP：</strong></p>
+<h2><span id="计算机网络">计算机网络</span></h2><h3><span id="udp和tcp的差别">⭐UDP和TCP的差别</span></h3><p><strong>UDP：</strong></p>
 <ul>
 <li><strong>无连接</strong>：减少了开销和发送前时延；</li>
 <li><strong>尽最大努力交付</strong>：不保证可靠交付；</li>
@@ -659,6 +771,9 @@
 <li><strong>面向字节流：</strong> TCP 把应用进程交下来的数据看作一连串的无结构字节流；</li>
 </ul>
 <hr>
+<h3><span id="三次握手四次挥手">三次握手四次挥手</span></h3><hr>
+<h3><span id="get和post的区别">get和post的区别</span></h3><hr>
+<h3><span id="http状态码">HTTP状态码</span></h3><hr>
 <h3><span id="计算机网络是如何根据ip地址定位到一台主机的">计算机网络是如何根据IP地址定位到一台主机的</span></h3><ul>
 <li><h4><span id="地址解析协议-arp">地址解析协议 ARP</span></h4></li>
 </ul>
@@ -986,7 +1101,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">1.</span> <span class="nav-text">后台开发面经汇总</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.</span> <span class="nav-text">C++基础</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.1.</span> <span class="nav-text">C++线程中的几种锁</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">互斥锁(Mutex)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">条件锁(condition_variable)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.1.3.</span> <span class="nav-text">自旋锁(spinlock_mutex)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.1.4.</span> <span class="nav-text">读写锁(shared_mutex)/共享锁</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.1.5.</span> <span class="nav-text">递归锁(recursive_lock)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.2.</span> <span class="nav-text">C++中thread操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">join()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.2.2.</span> <span class="nav-text">detach()</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.3.</span> <span class="nav-text">C++多态如何实现？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.4.</span> <span class="nav-text">C++的四种cast</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.4.1.</span> <span class="nav-text">static_cast</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.4.2.</span> <span class="nav-text">const_cast</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.4.3.</span> <span class="nav-text">reinterpret_cast</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.4.4.</span> <span class="nav-text">dynamic_cast</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.4.5.</span> <span class="nav-text">哪种cast更加接近C的强制类型转换？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.5.</span> <span class="nav-text">C++智能指针</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.5.1.</span> <span class="nav-text">auto_ptr(弃用)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.5.2.</span> <span class="nav-text">unique_ptr(替换auto_ptr)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.5.3.</span> <span class="nav-text">shared_ptr</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.5.4.</span> <span class="nav-text">weak_ptr</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.6.</span> <span class="nav-text">为什么析构函数必须是虚函数？为什么C++默认的析构函数不是虚函数？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.7.</span> <span class="nav-text">类模板和模板类的区别？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.8.</span> <span class="nav-text">右值引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.9.</span> <span class="nav-text">Volitale关键字</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.10.</span> <span class="nav-text">move语义</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">1.2.</span> <span class="nav-text">操作系统</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.2.1.</span> <span class="nav-text">Linux的内存不足时会发生什么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.2.2.</span> <span class="nav-text">⭐进程和线程的区别和联系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.2.3.</span> <span class="nav-text">⭐协程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">libco库</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.2.4.</span> <span class="nav-text">⭐Select/Poll/Epoll的区别</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">1.3.</span> <span class="nav-text">计算机网络</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.3.1.</span> <span class="nav-text">⭐UDP和TCP的差别。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.3.2.</span> <span class="nav-text">计算机网络是如何根据IP地址定位到一台主机的</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">地址解析协议 ARP</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.3.3.</span> <span class="nav-text">⭐HTTPS的通信过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.3.4.</span> <span class="nav-text">从浏览器输入网址到出现页面经过了哪些阶段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.3.5.</span> <span class="nav-text">Cache的结构与工作原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.3.6.</span> <span class="nav-text">边缘触发和水平触发区别</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">1.4.</span> <span class="nav-text">数据库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.4.1.</span> <span class="nav-text">Mysql相关</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">1.</span> <span class="nav-text">后台开发面经汇总</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.</span> <span class="nav-text">C++基础</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.1.</span> <span class="nav-text">C++线程中的几种锁</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">互斥锁(Mutex)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">条件锁(condition_variable)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.1.3.</span> <span class="nav-text">自旋锁(spinlock_mutex)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.1.4.</span> <span class="nav-text">读写锁(shared_mutex)/共享锁</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.1.5.</span> <span class="nav-text">递归锁(recursive_mutex)/可重入锁</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.2.</span> <span class="nav-text">C++中thread操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">join()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.2.2.</span> <span class="nav-text">detach()</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.3.</span> <span class="nav-text">C++多态</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">多态有哪几种？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.3.2.</span> <span class="nav-text">虚函数的实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.3.3.</span> <span class="nav-text">动态绑定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.3.4.</span> <span class="nav-text">为什么析构函数必须是虚函数？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.3.5.</span> <span class="nav-text">为什么C++默认的析构函数不是虚函数？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.3.6.</span> <span class="nav-text">为什么构造函数不能是虚函数？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.3.7.</span> <span class="nav-text">静态成员及静态成员函数能不能被继承？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.3.8.</span> <span class="nav-text">友元可以继承吗？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.3.9.</span> <span class="nav-text">多态中构造函数/析构函数调用顺序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.3.10.</span> <span class="nav-text">类成员函数中重载/重写/隐藏的区别？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.3.11.</span> <span class="nav-text">钻石继承问题</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.4.</span> <span class="nav-text">C++的四种cast</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.4.1.</span> <span class="nav-text">static_cast</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.4.2.</span> <span class="nav-text">const_cast</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.4.3.</span> <span class="nav-text">reinterpret_cast</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.4.4.</span> <span class="nav-text">dynamic_cast</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.4.5.</span> <span class="nav-text">哪种cast更加接近C的强制类型转换？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.5.</span> <span class="nav-text">C++智能指针</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.5.1.</span> <span class="nav-text">auto_ptr(弃用)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.5.2.</span> <span class="nav-text">unique_ptr(替换auto_ptr)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.5.3.</span> <span class="nav-text">shared_ptr</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.5.4.</span> <span class="nav-text">weak_ptr</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.6.</span> <span class="nav-text">类模板和模板类的区别？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.7.</span> <span class="nav-text">右值引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.8.</span> <span class="nav-text">Volitale关键字</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.9.</span> <span class="nav-text">move语义</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">1.2.</span> <span class="nav-text">操作系统</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.2.1.</span> <span class="nav-text">Linux的内存不足时会发生什么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.2.2.</span> <span class="nav-text">⭐进程和线程的区别和联系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.2.3.</span> <span class="nav-text">进程间如何通信？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.2.4.</span> <span class="nav-text">⭐协程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.2.4.1.</span> <span class="nav-text">libco库</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.2.5.</span> <span class="nav-text">⭐Select/Poll/Epoll的区别</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">1.3.</span> <span class="nav-text">计算机网络</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.3.1.</span> <span class="nav-text">⭐UDP和TCP的差别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.3.2.</span> <span class="nav-text">三次握手四次挥手</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.3.3.</span> <span class="nav-text">get和post的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.3.4.</span> <span class="nav-text">HTTP状态码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.3.5.</span> <span class="nav-text">计算机网络是如何根据IP地址定位到一台主机的</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.3.5.1.</span> <span class="nav-text">地址解析协议 ARP</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.3.6.</span> <span class="nav-text">⭐HTTPS的通信过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.3.7.</span> <span class="nav-text">从浏览器输入网址到出现页面经过了哪些阶段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.3.8.</span> <span class="nav-text">Cache的结构与工作原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.3.9.</span> <span class="nav-text">边缘触发和水平触发区别</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">1.4.</span> <span class="nav-text">数据库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.4.1.</span> <span class="nav-text">Mysql相关</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
