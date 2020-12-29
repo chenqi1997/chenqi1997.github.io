@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Cq的Blog">
 <meta property="og:description" content="11. Container With Most Water/盛最多水的容器 题目  给你 n 个非负整数 a1，a2，…，an，每个数代表坐标中的一个点 (i, ai) 。在坐标内画 n 条垂直线，垂直线 i 的两个端点分别为 (i, ai) 和 (i, 0)。找出其中的两条线，使得它们与 x 轴共同构成的容器可以容纳最多的水。  说明：你不能倾斜容器，且 n 的值至少为 2。   图中垂直线代表">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-03-23T10:18:18.041Z">
+<meta property="og:updated_time" content="2020-12-29T03:57:47.834Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Leetcode_11 盛最多水的容器">
 <meta name="twitter:description" content="11. Container With Most Water/盛最多水的容器 题目  给你 n 个非负整数 a1，a2，…，an，每个数代表坐标中的一个点 (i, ai) 。在坐标内画 n 条垂直线，垂直线 i 的两个端点分别为 (i, ai) 和 (i, 0)。找出其中的两条线，使得它们与 x 轴共同构成的容器可以容纳最多的水。  说明：你不能倾斜容器，且 n 的值至少为 2。   图中垂直线代表">
@@ -384,6 +384,17 @@
 <p>解法二：</p>
 </blockquote>
 <p>第一个方法看起来确实有点傻了，有很多没必要的循环计算，为了让初始盛的水就比较大，可以使用双指针 i 和 j ，从数组的两端分别向中间进行搜索，每移动一次就算一个值并且和 res 比较。搜索的过程是那边小就移动哪边的指针，可以获得O(n)的复杂度。</p>
+<p>在每一个状态下，无论长板或短板收窄 <code>1</code> 格，都会导致水槽 底边宽度 <code>-1</code>：</p>
+<ol>
+<li>若向内移动短板，水槽的短板 <code>min(h[i],h[j])</code> 可能变大，因此水槽面积 <code>S(i,j)</code> 可能增大。</li>
+<li>若向内移动长板，水槽的短板 <code>min(h[i], h[j])</code> 不变或变小，下个水槽的面积一定小于当前水槽面积。</li>
+</ol>
+<p>在状态 <code>S(i,j)</code> 下向内移动短板至 <code>S(i+1,j)</code>（假设 <code>h[i] &lt; h[j]</code> ）则相当于消去了 <code>{S(i,j-1), S(i,j-2), ... , S(i,i+1)}</code>状态集合。而所有消去状态的面积一定 <code>&lt;=S(i,j)</code>：</p>
+<ol>
+<li>短板高度：相比<code>S(i,j)</code> 相同或更短</li>
+<li>底边宽度：相比 <code>S(i,j)</code> 更短。</li>
+</ol>
+<p>因此所有消去的状态的面积都 <code>&lt;S(i,j)</code> 。通俗的讲，我们每次向内移动短板，所有的消去状态都不会导致丢失面积最大值 。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">maxArea</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; height)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> res = <span class="number">0</span>, i = <span class="number">0</span>, j = height.size() - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span> (i &lt; j) &#123;</span><br><span class="line">            res = max(res, min(height[i], height[j]) * (j - i));</span><br><span class="line">            height[i] &lt; height[j] ? ++i : --j;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <p>还可以再进行小幅优化减少计算量，在搜索的过程中如果移动的高度仍等于两边中的最小高度，就可以不用计算直接继续搜索下一个。(不过优化后执行用时从16 ms变成了 20 ms -。-)</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">maxArea</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; height)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> res = <span class="number">0</span>, i = <span class="number">0</span>, j = height.size() - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span> (i &lt; j) &#123;</span><br><span class="line">            <span class="keyword">int</span> h = min(height[i], height[j]);</span><br><span class="line">            res = max(res, h * (j - i));</span><br><span class="line">            <span class="keyword">while</span> (i &lt; j &amp;&amp; h &gt;= height[i]) ++i;</span><br><span class="line">            <span class="keyword">while</span> (i &lt; j &amp;&amp; h &gt;= height[j]) --j;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
@@ -510,7 +521,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">336</span>
+                  <span class="site-state-item-count">340</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -521,7 +532,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-count">20</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -532,7 +543,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">86</span>
+                  <span class="site-state-item-count">89</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

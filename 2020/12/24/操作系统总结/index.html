@@ -1,0 +1,1636 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="基础知识,操作系统,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="操作系统 Linux的内存不足时会发生什么？ 操作系统的四大特性 死锁/活锁/饥饿 死锁 死锁预防方式： 银行家算法   活锁 解决方法   饥饿 解决方法     ⭐进程和线程的区别和联系 多进程和多线程的区别？ 优劣   临界区(进程同步) 原子操作 CAS原子操作(compare and swap)   进程间如何通信？ 应用场景 管道 无名管道(pipe) 有名管道(FIFO)   信">
+<meta name="keywords" content="基础知识,操作系统">
+<meta property="og:type" content="article">
+<meta property="og:title" content="操作系统总结">
+<meta property="og:url" content="http://chenqi1997.github.io/2020/12/24/操作系统总结/index.html">
+<meta property="og:site_name" content="Cq的Blog">
+<meta property="og:description" content="操作系统 Linux的内存不足时会发生什么？ 操作系统的四大特性 死锁/活锁/饥饿 死锁 死锁预防方式： 银行家算法   活锁 解决方法   饥饿 解决方法     ⭐进程和线程的区别和联系 多进程和多线程的区别？ 优劣   临界区(进程同步) 原子操作 CAS原子操作(compare and swap)   进程间如何通信？ 应用场景 管道 无名管道(pipe) 有名管道(FIFO)   信">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://images2015.cnblogs.com/blog/364303/201608/364303-20160815231938828-201985819.png">
+<meta property="og:image" content="https://images0.cnblogs.com/blog/405877/201404/091831558405701.jpg">
+<meta property="og:image" content="https://www.linuxprobe.com/wp-content/uploads/2018/04/timg-4.jpg">
+<meta property="og:image" content="https://www.linuxidc.com/upload/2016_10/161030192767972.jpg">
+<meta property="og:image" content="https://img-blog.csdn.net/20161031215306696">
+<meta property="og:image" content="https://img-blog.csdn.net/20161031215332079">
+<meta property="og:image" content="http://5b0988e595225.cdn.sohucs.com/images/20180622/6765e36cc4604fba897976638af03524.jpeg">
+<meta property="og:image" content="https://img-blog.csdn.net/20161028200140849">
+<meta property="og:image" content="https://img-blog.csdn.net/20161028200138896">
+<meta property="og:image" content="https://img-blog.csdn.net/20161028200139219">
+<meta property="og:image" content="https://img-blog.csdn.net/20161028200139703">
+<meta property="og:image" content="https://img-blog.csdn.net/20161028200140021">
+<meta property="og:image" content="https://img-blog.csdn.net/20161028200140375">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190915131156673.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3ZqaGdoamdoag==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190915142010343.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3ZqaGdoamdoag==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://images0.cnblogs.com/blog/305504/201308/17201205-8ac47f1f1fcd4773bd4edd947c0bb1f4.png">
+<meta property="og:image" content="https://images2015.cnblogs.com/blog/305504/201509/305504-20150918012828961-1176245587.png">
+<meta property="og:image" content="https://img-blog.csdn.net/20160202144116303">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/J0g14CUwaZfVYxicDjAjl4nMxlmyJk7rkpVTcOZj4JJSyYlSMyiaC66pP2q1QiafglrtO0tmZHCkBB0RvCsfVOTIA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/J0g14CUwaZfVYxicDjAjl4nMxlmyJk7rkTX5icicl09hKPabMh2LHcfiapeTumDtOUB3fydDdsIGuNKI0uUWia4k5oA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/J0g14CUwaZfVYxicDjAjl4nMxlmyJk7rk87ABj8vKWeQANrKVHpm7xNZRTbgFPOicpy74mD65ia3rGgMaIo6G1ntQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/J0g14CUwaZfVYxicDjAjl4nMxlmyJk7rkZoTKofqkOibHicWGJPwsCjZGRpG077zmMMnRibkVqcVocZz1PxeIuLLMg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/J0g14CUwaZfVYxicDjAjl4nMxlmyJk7rkr9Pf9QeM2EhturaF3WFbL7AFYHJvKexk3As6s2vg1NiaUh5AplRmqyA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/J0g14CUwaZfVYxicDjAjl4nMxlmyJk7rkLicVe0iaPt3taOrowrLDwibhmGZsic0H8ic1Dv0Z3EMVtk80qzQOOib2CUew/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://img-blog.csdn.net/20170407165752062?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMzYxNjk0NQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:updated_time" content="2020-12-29T04:09:07.721Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="操作系统总结">
+<meta name="twitter:description" content="操作系统 Linux的内存不足时会发生什么？ 操作系统的四大特性 死锁/活锁/饥饿 死锁 死锁预防方式： 银行家算法   活锁 解决方法   饥饿 解决方法     ⭐进程和线程的区别和联系 多进程和多线程的区别？ 优劣   临界区(进程同步) 原子操作 CAS原子操作(compare and swap)   进程间如何通信？ 应用场景 管道 无名管道(pipe) 有名管道(FIFO)   信">
+<meta name="twitter:image" content="https://images2015.cnblogs.com/blog/364303/201608/364303-20160815231938828-201985819.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://chenqi1997.github.io/2020/12/24/操作系统总结/">
+
+
+
+
+
+  <title>操作系统总结 | Cq的Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Cq的Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">上海交通大学电子系图像所/非自然程序员/业余厨师</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chenqi1997.github.io/2020/12/24/操作系统总结/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈琦">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cq的Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">操作系统总结</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-12-24T17:46:00+08:00">
+                2020-12-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/基础知识/" itemprop="url" rel="index">
+                    <span itemprop="name">基础知识</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <!-- toc -->
+<ul>
+<li><a href="#操作系统">操作系统</a><ul>
+<li><a href="#linux的内存不足时会发生什么">Linux的内存不足时会发生什么？</a></li>
+<li><a href="#操作系统的四大特性">操作系统的四大特性</a></li>
+<li><a href="#死锁活锁饥饿">死锁/活锁/饥饿</a><ul>
+<li><a href="#死锁">死锁</a><ul>
+<li><a href="#死锁预防方式">死锁预防方式：</a></li>
+<li><a href="#银行家算法">银行家算法</a></li>
+</ul>
+</li>
+<li><a href="#活锁">活锁</a><ul>
+<li><a href="#解决方法">解决方法</a></li>
+</ul>
+</li>
+<li><a href="#饥饿">饥饿</a><ul>
+<li><a href="#解决方法-1">解决方法</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#进程和线程的区别和联系">⭐进程和线程的区别和联系</a></li>
+<li><a href="#多进程和多线程的区别">多进程和多线程的区别？</a><ul>
+<li><a href="#优劣">优劣</a></li>
+</ul>
+</li>
+<li><a href="#临界区进程同步">临界区(进程同步)</a></li>
+<li><a href="#原子操作">原子操作</a><ul>
+<li><a href="#cas原子操作compare-and-swap">CAS原子操作(compare and swap)</a></li>
+</ul>
+</li>
+<li><a href="#进程间如何通信">进程间如何通信？</a><ul>
+<li><a href="#应用场景">应用场景</a></li>
+<li><a href="#管道">管道</a><ul>
+<li><a href="#无名管道pipe">无名管道(pipe)</a></li>
+<li><a href="#有名管道fifo">有名管道(FIFO)</a></li>
+</ul>
+</li>
+<li><a href="#信号signal">信号(signal)</a></li>
+<li><a href="#消息队列message-queue">消息队列(message queue)</a></li>
+<li><a href="#共享内存shared-memory">共享内存(shared memory)</a></li>
+<li><a href="#信号量semophore">信号量(semophore )</a><ul>
+<li><a href="#信号量工作原理">信号量工作原理</a></li>
+</ul>
+</li>
+<li><a href="#套接字socket">套接字(socket)</a></li>
+</ul>
+</li>
+<li><a href="#进程线程的上下文">进程/线程的上下文</a><ul>
+<li><a href="#进程的上下文可以分为哪几个部分">进程的上下文可以分为哪几个部分？</a></li>
+<li><a href="#为什么切换线程比切换进程开销小">为什么切换线程比切换进程开销小</a></li>
+</ul>
+</li>
+<li><a href="#多线程间通信和同步">多线程间通信和同步</a></li>
+<li><a href="#协程">⭐协程</a><ul>
+<li><a href="#libco库">libco库</a></li>
+</ul>
+</li>
+<li><a href="#五种io模型">五种IO模型</a><ul>
+<li><a href="#阻塞io">阻塞IO</a></li>
+<li><a href="#非阻塞io">非阻塞IO</a></li>
+<li><a href="#io多路复用">IO多路复用</a></li>
+<li><a href="#信号驱动的io模型">信号驱动的IO模型</a></li>
+<li><a href="#异步io模型">异步IO模型</a></li>
+</ul>
+</li>
+<li><a href="#两种io事件处理模式">两种IO事件处理模式</a><ul>
+<li><a href="#reactor模式同步的">Reactor模式(同步的)</a></li>
+<li><a href="#proactor模式-异步">Proactor模式 (异步)</a></li>
+</ul>
+</li>
+<li><a href="#io多路复用selectpollepoll同步阻塞">⭐IO多路复用：select/poll/epoll(同步/阻塞)</a><ul>
+<li><a href="#select">select</a></li>
+<li><a href="#poll">poll</a></li>
+<li><a href="#epoll">epoll</a><ul>
+<li><a href="#epoll-函数">epoll 函数</a></li>
+<li><a href="#工作模式">工作模式</a></li>
+<li><a href="#epoll的优点">epoll的优点：</a></li>
+<li><a href="#mmap实现共享内存">mmap实现共享内存：</a></li>
+<li><a href="#边缘触发的io应该怎么写">边缘触发的IO应该怎么写？</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#内存管理">内存管理</a><ul>
+<li><a href="#虚拟内存">虚拟内存</a></li>
+<li><a href="#内存分段">内存分段</a></li>
+<li><a href="#内存分页">内存分页</a><ul>
+<li><a href="#多级页表">多级页表</a></li>
+<li><a href="#64位系统用到的是四级目录">64位系统用到的是四级目录</a></li>
+<li><a href="#tlbtranslation-lookaside-buffer-页表缓存">TLB(<em>Translation Lookaside Buffer</em>) 页表缓存</a></li>
+<li><a href="#段页式内存管理">段页式内存管理</a></li>
+</ul>
+</li>
+<li><a href="#linux内存管理">Linux内存管理</a><ul>
+<li><a href="#用户空间的内存分布">用户空间的内存分布</a></li>
+</ul>
+</li>
+<li><a href="#mmap内存映射原理">mmap内存映射原理：</a></li>
+</ul>
+</li>
+<li><a href="#缺页中断page_fault">缺页中断(page_fault)</a><ul>
+<li><a href="#页面置换算法">页面置换算法</a></li>
+</ul>
+</li>
+<li><a href="#cpu调度算法进程调度算法">CPU调度算法/进程调度算法</a><ul>
+<li><a href="#先到先服务算法fcfs-first-come-first-served">先到先服务算法(FCFS, First-Come First-Served)</a></li>
+<li><a href="#最短作业优先sjf-shortest-job-first">最短作业优先(SJF, Shortest Job First)</a></li>
+<li><a href="#优先级算法">优先级算法</a></li>
+<li><a href="#高响应比优先调度算法hrrn">高响应比优先调度算法(HRRN)</a></li>
+<li><a href="#最短剩余时间优先-srtf-shortest-remaining-time-first">最短剩余时间优先 (SRTF, Shortest Remaining Time First)</a></li>
+<li><a href="#rrround-robin调度器">RR(Round Robin)调度器</a></li>
+<li><a href="#多级反馈队列mfq">多级反馈队列(MFQ)：</a></li>
+</ul>
+</li>
+<li><a href="#用户态与内核态">用户态与内核态</a><ul>
+<li><a href="#三种情况会导致用户态到内核态的切换">三种情况会导致用户态到内核态的切换</a></li>
+</ul>
+</li>
+<li><a href="#cache的结构与工作原理">Cache的结构与工作原理</a></li>
+</ul>
+</li>
+</ul>
+<!-- tocstop -->
+<p>[TOC]</p>
+<h2><span id="操作系统">操作系统</span></h2><h3><span id="linux的内存不足时会发生什么">Linux的内存不足时会发生什么？</span></h3><p>物理内存用完就会使用交换空间（<code>swap</code>），会导致应用运行变慢。因为需要频繁在交换空间和内存之间换入换出数据。</p>
+<hr>
+<h3><span id="操作系统的四大特性">操作系统的四大特性</span></h3><ul>
+<li><strong>并发</strong>：程序并发执行</li>
+<li><strong>共享</strong>：共享资源</li>
+<li><strong>虚拟</strong>：虚拟地址，为物理硬件提供逻辑接口来降低使用难度</li>
+<li><strong>异步</strong>：进程走走停停，上下文切换</li>
+</ul>
+<hr>
+<h3><span id="死锁活锁饥饿">死锁/活锁/饥饿</span></h3><h4><span id="死锁">死锁</span></h4><p>一组互相竞争资源的线程因互相等待，导致<strong>永久阻塞</strong>的现象。说白了就是：两个线程互相持有对方所需的资源，互不释放且互相等待。</p>
+<p>常见的死锁：</p>
+<ul>
+<li>线程申请的锁资源被自己的线程锁住并且还没被释放，导致永远挂起</li>
+<li>多线程竞争资源陷入循环等待 eg.T1拥有锁L1，T2拥有锁L2。此时T1申请L2，T2申请L1</li>
+<li>进程推进顺序不当 eg.T1，T2分别产出D1，D2，并接受D2，D1，如果顺序反过来就会永远挂起。</li>
+</ul>
+<p><strong>死锁产生的条件</strong>：产生死锁<strong>必须同时满足以下四个条件</strong>，只要其中任一条件不成立，死锁就不会发生。</p>
+<ul>
+<li><strong>互斥条件</strong>：进程申请的资源在一段时间内只能被一个进程使用</li>
+<li><strong>请求与等待条件</strong>：进程已经拥有了一个资源，但是又申请新的资源，而该资源已被其他进程占有，此时请求进程被阻塞，但对自己已获得的资源保持不放。—-&gt;在进程运行之前就把需要申请的资源一次性申请到位，满足运行，不满足等待。</li>
+<li><strong>不可剥夺条件</strong>：在一个进程没有用完，主动释放资源的时候，不能被抢夺</li>
+<li><strong>循环等待条件</strong>：多个进程之间存在资源循环链</li>
+</ul>
+<h5><span id="死锁预防方式">死锁预防方式：</span></h5><ul>
+<li>打破互斥条件：<strong>改造独占性资源为虚拟资源</strong>，大部分资源已无法改造。</li>
+<li>打破不可抢占条件：<strong>当一进程占有一独占性资源后又申请一独占性资源而无法满足，则退出原占有的资源</strong>。</li>
+<li>打破占有且申请条件：采用资源预先分配策略，即<strong>进程运行前申请全部资源</strong>，满足则运行，不然就等待，这样就不会占有且申请。</li>
+<li>打破循环等待条件：实现<strong>资源有序分配策略</strong>，对所有设备实现分类编号，所有进程只能采用按<strong>序号递增</strong>的形式申请资源。</li>
+</ul>
+<h5><span id="银行家算法">银行家算法</span></h5><ol>
+<li>安全性算法：假设释放一个进程，然后再找下一个能在剩余可用资源中被释放的进程。以此类推，如果都能被释放，系统处于安全状态</li>
+<li>资源请求算法：三步判断是否分配资源</li>
+</ol>
+<ul>
+<li>request&lt;=need[i]</li>
+<li>request&lt;=available</li>
+<li>available-=request; allocation[i]+=request; need[i]-=request 运行安全性算法</li>
+</ul>
+<h4><span id="活锁">活锁</span></h4><p><strong>活锁：</strong>是指线程1可以使用资源，但它很礼貌，让其他线程先使用资源，线程2也可以使用资源，但它很绅士，也让其他线程先使用资源。这样你让我，我让你，最后两个线程都无法使用资源。活锁不会被阻塞，而是不停检测一个永远不可能为真的条件。除去进程本身持有的资源外，活锁状态的进程会持续耗费宝贵的<a href="https://www.baidu.com/s?wd=CPU%E6%97%B6%E9%97%B4&amp;tn=SE_PcZhidaonwhc_ngpagmjz&amp;rsv_dl=gh_pc_zhidao" target="_blank" rel="noopener">CPU时间</a>。</p>
+<h5><span id="解决方法">解决方法</span></h5><p><strong>线程谦让时，尝试等待一个随机的时间就可以了</strong>。“<code>等待一个随机时间</code>”的方案虽然很简单，却非常有效，<code>Raft</code> 这样知名的分布式一致性算法中也用到了它。</p>
+<p>例如上面的那个例子，路人甲走左手边发现前面有人，并不是立刻换到右手边，而是等待一个随机的时间后，再换到右手边；同样，路人乙也不是立刻切换路线，也是等待一个随机的时间再切换。由于路人甲和路人乙等待的时间是随机的，所以同时相撞后再次相撞的概率就很低了。</p>
+<h4><span id="饥饿">饥饿</span></h4><p><strong>饥饿：</strong>是指如果线程 <code>T1</code>占用了资源 <code>R</code> ，线程 <code>T2</code> 又请求锁 <code>R</code> ，于是 <code>T2</code> 等待。<code>T3</code> 也请求资源 <code>R</code> ，当 <code>T1</code> 释放了 <code>R</code> 上的封锁后，系统首先批准了 <code>T3</code> 的请求，<code>T2</code> 仍然等待。然后 <code>T4</code> 又请求封锁 <code>R</code> ，当 <code>T3</code> 释放了 <code>R</code> 上的封锁之后，系统又批准了 <code>T4</code> 的请求……，<code>T2</code> 可能永远等待。也就是<strong>低优先级的线程资源一直被高优先级抢占</strong></p>
+<h5><span id="解决方法">解决方法</span></h5><p>下面提供了<code>三种方案</code></p>
+<ol>
+<li>保证资源充足</li>
+<li>公平地分配资源</li>
+<li>避免持有锁的线程长时间执行</li>
+</ol>
+<hr>
+<h3><span id="进程和线程的区别和联系">⭐进程和线程的区别和联系</span></h3><p>我们可以说“进程”是包含“线程”的，“线程”是“进程”的一个子集。进程是资源分配的最小单位，线程是程序执行的最小单位。一个程序至少有一个进程,一个进程至少有一个线程。线程才是我们操作系统所真正去运行的，而进程呢，则是像容器一样他把需要的一些东西放在了一起，而把不需要的东西做了一层隔离，进行隔离开来。</p>
+<p><strong>进程（Process）</strong> 是计算机中的程序关于某数据集合上的一次运行活动，是系<strong>统进行资源分配和调度的基本单位，是操作系统结构的基础</strong>。 在当代面向线程设计的计算机结构中，<strong>进程是线程的容器</strong>。程序是指令、数据及其组织形式的描述，进程是程序的实体。每一个进程都有一个自己的地址空间，即进程空间或（虚空间）。</p>
+<p><strong>线程（thread）</strong> 是<strong>操作系统能够进行运算调度的最小单位</strong>。<strong>它被包含在进程之中，是进程中的实际运作单位</strong>。一条线程指的是进程中一个单一顺序的控制流，一个进程中可以并发多个线程，每条线程并行执行不同的任务。不同的线程共享进程的地址空间，全局变量（数据和堆）。在一个进程中，各个线程共享堆区，而进程中的线程各自维持自己的栈。</p>
+<p><img src="https://images2015.cnblogs.com/blog/364303/201608/364303-20160815231938828-201985819.png" alt="img"></p>
+<p><strong>进程是由线程+内存+文件/网络句柄构成的</strong>，这里的内存是逻辑内存。指的是内存的寻址空间。每个进程的内存是相互独立的。</p>
+<p><strong>线程是由栈+PC(程序计数器)+TLS(线程本地存储)组成的。</strong>操作系统真正运行的是一个个的线程，而我们的进程只是它的一个容器。<strong>PC程序计数器是当前执行指令的地址</strong>，而这个指令是放在内存中。每个线程都有一串自己的指针，去指向自己当前所在内存的指针。计算机绝大部分是存储程序性的，说的就是我们的数据和程序是存储在同一片内存里的<br>这个内存中既有我们的数据变量又有我们的程序。所以我们的PC指针就是指向我们的内存的。<strong>TLS</strong>用来存储线程所独有的数据。</p>
+<ul>
+<li>进程的执行过程是线状的，尽管中间会发生中断或暂停，但该进程所拥有的资源只为该线状执行过程服务。一旦发生进程上下文切换，这些资源都是要被保护起来的。</li>
+<li>线程的改变只代表了 CPU 执行过程的改变，而没有发生进程所拥有的资源变化。</li>
+<li>计算机内的软硬件资源的分配与线程无关，线程只能共享它所属进程的资源。</li>
+<li>进程拥有一个完整的虚拟地址空间，不依赖于线程而独立存在；反之，线程是进程的一部分，没有自己的地址空间，与进程内的其他线程一起共享分配给该进程的所有资源。</li>
+<li>线程中执行时一般都要进行同步和互斥，因为他们共享同一进程的所有资源。</li>
+</ul>
+<h3><span id="多进程和多线程的区别">多进程和多线程的区别？</span></h3><p>多进程使用fork()</p>
+<p>多线程使用pthread_create()</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_create</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="keyword">pthread_t</span> *<span class="keyword">restrict</span> tidp,   <span class="comment">//新创建的线程ID指向的内存单元。</span></span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="keyword">const</span> <span class="keyword">pthread_attr_t</span> *<span class="keyword">restrict</span> attr,  <span class="comment">//线程属性，默认为NULL</span></span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="keyword">void</span> *(*start_rtn)(<span class="keyword">void</span> *), <span class="comment">//新创建的线程从start_rtn函数的地址开始运行</span></span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="keyword">void</span> *<span class="keyword">restrict</span> arg <span class="comment">//默认为NULL。若上述函数需要参数，将参数放入结构中并将地址作为arg传入。</span></span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th><strong>对比维度</strong></th>
+<th><strong>多进程</strong></th>
+<th><strong>多线程</strong></th>
+<th><strong>总结</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>数据共享、同步</td>
+<td>数据共享复杂，需要用<strong>IPC</strong>；数据是分开的，<strong>同步简单</strong></td>
+<td>因为共享进程数据，<strong>数据共享简单</strong>，但也是因为这个原因导致<strong>同步复杂</strong></td>
+<td>各有优势</td>
+</tr>
+<tr>
+<td>内存、CPU</td>
+<td>占用内存多，切换复杂，CPU利用率低</td>
+<td>占用内存少，切换简单，CPU利用率高</td>
+<td>线程占优</td>
+</tr>
+<tr>
+<td>创建销毁、切换</td>
+<td>创建销毁、切换复杂，速度慢</td>
+<td>创建销毁、切换简单，速度很快</td>
+<td>线程占优</td>
+</tr>
+<tr>
+<td>编程、调试</td>
+<td>编程简单，调试简单</td>
+<td>编程复杂，调试复杂</td>
+<td>进程占优</td>
+</tr>
+<tr>
+<td>可靠性</td>
+<td>进程间不会互相影响</td>
+<td><strong>一个线程挂掉将导致整个进程挂掉</strong></td>
+<td>进程占优</td>
+</tr>
+<tr>
+<td>分布式</td>
+<td>适应于多核、多机分布式；如果一台机器不够，扩展到多台机器比较简单</td>
+<td>适应于多核分布式</td>
+<td>进程占优</td>
+</tr>
+</tbody>
+</table>
+<h5><span id="优劣">优劣</span></h5><table>
+<thead>
+<tr>
+<th>优劣</th>
+<th>多进程</th>
+<th>多线程</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>优点</td>
+<td>编程、调试简单，可靠性较高</td>
+<td>创建、销毁、切换速度快，内存、资源占用小</td>
+</tr>
+<tr>
+<td>缺点</td>
+<td>创建、销毁、切换速度慢，内存、资源占用大</td>
+<td>编程、调试复杂，可靠性较差</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3><span id="临界区进程同步">临界区(进程同步)</span></h3><p>操作系统中，同一时刻内同一段代码可能会有多个<strong>进程</strong>在执行，而像 <code>文件读写</code> 、<code>硬件调用</code> 等操作都是排他性的，因此操作系统更应该做好临界区的设置。</p>
+<p>临界区( <code>critical-section</code> )是解决进程协作的一个方法。将<strong>多个进程可能修改同一个共享变量的代码段</strong>设为临界区，当有进程进入临界区后，其他进程会被禁止进入，直到前一个进程离开临界区，其他进程才可以进入。即<strong>同一时刻只允许一个进程位于临界区</strong>内。伪代码形式可以表示为：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">do</span>&#123;</span><br><span class="line">	<span class="comment">//进入区</span></span><br><span class="line">	<span class="comment">//临界区</span></span><br><span class="line">	<span class="comment">//退出区</span></span><br><span class="line">	<span class="comment">//剩余区</span></span><br><span class="line">&#125;<span class="keyword">while</span>(TRUE)</span><br></pre></td></tr></table></figure>
+<p>临界区的实现需要满足以下三个条件：</p>
+<ol>
+<li><strong>互斥</strong>，即同一时刻只能有一个进程位于临界区内；</li>
+<li><strong>前进</strong>，当多个进程同时等待进入临界区的时候，会有一个进程被选择进入</li>
+<li><strong>有限等待</strong>，在进入区等待的进程必须在有限时间后进入临界区。</li>
+</ol>
+<p><strong>实现方式：</strong>对于操作系统的临界区实现，要分为<strong>抢占内核</strong>和<strong>非抢占内核</strong>来讨论。显然，非抢占内核不存在竞争的问题，因为在临界区内的进程不会被打断，除非进程主动退出。对抢占内核来说，就需要硬件或者软件（算法）上的支持来实现临界区。</p>
+<p>软件支持的一个例子是 <code>Peterson</code> 算法。<code>Peterson</code> 算法的精髓在于用两个变量（或数组）来记录当前是否有进程位于临界区以及哪个进程位于临界区，这样通过在进入区检测并设置标记、退出区恢复标记可以实现临界区排他的特性。</p>
+<p>硬件支持的方法是 <code>锁</code> ，从底层硬件的层面来看则是实现 <code>原子操作</code> 。进程在进入临界区前检测并申请锁，离开后释放锁。原子操作保证锁的正常运行。<br>Linux下的原子操作的数据结构是 <code>atomic_t</code> ，其定义放在 <code>&lt;linux/types.h&gt;</code> 下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">	<span class="keyword">int</span> counter;</span><br><span class="line">&#125;<span class="keyword">atomic_t</span>;</span><br></pre></td></tr></table></figure>
+<p>对于单处理器单核系统来说，只要保证操作指令序列不被打断即可实现原子操作。对于简单的原子操作，<code>cpu</code> 实现上会提供单条指令，比如 <code>INC</code> 和 <code>XCHG</code> 。对于复杂的原子操作，需要包含多条指令。执行过程中，出现上下文切换行为，比如任务切换，中断处理等。这里的行为会影响原子操作的原子性。因此需要自旋锁 <code>spinlock</code> 来保证操作指令序列不会在执行的中途受干扰。</p>
+<p>但是如果对于多处理器或者多核的系统，原子操作的实现除了需要 <code>spinlock</code> 来保证外，还需要保证不会受到同处理器上其他核，或者其他处理器的影响。当其他核上执行的指令访问的内存空间，与当前原子操作需要访问的内存空间存在冲突时，就会破坏原子操作的正确性。</p>
+<p>在 <code>x86架构</code> 中，提供了指令前缀 <code>LOCK</code> 。<code>LOCK</code> 保证了指令不会受其他处理器或 <code>cpu</code> 核的影响。在 <code>PentiumPro</code> 之前，<code>LOCK</code> 的实现，是通过锁住 <code>bus</code> （总线），从而阻止其他 <code>cpu</code> 核的内存访问。可想而知，这种实现是非常低效的。从 <code>PentiumPro</code> 开始，<code>LOCK</code> 只会阻塞其他 <code>cpu</code> 核对相关内存的缓存块的访问。</p>
+<p><img src="https://images0.cnblogs.com/blog/405877/201404/091831558405701.jpg" alt="img"></p>
+<p>现在，大多数的 <code>x86</code> 处理器都支持了 <code>CAS</code> 的硬件实现，保证了多处理器多核系统下的原子操作的正确性。<code>CAS</code> 的实现同样无需锁住总线，只会阻塞其他 <code>cpu</code> 核对相关内存的缓存块的访问。</p>
+<hr>
+<h3><span id="原子操作">原子操作</span></h3><p>原子操作指的是不可再分的指令操作，即在执行原子操作时不可能被打断，要么原子操作没有执行，要么已经执行完毕。原子操作的实现必须需要硬件的支持，操作系统仅仅是在硬件指令的基础之上进行一次封装。对于没有实现原子操作的硬件，则需要操作系统从软件算法层面进行支持。</p>
+<h4><span id="cas原子操作compare-and-swap">CAS原子操作(compare and swap)</span></h4><p>如果一个操作所处的层(layer)的更高层不能发现其内部实现与结构，那么这个操作是原子的(atomic)。</p>
+<p><strong>为什么要有CAS：</strong>因为通过锁实现原子操作时，其他线程必须等待已经获得锁的线程运行完以后才能获得资源，这样就会占用系统的大量资源。<code>CAS</code> <strong>可以通过硬件层面的阻塞实现原子操作的安全</strong>。</p>
+<p><code>CAS</code> 原子操作如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">compare_and_swap</span><span class="params">(<span class="keyword">int</span>* reg, <span class="keyword">int</span> oldval, <span class="keyword">int</span> newval)</span> </span>&#123;</span><br><span class="line">    ATOMIC();</span><br><span class="line">    <span class="keyword">int</span> old_reg_val = *reg;</span><br><span class="line">    <span class="keyword">if</span> (old_reg_val == oldval)</span><br><span class="line">    	*reg = newval;</span><br><span class="line">    END_ATOMIC();</span><br><span class="line">    <span class="keyword">return</span> old_reg_val;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>除了还有如下几个原子操作：</p>
+<ul>
+<li><strong>Fetch And Add：</strong>一般用来对变量做 <code>+1</code> 的原子操作。</li>
+<li><strong>Test-and-set：</strong>写值到某个内存位置并传回其旧值。汇编指令 <code>BST</code> 。</li>
+<li><strong>Test and Test-and-set</strong>：用来实现多核环境下相互排斥锁。</li>
+</ul>
+<p>C++11中的 <code>STL</code> 中的 <code>atomic</code> 类的函数能够跨平台使用。（完整的C++11的原子操作可參看 <a href="http://en.cppreference.com/w/cpp/atomic" target="_blank" rel="noopener">Atomic Operation Library</a>）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">template&lt; class T &gt;</span><br><span class="line">bool atomic_compare_exchange_weak( std::atomic&lt;T&gt;* obj, T* expected, T desired );</span><br><span class="line">template&lt; class T &gt;</span><br><span class="line">bool atomic_compare_exchange_weak( volatile std::atomic&lt;T&gt;* obj, T* expected, T desired );</span><br></pre></td></tr></table></figure>
+<p>具体使用的时候可以如下实现无锁：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> mutex = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> lock = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> unlock = <span class="number">1</span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">test_func</span><span class="params">(<span class="keyword">void</span> *arg)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; <span class="number">2000000</span>; i++) &#123;</span><br><span class="line">        <span class="keyword">while</span> (!(__sync_bool_compare_and_swap (&amp;mutex,lock, <span class="number">1</span>) )) usleep(<span class="number">100000</span>);</span><br><span class="line">        count++;</span><br><span class="line">        __sync_bool_compare_and_swap (&amp;mutex, unlock, <span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h3><span id="进程间如何通信">进程间如何通信？</span></h3><p><img src="https://www.linuxprobe.com/wp-content/uploads/2018/04/timg-4.jpg" alt="6种Linux进程间的通信方式6种Linux进程间的通信方式"></p>
+<h4><span id="应用场景">应用场景</span></h4><ol>
+<li><strong>数据传输：</strong>一个进程需要将它的数据发送给另一个进程，发送的数据量在一个字节到几兆字节之间。</li>
+<li><strong>共享数据：</strong>多个进程想要操作共享数据，一个进程对共享数据的修改，别的进程应该立刻看到。</li>
+<li><strong>通知事件：</strong>一个进程需要向另一个或一组进程发送消息，通知它（它们）发生了某种事件（如进程终止时要通知父进程）。</li>
+<li><strong>资源共享：</strong>多个进程之间共享同样的资源。为了作到这一点，需要内核提供锁和同步机制。</li>
+<li><strong>进程控制：</strong>有些进程希望完全控制另一个进程的执行（如Debug进程），此时控制进程希望能够拦截另一个进程的所有陷入和异常，并能够及时知道它的状态改变。</li>
+</ol>
+<p>本地的进程间通信（ <code>IPC</code> ）有很多种方式，但可以总结为下面4类：</p>
+<ul>
+<li>消息传递（管道、FIFO、消息队列）</li>
+<li>同步（互斥量、条件变量、读写锁、文件和写记录锁、信号量）</li>
+<li>共享内存（匿名的和具名的）</li>
+<li>远程过程调用（Solaris门和Sun RPC）</li>
+</ul>
+<h4><span id="管道">管道</span></h4><p><strong>管道的概念</strong></p>
+<ul>
+<li>管道是单向的、先进先出的，它把一个进程的输出和另一个进程的输入连接在一起。</li>
+<li>一个进程（写进程）在管道的尾部写入数据，另一个进程（读进程）从管道的头部读出数据。</li>
+<li><strong>数据被一个进程读出后，将被从管道中删除</strong>，其它读进程将不能再读到这些数据。</li>
+<li>管道提供了简单的流控制机制，<strong>进程试图读空管道时，进程将阻塞。同样，管道已经满时，进程再试图向管道写入数据，进程将阻塞</strong></li>
+<li>管道包括<strong>无名管道</strong>和<strong>有名管道</strong>两种，前者<strong>用于父进程和子进程间的通信，后者可用于运行于同一系统中的任意两个进程间的通信</strong>。</li>
+</ul>
+<h5><span id="无名管道pipe">无名管道(pipe)</span></h5><p>无名管道是一种<strong>半双工</strong>的通信方式，数据只能<strong>单向流动</strong>，而且只能在具有亲缘关系的进程间使用。进程的亲缘关系一般指的是父子关系。无明管道一般用于<strong>两个不同进程之间的通信</strong>。当一个进程创建了一个管道，并调用 <code>fork</code> 创建自己的一个子进程后，父进程关闭读管道端，子进程关闭写管道端，这样提供了两个进程之间数据流动的一种方式。</p>
+<p><img src="https://www.linuxidc.com/upload/2016_10/161030192767972.jpg" alt="这里写图片描述"></p>
+<p>无名管道创建：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pipe</span><span class="params">(<span class="keyword">int</span> filedis[<span class="number">2</span>])</span></span></span><br></pre></td></tr></table></figure>
+<p>当一个管道建立时，它会创建两个文件描述符(<strong>fd</strong>)：</p>
+<ul>
+<li><code>filedis[0]</code> 用于读管道。</li>
+<li><code>filedis[1]</code> 用于写管道。</li>
+</ul>
+<p><img src="https://img-blog.csdn.net/20161031215306696" alt="img"></p>
+<p><img src="https://img-blog.csdn.net/20161031215332079" alt="img"></p>
+<ul>
+<li>管道通讯是<strong>单向</strong>的，有固定的<strong>读端和写端</strong>。</li>
+<li>数据被进程从管道读出后，在管道中该数据就不存在了。</li>
+<li>当进程去<strong>读取空管道</strong>的时候，进程会阻塞。</li>
+<li>当进程<strong>往满管道写入数据</strong>时，进程会阻塞。</li>
+<li>管道容量为 <strong>64KB</strong>(缓存区有限)</li>
+<li><strong>必须在系统调用fork( )前调用pipe( )，否则子进程将不会继承文件描述符</strong></li>
+</ul>
+<hr>
+<h5><span id="有名管道fifo">有名管道(FIFO)</span></h5><p>有名管道和无名管道基本相同，但也有不同点：无名管道只能由父子进程使用；但是通过有名管道，<strong>不相关的进程也能交换数据。</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">mkfifo</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> * pathname, mode_tmode)</span></span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>pathname：FIFO文件名</p>
+</blockquote>
+<blockquote>
+<p>mode：属性（见文件操作章节）</p>
+</blockquote>
+<p><strong>一旦创建了一个FIFO，就可用open打开它，一般的文件访问函数（close、read、write等）都可用于FIFO。</strong></p>
+<ul>
+<li>优点：可以实现任意关系的进程间的通信</li>
+<li>缺点：<ol>
+<li>长期存于系统中，使用不当容易出错</li>
+<li>缓冲区有限</li>
+</ol>
+</li>
+</ul>
+<hr>
+<h4><span id="信号signal">信号(signal)</span></h4><ul>
+<li>信号是一种比较复杂的通信方式，用于通知接收进程某个事件已经发生。</li>
+</ul>
+<hr>
+<h4><span id="消息队列message-queue">消息队列(message queue)</span></h4><ul>
+<li>消息队列是消息的链表，存放在内核中并由消息队列标识符标识。</li>
+<li>消息队列<strong>克服了信号传递信息少</strong>、<strong>管道只能承载无格式字节流以及缓冲区大小受限</strong>等缺点。</li>
+<li>消息队列 ( <code>message queue</code> )与 <code>PIPE</code> 相类似。它也是建立一个队列，先放入队列的消息被最先取出。不同的是，消息队列允许多个进程放入消息，也允许多个进程取出消息。每个消息可以带有一个整数识别符( <code>message_type</code> )。你可以通过识别符对消息分类 (极端的情况是将每个消息设置一个不同的识别符)。某个进程从队列中取出消息的时候，可以按照<strong>先进先出</strong>的顺序取出，也可以<strong>只取出符合某个识别符的消息</strong>(有多个这样的消息时，同样按照先进先出的顺序取出)。</li>
+<li>消息队列与 <code>PIPE</code> 的另一个不同在于它并不使用文件 <code>API</code> 。最后，一个队列不会自动消失，它会一直存在于内核中，直到某个进程删除该队列。</li>
+</ul>
+<hr>
+<h4><span id="共享内存shared-memory">共享内存(shared memory)</span></h4><ul>
+<li>共享内存就是<strong>映射一段能被其他进程所访问的内存</strong>，这段共享内存<strong>由一个进程创建，但多个进程都可以访问</strong>。共享内存是⭐<strong>最快</strong>⭐的 <code>IPC(interprocess communication)</code> 方式，它是<strong>针对其他进程间通信方式运行效率低而专门设计</strong>的。它往往与其他通信机制，如信号量配合使用，来实现进程间的同步和通信。</li>
+<li>可以用设备驱动模型中的 <code>mmap</code> 函数实现。<ul>
+<li>共享内存与多线程共享 <code>global data</code> 和 <code>heap</code> 类似。一个进程可以将自己内存空间中的一部分拿出来，允许其它进程读写。当使用共享内存的时候，我们要注意同步的问题。我们可以使用 <code>semaphore</code> 同步，也可以在共享内存中建立 <code>mutex</code> 或其它的线程同步变量来同步。由于共享内存允许多个进程直接对同一个内存区域直接操作，<strong>不涉及内核的拷贝</strong>，所以它是效率最高的 <code>IPC</code> 方式。</li>
+</ul>
+</li>
+<li><strong>优点</strong>：无须复制，快捷，信息量大</li>
+<li><strong>缺点</strong>：<ol>
+<li>通信是通过将共享空间缓冲区直接附加到进程的虚拟地址空间中来实现的，因此进程间的读写操作的同步问题(映射到<strong>文件映射段</strong>)</li>
+<li>利用内存缓冲区直接交换信息，内存的实体存在于计算机中，只能同一个计算机系统中的诸多进程共享，不方便网络通信</li>
+</ol>
+</li>
+</ul>
+<hr>
+<h4><span id="信号量semophore">信号量(semophore )</span></h4><ul>
+<li>信号量是一个计数器，可以用来<strong>控制多个线程对共享资源的访问</strong>，它不是用于交换大批数据，而是用于多线程之间的同步。它常作为一种<strong>锁机制</strong>，防止某进程在访问资源时其它进程也访问该资源。因此，<strong>主要作为进程间以及同一个进程内不同线程之间的同步手段</strong>。</li>
+<li>为了防止出现因多个程序同时访问一个共享资源而引发的一系列问题，我们需要一种方法。比如在任一时刻只能有一个执行线程访问代码的<strong>临界区</strong>。临界区是指执行数据更新的代码需要独占式地执行。而信号量就可以提供这样的一种访问机制，让一个临界区同一时间只有一个线程在访问它，也就是说<strong>信号量是用来调协进程对共享资源的访问的</strong>。</li>
+<li>信号量是一个特殊的变量，程序对其访问都是<strong>原子操作</strong>，且只允许对它进行等待(<code>P(sv)</code>) 和发送(<code>V(sv)</code>)信息操作。最简单的信号量是只能取 <code>0</code> 和 <code>1</code> 的变量，这也是信号量最常见的一种形式，叫做二进制信号量。而可以取多个正整数的信号量被称为通用信号量。</li>
+<li>缺点是<strong>信号量有限</strong>。</li>
+</ul>
+<h5><span id="信号量工作原理">信号量工作原理</span></h5><p><strong>一个计数器，可以用来控制多个线程对共享资源的访问</strong></p>
+<ul>
+<li><strong>优点：可以同步进程</strong></li>
+<li><strong>缺点：信号量有限</strong></li>
+</ul>
+<p>由于信号量只能进行两种操作等待和发送信号，即 <code>P(sv)</code> 和 <code>V(sv)</code> ，他们的行为是这样的：</p>
+<ul>
+<li><strong>P(sv)等待：</strong>如果 <code>sv</code> 的值大于零，就给它减 <code>1</code> ；如果它的值为零，就<strong>挂起</strong>该进程的执行</li>
+<li><strong>V(sv)发送：</strong>如果有其他进程因等待 <code>sv</code> 而被挂起，就让它恢复运行，如果没有进程因等待 <code>sv</code> 而挂起，就给它加 <code>1</code> 。</li>
+</ul>
+<p>举个例子，就是两个进程共享信号量 <code>sv</code> ，一旦其中一个进程执行了 <code>P(sv)</code> 操作，它将得到信号量，并可以进入临界区，使 <code>sv</code> 减1。而第二个进程将被阻止进入临界区，因为当它试图执行 <code>P(sv)</code> 时，<code>sv</code> 为 <code>0</code> ，它会被挂起以等待第一个进程离开临界区域并执行 <code>V(sv)</code> 释放信号量，这时第二个进程就可以恢复执行。</p>
+<p>其实从意义上来说，<code>semaphore</code> 就是一个计数锁，它允许被 <code>N</code> 个进程获得。当有更多的进程尝试获得 <code>semaphore</code> 的时候，就必须等待有前面的进程释放锁。当 <code>N</code> 等于 <code>1</code> 的时候，<code>semaphore</code> 与 <code>mutex</code> 实现的功能就完全相同。许多编程语言也使用 <code>semaphore</code> 处理多线程同步的问题。一个 <code>semaphore</code> 会一直存在在内核中，直到某个进程删除它。</p>
+<hr>
+<h4><span id="套接字socket">套接字(socket)</span></h4><ul>
+<li>套接字也是一种进程间通信机制，与其他通信机制不同的是，它<strong>可用于不同机器间的进程通信</strong>。</li>
+<li><strong>优点：</strong><ol>
+<li>传输数据为<strong>字节级</strong>，传输数据<strong>可自定义</strong>，数据量小效率高</li>
+<li>传输数据<strong>时间短</strong>，<strong>性能高</strong></li>
+<li>适合于客户端和服务器端之间信息<strong>实时交互</strong></li>
+<li>可以<strong>加密</strong>，<strong>数据安全性强</strong></li>
+</ol>
+</li>
+<li><strong>缺点：</strong>需对传输的数据进行解析，转化成应用级的数据。</li>
+</ul>
+<hr>
+<h3><span id="进程线程的上下文">进程/线程的上下文</span></h3><h4><span id="进程的上下文可以分为哪几个部分">进程的上下文可以分为哪几个部分？</span></h4><ul>
+<li><strong>用户级上下文</strong>：正文、数据、用户堆栈以及共享存储区；</li>
+<li><strong>寄存器上下文</strong>：通用寄存器、程序寄存器(IP)、处理器状态寄存器(EFLAGS)、栈指针(ESP)；</li>
+<li><strong>系统级上下文</strong>：进程控制块(task_struct)、内存管理信息(mm_struct、vm_area_struct、pgd、pte)、内核栈。</li>
+</ul>
+<h4><span id="为什么切换线程比切换进程开销小">为什么切换线程比切换进程开销小</span></h4><p>一个程序进行起来后，会使用很多资源，比如使用寄存器，内存，文件等。每当切换进程时，必须要考虑保存当前进程的状态。状态包括存放在内存中的程序的代码和数据，它的栈、通用目的寄存器的内容、程序计数器、环境变量以及打开的文件描述符的集合，这个状态叫做上下文。可见，想要切换进程，保存的状态有很多。</p>
+<p>线程是运行在进程上下文中的逻辑流，线程有自己的上下文，包括唯一的<strong>整数线程ID， 栈、栈指针、程序计数器、通用目的寄存器和条件码</strong>等等，线程的上下文是进程的自己，因此在线程切换的时候需要保存和恢复的上下文比线程要少很多，开销也就更小。</p>
+<hr>
+<h3><span id="多线程间通信和同步">多线程间通信和同步</span></h3><ul>
+<li>锁机制：包括互斥锁/量（<code>mutex</code>）、读写锁（ <code>reader-writer lock</code> ）、自旋锁（ <code>spin lock</code> ）、条件变量（ <code>condition variable</code> ）<ul>
+<li>互斥锁/量（<code>mutex</code>）：提供了以排他方式防止数据结构被并发修改的方法。</li>
+<li>读写锁（<code>reader-writer lock</code>）：允许多个线程同时读共享数据，而对写操作是互斥的。</li>
+<li>自旋锁（<code>spin lock</code>）与互斥锁类似，都是为了保护共享资源。互斥锁是当资源被占用，申请者进入睡眠状态；而自旋锁则循环检测保持者是否已经释放锁。</li>
+<li>条件变量（<code>condition</code> ）：可以以原子的方式阻塞进程，直到某个特定条件为真为止。对条件的测试是在互斥锁的保护下进行的。<strong>条件变量始终与互斥锁一起使用</strong>。</li>
+</ul>
+</li>
+<li>信号量机制( <code>Semaphore</code> )<ul>
+<li>无名线程信号量</li>
+<li>命名线程信号量</li>
+</ul>
+</li>
+<li>信号机制( <code>Signal</code> )：类似进程间的信号处理</li>
+<li>屏障（ <code>barrier</code> ）：屏障允许每个线程等待，直到所有的合作线程都达到某一点，然后从该点继续执行。</li>
+</ul>
+<p>线程间的通信目的主要是用于<strong>线程同步</strong>，所以线程没有像进程通信中的用于数据交换的通信机制。</p>
+<hr>
+<h3><span id="协程">⭐协程</span></h3><p><strong>什么是协程</strong></p>
+<p><strong>协程，英文Coroutines，是一种比线程更加轻量级的存在。</strong>正如一个进程可以拥有多个线程一样，一个线程也可以拥有多个协程。在C++20中出现了<strong>coroutine</strong>的库。协程的作用是在<strong>同一个线程中通过保存代码执行段状态，进行代码段的分次执行，以及多个代码段的交织执行</strong>。每个代码段可以成为一个协程。协程的好处是<strong>避免了线程之间的频换切换</strong>、<strong>以及线程安全的优化</strong>（对于同一个变量的访问无需做同步控制）。</p>
+<p><strong>协程是非抢占式的，线程是抢占式的。</strong></p>
+<p>平时正常的程序调用是通过栈实现的，一个线程就是执行一个子程序。子程序调用总是一个入口，一次返回，调用顺序是明确的。而协程的调用和子程序不同。而协程看上去也是子程序，但执行过程中，在子程序内部可中断，然后转而执行别的子程序，在适当的时候再返回来接着执行。</p>
+<p><img src="http://5b0988e595225.cdn.sohucs.com/images/20180622/6765e36cc4604fba897976638af03524.jpeg" alt="img"></p>
+<p>协程不是被操作系统内核所管理的，而是<strong>完全由程序所控制</strong>，也就是在<strong>用户态</strong>执行。这样带来的好处是<strong>性能大幅度的提升</strong>，因为不会像线程切换那样消耗资源。</p>
+<p>协程不是进程也不是线程，而是一个特殊的函数，这个函数可以在某个地方挂起，并且可以重新在挂起处外继续运行。所以说，协程与进程、线程相比并不是一个维度的概念。</p>
+<p>一个进程可以包含多个线程，一个线程也可以包含多个协程。简单来说，一个线程内可以有多个这样的特殊函数在运行，但是有一点必须明确的是：</p>
+<blockquote>
+<p><strong>一个线程的多个协程的运行是串行的</strong>。</p>
+</blockquote>
+<p>如果是多核CPU，多个进程或一个进程内的多个线程是可以并行运行的，但是一个线程内协程却绝对是串行的，无论CPU有多少个核。毕竟协程虽然是一个特殊的函数，但仍然是一个函数。一个线程内可以运行多个函数，但这些函数都是串行运行的。<strong>当一个协程运行时，其它协程必须挂起</strong>。</p>
+<p>C/C++ 语言本身是不能天然支持协程的。现有的 C++ 协程库均基于两种方案：<strong>利用汇编代码控制协程上下文的切换，以及利用操作系统提供的 API 来实现协程上下文切换</strong>。</p>
+<p>在C++里，一个函数如果其函数体实现中包含 <code>co_await</code> 、<code>co_yield</code> 、<code>co_return</code> 中任何一个关键字，那么这个函数就是一个coroutine。其中：</p>
+<ol>
+<li><code>co_await</code>：挂起当前的coroutine。</li>
+<li><code>co_return</code>：从当前coroutine返回一个结果。</li>
+<li><code>co_yield</code>：返回一个结果并且挂起当前的coroutine。</li>
+</ol>
+<h4><span id="libco库">libco库</span></h4><ul>
+<li><p><code>co_create_env()</code> 创建协程</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">stStackMem_t</span> &#123;</span></span><br><span class="line">    stCoRoutine_t* occupy_co;  <span class="comment">// 使用该栈的协程</span></span><br><span class="line">    <span class="keyword">int</span> stack_size;            <span class="comment">// 栈大小</span></span><br><span class="line">    <span class="keyword">char</span>* stack_bp;            <span class="comment">// 栈底指针，栈从高地址向低地址增长</span></span><br><span class="line">    <span class="keyword">char</span>* stack_buffer;        <span class="comment">// 栈底</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>co_resume()</code> 激活协程</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">co_resume</span><span class="params">( stCoRoutine_t *co )</span> </span>&#123;</span><br><span class="line">    stCoRoutineEnv_t *env = co-&gt;env;</span><br><span class="line">    <span class="comment">// 获取当前正在运行的协程的结构</span></span><br><span class="line">    stCoRoutine_t *lpCurrRoutine = env-&gt;pCallStack[ env-&gt;iCallStackSize - <span class="number">1</span> ];</span><br><span class="line">    <span class="keyword">if</span>( !co-&gt;cStart ) &#123;</span><br><span class="line">        <span class="comment">// 为将要运行的 co 布置上下文环境</span></span><br><span class="line">        coctx_make( &amp;co-&gt;ctx,(<span class="keyword">coctx_pfn_t</span>)CoRoutineFunc,co,<span class="number">0</span> );</span><br><span class="line">        co-&gt;cStart = <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    env-&gt;pCallStack[ env-&gt;iCallStackSize++ ] = co;  <span class="comment">// 设置co为运行的线程</span></span><br><span class="line">    co_swap( lpCurrRoutine, co );  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>co_swap()</code> 实现上下文切换，<code>co_swap</code> 具体完成三项工作：</p>
+<ol>
+<li>记录当前协程 <code>curr</code> 的运行栈的栈顶指针，通过 <code>char c; curr_stack_sp=&amp;c</code> 实现，当下次切换回 <code>curr</code>时，可以从该栈顶指针指向的位置继续，执行完 <code>curr</code> 后可以顺利释放该栈。</li>
+<li>处理共享栈相关的操作，并且调用函数 <code>coctx_swap</code> 来完成上下文环境的切换。注意执行完 <code>coctx_swap</code>之后，执行流程将跳到新的 coroutine 也就是 pending_co 中运行，后续的代码需要等下次切换回 <code>curr</code> 时才会执行。</li>
+<li>当下次切换回 <code>curr</code> 时，处理共享栈相关的操作。</li>
+</ol>
+</li>
+<li><p>对应于 <code>co_resume</code> 函数，协程主动让出执行权则调用 <code>co_yield</code> 函数。<code>co_yield</code> 函数调用了 <code>co_yield_env</code>，将当前协程与当前线程中记录的其他协程进行切换：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">co_yield_env</span><span class="params">( stCoRoutineEnv_t *env )</span> </span>&#123;</span><br><span class="line">    stCoRoutine_t *last = env-&gt;pCallStack[ env-&gt;iCallStackSize - <span class="number">2</span> ];</span><br><span class="line">    stCoRoutine_t *curr = env-&gt;pCallStack[ env-&gt;iCallStackSize - <span class="number">1</span> ];</span><br><span class="line">    env-&gt;iCallStackSize--;</span><br><span class="line">    co_swap( curr, last);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+<h3><span id="五种io模型">五种IO模型</span></h3><p><strong>阻塞IO、非阻塞IO、IO多路复用、信号驱动IO以及异步IO</strong></p>
+<p>首先一个 <code>IO</code> 操作其实分成了两个步骤：</p>
+<ol>
+<li>用户进程向内核发起 <code>IO</code> 请求，等待内核数据准备</li>
+<li>实际的 <code>IO</code> 操作,将数据从内核拷贝到进程缓存区中 </li>
+</ol>
+<p>阻塞IO和非阻塞IO的区别在于第一步，<strong>发起IO请求是否会被阻塞</strong>：如果阻塞直到完成那么就是传统的阻塞IO，</p>
+<p>如果不阻塞，那么就是非阻塞IO。即进程/线程要访问的数据是否就绪，进程/线程是否需要等待。</p>
+<p>同步IO和异步IO的区别就在于第二个步骤是否阻塞。如果实际的IO读写阻塞请求进程，那么就是同步IO，因此后面可以看到<strong>阻塞IO、非阻塞IO、IO复用、信号驱动IO都是同步IO</strong>；如果不阻塞，而是操作系统帮你做完IO操作再将结果返回给你，那么就是异步IO。</p>
+<p>访问数据的方式：同步需要主动读写数据，在读写数据的过程中还是会阻塞；异步只需要I/O操作完成的通知，并不主动读写数据，由操作系统内核完成数据的读写。</p>
+<p><img src="https://img-blog.csdn.net/20161028200140849" alt="img"></p>
+<h4><span id="阻塞io">阻塞IO</span></h4><p>进程发起IO系统调用后，进程被阻塞，转到内核空间处理，整个IO处理完毕后返回进程。操作成功则进程获取到数据。</p>
+<p><img src="https://img-blog.csdn.net/20161028200138896" alt="img"></p>
+<p>特点：</p>
+<ol>
+<li><strong>进程阻塞挂起不消耗CPU资源，及时响应每个操作</strong>；</li>
+<li>实现难度低、开发应用较容易；</li>
+<li>适用并发量小的网络应用开发；</li>
+<li><strong>不适用并发量大的应用</strong>：因为一个请求IO会阻塞进程，所以，得为每请求分配一个处理进程（线程）以及时响应，系统开销大。</li>
+</ol>
+<h4><span id="非阻塞io">非阻塞IO</span></h4><p>进程发起IO系统调用后，如果内核缓冲区没有数据，需要到IO设备中读取，进程返回一个错误而不会被阻塞；进程发起IO系统调用后，如果内核缓冲区有数据，内核就会把数据返回进程。</p>
+<p><img src="https://img-blog.csdn.net/20161028200139219" alt="img"></p>
+<p>典型应用：<strong>socket</strong>是非阻塞的方式（设置为NONBLOCK）</p>
+<p><strong>阻塞IO模型是一个阻塞IO调用，而非阻塞IO模型是多个非阻塞IO调用+一个阻塞IO调用，因为多个IO检查会立即返回错误，不会阻塞进程。</strong></p>
+<p>特点：</p>
+<ol>
+<li><strong>进程轮询（重复）调用，消耗CPU的资源</strong>；</li>
+<li>实现难度低、开发应用相对阻塞IO模式较难；</li>
+<li>适用并发量较小、且不需要及时响应的网络应用开发；</li>
+</ol>
+<h4><span id="io多路复用">IO多路复用</span></h4><p>多个的进程的IO可以注册到一个复用器(<code>select</code>)上，然后用一个进程调用该 <code>select</code> ， <code>select</code> 会监听所有注册进来的IO；如果 <code>select</code> 监听的IO在内核缓冲区都没有可读数据，<code>select</code> 调用进程会被阻塞；而当任一IO在内核缓冲区中有可数据时，<code>select</code> 调用就会返回；而后 <code>select</code> 调用进程可以自己或通知另外的进程（注册进程）来再次发起读取IO，读取内核中准备好的数据。可以看到，<strong>多个进程注册IO后，只有另一个select调用进程被阻塞。</strong></p>
+<p><img src="https://img-blog.csdn.net/20161028200139703" alt="img"></p>
+<p><strong>典型应用：select、poll、epoll三种方案，nginx都可以选择使用这三个方案;</strong></p>
+<p><strong>特点：</strong></p>
+<ol>
+<li><strong>专一进程解决多个进程IO的阻塞问题，性能好</strong>；<strong>Reactor模式;</strong></li>
+<li>实现、开发应用难度较大；</li>
+<li><strong>适用高并发服务应用开发：一个进程（线程）响应多个请求</strong>；</li>
+</ol>
+<h4><span id="信号驱动的io模型">信号驱动的IO模型</span></h4><p>当进程发起一个IO操作，会向内核注册一个<strong>信号处理函数</strong>，然后进程<strong>返回不阻塞</strong>；当内核数据就绪时会发送一个信号给进程，进程便在信号处理函数中调用IO读取数据。</p>
+<p><img src="https://img-blog.csdn.net/20161028200140021" alt="img"></p>
+<p><strong>特点：回调机制，</strong>实现、开发应用难度大；</p>
+<h4><span id="异步io模型">异步IO模型</span></h4><p>当进程发起一个IO操作，进程返回（不阻塞），但也不能返回结果；内核把整个IO处理完后，会通知进程结果。<strong>如果IO操作成功则进程直接获取到数据</strong>。</p>
+<p><img src="https://img-blog.csdn.net/20161028200140375" alt="img"></p>
+<p><strong>特点：</strong></p>
+<ol>
+<li><strong>不阻塞，数据一步到位</strong>；<strong>Proactor模式</strong>；</li>
+<li>需要操作系统的底层支持，LINUX 2.5 版本内核首现，2.6 版本产品的内核标准特性；</li>
+<li>实现、开发应用难度大；</li>
+<li>非常适合高性能高并发应用；</li>
+</ol>
+<hr>
+<h3><span id="两种io事件处理模式">两种IO事件处理模式</span></h3><h4><span id="reactor模式同步的">Reactor模式(同步的)</span></h4><p>读取操作：</p>
+<ol>
+<li>应用程序注册读就绪事件和相关联的事件处理器</li>
+<li>事件分离器等待事件的发生</li>
+<li>当发生读就需事件的时候，事件分离器调用第一步注册的事件处理器</li>
+<li>事件处理器首先执行实际的读取操作，然后根据读取到的内容进行进一步的处理</li>
+</ol>
+<p><img src="https://img-blog.csdnimg.cn/20190915131156673.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3ZqaGdoamdoag==,size_16,color_FFFFFF,t_70" alt="img"></p>
+<p>用<strong>Reactor</strong>模式的一个实现方案是：</p>
+<ol>
+<li>在<strong>Reactor</strong>中注册好感兴趣的事件(IO事件 信号 定时器)</li>
+<li>用一个主线程(IO处理单元)负责监听文件描述符上的是否有事件发生除此之外它不做别的实质性的工作 ,采用<strong>io复用</strong>的形式 比如用select epoll  poll这些.</li>
+<li>当发生了对应事件  主线程就通知工作进程 (通过请求队列)</li>
+<li>在工作线程(逻辑单元)中读写数据  接受新的连接 处理客户请求等等 </li>
+</ol>
+<h4><span id="proactor模式-异步">Proactor模式 (异步)</span></h4><p><img src="https://img-blog.csdnimg.cn/20190915142010343.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3ZqaGdoamdoag==,size_16,color_FFFFFF,t_70" alt="img"></p>
+<p>Reactor和Proactor模式的主要区别就是真正的读取和写入操作是有谁来完成的：</p>
+<ul>
+<li><strong>Reactor模式</strong>中需要应用程序自己读取或者写入数据，真正执行IO操作的(也就是从内核区读取io数据到缓存区的这一步)是事件处理器自身，也就是说在io操作的第二阶段应用程序是阻塞的，所以我们说<strong>Reactor模式是同步的</strong> </li>
+<li><strong>Proactor模式</strong>中，应用程序不需要进行实际的读写过程，它只需要从缓存区读取或者写入即可，操作系统会读取缓存区或者写入缓存区到真正的IO设备。</li>
+</ul>
+<hr>
+<h3><span id="io多路复用selectpollepoll同步阻塞">⭐IO多路复用：select/poll/epoll(同步/阻塞)</span></h3><p>所谓 <code>I/O</code> 多路复用指的是这样一个过程：</p>
+<ol>
+<li>我们拿到了一堆文件描述符 <code>fd</code> (不管是网络相关的、还是磁盘文件相关等等，任何文件描述符都可以)</li>
+<li>通过调用<strong>某个函数</strong>告诉内核：“<strong>这个函数你先不要返回，你替我监视着这些描述符，当这堆文件描述符中有可以进行I/O读写操作的时候你再返回</strong>”</li>
+<li>当调用的这个函数返回后我们就能知道哪些文件描述符可以进行 <code>I/O</code> 操作了。</li>
+</ol>
+<p>也就是说<strong>通过I/O多路复用我们可以同时处理多路I/O</strong>。</p>
+<p><code>select</code> ， <code>poll</code> ，<code>epoll</code> 都是 <code>IO</code> 多路复用的机制。<code>I/O</code> 多路复用就通过一种机制，可以监视多个描述符，一旦某个描述符就绪(一般是读就绪或者写就绪)，能够通知程序进行相应的读写操作。<strong>但select，poll，epoll本质上都是同步I/O，因为他们都需要在读写事件就绪后自己负责进行读写，也就是说这个读写过程是阻塞的</strong>，而异步 <code>I/O</code> 则无需自己负责进行读写，异步 <code>I/O</code> 的实现会负责把数据从内核拷贝到用户空间。</p>
+<p><code>I/O</code> 多路复用是指内核一旦发现进程指定的一个或者多个 <code>I/O</code> 条件准备读取，它就通知该进程。<code>I/O</code>多路复用适用如下场合：</p>
+<ol>
+<li>当客户处理多个描述字时（一般是<strong>交互式输入</strong>和<strong>网络套接口</strong>），必须使用I/O复用。</li>
+<li>当一个客户同时处理多个套接口时，而这种情况是可能的，但很少出现。</li>
+<li>如果一个TCP服务器既要处理监听套接口，又要处理已连接套接口，一般也要用到I/O复用。</li>
+<li>如果一个服务器即要处理TCP，又要处理UDP，一般要使用I/O复用。</li>
+<li>如果一个服务器要处理多个服务或多个协议，一般要使用I/O复用。</li>
+</ol>
+<p><strong>与多进程和多线程技术相比，I/O多路复用技术的最大优势是系统开销小，系统不必创建进程/线程，也不必维护这些进程/线程，从而大大减小了系统的开销。</strong></p>
+<p><strong>select的几大缺点：</strong></p>
+<p><strong>（1）每次调用select，都需要把fd集合从用户态拷贝到内核态，这个开销在fd很多时会很大</strong></p>
+<p><strong>（2）同时每次调用select都需要在内核遍历传递进来的所有fd，这个开销在fd很多时也很大</strong></p>
+<p><strong>（3）select支持的文件描述符数量太小了，32位默认是1024，64位是2048</strong></p>
+<p> <code>poll</code> 的实现和 <code>select</code> 非常相似，只是描述 <code>fd</code> 集合的方式不同，<code>poll</code> 使用 <code>pollfd</code> 结构而不是 <code>select</code> 的<code>fd_set</code> 结构，其他的都差不多。</p>
+<ol>
+<li><p><strong>select 时间复杂度O(n)</strong></p>
+<p>它仅仅知道了，有I/O事件发生了，却并不知道是哪那几个流（可能有一个，多个，甚至全部），我们只能无差别轮询所有流，找出能读出数据，或者写入数据的流，对他们进行操作。所以<strong>select具有O(n)的无差别轮询复杂度</strong>，同时处理的流越多，无差别轮询时间就越长。</p>
+</li>
+<li><p><strong>poll 时间复杂度O(n)</strong></p>
+<p>poll本质上和select没有区别，它将用户传入的数组拷贝到内核空间，然后查询每个fd对应的设备状态， <strong>但是它没有最大连接数的限制</strong>，但是同样有一个缺点：</p>
+<p>1、大量的 <code>fd</code> 的数组被整体复制于用户态和内核地址空间之间，而不管这样的复制是不是有意义。                   </p>
+<p>2、<code>poll</code> 还有一个特点是<strong>水平触发</strong>，如果报告 <code>fd</code> 后，没有被处理，那么下次 <code>poll</code> 时会再次报告该 <code>fd</code> 。</p>
+</li>
+<li><p><strong>epoll 时间复杂度O(1)</strong></p>
+<p><strong>epoll可以理解为event poll</strong>，不同于忙轮询和无差别轮询，<code>epoll</code> 会把哪个流发生了怎样的I/O事件通知我们。所以我们说 <code>epoll</code> 实际上是<strong>事件驱动（每个事件关联上fd）</strong>的，此时我们对这些流的操作都是有意义的。<strong>（复杂度降低到了O(1)）</strong></p>
+</li>
+</ol>
+<h4><span id="select">select</span></h4><p><img src="https://images0.cnblogs.com/blog/305504/201308/17201205-8ac47f1f1fcd4773bd4edd947c0bb1f4.png" alt="img"></p>
+<p><code>select</code> 调用过程如下：</p>
+<ol>
+<li>使用 <code>copy_from_user</code> 从用户空间拷贝 <code>fd_set</code> 到内核空间</li>
+<li>注册回调函数 <code>__pollwait</code> </li>
+<li>遍历所有 <code>fd</code> ，调用其对应的 <code>poll</code> 方法（对于 <code>socket</code> ，这个 <code>poll</code> 方法是 <code>sock_poll</code> ， <code>sock_poll</code> 根据情况会调用到 <code>tcp_poll</code> , <code>udp_poll</code> 或者 <code>datagram_poll</code> ）</li>
+<li>以 <code>tcp_poll</code> 为例，其核心实现就是<strong>pollwait，也就是上面注册的回调函数。</strong></li>
+<li><code>pollwait</code> 的主要工作就是把 <code>current</code> （当前进程）挂到设备的等待队列中，不同的设备有不同的等待队列，对于 <code>tcp_poll</code> 来说，其等待队列是 <code>sk-&gt;sk_sleep</code> （注意把进程挂到等待队列中并不代表进程已经睡眠了）。在设备收到一条消息（网络设备）或填写完文件数据（磁盘设备）后，会唤醒设备等待队列上睡眠的进程，这时 <code>current</code> 便被唤醒了。</li>
+<li><code>poll</code> 方法返回时会返回一个描述读写操作是否就绪的 <code>mask</code> 掩码，根据这个 <code>mask</code> 掩码给 <code>fd_set</code> 赋值。</li>
+<li>如果遍历完所有的 <code>fd</code> ，还没有返回一个可读写的 <code>mask</code> 掩码，则会调用 <code>schedule_timeout</code> 是调用 <code>select</code> 的进程（也就是 <code>current</code> ）进入睡眠。当设备驱动发生自身资源可读写后，会唤醒其等待队列上睡眠的进程。如果超过一定的超时时间（ <code>schedule_timeout</code> 指定），还是没人唤醒，则调用 <code>select</code> 的进程会重新被唤醒获得CPU，进而重新遍历 <code>fd</code> ，判断有没有就绪的 <code>fd</code> 。</li>
+<li>把 <code>fd_set</code> 从内核空间拷贝到用户空间。</li>
+</ol>
+<p><img src="https://images2015.cnblogs.com/blog/305504/201509/305504-20150918012828961-1176245587.png" alt="img"></p>
+<p> <code>select</code> 函数准许进程指示内核等待多个事件中的任何一个发送，并只在有一个或多个事件发生或经历一段指定的时间后才唤醒。函数原型如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/select.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/time.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">select</span><span class="params">(<span class="keyword">int</span> maxfdp1,fd_set *readset,fd_set *writeset,fd_set *exceptset,<span class="keyword">const</span> struct timeval *timeout)</span></span></span><br></pre></td></tr></table></figure>
+<p>返回值：就绪描述符的数目，超时返回 <code>0</code> ，出错返回 <code>-1</code> 。</p>
+<p>函数参数介绍如下：</p>
+<ol>
+<li>第一个参数 <code>maxfdp1</code> 指定待测试的描述字个数，它的值是待测试的最大描述字加 <code>1</code> （因此把该参数命名为<code>maxfdp1</code> ），描述字 <code>0、1、2...maxfdp1 - 1</code> 均将被测试。因为文件描述符是从 <code>0</code> 开始的。</li>
+<li>中间的三个参数 <code>readset</code> 、<code>writeset</code> 和 <code>exceptset</code> 指定我们要让内核测试读、写和异常条件的描述字。如果对某一个的条件不感兴趣，就可以把它设为空指针。<code>struct fd_set</code> 可以理解为一个集合，这个集合中存放的是<strong>文件描述符FD</strong>，可通过以下四个宏进行设置：</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">FD_ZERO</span><span class="params">(fd_set *fdset)</span></span>;          <span class="comment">//清空集合</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">FD_SET</span><span class="params">(<span class="keyword">int</span> fd, fd_set *fdset)</span></span>;   <span class="comment">//将一个给定的文件描述符加入集合之中</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">FD_CLR</span><span class="params">(<span class="keyword">int</span> fd, fd_set *fdset)</span></span>;   <span class="comment">//将一个给定的文件描述符从集合中删除</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">FD_ISSET</span><span class="params">(<span class="keyword">int</span> fd, fd_set *fdset)</span></span>;  <span class="comment">// 检查集合中指定的文件描述符是否可以读写</span></span><br></pre></td></tr></table></figure>
+<ol>
+<li><code>timeval *timeout</code> 告知内核等待所指定描述字中的任何一个就绪可花多少时间。其 <code>timeval</code> 结构用于指定这段时间的秒数和微秒数。</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">timeval</span>&#123;</span></span><br><span class="line">    <span class="keyword">long</span> tv_sec;   <span class="comment">//seconds</span></span><br><span class="line">    <span class="keyword">long</span> tv_usec;  <span class="comment">//microseconds</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>这个参数有三种可能：</p>
+<p>（1）永远等待下去：仅在有一个描述字准备好 <code>I/O</code> 时才返回。为此，把该参数设置为空指针 <code>NULL</code> 。</p>
+<p>（2）等待一段固定时间：在有一个描述字准备好 <code>I/O</code> 时返回，但是不超过由该参数所指向的 <code>timeval</code> 结构中指定的秒数和微秒数。</p>
+<p>（3）根本不等待：检查描述字后立即返回，这称为<strong>轮询</strong>。为此，该参数必须指向一个 <code>timeval</code> 结构，而且其中的定时器值必须为 <code>0</code> 。</p>
+<hr>
+<h4><span id="poll">poll</span></h4><p><strong>“选举出来，立刻返回”</strong></p>
+<p><code>poll</code> 的机制与 <code>select</code> 类似，与 <code>select</code> 在本质上没有多大差别，管理多个描述符也是进行<strong>轮询</strong>，根据描述符的状态进行处理，但是 <code>poll</code> <strong>没有最大文件描述符数量的限制</strong>。<code>poll</code> 和 <code>select</code> 同样存在一个缺点就是，<strong>包含大量文件描述符的数组被整体复制于用户态和内核的地址空间之间，而不论这些文件描述符是否就绪，它的开销随着文件描述符数量的增加而线性增大。</strong></p>
+<p>函数格式如下所示：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># <span class="meta-keyword">include</span> <span class="meta-string">&lt;poll.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">poll</span> <span class="params">( struct pollfd * fds, <span class="keyword">unsigned</span> <span class="keyword">int</span> nfds, <span class="keyword">int</span> timeout)</span></span>;</span><br></pre></td></tr></table></figure>
+<p><code>pollfd</code> 结构体定义如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">pollfd</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> fd;         	  <span class="comment">/* 文件描述符 */</span></span><br><span class="line">    <span class="keyword">short</span> events;         <span class="comment">/* 等待的事件 */</span></span><br><span class="line">    <span class="keyword">short</span> revents;        <span class="comment">/* 实际发生了的事件 */</span></span><br><span class="line">&#125; ;</span><br></pre></td></tr></table></figure>
+<p>每一个 <code>pollfd</code> 结构体指定了一个<strong>被监视的文件描述符</strong>，可以传递多个结构体，指示 <code>poll()</code> 监视多个文件描述符。每个结构体的 <code>events</code> 域是监视该文件描述符的事件掩码，由用户来设置这个域。<code>revents</code> 域是文件描述符的操作结果事件掩码，内核在调用返回时设置这个域。<code>events</code> 域中请求的任何事件都可能在 <code>revents</code> 域中返回。合法的事件如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">POLLIN 　　　　　　　　有数据可读。</span><br><span class="line">POLLRDNORM 　　　　  有普通数据可读。</span><br><span class="line">POLLRDBAND　　　　　 有优先数据可读。</span><br><span class="line">POLLPRI　　　　　　　　 有紧迫数据可读。</span><br><span class="line">POLLOUT　　　　　　      写数据不会导致阻塞。</span><br><span class="line">POLLWRNORM　　　　　  写普通数据不会导致阻塞。</span><br><span class="line">POLLWRBAND　　　　　   写优先数据不会导致阻塞。</span><br><span class="line">POLLMSGSIGPOLL 　　　　消息可用。</span><br></pre></td></tr></table></figure>
+<p>此外，<code>revents</code> 域中还可能返回下列事件：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">POLLER　　   指定的文件描述符发生错误。</span><br><span class="line">POLLHUP　　 指定的文件描述符挂起事件。</span><br><span class="line">POLLNVAL　　指定的文件描述符非法。</span><br></pre></td></tr></table></figure>
+<p><code>timeout</code> 参数指定等待的毫秒数，无论 <code>I/O</code> 是否准备好，<code>poll</code> 都会返回。<code>timeout</code> 指定为负数值表示无限超时，使 <code>poll()</code> 一直挂起直到一个指定事件发生；<code>timeout</code> 为 <code>0</code> 指示 <code>poll</code> 调用立即返回并列出准备好I/O的文件描述符，但并不等待其它的事件。这种情况下，<code>poll()</code> 就像它的名字那样，一旦选举出来，立即返回。</p>
+<p><strong>返回值和错误代码</strong><br>成功时，<code>poll()</code> 返回结构体中 <code>revents</code> 域不为 <code>0</code> 的文件描述符个数；如果在超时前没有任何事件发生，<code>poll()</code> 返回 <code>0</code> ；失败时，<code>poll()</code> 返回 <code>-1</code> ，并设置 <code>errno</code> 为下列值之一。</p>
+<hr>
+<h4><span id="epoll">epoll</span></h4><p><code>epoll</code> 是在 <code>2.6</code> 内核中提出的，是之前的 <code>select</code> 和 <code>poll</code> 的增强版本。相对于 <code>select</code> 和 <code>poll</code> 来说，<code>epoll</code> 更加灵活，没有描述符限制。<code>epoll</code> <strong>使用一个文件描述符管理多个描述符，将用户关系的文件描述符的事件存放到内核的一个事件表中</strong>，这样在用户空间和内核空间的 <code>copy</code> 只需一次。</p>
+<p><code>epoll</code> 使用 <code>事件</code> 的就绪通知方式，通过 <code>epoll_ctl</code> 注册 <code>fd</code> ，一旦该 <code>fd</code> 就绪，内核就会采用类似 <code>callback</code> 的回调机制来激活该 <code>fd</code> ，<code>epoll_wait</code> 便可以收到通知。</p>
+<h5><span id="epoll-函数">epoll 函数</span></h5><p><code>epoll</code> 操作过程需要三个接口，分别如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/epoll.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">epoll_create</span><span class="params">(<span class="keyword">int</span> size)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">epoll_ctl</span><span class="params">(<span class="keyword">int</span> epfd, <span class="keyword">int</span> op, <span class="keyword">int</span> fd, struct epoll_event *event)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">epoll_wait</span><span class="params">(<span class="keyword">int</span> epfd, struct epoll_event * events, <span class="keyword">int</span> maxevents, <span class="keyword">int</span> timeout)</span></span>;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p><strong>int epoll_create(int size);</strong><br>创建一个 <code>epoll</code> 的句柄，<code>size</code> 用来告诉内核这个监听的数目一共有多大。这个参数不同于 <code>select()</code> 中的第一个参数，给出最大监听的 <code>fd+1</code> 的值。需要注意的是，当创建好 <code>epoll</code> 句柄后，它就是会占用一个 <code>fd</code> 值，在 <code>linux</code> 下如果查看 <code>/proc/</code> 进程 <code>id/fd/</code> ，是能够看到这个 <code>fd</code> 的，所以在使用完 <code>epoll</code> 后，必须调用 <code>close()</code> 关闭，否则可能导致 <code>fd</code> 被耗尽。</p>
+</li>
+<li><p><strong>int epoll_ctl(int epfd, int op, int fd, struct epoll_event *event);</strong></p>
+<p><code>epoll</code> 的事件注册函数， <code>select()</code> 是在监听事件时告诉内核要监听什么类型的事件，而是在这里 <code>epoll</code> 是先注册要监听的事件类型。第一个参数是 <code>epoll_create()</code> 的返回值，第二个参数表示动作，用三个宏来表示</p>
+<ul>
+<li><strong>EPOLL_CTL_ADD</strong>：注册新的 <code>fd</code> 到 <code>epfd</code> 中；</li>
+<li><strong>EPOLL_CTL_MOD</strong>：修改已经注册的 <code>fd</code> 的监听事件；</li>
+<li><strong>EPOLL_CTL_DEL</strong>：从 <code>epfd</code> 中删除一个 <code>fd</code> ；<br>第三个参数是需要监听的 <code>fd</code> ，第四个参数是告诉内核需要监听什么事，<code>struct epoll_event</code> 结构如下：</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">epoll_event</span> &#123;</span></span><br><span class="line">  <span class="keyword">__uint32_t</span> events;  <span class="comment">/* Epoll events */</span></span><br><span class="line">  <span class="keyword">epoll_data_t</span> data;  <span class="comment">/* User data variable */</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p><code>events</code> 可以是以下几个宏的集合：<br><strong>EPOLLIN</strong> ：表示对应的文件描述符可以读（包括对端 <code>SOCKET</code> 正常关闭）；<br><strong>EPOLLOUT</strong>：表示对应的文件描述符可以写；<br><strong>EPOLLPRI</strong>：表示对应的文件描述符有紧急的数据可读（这里应该表示有带外数据到来）；<br><strong>EPOLLERR</strong>：表示对应的文件描述符发生错误；<br><strong>EPOLLHUP</strong>：表示对应的文件描述符被挂断；<br><strong>EPOLLET</strong>： 将 <code>EPOLL</code> 设为边缘触发(<strong>Edge Triggered</strong>)模式，这是相对于水平触发(<strong>Level Triggered</strong>)来说的。<br><strong>EPOLLONESHOT</strong>：只监听一次事件，当监听完这次事件之后，如果还需要继续监听这个 <code>socket</code> 的话，需要再次把这个 <code>socket</code> 加入到 <code>EPOLL</code> 队列里。</p>
+</li>
+<li><p><strong>int epoll_wait(int epfd, struct epoll_event * events, int maxevents, int timeout);</strong></p>
+<p>等待事件的产生，类似于 <code>select()</code> 调用。参数 <code>events</code> 用来从内核得到事件的集合，<code>maxevents</code> 告之内核这个 <code>events</code> 有多大，这个 <code>maxevents</code> 的值不能大于创建 <code>epoll_create()</code> 时的 <code>size</code> ，参数 <code>timeout</code> 是超时时间（毫秒，0会立即返回，-1将不确定，也有说法说是永久阻塞）。该函数返回需要处理的事件数目，如返回0表示已超时。</p>
+</li>
+</ul>
+<h5><span id="工作模式">工作模式</span></h5><p><code>epoll</code> 对文件描述符的操作有两种模式：<code>LT（level trigger）</code> 和 <code>ET（edge trigger）</code> 。<code>LT</code> 模式是默认模式，<code>LT</code> 模式与 <code>ET</code> 模式的区别如下：</p>
+<ul>
+<li><strong>LT模式：当epoll_wait检测到描述符事件发生并将此事件通知应用程序，应用程序可以不立即处理该事件。下次调用epoll_wait时，会再次响应应用程序并通知此事件。</strong></li>
+<li><strong>ET模式：当epoll_wait检测到描述符事件发生并将此事件通知应用程序，应用程序必须立即处理该事件。如果不处理，下次调用epoll_wait时，不会再次响应应用程序并通知此事件，read一个fd的时候一定要把它的buffer读光，也就是说一直读到read的返回值小于请求值，或者 遇到EAGAIN错误。</strong></li>
+</ul>
+<p><code>ET</code> 模式在很大程度上减少了 <code>epoll</code> 事件被重复触发的次数，因此效率要比 <code>LT</code> 模式高。<code>epoll</code> 工作在 <code>ET</code> 模式的时候，必须使用<strong>非阻塞IO</strong>，以避免由于一个文件句柄的阻塞读/阻塞写操作把处理多个文件描述符的任务饿死。</p>
+<p><strong>使用epoll是否需要将socket设置为nonblocking?</strong><br>取决于你使用的触发方式， 如果你使用水平触发(Level-triggered) 那么此时的 <code>epoll</code> 相当于高级的 <code>select</code> ， 你的论述是对的， 是不需要一定将 <code>socket</code> 设置为非阻塞的; 然而， 当你使用边缘触发(Edge-triggered) 那么此时从业务的完整性考虑， 是建议将 <code>socket</code> 设置为 <code>nonbocking</code> 模式， 并且在读写触发 <code>EAGAIN</code> 之后再进行<code>epoll_wait</code> 。</p>
+<h5><span id="epoll的优点">epoll的优点：</span></h5><ol>
+<li>没有最大并发连接的限制，能打开的 <code>FD</code> 的上限远大于1024（1G的内存上能监听约10万个端口）</li>
+<li>效率提升，不是轮询的方式，不会随着 <code>FD</code> 数目的增加效率下降。只有活跃可用的 <code>FD</code> 才会调用 <code>callback</code> 函数。即 <code>Epoll</code> 最大的优点就在于它只管你“活跃”的连接，而跟连接总数无关，因此在实际的网络环境中，<code>Epoll</code> 的效率就会远远高于 <code>select</code> 和 <code>poll</code> 。</li>
+<li>内存拷贝，利用 <code>mmap()</code> 文件映射内存加速与内核空间的消息传递；即 <code>epoll</code> 使用 <code>mmap</code> 减少复制开销。</li>
+</ol>
+<h5><span id="mmap实现共享内存">mmap实现共享内存：</span></h5><p><code>mmap</code> 将一个文件或者其他对象映射进内存，当文件映射到进程后，就可以直接操作这段虚拟地址进行文件的读写等操作。</p>
+<p><code>mmap</code> 系统调用使得进程之间通过<strong>映射同一个普通文件</strong>实现<strong>共享内存</strong>，普通文件被映射到进程地址空间后，进程可以像访问普通内存一样对文件进行访问，不必再调用 <code>read</code> 和 <code>write</code> 等。</p>
+<p><img src="https://img-blog.csdn.net/20160202144116303" alt="这里写图片描述"></p>
+<h5><span id="边缘触发的io应该怎么写">边缘触发的IO应该怎么写？</span></h5><hr>
+<h3><span id="内存管理">内存管理</span></h3><h4><span id="虚拟内存">虚拟内存</span></h4><p><strong>操作系统会提供一种机制，将不同进程的虚拟地址和不同内存的物理地址映射起来。</strong></p>
+<p>虚拟内存的重要意义是它<strong>定义了一个连续的虚拟地址空间</strong>，<strong>让每个进程有一种自己在独享主存的错觉</strong>，并且<strong>把内存扩展到硬盘空间上</strong>。</p>
+<p>操作系统可以把进程所使用的地址「<strong>隔离</strong>」开来，即让操作系统为每个进程分配独立的一套「<strong>虚拟地址</strong>」，人人都有，大家自己玩自己的地址就行，互不干涉。但是有个前提<strong>每个进程都不能访问物理地址</strong>，至于虚拟地址最终怎么落到物理内存里，对进程来说是透明的，操作系统已经把这些都安排的明明白白了。</p>
+<p>如果程序要访问虚拟地址的时候，由操作系统转换成不同的物理地址，这样不同的进程运行的时候，写入的是不同的物理地址，这样就不会冲突了。</p>
+<ul>
+<li>程序所使用的内存地址叫做<strong>虚拟内存地址</strong>（<em>Virtual Memory Address</em>）</li>
+<li>实际存在硬件里面的空间地址叫<strong>物理内存地址</strong>（<em>Physical Memory Address</em>）。</li>
+</ul>
+<p>操作系统引入了虚拟内存，进程持有的虚拟地址会通过 CPU 芯片中的<strong>内存管理单元(MMU)</strong>的映射关系，来转换变成物理地址，然后再通过物理地址访问内存，如下图所示：</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/J0g14CUwaZfVYxicDjAjl4nMxlmyJk7rkpVTcOZj4JJSyYlSMyiaC66pP2q1QiafglrtO0tmZHCkBB0RvCsfVOTIA/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="图片"></p>
+<p>操作系统是如何管理虚拟地址与物理地址之间的关系的？</p>
+<p>主要是通过<strong>内存分段</strong>和<strong>内存分页</strong>来实现的。</p>
+<hr>
+<h4><span id="内存分段">内存分段</span></h4><p>程序是由若干个逻辑分段组成的，如可由<strong>代码分段、数据分段、栈段、堆段</strong>组成。<strong>不同的段是有不同的属性的，所以就用分段（Segmentation）的形式把这些段分离出来。</strong></p>
+<p>分段机制下的虚拟地址由两部分组成，<strong>段选择因子</strong>和<strong>段内偏移量</strong>。(类似虚函数表的映射，段表相当于虚函数表)</p>
+<ul>
+<li><strong>段选择因子</strong>就保存在段寄存器里面。段选择子里面最重要的是<strong>段号</strong>，用作段表的索引。<strong>段表</strong>里面保存的是这个<strong>段的基地址、段的界限和特权等级</strong>等。</li>
+<li>虚拟地址中的<strong>段内偏移量</strong>应该位于 0 和段界限之间，如果段内偏移量是合法的，就将段基地址加上段内偏移量得到物理内存地址。</li>
+</ul>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/J0g14CUwaZfVYxicDjAjl4nMxlmyJk7rkTX5icicl09hKPabMh2LHcfiapeTumDtOUB3fydDdsIGuNKI0uUWia4k5oA/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="图片"></p>
+<p>虚拟地址是通过<strong>段表</strong>与物理地址进行映射的，分段机制会把程序的虚拟地址分成 <strong>4 个段(分别对应堆、栈、数据区、代码区)</strong>，每个段在段表中有一个项，在这一项找到段的基地址，再加上偏移量，于是就能找到物理内存中的地址，如下图：</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/J0g14CUwaZfVYxicDjAjl4nMxlmyJk7rk87ABj8vKWeQANrKVHpm7xNZRTbgFPOicpy74mD65ia3rGgMaIo6G1ntQ/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="图片"></p>
+<p><strong>分段的优点：能够产生连续的内存空间。</strong></p>
+<p><strong>分段的缺点：</strong></p>
+<ol>
+<li><p><strong>内存碎片</strong>：空闲的内存是零散的碎片</p>
+<ol>
+<li><p><strong>外部内存碎片</strong>：也就是产生了多个<strong>不连续的小物理内存</strong>，导致新的程序无法被装载</p>
+<p>解决方法：<strong>内存交换</strong></p>
+<p>在 Linux 系统里，也就是我们常看到的 <code>Swap</code> 空间，这块空间是从硬盘划分出来的，用于内存与硬盘的空间交换。</p>
+</li>
+<li><p><strong>内部内存碎片</strong>：程序所有的内存都被装载到了物理内存，但是这个程序有部分的内存可能并不是很常使用，这也会导致内存的浪费；内部碎片是处于区域内部或页面内部的存储块。占有这些区域或页面的进程并不使用这个存储块。而在进程占有这块存储块时，系统无法利用它。直到进程释放它，或进程结束时，系统才有可能利用这个存储块。</p>
+</li>
+</ol>
+</li>
+<li><p><strong>内存交换的效率低</strong></p>
+<p>对于多进程的系统来说，用分段的方式，内存碎片是很容易产生的，产生了内存碎片，那不得不重新 <code>Swap</code> 内存区域，这个过程会产生性能瓶颈。因为硬盘的访问速度要比内存慢太多了，每一次内存交换，我们都需要把一大段连续的内存数据写到硬盘上。</p>
+<p>所以，<strong>如果内存交换的时候，交换的是一个占内存空间很大的程序，这样整个机器都会显得卡顿。</strong></p>
+<p>为了解决内存分段的内存碎片和内存交换效率低的问题，就出现了<strong>内存分页</strong>。</p>
+</li>
+</ol>
+<hr>
+<h4><span id="内存分页">内存分页</span></h4><p><strong>分页是把整个虚拟和物理内存空间切成一段段固定尺寸的大小</strong>。这样一个<strong>连续并且尺寸固定的内存空间</strong>，我们叫<strong>页</strong>（<em>Page</em>）。在 Linux 下，每一页的大小为 <strong>4KB</strong>。</p>
+<p><strong>虚拟地址与物理地址</strong>之间通过<strong>页表</strong>来映射，如下图：</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/J0g14CUwaZfVYxicDjAjl4nMxlmyJk7rkZoTKofqkOibHicWGJPwsCjZGRpG077zmMMnRibkVqcVocZz1PxeIuLLMg/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="图片"></p>
+<p>页表实际上存储在 CPU 的<strong>内存管理单元</strong> （<strong>MMU</strong>） 中，于是 CPU 就可以直接通过 MMU，找出要实际要访问的物理内存地址。</p>
+<p>而当进程访问的虚拟地址在页表中查不到时，系统会产生一个<strong>缺页异常</strong>(跟缺页中断不一样)，进入系统内核空间分配物理内存、更新进程页表，最后再返回用户空间，恢复进程的运行。</p>
+<p>由于内存空间都是预先划分好的，也就不会像分段会产生间隙非常小的内存，这正是分段会产生内存碎片的原因。而<strong>采用了分页，那么释放的内存都是以页为单位释放的，也就不会产生无法给进程使用的小内存。</strong></p>
+<p>如果内存空间不够，操作系统会把其他正在运行的进程中的 <code>LRU</code> 等<strong>页面置换算法</strong>计算出的的内存页面给释放掉，也就是暂时写在硬盘上，称为<strong>换出</strong>（<em>Swap Out</em>）。一旦需要的时候，再加载进来，称为<strong>换入</strong>（<em>Swap In</em>）。所以，一次性写入磁盘的也只有少数的一个页或者几个页，不会花太多时间，<strong>内存交换的效率就相对比较高。</strong></p>
+<p>更进一步地，分页的方式使得我们在加载程序的时候，<strong>不再需要一次性都把程序加载到物理内存中</strong>。我们完全可以在进行虚拟内存和物理内存的页之间的映射之后，并不真的把页加载到物理内存里，而是<strong>只有在程序运行中，需要用到对应虚拟内存页里面的指令和数据时，再加载到物理内存里面去。</strong></p>
+<p>总结一下，对于一个内存地址转换，其实就是这样三个步骤：</p>
+<ul>
+<li>把虚拟内存地址，切分成<strong>页号和偏移量</strong>；</li>
+<li>根据页号，从页表里面，查询对应的物理页号；</li>
+<li>直接拿物理页号，加上前面的偏移量，就得到了物理内存地址。</li>
+</ul>
+<blockquote>
+<p>简单的分页有什么缺陷吗？</p>
+</blockquote>
+<p>有空间上的缺陷。因为操作系统是可以同时运行非常多的进程的，这就意味着页表会非常的庞大。比如一个页的大小是 <code>4KB</code>，虚拟地址空间有 <code>4GB</code>，那就需要 <code>100w</code> 个页，每个页表需要 <code>4Byte</code> 来存储，那么就需要 <code>4MB</code> 用来存储页表，<code>100</code> 个进程就是 <code>400MB</code> 。</p>
+<h5><span id="多级页表">多级页表</span></h5><p>要解决上面的问题，就需要采用的是一种叫作<strong>多级页表</strong>（Multi-Level Page Table）的解决方案。</p>
+<p>首先我们要明确一点，我们从页表的性质来看，保存在内存中的页表承担的职责是将虚拟地址翻译成物理地址。假如虚拟地址在页表中找不到对应的页表项，计算机系统就不能工作了。所以<strong>页表一定要覆盖全部虚拟地址空间</strong></p>
+<p>但是在一级页表之中，为了映射到所有的地址，需要 <code>100w</code> 个页表项来覆盖全部虚拟地址空间，而二级页表只需要 <code>1024</code> 个页表项就可以覆盖( <code>此时一级页表覆盖到了全部虚拟地址空间，二级页表在需要时创建</code> )。</p>
+<p>如果使用了二级分页，一级页表就可以覆盖整个 <code>4GB</code> 虚拟地址空间，但<strong>如果某个一级页表的页表项没有被用到，也就不需要创建这个页表项对应的二级页表了，即可以在需要时才创建二级页表</strong>。做个简单的计算，假设只有 20% 的一级页表项被用到了，那么页表占用的内存空间就只有 4KB（一级页表） + 20% * 4MB（二级页表）= <code>0.804M</code>，这对比单级页表的 <code>4MB</code> 是不是一个巨大的节约？</p>
+<h5><span id="64位系统用到的是四级目录">64位系统用到的是四级目录</span></h5><ul>
+<li>全局页目录项 <strong>PGD</strong>（<em>Page Global Directory</em>）；</li>
+<li>上层页目录项 <strong>PUD</strong>（<em>Page Upper Directory</em>）；</li>
+<li>中间页目录项 <strong>PMD</strong>（<em>Page Middle Directory</em>）；</li>
+<li>页表项 <strong>PTE</strong>（<em>Page Table Entry</em>）；</li>
+</ul>
+<h5><span id="tlbtranslation-lookaside-buffer-页表缓存">TLB(<em>Translation Lookaside Buffer</em>) 页表缓存</span></h5><p>多级页表虽然解决了空间上的问题，但是虚拟地址到物理地址的转换就多了几道转换的工序，这显然就降低了这俩地址转换的速度，也就是带来了时间上的开销。程序是有局部性的，即在一段时间内，整个程序的执行仅限于程序中的某一部分。相应地，执行所访问的存储空间也局限于某个内存区域。</p>
+<p>我们就可以利用这一特性，把最常访问的几个页表项存储到访问速度更快的硬件，于是计算机科学家们，就在 CPU 芯片中，加入了一个专门存放程序最常访问的页表项的 Cache，这个 Cache 就是 <strong>TLB（<em>Translation Lookaside Buffer</em>）</strong> ，通常称为<strong>页表缓存</strong>、<strong>转址旁路缓存</strong>、<strong>快表</strong>等。它可以跟MMU(内存管理单元)进行交互，MMU可以先在TLB中查找页表，如果没有命中再去找页表里找。</p>
+<h5><span id="段页式内存管理">段页式内存管理</span></h5><p>内存分段和内存分页并不是对立的，它们是可以组合起来在同一个系统中使用的，那么组合起来后，通常称为<strong>段页式内存管理</strong>。</p>
+<ul>
+<li>先将程序划分为多个有逻辑意义的段，也就是前面提到的分段机制(代码段、数据段、栈段、堆段等等)；</li>
+<li>接着再把每个段划分为多个页，也就是对分段划分出来的连续空间，再划分固定大小的页；</li>
+</ul>
+<p>这样，地址结构就由<strong>段号、段内页号和页内位移</strong>三部分组成。每一个程序一张段表，每个段又建立一张页表，<strong>段表中的地址是页表的起始地址</strong>，<strong>而页表中的地址则为某页的物理页号</strong>。</p>
+<h4><span id="linux内存管理">Linux内存管理</span></h4><p>Linux 系统中的每个段都是从 0 地址开始的整个 <code>4GB</code> 虚拟空间（32 位环境下），也就是所有的段的起始地址都是一样的。这意味着，Linux 系统中的代码，包括操作系统本身的代码和应用程序代码，所面对的地址空间都是<strong>线性地址空间（虚拟地址）</strong>，这种做法相当于屏蔽了处理器中的<strong>逻辑地址</strong>概念，段只被用于访问控制和内存保护。</p>
+<p>虚拟地址空间的内部又被分为<strong>内核空间和用户空间</strong>两部分，不同位数的系统，地址空间的范围也不同。比如最常见的 32 位和 64 位系统。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/J0g14CUwaZfVYxicDjAjl4nMxlmyJk7rkr9Pf9QeM2EhturaF3WFbL7AFYHJvKexk3As6s2vg1NiaUh5AplRmqyA/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="图片"></p>
+<ul>
+<li><code>32</code> 位系统的内核空间占用 <code>1G</code>，位于最高处，剩下的 <code>3G</code> 是用户空间；</li>
+<li><code>64</code> 位系统的内核空间和用户空间都是 <code>128T</code>，分别占据整个内存空间的最高和最低处，剩下的中间部分是未定义的。64位其中16位作为保留位，实际上只有48位能用于内存寻址，即2^48约 <code>256T</code> </li>
+</ul>
+<p>内核空间与用户空间的区别：</p>
+<ul>
+<li>进程在用户态时，只能访问用户空间内存；</li>
+<li>只有进入内核态后，才可以访问内核空间的内存；</li>
+</ul>
+<p>虽然每个进程都各自有独立的虚拟内存，但是<strong>每个虚拟内存中的内核地址，其实关联的都是相同的物理内存</strong>。这样，进程切换到内核态后，就可以很方便地访问内核空间内存。</p>
+<h5><span id="用户空间的内存分布">用户空间的内存分布</span></h5><p>用户空间内存，从<strong>低到高</strong>分别是 7 种不同的内存段：</p>
+<ul>
+<li><strong>程序文件段.text</strong>，包括二进制可执行代码；</li>
+<li><strong>已初始化数据段.data</strong>，包括静态常量；</li>
+<li><strong>未初始化数据段.bass</strong>，包括未初始化的静态变量；</li>
+<li><strong>堆段</strong>，包括动态分配的内存，从<strong>低地址开始向上增长</strong>；</li>
+<li><strong>文件映射段</strong>，包括动态库、共享内存等，<strong>从低地址开始向上增长</strong>（跟硬件和内核版本有关）</li>
+<li><strong>栈段</strong>，包括局部变量和函数调用的上下文等。栈的大小是固定的，一般是 <code>8 MB</code>。当然系统也提供了参数，以便我们自定义大小；栈内的增长是从<strong>高地址向低地址增长的。</strong></li>
+</ul>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/J0g14CUwaZfVYxicDjAjl4nMxlmyJk7rkLicVe0iaPt3taOrowrLDwibhmGZsic0H8ic1Dv0Z3EMVtk80qzQOOib2CUew/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="图片"></p>
+<hr>
+<h4><span id="mmap内存映射原理">mmap内存映射原理：</span></h4><ol>
+<li>调用用户空间mmap函数在当前进程的连续虚拟地址上来形成映射空间</li>
+<li>调用内核空间mmap函数来实现文件物理地址到虚拟地址上的一一映射</li>
+<li>进程发起对这片映射空间的访问，引起缺页异常，来实现文件内容到物理内存的拷贝</li>
+</ol>
+<p>前两步只是创建映射空间，并没有任何的数据拷贝工作，而在第三步中，通过缓存脏回写的机制，直接跳过了从缓存中拷贝到用户空间的传统读写步骤，缩短了很多时间。</p>
+<hr>
+<h3><span id="缺页中断page_fault">缺页中断(page_fault)</span></h3><p>在请求分页系统中，可以通过查询<strong>页表中的状态位</strong>来确定所要访问的页面是否存在于内存中。每当所要访问的页面不在内存时，会产生一次缺页中断，此时操作系统会根据<strong>页表中的外存地址在外存中找到所缺的一页</strong>，将其调入内存。</p>
+<p>缺页本身是一种中断，与一般的中断一样，需要经过4个处理步骤：</p>
+<ol>
+<li>保护CPU现场</li>
+<li>分析中断原因</li>
+<li>转入缺页中断处理程序进行处理</li>
+<li>恢复CPU现场，继续执行</li>
+</ol>
+<p>但是缺页中断时由于所要访问的页面不存在与内存时，有硬件所产生的一种特殊的中断，因此，与一般的中断存在<strong>区别</strong>：</p>
+<ol>
+<li>在指令执行期间产生和处理缺页中断信号</li>
+<li>一条指令在执行期间，可能产生多次缺页中断</li>
+<li>缺页中断返回时，执行产生中断的那一条指令，而一般的中断返回时，执行下一条指令</li>
+</ol>
+<h4><span id="页面置换算法">页面置换算法</span></h4><p>进程运行过程中，如果发生缺页中断，而此时内存中有没有空闲的物理块是，为了能够把所缺的页面装入内存，系统必须从内存中选择一页调出到磁盘的对换区(<strong>SWAP</strong>)。但此时应该把那个页面换出，则需要根据一定的<strong>页面置换算法</strong>（Page Replacement Algorithm)来确定。</p>
+<ul>
+<li><strong>最佳置换算法（OPT)</strong></li>
+<li><strong>先进先出置换算法（FIFO)</strong></li>
+<li><strong>最近最久未使用置换算法（LRU）</strong></li>
+</ul>
+<hr>
+<h3><span id="cpu调度算法进程调度算法">CPU调度算法/进程调度算法</span></h3><p><em>非抢占式调度算法</em></p>
+<h5><span id="先到先服务算法fcfs-first-come-first-served">先到先服务算法(FCFS, First-Come First-Served)</span></h5><p>这个算法会用到的属性是进程的<strong>到达时间</strong>，也就是启动运行一个进程的时间。<strong>先启动的进程会优先被调度器选中</strong>。</p>
+<p><strong>优点：</strong>这个算法有一个很好的性质，就是<strong>任何进程都不会饥饿</strong>，也就是说算法没有会导致任务进程拒绝服务的内在偏向。</p>
+<p><strong>缺点：</strong>但由于上面这个性质，响应时间的方差会很大。举个例子，一个长时间任务到达后，后面跟着一个短时间的任务，那么短任务被长作业挡在后面，它的响应时间就会很糟糕，由于护送效应导致低下的CPU利用率。所以这个<strong>算法并没有对短任务给予任何优先考虑</strong>。</p>
+<h5><span id="最短作业优先sjf-shortest-job-first">最短作业优先(SJF, Shortest Job First)</span></h5><p>既然 <code>先到先服务</code> 对短任务不是很友好，那么这个算法就是为了让短作业获得更好的响应时间。</p>
+<p><strong>优点</strong>：调度器会优先选择时间较短的任务，让短任务获得更好的响应时间；</p>
+<p><strong>缺点</strong>：有可能会让一个长时任务饥饿。解决这个缺点有一个方案，<strong>当一个作业的年龄到达一个阈值，调度器忽略SJF, 选择FCFS算法。</strong></p>
+<h5><span id="优先级算法">优先级算法</span></h5><p>出于调度的目的，多数 <code>OS</code> 会给每个进程赋予一个属性——优先级。比如，在 <code>UNIX</code> 系统中，每个用户级进程开始时都有一个固定的默认优先级。<code>Ready Queue</code> 中包含多个子队列，每个队列都对应着一个优先级，每个子队列内部采用 <code>FCFS</code> 算法。</p>
+<p><strong>优点</strong>：灵活，可以提供差异化服务</p>
+<p><strong>缺点：</strong>会产生饥饿，可以根据进程的等待时间来提高优先级</p>
+<h5><span id="高响应比优先调度算法hrrn">高响应比优先调度算法(HRRN)</span></h5><p>高响应比优先调度算法主要用于作业调度，该算法是对先来先服务调度算法和短作业优先调度算法的一种综合平衡，<strong>同时考虑每个作业的等待时间和估计的运行时间</strong>。在每次进行作业调度时，先计算后备作业队列中每个作业的响应比，从中选出响应比最高的作业投入运行。</p>
+<hr>
+<p><em>抢占式调度算法</em></p>
+<p>抢占式与非抢占式的区别在于：在一个新进程或刚完成 <code>I/O</code> 的进程进入到 <code>ready queue</code> 中时，会重新评估一些属性（比如剩余执行时间），以决定要不要抢占当前正在运行的进程。原则上说，上面讨论到的任何一个非抢占式算法都能改造成抢占式的，比如 <code>FCFS</code> 算法，每次重新进入就绪队列时，调度器可以决定抢占当前正在执行的进程（如果新任务的到达时间比较早），类似的，<code>SJF</code> 和优先级也一样可以。</p>
+<h5><span id="最短剩余时间优先-srtf-shortest-remaining-time-first">最短剩余时间优先 (SRTF, Shortest Remaining Time First)</span></h5><p>调度器会估计每个进程的运行时间，当一个进程回到就绪队列，<strong>调度器计算这个任务的剩余处理时间</strong>，根据计算结果，放入 <code>ready queue</code> 中合适的位置。如果<strong>该进程的剩余时间比当前的进程要少，那么调度器就会抢占当前运行的任务，让这个新任务先执行</strong>。跟 <code>FCFS</code> 算法相比，最短剩余时间的平均等待时间一般比较低。</p>
+<h5><span id="rrround-robin调度器">RR(Round Robin)调度器</span></h5><p>按时间片来轮转调度：<strong>分时环境</strong>特别适合使用 <code>RR</code> 调度器，即<strong>每个进程都应该得到处理器时间的一部分</strong>。假设有n个就绪的进程，调度器把 <code>CPU</code> 资源分成一个一个时间片，然后分配给各个进程。就绪队列里每个进程都会得到处理器的时间片 <code>q</code> 。当时间片用完了，当前调度的进程会被放入就绪队列的尾部，形成一个 <code>ring</code> 。但考虑到在不通进程切换会有开销，所以选择时间片 <code>q</code> 的适合要考虑上下文切换。</p>
+<h5><span id="多级反馈队列mfq">多级反馈队列(MFQ)：</span></h5><p>进程在不同优先级的队列间迁移，首先调度优先级高的队列中的进程，只有优先级高的队列为空时才去调度优先级低的队列中的进程；对于同一个队列中的进程，按照时间片轮转的方式进行调度，如果N个时间片后依然未能完成，则进入优先级低的队列等待；在低优先级的队列中的进程在运行时，又有新到达的作业，那么在运行完这个时间片后，CPU分配给新到达的作业，即抢占式。</p>
+<p><img src="https://img-blog.csdn.net/20170407165752062?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMzYxNjk0NQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
+<hr>
+<h3><span id="用户态与内核态">用户态与内核态</span></h3><ul>
+<li>内核态与用户态是操作系统的两种运行级别，当程序运行在 <code>R3</code> 级特权级上时，就可以称之为运行在用户态。<strong>因为这是最低特权级，是普通的用户进程运行的特权级，大部分用户直接面对的程序都是运行在用户态；</strong></li>
+<li>当程序运行在 <code>R0</code> 级特权级上时，就可以称之为运行在内核态。</li>
+<li>运行在用户态下的程序不能直接访问操作系统内核数据结构和程序。当我们在系统中执行一个程序时，大部分时间是运行在用户态下的，在其需要操作系统帮助完成某些它没有权力和能力完成的工作时就会切换到内核态（比如操作硬件）。</li>
+<li>这两种状态的主要差别是<ul>
+<li>处于用户态执行时，进程所能访问的内存空间和对象受到限制，其<strong>所处于占有的处理器是可被抢占</strong>的</li>
+<li>处于内核态执行时，则<strong>能访问所有的内存空间和对象</strong>，且<strong>所占有的处理器是不允许被抢占的</strong>。</li>
+</ul>
+</li>
+</ul>
+<h5><span id="三种情况会导致用户态到内核态的切换">三种情况会导致用户态到内核态的切换</span></h5><ul>
+<li><p><strong>系统调用</strong></p>
+<p><strong>这是用户态进程主动要求切换到内核态的一种方式</strong>，<strong>用户态进程通过系统调用申请使用操作系统提供的服务程序完成工作。</strong>比如前例中fork()实际上就是执行了一个创建新进程的系统调用。常见的系统调用还有 <code>read, write, open, create, close, readv, writev, fork, wait, exit, execve, clone</code> 等等</p>
+<p>而系统调用的机制其核心还是使用了操作系统为用户特别开放的一个中断来实现，例如Linux的int 80h中断。</p>
+<p>用户程序通常调用库函数，由库函数再调用系统调用，因此<strong>有的库函数会使用户程序进入内核态</strong>（只要库函数中某处调用了系统调用），有的则不会。</p>
+</li>
+<li><p><strong>异常</strong></p>
+<p>当 <code>CPU</code> 在执行运行在用户态下的程序时，发生了某些事先不可知的异常，这时会触发由当前运行进程切换到处理此异常的内核相关程序中，也就转到了内核态，比如缺页异常。</p>
+</li>
+<li><p><strong>外围设备的中断</strong></p>
+<p><strong>当外围设备完成用户请求的操作后，会向CPU发出相应的中断信号</strong>，这时<strong>CPU会暂停执行下一条即将要执行的指令转而去执行与中断信号对应的处理程序，</strong></p>
+<p>如果先前执行的指令是用户态下的程序，那么这个转换的过程自然也就发生了由用户态到内核态的切换。比如硬盘读写操作完成，系统会切换到硬盘读写的中断处理程序中执行后续操作等。</p>
+</li>
+</ul>
+<hr>
+<h3><span id="cache的结构与工作原理">Cache的结构与工作原理</span></h3>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/基础知识/" rel="tag"># 基础知识</a>
+          
+            <a href="/tags/操作系统/" rel="tag"># 操作系统</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/12/22/C++基础总结/" rel="next" title="C++基础总结">
+                <i class="fa fa-chevron-left"></i> C++基础总结
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/12/26/计算机网络总结/" rel="prev" title="计算机网络总结">
+                计算机网络总结 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/head.jpg" alt="陈琦">
+            
+              <p class="site-author-name" itemprop="name">陈琦</p>
+              <p class="site-description motion-element" itemprop="description">图像处理/深度学习@SJTU</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">340</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">89</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/chenqi1997" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="chen-qi1997@sjtu.edu.cn" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://plus.google.com/chenqi1997" target="_blank" title="Google">
+                      
+                        <i class="fa fa-fw fa-google"></i>Google</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">1.</span> <span class="nav-text">操作系统</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.</span> <span class="nav-text">Linux的内存不足时会发生什么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.2.</span> <span class="nav-text">操作系统的四大特性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.3.</span> <span class="nav-text">死锁/活锁/饥饿</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.3.1.</span> <span class="nav-text">死锁</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">1.3.1.1.</span> <span class="nav-text">死锁预防方式：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">1.3.1.2.</span> <span class="nav-text">银行家算法</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.3.2.</span> <span class="nav-text">活锁</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">解决方法</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.3.3.</span> <span class="nav-text">饥饿</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">1.3.3.1.</span> <span class="nav-text">解决方法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.4.</span> <span class="nav-text">⭐进程和线程的区别和联系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.5.</span> <span class="nav-text">多进程和多线程的区别？</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">1.5.0.1.</span> <span class="nav-text">优劣</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.6.</span> <span class="nav-text">临界区(进程同步)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.7.</span> <span class="nav-text">原子操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.7.1.</span> <span class="nav-text">CAS原子操作(compare and swap)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.8.</span> <span class="nav-text">进程间如何通信？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.8.1.</span> <span class="nav-text">应用场景</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.8.2.</span> <span class="nav-text">管道</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">1.8.2.1.</span> <span class="nav-text">无名管道(pipe)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">1.8.2.2.</span> <span class="nav-text">有名管道(FIFO)</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.8.3.</span> <span class="nav-text">信号(signal)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.8.4.</span> <span class="nav-text">消息队列(message queue)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.8.5.</span> <span class="nav-text">共享内存(shared memory)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.8.6.</span> <span class="nav-text">信号量(semophore )</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">1.8.6.1.</span> <span class="nav-text">信号量工作原理</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.8.7.</span> <span class="nav-text">套接字(socket)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.9.</span> <span class="nav-text">进程/线程的上下文</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.9.1.</span> <span class="nav-text">进程的上下文可以分为哪几个部分？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.9.2.</span> <span class="nav-text">为什么切换线程比切换进程开销小</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.10.</span> <span class="nav-text">多线程间通信和同步</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.11.</span> <span class="nav-text">⭐协程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.11.1.</span> <span class="nav-text">libco库</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.12.</span> <span class="nav-text">五种IO模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.12.1.</span> <span class="nav-text">阻塞IO</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.12.2.</span> <span class="nav-text">非阻塞IO</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.12.3.</span> <span class="nav-text">IO多路复用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.12.4.</span> <span class="nav-text">信号驱动的IO模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.12.5.</span> <span class="nav-text">异步IO模型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.13.</span> <span class="nav-text">两种IO事件处理模式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.13.1.</span> <span class="nav-text">Reactor模式(同步的)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.13.2.</span> <span class="nav-text">Proactor模式 (异步)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.14.</span> <span class="nav-text">⭐IO多路复用：select/poll/epoll(同步/阻塞)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.14.1.</span> <span class="nav-text">select</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.14.2.</span> <span class="nav-text">poll</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.14.3.</span> <span class="nav-text">epoll</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">1.14.3.1.</span> <span class="nav-text">epoll 函数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">1.14.3.2.</span> <span class="nav-text">工作模式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">1.14.3.3.</span> <span class="nav-text">epoll的优点：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">1.14.3.4.</span> <span class="nav-text">mmap实现共享内存：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">1.14.3.5.</span> <span class="nav-text">边缘触发的IO应该怎么写？</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.15.</span> <span class="nav-text">内存管理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.15.1.</span> <span class="nav-text">虚拟内存</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.15.2.</span> <span class="nav-text">内存分段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.15.3.</span> <span class="nav-text">内存分页</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">1.15.3.1.</span> <span class="nav-text">多级页表</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">1.15.3.2.</span> <span class="nav-text">64位系统用到的是四级目录</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">1.15.3.3.</span> <span class="nav-text">TLB(Translation Lookaside Buffer) 页表缓存</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">1.15.3.4.</span> <span class="nav-text">段页式内存管理</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.15.4.</span> <span class="nav-text">Linux内存管理</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">1.15.4.1.</span> <span class="nav-text">用户空间的内存分布</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.15.5.</span> <span class="nav-text">mmap内存映射原理：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.16.</span> <span class="nav-text">缺页中断(page_fault)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.16.1.</span> <span class="nav-text">页面置换算法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.17.</span> <span class="nav-text">CPU调度算法/进程调度算法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">1.17.0.1.</span> <span class="nav-text">先到先服务算法(FCFS, First-Come First-Served)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">1.17.0.2.</span> <span class="nav-text">最短作业优先(SJF, Shortest Job First)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">1.17.0.3.</span> <span class="nav-text">优先级算法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">1.17.0.4.</span> <span class="nav-text">高响应比优先调度算法(HRRN)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">1.17.0.5.</span> <span class="nav-text">最短剩余时间优先 (SRTF, Shortest Remaining Time First)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">1.17.0.6.</span> <span class="nav-text">RR(Round Robin)调度器</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">1.17.0.7.</span> <span class="nav-text">多级反馈队列(MFQ)：</span></a></li></ol></li></ol><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.18.</span> <span class="nav-text">用户态与内核态</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">1.18.0.1.</span> <span class="nav-text">三种情况会导致用户态到内核态的切换</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.19.</span> <span class="nav-text">Cache的结构与工作原理</span></a></li></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">陈琦</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>

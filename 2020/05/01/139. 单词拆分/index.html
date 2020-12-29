@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="动态规划,递归,贪心算法,回溯法,">
+  <meta name="keywords" content="递归,动态规划,贪心算法,回溯法,">
 
 
 
@@ -80,14 +80,14 @@
 
 
 <meta name="description" content="139. Word Break/单词拆分 题目：  给定一个非空字符串 s 和一个包含非空单词列表的字典 wordDict，判定 s 是否可以被空格拆分为一个或多个在字典中出现的单词。 说明：  拆分时可以重复使用字典中的单词。 你可以假设字典中没有重复的单词。  示例 1： 123输入: s = &amp;quot;leetcode&amp;quot;, wordDict = [&amp;quot;leet&amp;quot;">
-<meta name="keywords" content="动态规划,递归,贪心算法,回溯法">
+<meta name="keywords" content="递归,动态规划,贪心算法,回溯法">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Leetcode_139 单词拆分">
 <meta property="og:url" content="http://chenqi1997.github.io/2020/05/01/139. 单词拆分/index.html">
 <meta property="og:site_name" content="Cq的Blog">
 <meta property="og:description" content="139. Word Break/单词拆分 题目：  给定一个非空字符串 s 和一个包含非空单词列表的字典 wordDict，判定 s 是否可以被空格拆分为一个或多个在字典中出现的单词。 说明：  拆分时可以重复使用字典中的单词。 你可以假设字典中没有重复的单词。  示例 1： 123输入: s = &amp;quot;leetcode&amp;quot;, wordDict = [&amp;quot;leet&amp;quot;">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-09-06T11:30:07.149Z">
+<meta property="og:updated_time" content="2020-12-28T15:00:38.844Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Leetcode_139 单词拆分">
 <meta name="twitter:description" content="139. Word Break/单词拆分 题目：  给定一个非空字符串 s 和一个包含非空单词列表的字典 wordDict，判定 s 是否可以被空格拆分为一个或多个在字典中出现的单词。 说明：  拆分时可以重复使用字典中的单词。 你可以假设字典中没有重复的单词。  示例 1： 123输入: s = &amp;quot;leetcode&amp;quot;, wordDict = [&amp;quot;leet&amp;quot;">
@@ -386,7 +386,7 @@
 <p>解法二：⭐⭐⭐记忆化回溯</p>
 </blockquote>
 <p>拿 <code>[aaaab]</code> 来举例，它可分为 <code>[&quot;a&quot;,&quot;a&quot;,&quot;aab&quot;]</code> , <code>[&quot;aa&quot;,&quot;aab&quot;]</code> , 两个都包含了 <code>&quot;aab&quot;</code> ,所以就产生了重复的递归。这时，就可以用一个哈希表记录 <code>&quot;aab&quot;</code> 这种情况。当再次递归时，先判断一下，如果是 <code>&quot;aab&quot;</code> ,就直接返回。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">unordered_map</span>&lt;<span class="built_in">string</span>,<span class="keyword">bool</span>&gt;<span class="built_in">map</span>;</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">wordBreak</span><span class="params">(<span class="built_in">string</span> s, <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&amp; wordDict )</span> </span>&#123;</span><br><span class="line">        <span class="built_in">unordered_set</span>&lt;<span class="built_in">string</span>&gt; m(wordDict.begin(), wordDict.end());</span><br><span class="line">        <span class="keyword">return</span> dfs(s, wordDict,m);</span><br><span class="line">    &#125;</span><br><span class="line">     <span class="function"><span class="keyword">bool</span> <span class="title">dfs</span><span class="params">(<span class="built_in">string</span> s,<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&amp;wordDict ,<span class="built_in">unordered_set</span>&lt;<span class="built_in">string</span>&gt; m)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(s.empty()) </span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">map</span>[s])</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>;i &lt;= s.size();i++) &#123;</span><br><span class="line">            <span class="built_in">string</span> temp = s.substr(<span class="number">0</span>, i);</span><br><span class="line">            <span class="keyword">if</span>(m.find(temp) != m.end()) &#123;</span><br><span class="line">                <span class="comment">//substr(i)表示从i到end</span></span><br><span class="line">                <span class="keyword">if</span>(!dfs(s.substr(i), wordDict, m))</span><br><span class="line">                    <span class="built_in">map</span>[s.substr(i)] = <span class="literal">true</span>;</span><br><span class="line">                <span class="keyword">else</span> </span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;  </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">wordBreak</span><span class="params">(<span class="built_in">string</span> s, <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&amp; wordDict)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">unordered_map</span>&lt;<span class="built_in">string</span>, <span class="keyword">bool</span>&gt; m;</span><br><span class="line">        <span class="keyword">return</span> backTrack(s, wordDict, m);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">backTrack</span><span class="params">(<span class="built_in">string</span> s, <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&amp; wordDict, <span class="built_in">unordered_map</span>&lt;<span class="built_in">string</span>, <span class="keyword">bool</span>&gt;&amp; m)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (s.empty())</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">if</span> (m.count(s))</span><br><span class="line">            <span class="keyword">return</span> m[s];</span><br><span class="line">        <span class="keyword">bool</span> res = <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">auto</span> word : wordDict) &#123;</span><br><span class="line">            <span class="keyword">if</span> (s.substr(<span class="number">0</span>, word.size()) == word) &#123;</span><br><span class="line">                res = res || backTrack(s.substr(word.size()), wordDict, m);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        m[s] = res;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>解法三：⭐⭐⭐⭐动态规划+贪心思想</p>
 </blockquote>
@@ -434,9 +434,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/动态规划/" rel="tag"># 动态规划</a>
-          
             <a href="/tags/递归/" rel="tag"># 递归</a>
+          
+            <a href="/tags/动态规划/" rel="tag"># 动态规划</a>
           
             <a href="/tags/贪心算法/" rel="tag"># 贪心算法</a>
           
@@ -544,7 +544,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">336</span>
+                  <span class="site-state-item-count">340</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -555,7 +555,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-count">20</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -566,7 +566,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">86</span>
+                  <span class="site-state-item-count">89</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
