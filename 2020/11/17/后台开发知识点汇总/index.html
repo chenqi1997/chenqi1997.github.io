@@ -155,7 +155,7 @@
 <meta property="og:image" content="https://www.redis.com.cn/images/riq5.png">
 <meta property="og:image" content="https://www.redis.com.cn/images/riq6.png">
 <meta property="og:image" content="https://www.redis.com.cn/images/riq7.png">
-<meta property="og:updated_time" content="2021-01-04T06:03:21.585Z">
+<meta property="og:updated_time" content="2021-01-05T14:04:32.014Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="后台开发知识点汇总">
 <meta name="twitter:description" content="后台开发知识点汇总 C++基础 C++线程中的几种锁/互斥量 互斥锁(Mutex) 条件变量(condition_variable) 自旋锁(spinlock_mutex) 读写锁(shared_mutex)/共享锁 递归锁(recursive_mutex)/可重入锁 定时锁(time_mutex) 两种基本的锁类型 条件变量中只能使用unique_lock&amp;lt; std::mutex &amp;g">
@@ -3562,48 +3562,7 @@
 </blockquote>
 <p>可以估计每个文件的大小为 <code>5G*64=300G</code> ，远大于 <code>4G</code> 。所以不可能将其完全加载到内存中处理。考虑采取<strong>分而治之</strong>的方法。<br>遍历文件 <code>a</code> ，对每个 <code>url</code> 求取 <code>hash(url)%1000</code>，然后根据所得值将 <code>url</code> 分别存储到 <code>1000</code> 个小文件（设为<code>a0,a1,...a999</code> ）当中。这样每个小文件的大小约为 <code>300M</code> 。遍历文件 <code>b</code> ，采取和 <code>a</code> 相同的方法将 <code>url</code> 分别存储到 <code>1000</code> 个小文件(<code>b0,b1....b999</code>)中。这样处理后，所有可能相同的 <code>url</code> 都在对应的小文件( <code>a0 vs b0, a1 vs b1....a999 vs b999</code> )当中，不对应的小文件（比如 <code>a0 vs b99</code> ）不可能有相同的url。然后我们只要求出 <code>1000</code> 对小文件中相同的 <code>url</code> 即可。<br>比如对于 <code>a0 vs b0</code> ，我们可以遍历 <code>a0</code> ，将其中的 <code>url</code> 存储到 <code>hash_map</code> 当中。然后遍历 <code>b0</code> ，如果 <code>url</code> 在 <code>hash_map</code> 中，则说明此 <code>url</code> 在 <code>a</code> 和 <code>b</code> 中同时存在，保存到文件中即可。<br>如果分成的小文件不均匀( <code>hash</code> 的问题)，导致有些小文件太大（比如大于 <code>2G</code> ），可以考虑将这些太大的小文件再按类似的方法分成小小文件即可。</p>
 <hr>
-<h3><span id="git中merge和rebase的区别">git中Merge和rebase的区别</span></h3><p> 无名管道和有名管道的区别</p>
-<p>CAS（compare and swap）</p>
-<p>cache的结构，工作原理详细介绍一下，组相联是什么概念。</p>
-<p>虚拟地址到物理地址的转换过程</p>
-<p>水平触发和边缘触发</p>
-<p>一致性哈希算法</p>
-<p> 编译型语言和解释型语言的区别 </p>
-<p> socket通信为什么不用网络，而用本地 </p>
-<p> 进程间通信的方式（你用这个的时候，你是怎么考虑的，为什么要用这个方式） </p>
-<p> 说一下epoll </p>
-<p> 多线程间通信和同步 </p>
-<p> STL底层内存分配 </p>
-<p> 问为什么windows vector是1.5倍，linux是2倍 </p>
-<p> 协程的原理和具体的操作，以及跟线程的区别 </p>
-<p> 协程的创建受什么影响</p>
-<p> 会原子操作吗 </p>
-<p> 编译型语言和解释型语言的区别 </p>
-<p> 如何把UDP变得可靠起来 </p>
-<p> 了解一些中间件吗(说了一大堆，我都不会，我很绝望) </p>
-<p> 说一下QUIC </p>
-<p> 共享内存如何把一颗二叉树给读出来 </p>
-<p> 12个瓶子，其中有一个不知道轻重，你如何查出来 </p>
-<p> 某个线程CPU占比高，你如何排查出问题</p>
-<p>RALL机制 </p>
-<p> 四大智能指针 </p>
-<p> weak_ptr为什么可以解决循环引用，底层怎么实现的，然后又讨论了一下一些应用场景和坑点 </p>
-<p> 智能指针是线程安全的吗（这里，我崩了，我项目涉及多线程，我居然不能回答好这个问题，后面也因为这个问题导致了面试官对我的印象很不友好） </p>
-<p> 说一下Reactor模式。 </p>
-<p> Reactor模式是半同步半异步的吗（是的） </p>
-<p> 那你还知道别的模式吗（本来想说proactor，但是英语太差，说不出来，只是说了个P字头的，然后面试官也知道我英语菜鸡。。） </p>
-<p> 说一下怎么优化Reactor </p>
-<p> 定时器是怎么做的。 </p>
-<p> 说一下四次挥手，说完并且也说出来全双工，然后问我timewait，回答出来2msl和作用后又问我过多timewait会产生什么影响，这里回答的不太好，主要是有点忘记了，又问我怎么处理，我说修改linux内核的一些设置，面试官不太满意，提示我socket怎么处理，想起来是某个参数，但是我记不住呀，由此面试官可以看出来我网络编程凉凉。 </p>
-<p> QUIC解决了什么问题（我答非所问） </p>
-<p> 算法题：有100万个数字，求前K个数字 </p>
-<p> 说一下堆排序</p>
-<p>TCP发包发很大导致分包，如何怎么处理（面试官还结合ET和LT的区别来问） </p>
-<p>网卡收到一条数据到进程处理数据,这之间经历了什么(中断的上半部下半部,网络层协议拆包)</p>
-<p>大数据量(内存够用)下,快排与堆<a href="https://www.nowcoder.com/jump/super-jump/word?word=%E6%8E%92%E5%BA%8F" target="_blank" rel="noopener">排序</a>的对比(考察缓存命中率的对比)</p>
-<p>32位系统运行大于4G的程序,如何寻址(考察虚拟内存,虚拟地址空间)</p>
-<p>缓存失效,替换原理</p>
-
+<h3><span id="git中merge和rebase的区别">git中Merge和rebase的区别</span></h3>
       
     </div>
     
@@ -3728,7 +3687,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">342</span>
+                  <span class="site-state-item-count">343</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
