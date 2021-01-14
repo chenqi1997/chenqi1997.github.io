@@ -79,20 +79,26 @@
 
 
 
-<meta name="description" content="数据库 Mysql相关 事务的特性(ACID) 如果不考虑隔离性，会发生什么事呢？ 四种隔离级别 什么是快照读、当前读 MySql如何解决幻读问题   数据库三范式 索引是个什么样的数据结构呢? B+树 MyISAM与InnoDB 的区别   什么是聚簇索引? 最左匹配 Mysql的几种log       [TOC] 数据库Mysql相关事务的特性(ACID) 原子性（Atomicity）：原">
+<meta name="description" content="数据库 Mysql相关 事务的特性(ACID) 如果不考虑隔离性，会发生什么事呢？ 脏读(select问题) 不可重复读(update问题) 幻读(insert/delete问题)   四种隔离级别 读未提交(Read uncommitted) 读已提交(Read committed) 可重复读(Repeatable read) 串行化(Serializable) 什么是快照读、当前读 MyS">
 <meta name="keywords" content="基础知识,数据库">
 <meta property="og:type" content="article">
 <meta property="og:title" content="数据库总结">
 <meta property="og:url" content="http://chenqi1997.github.io/2020/12/28/数据库总结/index.html">
 <meta property="og:site_name" content="Cq的Blog">
-<meta property="og:description" content="数据库 Mysql相关 事务的特性(ACID) 如果不考虑隔离性，会发生什么事呢？ 四种隔离级别 什么是快照读、当前读 MySql如何解决幻读问题   数据库三范式 索引是个什么样的数据结构呢? B+树 MyISAM与InnoDB 的区别   什么是聚簇索引? 最左匹配 Mysql的几种log       [TOC] 数据库Mysql相关事务的特性(ACID) 原子性（Atomicity）：原">
+<meta property="og:description" content="数据库 Mysql相关 事务的特性(ACID) 如果不考虑隔离性，会发生什么事呢？ 脏读(select问题) 不可重复读(update问题) 幻读(insert/delete问题)   四种隔离级别 读未提交(Read uncommitted) 读已提交(Read committed) 可重复读(Repeatable read) 串行化(Serializable) 什么是快照读、当前读 MyS">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="c:/Users/12105/AppData/Roaming/Typora/typora-user-images/1608640486933.png">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/rSmDLkNsngSRs2Cr9CS8sBA74A6QF1IX0YM8haDUBWjtiaDQNGp291BGciaL5BskjQue0ANGYMpEYdShh9mkVOaA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/rSmDLkNsngSRs2Cr9CS8sBA74A6QF1IXf5EYEibhArN6b7ibqWVW6dG9m7icFaWFNKgs8BUpD0Ox2YILZp2rzeO3A/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_gif/rSmDLkNsngSRs2Cr9CS8sBA74A6QF1IXyIdf5YIhywMWePwzeokiadvLLWWUKnjDVtz2duZNnDrqEnicNbKGHjEg/640?wx_fmt=gif&tp=webp&wxfrom=5&wx_lazy=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_gif/rSmDLkNsngSRs2Cr9CS8sBA74A6QF1IXRzE57IJjZibxX2vXoPuX6JyLkpzBQ15PsdqElHGX9RuMbYKRs3yH6ibw/640?wx_fmt=gif&tp=webp&wxfrom=5&wx_lazy=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_gif/rSmDLkNsngSRs2Cr9CS8sBA74A6QF1IXAMxpibJNXlJiaZxKPTEcBiaxruagtVJfHLchzdxCSMrW7klmmT7dfQxzg/640?wx_fmt=gif&tp=webp&wxfrom=5&wx_lazy=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_gif/rSmDLkNsngSRs2Cr9CS8sBA74A6QF1IXTCE0p9THvqJibeiab0KI1ic6J36mRsB4zTMXxhsxUgspHjxZHQiaOgXRug/640?wx_fmt=gif&tp=webp&wxfrom=5&wx_lazy=1">
 <meta property="og:image" content="https://img2018.cnblogs.com/blog/1281680/201901/1281680-20190117145740508-758737271.png">
-<meta property="og:updated_time" content="2021-01-05T13:44:35.191Z">
+<meta property="og:updated_time" content="2021-01-06T09:02:19.869Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="数据库总结">
-<meta name="twitter:description" content="数据库 Mysql相关 事务的特性(ACID) 如果不考虑隔离性，会发生什么事呢？ 四种隔离级别 什么是快照读、当前读 MySql如何解决幻读问题   数据库三范式 索引是个什么样的数据结构呢? B+树 MyISAM与InnoDB 的区别   什么是聚簇索引? 最左匹配 Mysql的几种log       [TOC] 数据库Mysql相关事务的特性(ACID) 原子性（Atomicity）：原">
+<meta name="twitter:description" content="数据库 Mysql相关 事务的特性(ACID) 如果不考虑隔离性，会发生什么事呢？ 脏读(select问题) 不可重复读(update问题) 幻读(insert/delete问题)   四种隔离级别 读未提交(Read uncommitted) 读已提交(Read committed) 可重复读(Repeatable read) 串行化(Serializable) 什么是快照读、当前读 MyS">
 <meta name="twitter:image" content="c:/Users/12105/AppData/Roaming/Typora/typora-user-images/1608640486933.png">
 
 
@@ -360,15 +366,35 @@
 <li><a href="#数据库">数据库</a><ul>
 <li><a href="#mysql相关">Mysql相关</a><ul>
 <li><a href="#事务的特性acid">事务的特性(ACID)</a></li>
-<li><a href="#如果不考虑隔离性会发生什么事呢">如果不考虑隔离性，会发生什么事呢？</a></li>
+<li><a href="#如果不考虑隔离性会发生什么事呢">如果不考虑隔离性，会发生什么事呢？</a><ul>
+<li><a href="#脏读select问题"><strong>脏读</strong>(select问题)</a></li>
+<li><a href="#不可重复读update问题"><strong>不可重复读</strong>(update问题)</a></li>
+<li><a href="#幻读insertdelete问题"><strong>幻读</strong>(insert/delete问题)</a></li>
+</ul>
+</li>
 <li><a href="#四种隔离级别">四种隔离级别</a><ul>
+<li><a href="#读未提交read-uncommitted">读未提交(Read uncommitted)</a></li>
+<li><a href="#读已提交read-committed">读已提交(Read committed)</a></li>
+<li><a href="#可重复读repeatable-read">可重复读(Repeatable read)</a></li>
+<li><a href="#串行化serializable">串行化(Serializable)</a></li>
 <li><a href="#什么是快照读-当前读">什么是快照读、当前读</a></li>
 <li><a href="#mysql如何解决幻读问题">MySql如何解决幻读问题</a></li>
 </ul>
 </li>
-<li><a href="#数据库三范式">数据库三范式</a></li>
-<li><a href="#索引是个什么样的数据结构呢">索引是个什么样的数据结构呢?</a><ul>
-<li><a href="#b树">B+树</a></li>
+<li><a href="#数据库三范式">数据库三范式</a><ul>
+<li><a href="#第一范式">第一范式</a></li>
+<li><a href="#第二范式">第二范式</a></li>
+<li><a href="#第三范式">第三范式</a></li>
+</ul>
+</li>
+<li><a href="#索引">索引</a><ul>
+<li><a href="#b树">B+树</a><ul>
+<li><a href="#单个元素查询">单个元素查询</a></li>
+<li><a href="#插入操作">插入操作</a></li>
+<li><a href="#删除">删除</a></li>
+<li><a href="#存储能力">存储能力</a></li>
+</ul>
+</li>
 <li><a href="#myisam与innodb-的区别">MyISAM与InnoDB 的区别</a></li>
 </ul>
 </li>
@@ -382,38 +408,31 @@
 </ul>
 <!-- tocstop -->
 <p>[TOC]</p>
-<h2><span id="数据库">数据库</span></h2><h3><span id="mysql相关">Mysql相关</span></h3><h4><span id="事务的特性acid">事务的特性(ACID)</span></h4><ol>
+<h1><span id="数据库">数据库</span></h1><h2><span id="mysql相关">Mysql相关</span></h2><h3><span id="事务的特性acid">事务的特性(ACID)</span></h3><ol>
 <li><strong>原子性（Atomicity）</strong>：原子性是指一个事务中的操作，<strong>要么全部成功，要么全部失败</strong>，如果失败，就回滚到事务开始前的状态。</li>
 <li><strong>一致性（Consistency）</strong>：一致性是指<strong>事务必须使数据库从一个一致性状态变换到另一个一致性状态</strong>，也就是说一个事务执行之前和执行之后都必须处于一致性状态。那转账举栗子，A账户和B账户之间相互转账，无论如何操作，A、B账户的总金额都必须是不变的。</li>
 <li><strong>隔离性（Isolation）</strong>：<strong>隔离性是当多个用户并发的访问数据库时，如果操作同一张表，数据库则为每一个用户都开启一个事务，且事务之间互不干扰，也就是说事务之间的并发是隔离的</strong>。再举个栗子，现有两个并发的事务T1和T2，T1要么在T2开始前执行，要么在T2结束后执行，如果T1先执行，那T2就在T1结束后在执行。关于数据的隔离性级别，将在后文讲到。</li>
 <li><strong>持久性（Durability）</strong>：持久性就是指如果<strong>事务一旦被提交，数据库中数据的改变就是永久性的，即使断电或者宕机的情况下，也不会丢失提交的事务操作。</strong></li>
 </ol>
 <hr>
-<h4><span id="如果不考虑隔离性会发生什么事呢">如果不考虑隔离性，会发生什么事呢？</span></h4><ol>
-<li><p><strong>脏读</strong>(select问题)</p>
-<p>脏读是指一个事务在处理数据的过程中，读取到另一个未提交事务的数据。</p>
+<h3><span id="如果不考虑隔离性会发生什么事呢">如果不考虑隔离性，会发生什么事呢？</span></h3><ol>
+<li><h4><span id="脏读select问题"><strong>脏读</strong>(select问题)</span></h4><p>脏读是指一个事务在处理数据的过程中，读取到另一个未提交事务的数据。</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--原数据</span></span><br><span class="line"><span class="comment">--id    name</span></span><br><span class="line"><span class="comment">--1     lisi</span></span><br><span class="line"><span class="comment">--事务1</span></span><br><span class="line"><span class="keyword">START</span> <span class="keyword">TRANSACTION</span>；</span><br><span class="line">updata t_table <span class="keyword">set</span> <span class="keyword">name</span> = <span class="string">'wangwu'</span> <span class="keyword">where</span> <span class="keyword">id</span> = <span class="number">1</span>;    <span class="comment">--此时事务2查询id = 1</span></span><br><span class="line"><span class="keyword">ROLLBACK</span>；<span class="comment">--未提交</span></span><br><span class="line"><span class="comment">--事务2</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> t_table <span class="keyword">where</span> <span class="keyword">id</span> = <span class="number">1</span>;        <span class="comment">--查询到 id = 1， name = 'wangwu'</span></span><br></pre></td></tr></table></figure>
 </li>
-<li><p><strong>不可重复读</strong>(update问题)</p>
-<p>不可重复读是指对于数据库中的某个数据，一个事务范围内的多次查询却返回了不同的结果，这是由于在查询过程中，数据被另外一个事务修改并提交了。</p>
+<li><h4><span id="不可重复读update问题"><strong>不可重复读</strong>(update问题)</span></h4><p>不可重复读是指对于数据库中的某个数据，一个事务范围内的多次查询却返回了不同的结果，这是由于在查询过程中，数据被另外一个事务修改并提交了。</p>
 <p>不可重复读和脏读的区别是，<strong>脏读读取到的是一个未提交的数据</strong>，而<strong>不可重复读读取到的是前一个事务提交的数据</strong>。而不可重复读在一些情况也并不影响数据的正确性，比如需要多次查询的数据也是要以最后一次查询到的数据为主。</p>
 <p><strong>解决不可重复读的方法是 锁行</strong></p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--原数据</span></span><br><span class="line"><span class="comment">--id    name</span></span><br><span class="line"><span class="comment">--1     lisi</span></span><br><span class="line"><span class="comment">--事务1</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> t_table <span class="keyword">where</span> <span class="keyword">id</span> = <span class="number">1</span>;    <span class="comment">-- 查询到 id = 1, name = list, 事务2在此时提交</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> t_table <span class="keyword">where</span> <span class="keyword">id</span> = <span class="number">1</span>;    <span class="comment">-- 查询到 id = 1, name = wangwu</span></span><br><span class="line"><span class="comment">--事务2</span></span><br><span class="line"><span class="keyword">start</span> <span class="keyword">transaction</span>;</span><br><span class="line"><span class="keyword">update</span> t_table <span class="keyword">set</span> <span class="keyword">name</span> = <span class="string">'wangwu'</span> <span class="keyword">where</span> <span class="keyword">id</span> = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">COMMIT</span>;</span><br></pre></td></tr></table></figure>
 </li>
-<li><p><strong>幻读</strong>(insert/delete问题)</p>
-<p>幻读是<strong>事务非独立执行</strong>时发生的一种现象。例如事务 <code>T1</code> 对一个表中所有的行的某个数据项做了从“1”修改为“2”的操作，这时事务 <code>T2</code> 又对这个表中插入了一行数据项，而这个数据项的数值还是为“1”并且提交给数据库。而操作事务 <code>T1</code> 的用户如果再查看刚刚修改的数据，会发现还有一行没有修改，其实这行是从事务T2中添加的，就好像产生幻觉一样，这就是发生了幻读。</p>
+<li><h4><span id="幻读insertdelete问题"><strong>幻读</strong>(insert/delete问题)</span></h4><p>幻读是<strong>事务非独立执行</strong>时发生的一种现象。例如事务 <code>T1</code> 对一个表中所有的行的某个数据项做了从“1”修改为“2”的操作，这时事务 <code>T2</code> 又对这个表中插入了一行数据项，而这个数据项的数值还是为“1”并且提交给数据库。而操作事务 <code>T1</code> 的用户如果再查看刚刚修改的数据，会发现还有一行没有修改，其实这行是从事务T2中添加的，就好像产生幻觉一样，这就是发生了幻读。</p>
 <p>幻读和不可重复读都是读取了另一条已经提交的事务（这点就脏读不同），所不同的是<strong>不可重复读查询的都是同一个数据项</strong>，而<strong>幻读针对的是一批数据整体</strong>（比如数据的个数）。</p>
 <p><strong>解决幻读的方式是 锁表。</strong></p>
 </li>
 </ol>
 <hr>
-<h4><span id="四种隔离级别">四种隔离级别</span></h4><p>四种隔离级别主要解决的是脏读、幻读和不可重复读的问题。</p>
-<ol>
-<li><p><strong>读未提交(Read uncommitted)</strong></p>
-<p>这种事务隔离级别下，<code>select</code> 语句不加锁。此时，可能读取到不一致的数据，即<strong>脏读</strong>。这是并发最高，一致性最差的隔离级别。</p>
-</li>
-<li><p><strong>读已提交(Read committed)</strong></p>
-<p>可避免<strong>脏读</strong>的发生，但是会有<strong>幻读</strong>和<strong>不可重复读</strong>的问题。在互联网大数据量，高并发量的场景下，几乎 <strong>不会使用</strong> 上述两种隔离级别。</p>
+<h3><span id="四种隔离级别">四种隔离级别</span></h3><p>四种隔离级别主要解决的是脏读、幻读和不可重复读的问题。</p>
+<h4><span id="读未提交read-uncommitted">读未提交(Read uncommitted)</span></h4><p>这种事务隔离级别下，<code>select</code> 语句不加锁。此时，可能读取到不一致的数据，即<strong>脏读</strong>。这是并发最高，一致性最差的隔离级别。</p>
+<h4><span id="读已提交read-committed">读已提交(Read committed)</span></h4><p>可避免<strong>脏读</strong>的发生，但是会有<strong>幻读</strong>和<strong>不可重复读</strong>的问题。在互联网大数据量，高并发量的场景下，几乎 <strong>不会使用</strong> 上述两种隔离级别。</p>
 <p>这是各种系统中最常用的一种隔离级别，也是SQL Server和Oracle的默认隔离级别。这种隔离级别能够有效的避免脏读，但除非在查询中显示的加锁，如：</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> T <span class="keyword">where</span> <span class="keyword">ID</span>=<span class="number">2</span> <span class="keyword">lock</span> <span class="keyword">in</span> <span class="keyword">share</span> <span class="keyword">mode</span>;</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> T <span class="keyword">where</span> <span class="keyword">ID</span>=<span class="number">2</span> <span class="keyword">for</span> <span class="keyword">update</span>;</span><br></pre></td></tr></table></figure>
 <p>不然，普通的查询是不会加锁的，若有事务对数据进行更新 <code>UPDATE</code> 操作时，读操作事务要等待这个更新操作事务提交后才能读取数据，可以解决脏读问题。但在这个事例中，出现了一个事务范围内两个相同的查询却返回了不同数据，这就是不可重复读。</p>
@@ -421,20 +440,12 @@
 <p>那为什么“读提交”同“读未提交”一样，都没有查询加锁，但是却能够避免脏读呢？</p>
 </blockquote>
 <p>这就要说到另一个机制<strong>快照(snapshot)</strong>，而这种既能保证一致性又不加锁的读也被称为快照读    （<strong>Snapshot Read</strong>）。假设没有“快照读”，那么<strong>当一个更新的事务没有提交时，另一个对更新数据进行查询的事务会因为无法查询而被阻塞</strong>（因为上了X锁，即写锁，所以不能得到S锁，即读锁），这种情况下，并发能力就相当的差。而“快照读”就可以完成高并发的查询，不过，读提交只能避免脏读，并不能避免不可重复读和幻读。</p>
-</li>
-</ol>
-<p>​    <strong>快照读</strong>的意思是，数据有多个版本， 当事务并发执行时， 某一事务读取的数据来自其中一个版本（快照）。</p>
-<ol>
-<li><p><strong>可重复读(Repeatable read)</strong></p>
-<p><code>MySql</code> 默认隔离级别。可避免 <strong>脏读</strong> 、<strong>不可重复读</strong> 的发生。不可重复读对应的是修改，即 <code>UPDATE</code> 操作。但是可能还会有幻读问题。因为幻读问题对应的是插入 <code>INSERT</code> 操作，而不是 <code>UPDATE</code> 操作。</p>
+<p><strong>快照读</strong>的意思是，数据有多个版本， 当事务并发执行时， 某一事务读取的数据来自其中一个版本（快照）。</p>
+<h4><span id="可重复读repeatable-read">可重复读(Repeatable read)</span></h4><p><code>MySql</code> 默认隔离级别。可避免 <strong>脏读</strong> 、<strong>不可重复读</strong> 的发生。不可重复读对应的是修改，即 <code>UPDATE</code> 操作。但是可能还会有幻读问题。因为幻读问题对应的是插入 <code>INSERT</code> 操作，而不是 <code>UPDATE</code> 操作。</p>
 <p>在这个级别下，普通的查询同样是使用的<strong>快照读</strong>，但是，和读提交不同的是，当事务启动时，就不允许进行修改操作(<code>Update</code>) 了，而“不可重复读”恰恰是因为两次读取之间进行了数据的修改，因此，“可重复读”能够有效的避免“不可重复读”，但却避免不了“幻读”，因为幻读是由于“插入或者删除操作（Insert or Delete）”而产生的。</p>
-</li>
-<li><p><strong>串行化(Serializable)</strong></p>
-<p>可避免 <strong>脏读、不可重复读、幻读</strong> 的发生。 <code>Serializable</code> 是一致性最好的，性能最差的。这种级别下，事务串行化顺序执行，也就是一个一个排队执行。这种级别下，<code>脏读</code> 、<code>不可重复读</code> 、<code>幻读</code> 都可以被避免，但是执行效率奇差，性能开销也最大，所以基本没人会用。</p>
-</li>
-</ol>
+<h4><span id="串行化serializable">串行化(Serializable)</span></h4><p>可避免 <strong>脏读、不可重复读、幻读</strong> 的发生。 <code>Serializable</code> 是一致性最好的，性能最差的。这种级别下，事务串行化顺序执行，也就是一个一个排队执行。这种级别下，<code>脏读</code> 、<code>不可重复读</code> 、<code>幻读</code> 都可以被避免，但是执行效率奇差，性能开销也最大，所以基本没人会用。</p>
 <p>上面四种隔离级别最高的是 <strong>Serializable</strong> 级别，最低的是 <strong>Read uncommitted</strong> 级别，当然级别越高，执行效率就越低。像 <strong>Serializable</strong> 这样的级别，就是以 <strong>锁表</strong> 的方式(类似于多线程中的锁)使得其他的线程只能在锁外等待，所以平时选用何种隔离级别应该根据实际情况。</p>
-<h5><span id="什么是快照读-当前读">什么是快照读、当前读</span></h5><ul>
+<h4><span id="什么是快照读-当前读">什么是快照读、当前读</span></h4><ul>
 <li><strong>快照读</strong>, 读取专门的快照 (对于 <code>RC</code> ，快照( <code>ReadView</code> )会在每个语句中创建。对于 <code>RR</code> ，快照是在事务启动时创建的)</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">简单的select操作即可(不需要加锁,如: select ... lock in share mode, select ... for update)</span><br></pre></td></tr></table></figure>
@@ -442,7 +453,7 @@
 <ul>
 <li><strong>当前读</strong>, 读取最新版本的记录, 没有快照。 在 <code>InnoDB</code> 中，当前读取根本不会创建任何快照。当前读会在搜索的时候加锁</li>
 </ul>
-<h5><span id="mysql如何解决幻读问题">MySql如何解决幻读问题</span></h5><p>两点需要说明：</p>
+<h4><span id="mysql如何解决幻读问题">MySql如何解决幻读问题</span></h4><p>两点需要说明：</p>
 <ol>
 <li>在可重复读隔离级别下，普通查询是<strong>快照读</strong>，是不会看到别的事务插入的数据的，幻读只在<strong>当前读</strong>下才会出现。</li>
 <li>幻读专指新插入的行，读到原本存在行的更新结果不算。因为<strong>当前读的作用就是能读到所有已经提交记录的最新值</strong>。如果事务中都使用快照读，那么就不会产生幻读现象，但是快照读和当前读混用就会产生幻读。</li>
@@ -470,21 +481,16 @@
 </li>
 </ol>
 <hr>
-<h4><span id="数据库三范式">数据库三范式</span></h4><ol>
-<li><p>第一范式(确保每列保持<strong>原子性</strong>)</p>
+<h3><span id="数据库三范式">数据库三范式</span></h3><h4><span id="第一范式">第一范式</span></h4><p>(确保每列保持<strong>原子性</strong>)</p>
 <p>第一范式是最基本的范式。如果<strong>数据库表中的所有字段值都是不可分解的原子值</strong>，就说明该数据库表满足了第一范式。</p>
-</li>
-<li><p>第二范式(<strong>确保表中的每列都和主键相关</strong>)</p>
+<h4><span id="第二范式">第二范式</span></h4><p>(<strong>确保表中的每列都和主键相关</strong>)</p>
 <p>第二范式在第一范式的基础之上更进一层。<strong>第二范式需要确保数据库表中的每一列都和主键相关，而不能只与主键的某一部分相关（主要针对联合主键而言）</strong>。也就是说在一个数据库表中，一个表中只能保存一种数据，不可以把多种数据保存在同一张数据库表中。(唯一性 一个表只说明一个事物)</p>
 <p>主要是针对<strong>联合主键</strong>而言，比如有两个列都是主键，不能存在这样的属性，它只依赖于其中一个列，这就是不符合第二范式。这种情况需要进行表的拆分。</p>
-</li>
-<li><p>第三范式(<strong>确保每列都和主键列直接相关,而不是间接相关</strong>)</p>
+<h4><span id="第三范式">第三范式</span></h4><p>(<strong>确保每列都和主键列直接相关,而不是间接相关</strong>)</p>
 <p>确保每列都和主键列直接相关,而不是间接相关也就是：<strong>非主键字段不能相互依赖，每列都与主键有直接关系，不存在传递依赖。</strong></p>
-</li>
-</ol>
 <p>主键在一个表里只能存在一个！因为建立主键后，DBMS会默认把建立主键的列建立聚簇索引。但是一个表是允许把几个列一起设为主键的。</p>
 <hr>
-<h4><span id="索引是个什么样的数据结构呢">索引是个什么样的数据结构呢?</span></h4><p>索引是帮助 <code>MySQL</code> <strong>高效获取数据</strong>的<strong>排好序的数据结构</strong>。</p>
+<h3><span id="索引">索引</span></h3><p>索引是帮助 <code>MySQL</code> <strong>高效获取数据</strong>的<strong>排好序的数据结构</strong>。</p>
 <p>索引主要有以下几种：</p>
 <ol>
 <li><strong>聚集索引（主键索引）</strong>：在数据库里面，所有行数都会按照主键索引进行排序。</li>
@@ -511,12 +517,53 @@
 </ul>
 </li>
 </ul>
-<h5><span id="b树">B+树</span></h5><ul>
+<hr>
+<h4><span id="b树">B+树</span></h4><ul>
 <li>非叶子节点不存储 <code>data</code> ，只存储索引(冗余)，可以放更多的索引</li>
 <li>叶子节点包含所有的索引字段</li>
 <li>叶子节点用指针链接，提高区间访问的性能。</li>
 </ul>
-<h5><span id="myisam与innodb-的区别">MyISAM与InnoDB 的区别</span></h5><ol>
+<p>同为 <code>h</code> 层的 <code>B</code> 树和 <code>B+</code> 树，<code>B+</code> 树可以存储更多的结点元素，更加 ”矮胖“。这也是 <code>B+</code> 树最大的优势所在，极大地改善了 <code>B</code> 树的查找效率。对于同样多的记录，<code>B+</code> 树的高度会更矮，并且 $P_{next}$ 指针的出现可以帮助 <code>B+</code> 树快速访问磁盘记录且效率非常高。总之，就是 <code>B+</code> 树比 <code>B</code> 树更加好，<code>B+</code> 树的磁盘 <code>I / O</code> 会更少，<strong>相比于 <code>B</code> 树的中序遍历，<code>B+</code> 树只需要像遍历单链表一样扫描一遍叶子结点。</strong></p>
+<h5><span id="单个元素查询">单个元素查询</span></h5><p>对于 <code>B+</code> 树中单个元素的查找而言，每一个元素都有相同的磁盘 <code>I/O</code> 操作次数，即使查询的元素出现在根结点中，但那只是一个充当控制查找记录的媒介，并不是数据本身，数据真正存在于叶子结点当中。<strong>所以 <code>B+</code> 树中查找任何一个元素都要从根结点一直走到叶子结点才可以。</strong></p>
+<p><code>B+</code> 树的非叶子结点均不存储 <code>Data</code> (即$D_i$，官方将其称为卫星数据) ，所以与 <code>B</code> 树相比，同样大小的磁盘页， <code>B+</code> 树的非叶子结点可以存储更多的索引（关键字），这也就意味着在数据量相同的情况下，<code>B+</code> 树的结构比 <code>B</code> 树更加 “矮胖”，查询时磁盘 <code>I/O</code> 次数会更少。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/rSmDLkNsngSRs2Cr9CS8sBA74A6QF1IX0YM8haDUBWjtiaDQNGp291BGciaL5BskjQue0ANGYMpEYdShh9mkVOaA/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="图片"></p>
+<h5><span id="插入操作">插入操作</span></h5><p>在 <code>B+</code> 树中插入关键字时，需要注意以下几点：</p>
+<ul>
+<li><strong>插入的操作全部都在叶子结点上进行</strong>，且不能破坏关键字自小而大的顺序；</li>
+<li>由于 <code>B+</code> 树中<strong>各结点中存储的关键字的个数有明确的范围</strong>，做插入操作可能会出现结点中关键字个数超过阶数的情况，此时需要将该结点进行 “分裂”；</li>
+</ul>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/rSmDLkNsngSRs2Cr9CS8sBA74A6QF1IXf5EYEibhArN6b7ibqWVW6dG9m7icFaWFNKgs8BUpD0Ox2YILZp2rzeO3A/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="图片"></p>
+<p>我们依旧以之前介绍查找操作时使用的图对插入操作进行说明，需要注意的是，<code>B+</code> 树的阶数 <code>M = 3</code> ，且  <code>⌈M/2⌉ = 2（取上限）</code>  、<code>⌊M/2⌋ = 1（取下限）</code>  ：</p>
+<p><strong><code>B+</code> 树中做插入关键字的操作，有以下 4 种情况：</strong></p>
+<ol>
+<li><p><strong>若被插入关键字所在的结点，其含有关键字数目小于阶数 <code>M</code> ，则直接插入；</strong></p>
+<p>比如插入关键字 <code>12</code> ，插入关键字所在的结点的 <code>[10，15]</code> 包含两个关键字，小于 <code>M</code> ，则直接插入关键字 <code>12</code> 。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_gif/rSmDLkNsngSRs2Cr9CS8sBA74A6QF1IXyIdf5YIhywMWePwzeokiadvLLWWUKnjDVtz2duZNnDrqEnicNbKGHjEg/640?wx_fmt=gif&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1" alt="图片"></p>
+</li>
+<li><p><strong>若被插入关键字所在的结点，其含有关键字数目等于阶数 <code>M</code> ，则需要将该结点分裂为两个结点.</strong></p>
+<p>一个结点包含 <code>⌊M/2⌋(1)</code> ，另一个结点包含 <code>⌈M/2⌉(2)</code> 。同时，<strong>将<code>⌈M/2⌉</code>的关键字上移至其双亲结点</strong>。假设其双亲结点中包含的关键字个数小于 M，则插入操作完成。</p>
+<p>比如插入关键字 <code>95</code> ，插入关键字所在结点 <code>[85、91、97]</code> 包含 3 个关键字，等于阶数 <code>M</code> ，则将  <code>[85、91、97]</code> 分裂为两个结点 <code>[85、91]</code> 和结点 <code>[97]</code> , 关键字 <code>95</code> 插入到结点 <code>[95、97]</code> 中，并将关键字 <code>91</code> 上移至其双亲结点中，发现其双亲结点 <code>[72、97]</code> 中包含的关键字的个数 2 小于阶数 <code>M</code> ，插入操作完成。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_gif/rSmDLkNsngSRs2Cr9CS8sBA74A6QF1IXRzE57IJjZibxX2vXoPuX6JyLkpzBQ15PsdqElHGX9RuMbYKRs3yH6ibw/640?wx_fmt=gif&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1" alt="图片"></p>
+</li>
+<li><p><strong>在情况 2 中，如果上移操作导致其双亲结点中关键字个数大于 M，则应继续分裂其双亲结点。</strong></p>
+<p>插入关键字 <code>40</code> ，按照第 2 种情况将结点分裂，并将关键字 <code>37</code> 上移到父结点，发现父结点 <code>[15、37、44、59]</code> 包含的关键字的个数大于 <code>M</code> ，所以将结点 <code>[15、37、44、59]</code> 分裂为两个结点 <code>[15、37]</code> 和结点 <code>[44、59]</code> ，并将关键字 <code>37</code> 上移到父结点中 <code>[37、59、97]</code> . 父结点包含关键字个数没有超过 <code>M</code> ，插入结束。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_gif/rSmDLkNsngSRs2Cr9CS8sBA74A6QF1IXAMxpibJNXlJiaZxKPTEcBiaxruagtVJfHLchzdxCSMrW7klmmT7dfQxzg/640?wx_fmt=gif&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1" alt="图片"></p>
+</li>
+<li><p><strong>若插入的关键字比当前结点中的最大值还大，破坏了B+树中从根结点到当前结点的所有索引值，此时需要及时修正后，再做其他操作。</strong></p>
+<p>插入关键字 <code>100</code>，由于其值比最大值 <code>97</code> 还大，插入之后，从根结点到该结点经过的所有结点中的所有值都要由 <code>97</code> 改为 <code>100</code>。改完之后再做分裂操作。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_gif/rSmDLkNsngSRs2Cr9CS8sBA74A6QF1IXTCE0p9THvqJibeiab0KI1ic6J36mRsB4zTMXxhsxUgspHjxZHQiaOgXRug/640?wx_fmt=gif&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1" alt="图片"></p>
+</li>
+</ol>
+<h5><span id="删除">删除</span></h5><p>在 <code>B+</code> 树中做删除关键字的操作，采取如下的步骤：</p>
+<ol>
+<li>删除该关键字，如果不破坏 <code>B+</code> 树本身的性质，直接完成删除操作（情况 1）；</li>
+<li>如果删除操作导致其该结点中最大（或最小）值改变，则应相应改动其父结点中的索引值（情况 2）；</li>
+<li>在删除关键字后，如果导致其结点中关键字个数不足，有两种方法：一种是向兄弟结点去借，另外一种是同兄弟结点合并（情况 3、4 和 5）。（注意这两种方式有时需要更改其父结点中的索引值。）</li>
+</ol>
+<p>详细见 <a href="https://mp.weixin.qq.com/s?__biz=MzI1MzYzMTI2Ng==&amp;mid=2247485029&amp;idx=1&amp;sn=8ca8c6e4f0db55cb61d297881773e51f&amp;chksm=e9d0c828dea7413e0f64d04337758c9b4713d6f51e33efc2d560561f06e8748f02497da71b06&amp;scene=126&amp;sessionid=1609566026#rd" target="_blank" rel="noopener">B+树详解</a></p>
+<h5><span id="存储能力">存储能力</span></h5><p>对于 <code>B+</code> 树而言，树的高度一般不超过 <code>4</code> 层，就 <code>MySQL</code> 的 <code>InnoDB</code> 存储引擎而言，一个结点默认的存储空间为 <strong>16Kb</strong> ( 可以通过这个命令查看 <code>SHOW GLOBAL STATUS like &#39;Innodb_page_size&#39;;</code> )， <code>MySQL</code> 的 <code>InnoDB</code> 存储引擎的索引一般用 <code>bigint</code> 存储，占用 <strong>8个byte</strong>，一个索引又会关联一个指向孩子结点的指针，这个指针占用 <strong>6个byte</strong>，也就是说结点中的一个关键字大概要用 <strong>14 byte</strong> 的空间，而一个结点的默认大小为 <strong>16kb</strong> ，那么一个结点可以存储关键的个数最多为 <strong>16384/14=1170</strong>  , 就相当于阶数  ，那么对于一颗高度为 <code>3</code> 的 <code>B+</code>树而言保守估计可以存储 <strong>1170*1170*16=21902400</strong> 个关键字，也就是两千多万条记录，其中的 <code>16</code> 为假定每一个叶子结点包含的关键字的个数（由于包含 Data 指针，所以叶子结点可以容纳的关键字的个数会少一些），3层的 <code>B+</code> 树就可以存储两千多万的数据。</p>
+<hr>
+<h4><span id="myisam与innodb-的区别">MyISAM与InnoDB 的区别</span></h4><ol>
 <li><strong>InnoDB支持事务，MyISAM不支持</strong>，对于InnoDB每一条SQL语言都默认封装成事务，自动提交，这样会影响速度，所以最好把多条SQL语言放在begin和commit之间，组成一个事务；</li>
 <li><strong>InnoDB支持外键，而MyISAM不支持</strong>。对一个包含外键的InnoDB表转为MYISAM会失败； 外键用于与另一张表的关联。是能确定另一张表记录的字段，用于保持数据的一致性。比如，A表中的一个字段，是B表的主键，那他就可以是A表的外键。</li>
 <li><strong>InnoDB是聚集索引</strong>，使用B+Tree作为索引结构，数据文件是和（主键）索引绑在一起的（表数据文件本身就是按B+Tree组织的一个索引结构），必须要有主键，通过主键索引效率很高。但是辅助索引需要两次查询，先查询到主键，然后再通过主键查询到数据。因此，主键不应该过大，因为主键太大，其他索引也都会很大。</li>
@@ -525,16 +572,17 @@
 <li>InnoDB表<strong>必须有唯一索引（如主键）</strong>（用户没有指定的话会自己找/生产一个隐藏列Row_id来充当默认主键），而Myisam可以没有</li>
 </ol>
 <hr>
-<h4><span id="什么是聚簇索引">什么是聚簇索引?</span></h4><p>在 <code>B+树</code> 的索引中，叶子节点可能存储了当前的 <code>key</code> 值，也可能存储了当前的 <code>key</code> 值以及整行的数据，这就是<strong>聚簇索引</strong>和<strong>非聚簇索引</strong>。在 <code>InnoDB</code> 中，只有<strong>主键索引</strong>是<strong>聚簇索引</strong>，如果没有主键，则挑选一个唯一键建立聚簇索引.如果没有唯一键，则隐式的生成一个键来建立聚簇索引。</p>
+<h3><span id="什么是聚簇索引">什么是聚簇索引?</span></h3><p>在 <code>B+树</code> 的索引中，叶子节点可能存储了当前的 <code>key</code> 值，也可能存储了当前的 <code>key</code> 值以及整行的数据，这就是<strong>聚簇索引</strong>和<strong>非聚簇索引</strong>。在 <code>InnoDB</code> 中，只有<strong>主键索引</strong>是<strong>聚簇索引</strong>，如果没有主键，则挑选一个唯一键建立聚簇索引.如果没有唯一键，则隐式的生成一个键来建立聚簇索引。</p>
 <p>当查询使用聚簇索引时，在对应的叶子节点，可以获取到整行数据，因此不用再次进行回表查询。</p>
 <hr>
-<h4><span id="最左匹配">最左匹配</span></h4><p><strong>最左匹配原则：</strong>最左优先，以最左边的为起点任何连续的索引都能匹配上。同时遇到范围查询(&gt;、&lt;、between、like)就会停止匹配。比如a = 1 and b = 2 and c &gt; 3 and d = 4 如果建立(a,b,c,d)顺序的索引，d是用不到索引的，因为c字段是一个范围查询，它之后的字段会停止匹配。</p>
+<h3><span id="最左匹配">最左匹配</span></h3><p><strong>最左匹配原则：</strong>最左优先，以最左边的为起点任何连续的索引都能匹配上。同时遇到范围查询(&gt;、&lt;、between、like)就会停止匹配。比如a = 1 and b = 2 and c &gt; 3 and d = 4 如果建立(a,b,c,d)顺序的索引，d是用不到索引的，因为c字段是一个范围查询，它之后的字段会停止匹配。</p>
 <p><strong>最左匹配原则</strong>都是<strong>针对联合索引</strong>来说的，所以我们有必要了解一下<strong>联合索引</strong>的原理。了解了联合索引，那么为什么会有最左匹配原则这种说法也就理解了。</p>
 <p>我们都知道索引的底层是一颗 <code>B+</code> 树，那么联合索引当然还是一颗 <code>B+</code> 树，只不过联合索引的健值数量不是一个，而是多个。构建一颗 <code>B+</code> 树只能根据一个值来构建，因此数据库依据联合索引最左的字段来构建B+树。<br>例子：假如创建一个（a,b)的联合索引，那么它的索引树是这样的</p>
 <p><img src="https://img2018.cnblogs.com/blog/1281680/201901/1281680-20190117145740508-758737271.png" alt="img"></p>
 <p>可以看到a的值是有顺序的，1，1，2，2，3，3，而b的值是没有顺序的1，2，1，4，1，2。所以 <code>b = 2</code> 这种查询条件没有办法利用索引，因为联合索引首先是按a排序的，b是无序的。</p>
 <p>同时我们还可以发现在a值相等的情况下，b值又是按顺序排列的，但是这种顺序是相对的。所以<strong>最左匹配原则遇上范围查询就会停止，剩下的字段都无法使用索引</strong>。例如 <code>a = 1</code>  and <code>b = 2</code> a,b字段都可以使用索引，因为在a值确定的情况下b是相对有序的，而 <code>a&gt;1</code> and <code>b=2</code> ，a字段可以匹配上索引，但b值不可以，因为a的值是一个范围，在这个范围中b是无序的。</p>
-<h4><span id="mysql的几种log">Mysql的几种log</span></h4><p>事务特性</p>
+<hr>
+<h3><span id="mysql的几种log">Mysql的几种log</span></h3><p>事务特性</p>
 <ul>
 <li>持久型数据库怎么实现的</li>
 <li>数据库有哪几种日志</li>
@@ -742,7 +790,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">1.</span> <span class="nav-text">数据库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.</span> <span class="nav-text">Mysql相关</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.1.</span> <span class="nav-text">事务的特性(ACID)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.2.</span> <span class="nav-text">如果不考虑隔离性，会发生什么事呢？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.3.</span> <span class="nav-text">四种隔离级别</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">什么是快照读、当前读</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.3.2.</span> <span class="nav-text">MySql如何解决幻读问题</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.4.</span> <span class="nav-text">数据库三范式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.5.</span> <span class="nav-text">索引是个什么样的数据结构呢?</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.5.1.</span> <span class="nav-text">B+树</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.5.2.</span> <span class="nav-text">MyISAM与InnoDB 的区别</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.6.</span> <span class="nav-text">什么是聚簇索引?</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.7.</span> <span class="nav-text">最左匹配</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.8.</span> <span class="nav-text">Mysql的几种log</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">1.</span> <span class="nav-text">数据库</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.</span> <span class="nav-text">Mysql相关</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.1.</span> <span class="nav-text">事务的特性(ACID)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.2.</span> <span class="nav-text">如果不考虑隔离性，会发生什么事呢？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">脏读(select问题)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.2.2.</span> <span class="nav-text">不可重复读(update问题)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.2.3.</span> <span class="nav-text">幻读(insert/delete问题)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.3.</span> <span class="nav-text">四种隔离级别</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">读未提交(Read uncommitted)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.3.2.</span> <span class="nav-text">读已提交(Read committed)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.3.3.</span> <span class="nav-text">可重复读(Repeatable read)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.3.4.</span> <span class="nav-text">串行化(Serializable)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.3.5.</span> <span class="nav-text">什么是快照读、当前读</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.3.6.</span> <span class="nav-text">MySql如何解决幻读问题</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.4.</span> <span class="nav-text">数据库三范式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.4.1.</span> <span class="nav-text">第一范式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.4.2.</span> <span class="nav-text">第二范式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.4.3.</span> <span class="nav-text">第三范式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.5.</span> <span class="nav-text">索引</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.5.1.</span> <span class="nav-text">B+树</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.5.1.1.</span> <span class="nav-text">单个元素查询</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.5.1.2.</span> <span class="nav-text">插入操作</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.5.1.3.</span> <span class="nav-text">删除</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.5.1.4.</span> <span class="nav-text">存储能力</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.5.2.</span> <span class="nav-text">MyISAM与InnoDB 的区别</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.6.</span> <span class="nav-text">什么是聚簇索引?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.7.</span> <span class="nav-text">最左匹配</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.8.</span> <span class="nav-text">Mysql的几种log</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>

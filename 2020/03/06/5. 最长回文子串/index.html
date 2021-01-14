@@ -87,15 +87,15 @@
 <meta property="og:site_name" content="Cq的Blog">
 <meta property="og:description" content="5. Longest Palindromic Substring/最长回文子串 题目：  给定一个字符串 s，找到 s 中最长的回文子串。你可以假设 s 的最大长度为 1000。  示例 1： 输入: “babad”输出: “bab”注意: “aba” 也是一个有效答案。示例 2： 输入: “cbbd”输出: “bb”   解法一：  刚看这道题的时候，第一反应是跟前面第三题的求最长不重复子串一样">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://chenqi1997.github.io/2020/03/06/images/5_1.png">
-<meta property="og:image" content="http://chenqi1997.github.io/2020/03/06/images/5_2.png">
-<meta property="og:image" content="http://chenqi1997.github.io/2020/03/06/images/5_3.png">
-<meta property="og:image" content="http://chenqi1997.github.io/2020/03/06/images/5_4.png">
-<meta property="og:updated_time" content="2020-05-22T06:45:51.732Z">
+<meta property="og:image" content="http://chenqi1997.github.io/2020/03/06/5.%20最长回文子串/images/5_1.png">
+<meta property="og:image" content="http://chenqi1997.github.io/2020/03/06/5.%20最长回文子串/images/5_2.png">
+<meta property="og:image" content="http://chenqi1997.github.io/2020/03/06/5.%20最长回文子串/images/5_3.png">
+<meta property="og:image" content="http://chenqi1997.github.io/2020/03/06/5.%20最长回文子串/images/5_4.png">
+<meta property="og:updated_time" content="2021-01-14T11:22:32.540Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Leetcode_5 最长回文子串">
 <meta name="twitter:description" content="5. Longest Palindromic Substring/最长回文子串 题目：  给定一个字符串 s，找到 s 中最长的回文子串。你可以假设 s 的最大长度为 1000。  示例 1： 输入: “babad”输出: “bab”注意: “aba” 也是一个有效答案。示例 2： 输入: “cbbd”输出: “bb”   解法一：  刚看这道题的时候，第一反应是跟前面第三题的求最长不重复子串一样">
-<meta name="twitter:image" content="http://chenqi1997.github.io/2020/03/06/images/5_1.png">
+<meta name="twitter:image" content="http://chenqi1997.github.io/2020/03/06/5.%20最长回文子串/images/5_1.png">
 
 
 
@@ -416,17 +416,17 @@
 <li>向两侧拓展 <code>RL[i]</code> 并且更新 <code>MaxRight</code> ,  <code>pos</code> ,  <code>MaxRL</code> ,  <code>MaxPos</code> 等参数。 </li>
 </ol>
 <p>我们再引入一个辅助变量 <code>MaxRight</code> ，表示当前访问到的所有回文子串，所能触及的最右一个字符的位置。另外还要记录下 <code>MaxRight</code> 对应的回文串的对称轴所在的位置，记为 <code>pos</code>，它们的位置关系如下。</p>
-<p><img src="../images/5_1.png" alt="5_1"></p>
+<p><img src="./images/5_1.png" alt="5_1"></p>
 <p>我们从左往右地访问字符串来求 <code>RL</code> ，假设当前访问到的位置为 <code>i</code> ，即要求 <code>RL[i]</code> ，在对应上图，因为我们是从左到右遍历 <code>i</code> , 而 <code>pos</code> 是遍历到的所有回文子串中某个对称轴位置（ <code>MaxRight</code> 最大时），所以必然有 <code>pos&lt;=i</code> ，所以我们更关注的是，<code>i</code> 是在 <code>MaxRight</code> 的左边还是右边。我们分情况来讨论。</p>
 <ol>
 <li><p><code>i</code> 在 <code>MaxRight</code> 左侧：</p>
 <ol>
 <li><p><strong>以j为对称轴的回文串比较短，短到像下图这样</strong>：</p>
-<p><img src="../images/5_2.png" alt="5_2"></p>
+<p><img src="./images/5_2.png" alt="5_2"></p>
 <p>这里面只能保证<code>RL[i]</code>至少不会小于<code>RL[j]</code>， 因此我们可以把起始半径设置为： <code>RL[i] = RL[j] = RL[2 * pos - j]</code>。然后就继续向两侧展开即可。</p>
 </li>
 <li><p><strong>以j为对称轴的回文串很长，超过了MaxRight在左侧的对称点</strong>：</p>
-<p><img src="../images/5_3.png" alt="5_3"></p>
+<p><img src="./images/5_3.png" alt="5_3"></p>
 <p>这时候 <code>j</code> 的 <code>RL</code> 对于 <code>RL[i]</code> 的初始值就没有帮助了，因为我们只能够知道的是目前红色框里的部分是满足以 <code>i</code> 为对称轴的回文半径，也就是 <code>RL[i]</code> 的初始值可以设置为 <code>RL[i] = MaxRight - i</code> , 然后就继续向两侧展开即可。</p>
 </li>
 </ol>
@@ -434,7 +434,7 @@
 <li><p><code>i</code> 在 <code>MaxRight</code> 右侧：</p>
 </li>
 </ol>
-<p><img src="../images/5_4.png" alt="5_4"></p>
+<p><img src="./images/5_4.png" alt="5_4"></p>
 <p>这种情况没有办法，只能初始化 <code>RL[i] = 1</code> 。</p>
 <p>为了得到字符串，我们还需要一个 <code>MaxRL</code> 来记录最大回文串的回文半径。<code>MaxPos</code> 来记录 <code>MaxRL</code> 对应的回文串的对称轴所在的位置。</p>
 <p>由前面的分析可以知道，<code>MaxRL- 1</code> 即为原始最大回文串的长度（注意，这里是全串的总长度，不要和 <code>RL</code> 半径混在一起了）。原始最大回文串的起始位为 <code>(MaxPos - MaxRL + 1) / 2</code> 。</p>
