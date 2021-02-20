@@ -1216,7 +1216,7 @@
 <h4><span id="如果一个进程2gb-fork-之后这两个进程占用多少内存">如果一个进程2GB， fork 之后这两个进程占用多少内存？</span></h4><p>还是 <code>2GB</code> ，或者是比 <code>2GB</code> 略大一点点。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">int</span> i;</span><br><span class="line">   <span class="keyword">for</span>(i=<span class="number">0</span>; i&lt;<span class="number">2</span>; i++)&#123;</span><br><span class="line">      fork();</span><br><span class="line">      <span class="comment">//注意：下面的printf有“n”</span></span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">"ppid=%d, pid=%d, i=%d n"</span>, getppid(), getpid(), i);</span><br><span class="line">   &#125;</span><br><span class="line">   sleep(<span class="number">10</span>); <span class="comment">//让进程停留十秒，这样我们可以用pstree查看一下进程树</span></span><br><span class="line">   <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>输出</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">ppid=8858, pid=8518, i=0</span><br><span class="line">ppid=8858, pid=8518, i=1</span><br><span class="line">ppid=8518, pid=8519, i=0</span><br><span class="line">ppid=8518, pid=8519, i=1</span><br><span class="line">ppid=8518, pid=8520, i=1</span><br><span class="line">ppid=8519, pid=8521, i=1</span><br><span class="line"></span><br><span class="line"><span class="meta">$</span> pstree -p | grep fork</span><br><span class="line">|-bash(8858)-+-fork(8518)-+-fork(8519)---fork(8521)</span><br><span class="line">|            |            `-fork(8520)</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">ppid=8858, pid=8518, i=0</span><br><span class="line">ppid=8858, pid=8518, i=1</span><br><span class="line">ppid=8518, pid=8519, i=0</span><br><span class="line">ppid=8518, pid=8519, i=1</span><br><span class="line">ppid=8518, pid=8520, i=1</span><br><span class="line">ppid=8519, pid=8521, i=1</span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash"> pstree -p | grep fork</span></span><br><span class="line">|-bash(8858)-+-fork(8518)-+-fork(8519)---fork(8521)</span><br><span class="line">|            |            `-fork(8520)</span><br></pre></td></tr></table></figure>
 <hr>
 <h3><span id="进程线程的上下文">进程/线程的上下文</span></h3><h4><span id="进程的上下文可以分为哪几个部分">进程的上下文可以分为哪几个部分？</span></h4><ul>
 <li><strong>用户级上下文</strong>：正文、数据、用户堆栈以及共享存储区；</li>
@@ -2178,8 +2178,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/12/19/316. 去除重复字母/" rel="next" title="Leetcode_316 去除重复字母">
-                <i class="fa fa-chevron-left"></i> Leetcode_316 去除重复字母
+              <a href="/2020/12/22/C++基础总结/" rel="next" title="C++基础总结">
+                <i class="fa fa-chevron-left"></i> C++基础总结
               </a>
             
           </div>
@@ -2188,8 +2188,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2020/12/24/C++基础总结/" rel="prev" title="C++总结">
-                C++总结 <i class="fa fa-chevron-right"></i>
+              <a href="/2020/12/26/计算机网络总结/" rel="prev" title="计算机网络总结">
+                计算机网络总结 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
